@@ -382,11 +382,28 @@ log_info "Setting up Python virtual environment..."
 cd "${SCRIPT_DIR}"
 
 # Fix for RHEL/CentOS where Python 3.12 installs to lib64 but looks in lib
-# This sets up the environment so Python can find its modules
-if [[ -d "/usr/lib64/python3.12" ]] && [[ ! -d "/usr/lib/python3.12" ]]; then
-    log_info "Detected Python 3.12 lib64 installation, setting up environment..."
-    export PYTHONHOME=/usr
-    export PYTHONPATH=/usr/lib64/python3.12:/usr/lib64/python3.12/lib-dynload
+# Try to create a symlink first (permanent fix), fall back to environment variables
+PYTHON_LIB64_FIX=false
+if [[ -d "/usr/lib64/python3.12" ]] && [[ ! -e "/usr/lib/python3.12" ]]; then
+    log_info "Detected Python 3.12 lib64 installation..."
+    # Try to create symlink (requires write permission to /usr/lib)
+    if sudo ln -sf /usr/lib64/python3.12 /usr/lib/python3.12 2>/dev/null; then
+        log_success "Created symlink /usr/lib/python3.12 -> /usr/lib64/python3.12"
+        PYTHON_LIB64_FIX=true
+    elif ln -sf /usr/lib64/python3.12 /usr/lib/python3.12 2>/dev/null; then
+        log_success "Created symlink /usr/lib/python3.12 -> /usr/lib64/python3.12"
+        PYTHON_LIB64_FIX=true
+    else
+        log_warning "Cannot create symlink (no write permission to /usr/lib)"
+        log_warning "Python virtual environment may not work correctly"
+        log_warning "Ask your sysadmin to run: sudo ln -sf /usr/lib64/python3.12 /usr/lib/python3.12"
+    fi
+fi
+
+# If symlink exists or was created, Python should work without env vars
+# Otherwise we need them but venv won't work properly
+if [[ -L "/usr/lib/python3.12" ]] || [[ -d "/usr/lib/python3.12" ]]; then
+    PYTHON_LIB64_FIX=true
 fi
 
 # Create virtual environment if it doesn't exist or is broken
@@ -420,11 +437,6 @@ if [[ "${SKIP_PYTHON}" != true ]]; then
     # Activate virtual environment
     log_info "Activating virtual environment..."
     source "${VENV_DIR}/bin/activate"
-
-    # IMPORTANT: Unset PYTHONHOME/PYTHONPATH after activation
-    # The venv has its own paths and these variables interfere with it
-    unset PYTHONHOME
-    unset PYTHONPATH
 
     # Check if pip is available, if not bootstrap it
     if ! python -m pip --version &>/dev/null; then
