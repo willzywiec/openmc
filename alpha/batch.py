@@ -5,9 +5,10 @@ Alpha Eigenvalue Batch Runner for ICSBEP Benchmarks
 Runs ICSBEP benchmarks matching the examples/alpha folder with alpha eigenvalue
 calculations enabled. Saves all results to a single .xlsx file.
 
-Alpha eigenvalue is calculated two ways:
+Alpha eigenvalue is calculated three ways:
   - α = (k_p - 1) / τ_r      (using mean removal time)
   - α = (ρ - β_eff) / τ_p    (using mean production time, more robust to k_eff bias)
+  - α = 1/τ_p - 1/τ_r        (rate balance: production rate minus removal rate)
 
 Where:
   k_p = prompt k-effective
@@ -211,6 +212,8 @@ def run_benchmark(name: str, run_dir: Path) -> dict:
         "alpha_k_unc": None,
         "alpha_rho": None,
         "alpha_rho_unc": None,
+        "alpha_rate": None,
+        "alpha_rate_unc": None,
         "beta_eff": None,
         "beta_eff_unc": None,
         "removal_time": None,
@@ -321,6 +324,11 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["alpha_rho"] = sp.alpha_static.nominal_value
             results["alpha_rho_unc"] = sp.alpha_static.std_dev
 
+        # Alpha eigenvalue (1/tau_p - 1/tau_r) rate-based
+        if hasattr(sp, 'alpha_rate_based') and sp.alpha_rate_based is not None:
+            results["alpha_rate"] = sp.alpha_rate_based.nominal_value
+            results["alpha_rate_unc"] = sp.alpha_rate_based.std_dev
+
         # Bias correction values for delayed critical systems
         if hasattr(sp, 'is_delayed_critical') and sp.is_delayed_critical is not None:
             results["is_delayed_critical"] = sp.is_delayed_critical
@@ -374,6 +382,7 @@ def write_results_xlsx(results: list, output_file: Path):
         "k-prompt", "k-prompt unc",
         "Alpha (k_p-1)/tau_r", "unc",
         "Alpha (rho-b)/tau_p", "unc",
+        "Alpha (rate)", "unc",
         "Beta-eff", "Beta-eff unc",
         "Removal Time (s)", "unc",
         "Prod Time Derived (s)", "unc",
@@ -403,6 +412,8 @@ def write_results_xlsx(results: list, output_file: Path):
             r.get("alpha_k_unc"),
             r.get("alpha_rho"),
             r.get("alpha_rho_unc"),
+            r.get("alpha_rate"),
+            r.get("alpha_rate_unc"),
             r.get("beta_eff"),
             r.get("beta_eff_unc"),
             r.get("removal_time"),
@@ -428,13 +439,14 @@ def write_results_xlsx(results: list, output_file: Path):
             # Format numbers
             if isinstance(value, float):
                 # Alpha, lifetime, gen time, bias correction - scientific notation
-                if col in [6, 7, 8, 9, 12, 13, 14, 15, 16, 17, 19, 22, 23]:
+                # Columns: 6-11 (alphas), 14-19 (times), 21 (bias), 24-25 (corrected alpha)
+                if col in [6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 21, 24, 25]:
                     cell.number_format = '0.00E+00'
                 else:
                     cell.number_format = '0.000000'
 
-    # Adjust column widths (25 columns now)
-    column_widths = [15, 12, 12, 12, 12, 16, 10, 16, 10, 12, 12, 14, 14, 16, 16, 16, 16, 12, 12, 12, 12, 14, 14, 12, 10]
+    # Adjust column widths (27 columns now)
+    column_widths = [15, 12, 12, 12, 12, 16, 10, 16, 10, 14, 10, 12, 12, 14, 14, 16, 16, 16, 16, 12, 12, 12, 12, 14, 14, 12, 10]
     for col, width in enumerate(column_widths, 1):
         ws.column_dimensions[openpyxl.utils.get_column_letter(col)].width = width
 
@@ -528,6 +540,7 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             k_prompt = f"{result['k_prompt']:.6f} +/- {result['k_prompt_unc']:.6f}" if result.get("k_prompt") else "N/A"
             alpha_k = f"{result['alpha_k']:.4e} +/- {result['alpha_k_unc']:.4e} 1/s" if result.get("alpha_k") else "N/A"
             alpha_rho = f"{result['alpha_rho']:.4e} +/- {result['alpha_rho_unc']:.4e} 1/s" if result.get("alpha_rho") else "N/A"
+            alpha_rate = f"{result['alpha_rate']:.4e} +/- {result['alpha_rate_unc']:.4e} 1/s" if result.get("alpha_rate") else "N/A"
             beta_eff = f"{result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}" if result.get("beta_eff") else "N/A"
             removal_time = f"{result['removal_time']:.4e} +/- {result['removal_time_unc']:.4e} s" if result.get("removal_time") else "N/A"
             prod_time_d = f"{result['prod_time_derived']:.4e} +/- {result['prod_time_derived_unc']:.4e} s" if result.get("prod_time_derived") else "N/A"
@@ -537,6 +550,7 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             print(f"  k-prompt             = {k_prompt}")
             print(f"  alpha (k_p-1)/tau_r  = {alpha_k}")
             print(f"  alpha (rho-b)/tau_p  = {alpha_rho}")
+            print(f"  alpha (rate-based)   = {alpha_rate}")
             print(f"  beta-eff             = {beta_eff}")
             print(f"  mean removal time    = {removal_time}")
             print(f"  mean prod time (der) = {prod_time_d}")

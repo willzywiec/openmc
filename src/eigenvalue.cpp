@@ -55,6 +55,8 @@ double alpha_k_based {0.0};
 double alpha_k_based_std {0.0};
 double alpha_static {0.0};
 double alpha_static_std {0.0};
+double alpha_rate_based {0.0};
+double alpha_rate_based_std {0.0};
 
 // Bias-corrected values for delayed critical systems
 bool is_delayed_critical {false};
@@ -721,6 +723,33 @@ void calculate_kinetics_parameters()
         }
       }
 
+      // Calculate alpha eigenvalue using rate balance: α = 1/τ_p - 1/τ_r
+      // This is a direct rate-based approach: production rate minus removal rate
+      // where 1/τ_p is production rate per neutron and 1/τ_r is removal rate per neutron
+      if (simulation::prompt_prod_time_direct > 0.0 && simulation::prompt_removal_time > 0.0) {
+        double inv_tau_p = 1.0 / simulation::prompt_prod_time_direct;  // production rate
+        double inv_tau_r = 1.0 / simulation::prompt_removal_time;      // removal rate
+        simulation::alpha_rate_based = inv_tau_p - inv_tau_r;
+
+        // Error propagation for alpha_rate_based
+        // For α = 1/τ_p - 1/τ_r:
+        // ∂α/∂τ_p = -1/τ_p², ∂α/∂τ_r = 1/τ_r²
+        if (n > 1) {
+          double dAlpha_dtau_p = -1.0 / (simulation::prompt_prod_time_direct *
+                                         simulation::prompt_prod_time_direct);
+          double dAlpha_dtau_r = 1.0 / (simulation::prompt_removal_time *
+                                        simulation::prompt_removal_time);
+
+          double var_alpha =
+            dAlpha_dtau_p * dAlpha_dtau_p * simulation::prompt_prod_time_direct_std *
+              simulation::prompt_prod_time_direct_std +
+            dAlpha_dtau_r * dAlpha_dtau_r * simulation::prompt_removal_time_std *
+              simulation::prompt_removal_time_std;
+
+          simulation::alpha_rate_based_std = std::sqrt(var_alpha);
+        }
+      }
+
       // Check for delayed critical system and apply bias correction
       // A system is delayed critical if k_eff >= 1.0 but k_prompt < 1.0
       // In this case, the system is only critical due to delayed neutrons
@@ -1065,6 +1094,9 @@ void write_eigenvalue_hdf5(hid_t group)
       array<double, 2> alpha_static_vals {
         simulation::alpha_static, simulation::alpha_static_std};
       write_dataset(group, "alpha_static", alpha_static_vals);
+      array<double, 2> alpha_rate_vals {
+        simulation::alpha_rate_based, simulation::alpha_rate_based_std};
+      write_dataset(group, "alpha_rate_based", alpha_rate_vals);
 
       // Write bias correction values
       write_dataset(group, "is_delayed_critical", simulation::is_delayed_critical);
@@ -1137,6 +1169,12 @@ void read_eigenvalue_hdf5(hid_t group)
         read_dataset(group, "alpha_static", alpha_static_vals);
         simulation::alpha_static = alpha_static_vals[0];
         simulation::alpha_static_std = alpha_static_vals[1];
+      }
+      if (object_exists(group, "alpha_rate_based")) {
+        array<double, 2> alpha_rate_vals;
+        read_dataset(group, "alpha_rate_based", alpha_rate_vals);
+        simulation::alpha_rate_based = alpha_rate_vals[0];
+        simulation::alpha_rate_based_std = alpha_rate_vals[1];
       }
       // Read bias correction values
       if (object_exists(group, "is_delayed_critical")) {

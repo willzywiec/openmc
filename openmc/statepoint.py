@@ -409,6 +409,19 @@ class StatePoint:
             return None
 
     @property
+    def alpha_rate_based(self):
+        """Alpha eigenvalue using rate balance, with uncertainty.
+
+        Calculated as: α = 1/τ_p - 1/τ_r
+        where 1/τ_p is production rate per neutron and 1/τ_r is removal rate
+        per neutron. This is a direct rate-based approach independent of k.
+        """
+        if self.run_mode == 'eigenvalue' and 'alpha_rate_based' in self._f:
+            return ufloat(*self._f['alpha_rate_based'][()])
+        else:
+            return None
+
+    @property
     def is_delayed_critical(self):
         """True if system is detected as delayed critical (k >= 1.0, k_p < 1.0)."""
         if self.run_mode == 'eigenvalue' and 'is_delayed_critical' in self._f:
