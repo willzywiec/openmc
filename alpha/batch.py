@@ -445,16 +445,22 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
         # Print results
         if result["success"]:
             print(f"  Completed in {result['runtime']:.1f}s")
-            if result.get("keff"):
-                print(f"  k-eff       = {result['keff']:.6f} +/- {result['keff_unc']:.6f}")
-            if result.get("k_prompt"):
-                print(f"  k-prompt    = {result['k_prompt']:.6f} +/- {result['k_prompt_unc']:.6f}")
-            if result.get("alpha"):
-                print(f"  alpha       = {result['alpha']:.4e} +/- {result['alpha_unc']:.4e} 1/s")
-            if result.get("beta_eff"):
-                print(f"  beta-eff    = {result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}")
-            if result.get("lifetime"):
-                print(f"  lifetime    = {result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s")
+            # Always show all parameters
+            keff = f"{result['keff']:.6f} +/- {result['keff_unc']:.6f}" if result.get("keff") else "N/A"
+            k_prompt = f"{result['k_prompt']:.6f} +/- {result['k_prompt_unc']:.6f}" if result.get("k_prompt") else "N/A"
+            alpha = f"{result['alpha']:.4e} +/- {result['alpha_unc']:.4e} 1/s" if result.get("alpha") else "N/A"
+            beta_eff = f"{result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}" if result.get("beta_eff") else "N/A"
+            lifetime = f"{result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s" if result.get("lifetime") else "N/A"
+
+            print(f"  k-eff       = {keff}")
+            print(f"  k-prompt    = {k_prompt}")
+            print(f"  alpha       = {alpha}")
+            print(f"  beta-eff    = {beta_eff}")
+            print(f"  lifetime    = {lifetime}")
+
+            # Warn if kinetics parameters are missing
+            if not result.get("k_prompt"):
+                print("  WARNING: Kinetics parameters not found - check that OpenMC was built with alpha eigenvalue support")
         else:
             print(f"  FAILED: {result.get('error', 'Unknown error')[:200]}")
 
