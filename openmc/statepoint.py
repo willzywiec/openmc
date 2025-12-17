@@ -334,12 +334,11 @@ class StatePoint:
             return None
 
     @property
-    def mean_removal_time(self):
-        """Mean removal time (τ_r) with uncertainty.
+    def prompt_neutron_lifetime(self):
+        """Prompt neutron lifetime (ℓ) with uncertainty.
 
-        The mean removal time is the average time from neutron birth to removal
-        (absorption or leakage). This is sometimes called "prompt neutron lifetime"
-        but "mean removal time" is more physically descriptive.
+        The prompt neutron lifetime is the average time from neutron birth to
+        removal (absorption or leakage).
         """
         if self.run_mode == 'eigenvalue' and 'prompt_lifetime' in self._f:
             return ufloat(*self._f['prompt_lifetime'][()])
@@ -347,15 +346,15 @@ class StatePoint:
             return None
 
     # Backward compatibility alias
-    prompt_lifetime = mean_removal_time
+    prompt_lifetime = prompt_neutron_lifetime
 
     @property
-    def mean_prod_time_derived(self):
-        """Mean production time (τ_p) derived from removal time, with uncertainty.
+    def mean_generation_time_derived(self):
+        """Mean generation time (Λ) derived from lifetime, with uncertainty.
 
-        The mean production time derived from removal time using τ_p = τ_r/k.
-        For a more accurate measurement, see mean_prod_time_direct which measures
-        production time directly at fission events.
+        The mean generation time derived from lifetime using Λ = ℓ/k.
+        For a more accurate measurement, see mean_generation_time which measures
+        generation time directly at fission events.
         """
         if self.run_mode == 'eigenvalue' and 'prompt_gen_time' in self._f:
             return ufloat(*self._f['prompt_gen_time'][()])
@@ -363,13 +362,13 @@ class StatePoint:
             return None
 
     # Backward compatibility alias
-    prompt_gen_time = mean_prod_time_derived
+    prompt_gen_time = mean_generation_time_derived
 
     @property
-    def mean_prod_time_direct(self):
-        """Mean production time (τ_p) direct measurement, with uncertainty.
+    def mean_generation_time(self):
+        """Mean generation time (Λ) direct measurement, with uncertainty.
 
-        The mean production time measured directly by scoring time-to-fission
+        The mean generation time measured directly by scoring time-to-fission
         events weighted by nu (neutrons produced). This is the physically accurate
         birth-to-fission time used in alpha calculations.
         """
@@ -379,14 +378,14 @@ class StatePoint:
             return None
 
     # Backward compatibility alias
-    prompt_gen_time_direct = mean_prod_time_direct
+    prompt_gen_time_direct = mean_generation_time
 
     @property
     def alpha_k_based(self):
-        """Alpha eigenvalue using mean removal time, with uncertainty.
+        """Alpha eigenvalue using prompt neutron lifetime, with uncertainty.
 
-        Calculated as: α = (k_p - 1) / τ_r
-        where k_p is the prompt k-effective and τ_r is the mean removal time.
+        Calculated as: α = (k_p - 1) / ℓ
+        where k_p is the prompt k-effective and ℓ is the prompt neutron lifetime.
         This is the prompt neutron approximation from point kinetics.
         """
         if self.run_mode == 'eigenvalue' and 'alpha_k_based' in self._f:
@@ -396,28 +395,15 @@ class StatePoint:
 
     @property
     def alpha_static(self):
-        """Alpha eigenvalue using mean production time, with uncertainty.
+        """Alpha eigenvalue using mean generation time, with uncertainty.
 
-        Calculated as: α = (ρ - β_eff) / τ_p
+        Calculated as: α = (ρ - β_eff) / Λ
         where ρ = (k-1)/k is reactivity, β_eff is effective delayed neutron
-        fraction, and τ_p is the mean production time (direct measurement).
+        fraction, and Λ is the mean generation time (direct measurement).
         This is the inhour equation form and is more robust to k_eff bias.
         """
         if self.run_mode == 'eigenvalue' and 'alpha_static' in self._f:
             return ufloat(*self._f['alpha_static'][()])
-        else:
-            return None
-
-    @property
-    def alpha_rate_based(self):
-        """Alpha eigenvalue using rate balance, with uncertainty.
-
-        Calculated as: α = 1/τ_p - 1/τ_r
-        where 1/τ_p is production rate per neutron and 1/τ_r is removal rate
-        per neutron. This is a direct rate-based approach independent of k.
-        """
-        if self.run_mode == 'eigenvalue' and 'alpha_rate_based' in self._f:
-            return ufloat(*self._f['alpha_rate_based'][()])
         else:
             return None
 
