@@ -37,7 +37,7 @@ extern double alpha_k_based;          //!< Alpha eigenvalue: α = (k_p - 1) / τ
 extern double alpha_k_based_std;      //!< Standard deviation of alpha_k_based
 extern double alpha_static;           //!< Alpha eigenvalue: α = (ρ - β_eff) / τ_p
 extern double alpha_static_std;       //!< Standard deviation of alpha_static
-extern double alpha_rate_based;       //!< Alpha eigenvalue: α = 1/τ_p - 1/τ_r (rate balance)
+extern double alpha_rate_based;       //!< Alpha eigenvalue: α = k_p/τ_p - 1/τ_r (rate balance)
 extern double alpha_rate_based_std;   //!< Standard deviation of alpha_rate_based
 
 // Bias-corrected values for delayed critical systems (k_eff >= 1.0 && k_prompt < 1.0)

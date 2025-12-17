@@ -723,24 +723,29 @@ void calculate_kinetics_parameters()
         }
       }
 
-      // Calculate alpha eigenvalue using rate balance: α = 1/τ_p - 1/τ_r
+      // Calculate alpha eigenvalue using rate balance: α = k_p/τ_p - 1/τ_r
       // This is a direct rate-based approach: production rate minus removal rate
-      // where 1/τ_p is production rate per neutron and 1/τ_r is removal rate per neutron
+      // where k_p/τ_p is production rate per neutron and 1/τ_r is removal rate per neutron
       if (simulation::prompt_prod_time_direct > 0.0 && simulation::prompt_removal_time > 0.0) {
-        double inv_tau_p = 1.0 / simulation::prompt_prod_time_direct;  // production rate
-        double inv_tau_r = 1.0 / simulation::prompt_removal_time;      // removal rate
-        simulation::alpha_rate_based = inv_tau_p - inv_tau_r;
+        double prod_rate = simulation::keff_prompt / simulation::prompt_prod_time_direct;
+        double removal_rate = 1.0 / simulation::prompt_removal_time;
+        simulation::alpha_rate_based = prod_rate - removal_rate;
 
         // Error propagation for alpha_rate_based
-        // For α = 1/τ_p - 1/τ_r:
-        // ∂α/∂τ_p = -1/τ_p², ∂α/∂τ_r = 1/τ_r²
+        // For α = k_p/τ_p - 1/τ_r:
+        // ∂α/∂k_p = 1/τ_p, ∂α/∂τ_p = -k_p/τ_p², ∂α/∂τ_r = 1/τ_r²
         if (n > 1) {
-          double dAlpha_dtau_p = -1.0 / (simulation::prompt_prod_time_direct *
-                                         simulation::prompt_prod_time_direct);
-          double dAlpha_dtau_r = 1.0 / (simulation::prompt_removal_time *
-                                        simulation::prompt_removal_time);
+          double tau_p = simulation::prompt_prod_time_direct;
+          double tau_r = simulation::prompt_removal_time;
+          double k_p = simulation::keff_prompt;
+
+          double dAlpha_dkp = 1.0 / tau_p;
+          double dAlpha_dtau_p = -k_p / (tau_p * tau_p);
+          double dAlpha_dtau_r = 1.0 / (tau_r * tau_r);
 
           double var_alpha =
+            dAlpha_dkp * dAlpha_dkp * simulation::keff_prompt_std *
+              simulation::keff_prompt_std +
             dAlpha_dtau_p * dAlpha_dtau_p * simulation::prompt_prod_time_direct_std *
               simulation::prompt_prod_time_direct_std +
             dAlpha_dtau_r * dAlpha_dtau_r * simulation::prompt_removal_time_std *

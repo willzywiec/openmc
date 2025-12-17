@@ -324,7 +324,7 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["alpha_rho"] = sp.alpha_static.nominal_value
             results["alpha_rho_unc"] = sp.alpha_static.std_dev
 
-        # Alpha eigenvalue (1/tau_p - 1/tau_r) rate-based
+        # Alpha eigenvalue (k_p/tau_p - 1/tau_r) rate-based
         if hasattr(sp, 'alpha_rate_based') and sp.alpha_rate_based is not None:
             results["alpha_rate"] = sp.alpha_rate_based.nominal_value
             results["alpha_rate_unc"] = sp.alpha_rate_based.std_dev

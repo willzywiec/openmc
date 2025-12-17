@@ -578,7 +578,7 @@ void print_results()
           simulation::alpha_k_based, t_n1 * simulation::alpha_k_based_std);
         fmt::print(" Alpha (rho-beta)/tau_p     = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_static, t_n1 * simulation::alpha_static_std);
-        fmt::print(" Alpha (1/tau_p - 1/tau_r)  = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (k_p/tau_p - 1/tau_r)= {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_rate_based, t_n1 * simulation::alpha_rate_based_std);
         // Print bias-corrected values if system is delayed critical
         if (simulation::is_delayed_critical) {
@@ -627,7 +627,7 @@ void print_results()
         fmt::print(
           " Alpha (rho-beta)/tau_p     = {:.5e} 1/seconds\n", simulation::alpha_static);
         fmt::print(
-          " Alpha (1/tau_p - 1/tau_r)  = {:.5e} 1/seconds\n", simulation::alpha_rate_based);
+          " Alpha (k_p/tau_p - 1/tau_r)= {:.5e} 1/seconds\n", simulation::alpha_rate_based);
         // Print bias-corrected values if system is delayed critical
         if (simulation::is_delayed_critical) {
           fmt::print(" *** Delayed Critical System Detected (k >= 1.0, k_p < 1.0) ***\n");
