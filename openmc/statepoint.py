@@ -334,12 +334,24 @@ class StatePoint:
             return None
 
     @property
-    def prompt_gen_time(self):
+    def prompt_lifetime(self):
         """Prompt neutron lifetime with uncertainty.
 
-        Note: Despite the name 'prompt_gen_time', this actually represents the
-        prompt neutron lifetime (time from birth to ANY absorption - capture or fission),
-        not the generation time (time between fission generations).
+        The prompt neutron lifetime (ℓ) is the average time from birth to
+        removal (absorption or leakage). Related to generation time by Λ = ℓ/k.
+        """
+        if self.run_mode == 'eigenvalue' and 'prompt_lifetime' in self._f:
+            return ufloat(*self._f['prompt_lifetime'][()])
+        else:
+            return None
+
+    @property
+    def prompt_gen_time(self):
+        """Prompt neutron generation time with uncertainty.
+
+        The prompt generation time (Λ) is the mean time from birth-to-birth of
+        the fission chain. Related to lifetime by Λ = ℓ/k. This is the natural
+        parameter for the alpha eigenvalue: α = (k - 1) / Λ.
         """
         if self.run_mode == 'eigenvalue' and 'prompt_gen_time' in self._f:
             return ufloat(*self._f['prompt_gen_time'][()])
@@ -350,8 +362,8 @@ class StatePoint:
     def alpha_k_based(self):
         """Alpha eigenvalue (k-based method) with uncertainty.
 
-        Calculated as: α = (k_prompt - 1) / l_prompt
-        where l_prompt is the prompt neutron lifetime (time from birth to ANY absorption).
+        Calculated as: α = (k_prompt - 1) / Λ
+        where Λ is the prompt generation time (birth-to-birth of fission chain).
         """
         if self.run_mode == 'eigenvalue' and 'alpha_k_based' in self._f:
             return ufloat(*self._f['alpha_k_based'][()])

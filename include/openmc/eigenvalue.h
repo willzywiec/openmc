@@ -33,12 +33,14 @@ extern double keff_prompt;            //!< Mean k_prompt over active generations
 extern double keff_prompt_std;        //!< Standard deviation of k_prompt
 extern double beta_eff;               //!< Effective delayed neutron fraction
 extern double beta_eff_std;           //!< Standard deviation of beta_eff
-extern double alpha_k_based;          //!< Alpha eigenvalue: α = (k_prompt - 1) / l_prompt
+extern double alpha_k_based;          //!< Alpha eigenvalue: α = (k_prompt - 1) / Λ
 extern double alpha_k_based_std;      //!< Standard deviation of alpha
 extern double alpha_static;           //!< Alpha eigenvalue (same as alpha_k_based)
-extern double alpha_static_std;    //!< Standard deviation of alpha
-extern double prompt_gen_time;     //!< Prompt neutron lifetime (l_prompt)
-extern double prompt_gen_time_std; //!< Standard deviation of lifetime
+extern double alpha_static_std;       //!< Standard deviation of alpha
+extern double prompt_lifetime;        //!< Prompt neutron lifetime ℓ (birth to removal)
+extern double prompt_lifetime_std;    //!< Standard deviation of lifetime
+extern double prompt_gen_time;        //!< Prompt generation time Λ = ℓ/k (birth to birth)
+extern double prompt_gen_time_std;    //!< Standard deviation of generation time
 extern int kinetics_tally_index;   //!< Index of internal kinetics tally
 
 // Unused alpha calculation state variables (kept for ABI compatibility)

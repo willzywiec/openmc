@@ -568,7 +568,9 @@ void print_results()
       fmt::print(" Beta-effective             = {:.5f} +/- {:.5f}\n",
         simulation::beta_eff, t_n1 * simulation::beta_eff_std);
       if (settings::calculate_alpha) {
-        fmt::print(" Prompt Neutron Lifetime    = {:.5e} +/- {:.5e} seconds\n",
+        fmt::print(" Prompt Lifetime            = {:.5e} +/- {:.5e} seconds\n",
+          simulation::prompt_lifetime, t_n1 * simulation::prompt_lifetime_std);
+        fmt::print(" Prompt Generation Time     = {:.5e} +/- {:.5e} seconds\n",
           simulation::prompt_gen_time, t_n1 * simulation::prompt_gen_time_std);
         fmt::print(" Alpha Eigenvalue           = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_k_based, t_n1 * simulation::alpha_k_based_std);
@@ -599,7 +601,9 @@ void print_results()
         " Beta-effective             = {:.5f}\n", simulation::beta_eff);
       if (settings::calculate_alpha) {
         fmt::print(
-          " Prompt Neutron Lifetime    = {:.5e} seconds\n", simulation::prompt_gen_time);
+          " Prompt Lifetime            = {:.5e} seconds\n", simulation::prompt_lifetime);
+        fmt::print(
+          " Prompt Generation Time     = {:.5e} seconds\n", simulation::prompt_gen_time);
         fmt::print(
           " Alpha Eigenvalue           = {:.5e} 1/seconds\n", simulation::alpha_k_based);
       }
