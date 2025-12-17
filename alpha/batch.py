@@ -136,6 +136,7 @@ def modify_settings_for_alpha(settings_path: Path, quick_mode: bool = False):
             inactive.text = '10'
 
     tree.write(settings_path, xml_declaration=True, encoding='utf-8')
+    print(f"  Enabled calculate_alpha=true, calculate_prompt_k=true")
 
 
 def setup_benchmark(name: str, icsbep_path: str, run_dir: Path, quick_mode: bool = False) -> bool:
