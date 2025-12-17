@@ -404,14 +404,29 @@ python -m pip install --upgrade pip setuptools wheel --quiet --timeout=120 --ret
 
 # Install OpenMC Python API in development mode
 log_info "Installing OpenMC Python package in development mode..."
-if ! python -m pip install -e . --timeout=120 --retries=5 2>/dev/null; then
+PYTHON_INSTALL_SUCCESS=false
+if python -m pip install -e . --timeout=120 --retries=5 2>&1; then
+    PYTHON_INSTALL_SUCCESS=true
+else
     log_warning "Editable install failed (requires pip >= 21.3, setuptools >= 64.0)"
     log_info "Falling back to regular install..."
-    python -m pip install . --timeout=120 --retries=5
+    if python -m pip install . --timeout=120 --retries=5 2>&1; then
+        PYTHON_INSTALL_SUCCESS=true
+    else
+        log_warning "Python package install failed."
+        log_warning "This may be due to Python version requirements (requires Python >= 3.11)"
+        log_warning "OpenMC binary is still available - Python bindings will not work."
+        PYTHON_VERSION=$(python3 --version 2>&1 || echo "unknown")
+        log_warning "Your Python version: ${PYTHON_VERSION}"
+    fi
 fi
 
-log_success "Python virtual environment setup complete"
-log_success "OpenMC Python bindings installed"
+if [[ "${PYTHON_INSTALL_SUCCESS}" == true ]]; then
+    log_success "Python virtual environment setup complete"
+    log_success "OpenMC Python bindings installed"
+else
+    log_warning "Continuing without Python bindings..."
+fi
 
 ################################################################################
 # Set up environment
