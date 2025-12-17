@@ -347,14 +347,28 @@ class StatePoint:
 
     @property
     def prompt_gen_time(self):
-        """Prompt neutron generation time with uncertainty.
+        """Prompt neutron generation time (derived from lifetime) with uncertainty.
 
-        The prompt generation time (Λ) is the mean time from birth-to-birth of
-        the fission chain. Related to lifetime by Λ = ℓ/k. This is the natural
-        parameter for the alpha eigenvalue: α = (k - 1) / Λ.
+        The prompt generation time (Λ) is derived from the prompt lifetime (ℓ)
+        using the relationship Λ = ℓ/k. For a more accurate measurement, see
+        prompt_gen_time_direct which measures generation time directly at
+        fission events.
         """
         if self.run_mode == 'eigenvalue' and 'prompt_gen_time' in self._f:
             return ufloat(*self._f['prompt_gen_time'][()])
+        else:
+            return None
+
+    @property
+    def prompt_gen_time_direct(self):
+        """Prompt neutron generation time (direct measurement) with uncertainty.
+
+        The prompt generation time (Λ) measured directly by scoring time-to-fission
+        events weighted by nu (neutrons produced). This is the physically accurate
+        birth-to-birth time used for calculating the alpha eigenvalue: α = (k - 1) / Λ.
+        """
+        if self.run_mode == 'eigenvalue' and 'prompt_gen_time_direct' in self._f:
+            return ufloat(*self._f['prompt_gen_time_direct'][()])
         else:
             return None
 

@@ -570,8 +570,10 @@ void print_results()
       if (settings::calculate_alpha) {
         fmt::print(" Prompt Lifetime            = {:.5e} +/- {:.5e} seconds\n",
           simulation::prompt_lifetime, t_n1 * simulation::prompt_lifetime_std);
-        fmt::print(" Prompt Generation Time     = {:.5e} +/- {:.5e} seconds\n",
+        fmt::print(" Gen Time (derived)         = {:.5e} +/- {:.5e} seconds\n",
           simulation::prompt_gen_time, t_n1 * simulation::prompt_gen_time_std);
+        fmt::print(" Gen Time (direct)          = {:.5e} +/- {:.5e} seconds\n",
+          simulation::prompt_gen_time_direct, t_n1 * simulation::prompt_gen_time_direct_std);
         fmt::print(" Alpha Eigenvalue           = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_k_based, t_n1 * simulation::alpha_k_based_std);
       }
@@ -603,7 +605,9 @@ void print_results()
         fmt::print(
           " Prompt Lifetime            = {:.5e} seconds\n", simulation::prompt_lifetime);
         fmt::print(
-          " Prompt Generation Time     = {:.5e} seconds\n", simulation::prompt_gen_time);
+          " Gen Time (derived)         = {:.5e} seconds\n", simulation::prompt_gen_time);
+        fmt::print(
+          " Gen Time (direct)          = {:.5e} seconds\n", simulation::prompt_gen_time_direct);
         fmt::print(
           " Alpha Eigenvalue           = {:.5e} 1/seconds\n", simulation::alpha_k_based);
       }

@@ -39,8 +39,10 @@ extern double alpha_static;           //!< Alpha eigenvalue (same as alpha_k_bas
 extern double alpha_static_std;       //!< Standard deviation of alpha
 extern double prompt_lifetime;        //!< Prompt neutron lifetime ℓ (birth to removal)
 extern double prompt_lifetime_std;    //!< Standard deviation of lifetime
-extern double prompt_gen_time;        //!< Prompt generation time Λ = ℓ/k (birth to birth)
+extern double prompt_gen_time;        //!< Prompt generation time Λ = ℓ/k (derived)
 extern double prompt_gen_time_std;    //!< Standard deviation of generation time
+extern double prompt_gen_time_direct; //!< Prompt generation time (direct measurement)
+extern double prompt_gen_time_direct_std; //!< Standard deviation of direct gen time
 extern int kinetics_tally_index;   //!< Index of internal kinetics tally
 
 // Unused alpha calculation state variables (kept for ABI compatibility)

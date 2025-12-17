@@ -4,7 +4,14 @@ Alpha Eigenvalue Batch Runner for ICSBEP Benchmarks
 ====================================================
 Runs ICSBEP benchmarks matching the examples/alpha folder with alpha eigenvalue
 calculations enabled. Saves all results (alpha, keff, k-prompt, beta-effective,
-prompt neutron lifetime, prompt generation time) to a single .xlsx file.
+prompt neutron lifetime, generation time derived, generation time direct) to a
+single .xlsx file.
+
+Generation time is measured two ways:
+  - Derived: Λ = ℓ/k (from lifetime and k-effective)
+  - Direct: Birth-to-fission time weighted by ν (neutrons produced)
+
+The alpha eigenvalue uses the direct generation time: α = (k - 1) / Λ
 
 Usage:
     python batch.py              # Run all benchmarks
@@ -205,6 +212,8 @@ def run_benchmark(name: str, run_dir: Path) -> dict:
         "lifetime_unc": None,
         "gen_time": None,
         "gen_time_unc": None,
+        "gen_time_direct": None,
+        "gen_time_direct_unc": None,
     }
 
     start_time = time.time()
@@ -280,10 +289,15 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["lifetime"] = sp.prompt_lifetime.nominal_value
             results["lifetime_unc"] = sp.prompt_lifetime.std_dev
 
-        # Prompt generation time
+        # Prompt generation time (derived from lifetime)
         if hasattr(sp, 'prompt_gen_time') and sp.prompt_gen_time is not None:
             results["gen_time"] = sp.prompt_gen_time.nominal_value
             results["gen_time_unc"] = sp.prompt_gen_time.std_dev
+
+        # Prompt generation time (direct measurement)
+        if hasattr(sp, 'prompt_gen_time_direct') and sp.prompt_gen_time_direct is not None:
+            results["gen_time_direct"] = sp.prompt_gen_time_direct.nominal_value
+            results["gen_time_direct_unc"] = sp.prompt_gen_time_direct.std_dev
 
         # Alpha eigenvalue
         if hasattr(sp, 'alpha_k_based') and sp.alpha_k_based is not None:
@@ -329,7 +343,8 @@ def write_results_xlsx(results: list, output_file: Path):
         "Alpha (1/s)", "Alpha unc",
         "Beta-eff", "Beta-eff unc",
         "Lifetime (s)", "Lifetime unc",
-        "Gen Time (s)", "Gen Time unc",
+        "Gen Time Derived (s)", "Gen Time Derived unc",
+        "Gen Time Direct (s)", "Gen Time Direct unc",
         "Runtime (s)", "Status"
     ]
 
@@ -356,6 +371,8 @@ def write_results_xlsx(results: list, output_file: Path):
             r.get("lifetime_unc"),
             r.get("gen_time"),
             r.get("gen_time_unc"),
+            r.get("gen_time_direct"),
+            r.get("gen_time_direct_unc"),
             r.get("runtime"),
             "OK" if r.get("success") else "FAILED"
         ]
@@ -366,13 +383,14 @@ def write_results_xlsx(results: list, output_file: Path):
 
             # Format numbers
             if isinstance(value, float):
-                if col in [6, 7, 10, 11, 12, 13]:  # Alpha, lifetime, gen time - scientific
+                # Alpha, lifetime, gen time (derived), gen time (direct) - scientific notation
+                if col in [6, 7, 10, 11, 12, 13, 14, 15]:
                     cell.number_format = '0.00E+00'
                 else:
                     cell.number_format = '0.000000'
 
     # Adjust column widths
-    column_widths = [15, 12, 12, 12, 12, 14, 14, 12, 12, 14, 14, 14, 14, 12, 10]
+    column_widths = [15, 12, 12, 12, 12, 14, 14, 12, 12, 14, 14, 14, 14, 14, 14, 12, 10]
     for col, width in enumerate(column_widths, 1):
         ws.column_dimensions[openpyxl.utils.get_column_letter(col)].width = width
 
@@ -468,13 +486,15 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             beta_eff = f"{result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}" if result.get("beta_eff") else "N/A"
             lifetime = f"{result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s" if result.get("lifetime") else "N/A"
             gen_time = f"{result['gen_time']:.4e} +/- {result['gen_time_unc']:.4e} s" if result.get("gen_time") else "N/A"
+            gen_time_direct = f"{result['gen_time_direct']:.4e} +/- {result['gen_time_direct_unc']:.4e} s" if result.get("gen_time_direct") else "N/A"
 
-            print(f"  k-eff           = {keff}")
-            print(f"  k-prompt        = {k_prompt}")
-            print(f"  alpha           = {alpha}")
-            print(f"  beta-eff        = {beta_eff}")
-            print(f"  prompt lifetime = {lifetime}")
-            print(f"  prompt gen time = {gen_time}")
+            print(f"  k-eff                = {keff}")
+            print(f"  k-prompt             = {k_prompt}")
+            print(f"  alpha                = {alpha}")
+            print(f"  beta-eff             = {beta_eff}")
+            print(f"  prompt lifetime      = {lifetime}")
+            print(f"  gen time (derived)   = {gen_time}")
+            print(f"  gen time (direct)    = {gen_time_direct}")
 
             # Warn if kinetics parameters are missing
             if not result.get("k_prompt"):

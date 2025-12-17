@@ -215,6 +215,8 @@ std::unordered_map<int, std::string> REACTION_NAME_MAP {
   {SCORE_PROMPT_CHAIN_ABSORPTION_RATE, "prompt-chain-absorption-rate"},
   {SCORE_PROMPT_CHAIN_POPULATION, "prompt-chain-population"},
   {SCORE_PROMPT_CHAIN_LEAKAGE_RATE, "prompt-chain-leakage-rate"},
+  {SCORE_PROMPT_CHAIN_FISSION_TIME_NUM, "prompt-chain-fission-time-num"},
+  {SCORE_PROMPT_CHAIN_FISSION_TIME_DENOM, "prompt-chain-fission-time-denom"},
   // Normal ENDF-based reactions
   {TOTAL_XS, "(n,total)"},
   {ELASTIC, "(n,elastic)"},

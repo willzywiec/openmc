@@ -1158,6 +1158,22 @@ void score_general_ce_nonanalog(Particle& p, int i_tally, int start_index,
       }
       break;
 
+    case SCORE_PROMPT_CHAIN_FISSION_TIME_NUM:
+      // Score lifetime * nu * weight for prompt neutrons at fission only
+      // This is the direct generation time numerator (time to next generation)
+      if (!p.is_delayed() && p.fission()) {
+        score = p.lifetime() * p.wgt_bank();
+      }
+      break;
+
+    case SCORE_PROMPT_CHAIN_FISSION_TIME_DENOM:
+      // Score nu * weight for prompt neutrons at fission only
+      // This is the direct generation time denominator
+      if (!p.is_delayed() && p.fission()) {
+        score = p.wgt_bank();
+      }
+      break;
+
     case SCORE_PROMPT_CHAIN_LEAKAGE_RATE:
       // This score is handled in surface crossing, not here
       continue;
@@ -1695,6 +1711,22 @@ void score_general_ce_analog(Particle& p, int i_tally, int start_index,
       // Score prompt neutron population (analog uses collision estimator)
       if (!p.is_delayed()) {
         score = flux * p.wgt_last() / p.macro_xs().total;
+      }
+      break;
+
+    case SCORE_PROMPT_CHAIN_FISSION_TIME_NUM:
+      // Score lifetime * nu * weight for prompt neutrons at fission only
+      // This is the direct generation time numerator (time to next generation)
+      if (!p.is_delayed() && p.fission()) {
+        score = p.lifetime() * p.wgt_bank();
+      }
+      break;
+
+    case SCORE_PROMPT_CHAIN_FISSION_TIME_DENOM:
+      // Score nu * weight for prompt neutrons at fission only
+      // This is the direct generation time denominator
+      if (!p.is_delayed() && p.fission()) {
+        score = p.wgt_bank();
       }
       break;
 
@@ -2583,6 +2615,22 @@ void score_general_mg(Particle& p, int i_tally, int start_index,
         } else {
           score = flux;
         }
+      }
+      break;
+
+    case SCORE_PROMPT_CHAIN_FISSION_TIME_NUM:
+      // Score lifetime * nu * weight for prompt neutrons at fission only
+      // This is the direct generation time numerator (time to next generation)
+      if (!p.is_delayed() && p.fission()) {
+        score = p.lifetime() * p.wgt_bank();
+      }
+      break;
+
+    case SCORE_PROMPT_CHAIN_FISSION_TIME_DENOM:
+      // Score nu * weight for prompt neutrons at fission only
+      // This is the direct generation time denominator
+      if (!p.is_delayed() && p.fission()) {
+        score = p.wgt_bank();
       }
       break;
 
