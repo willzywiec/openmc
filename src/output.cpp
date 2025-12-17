@@ -568,18 +568,16 @@ void print_results()
       fmt::print(" Beta-effective             = {:.5f} +/- {:.5f}\n",
         simulation::beta_eff, t_n1 * simulation::beta_eff_std);
       if (settings::calculate_alpha) {
-        fmt::print(" Mean Removal Time          = {:.5e} +/- {:.5e} seconds\n",
-          simulation::prompt_removal_time, t_n1 * simulation::prompt_removal_time_std);
-        fmt::print(" Mean Prod Time (derived)   = {:.5e} +/- {:.5e} seconds\n",
-          simulation::prompt_prod_time_derived, t_n1 * simulation::prompt_prod_time_derived_std);
-        fmt::print(" Mean Prod Time (direct)    = {:.5e} +/- {:.5e} seconds\n",
-          simulation::prompt_prod_time_direct, t_n1 * simulation::prompt_prod_time_direct_std);
-        fmt::print(" Alpha (k_p-1)/tau_r        = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Prompt Neutron Lifetime    = {:.5e} +/- {:.5e} seconds\n",
+          simulation::prompt_neutron_lifetime, t_n1 * simulation::prompt_neutron_lifetime_std);
+        fmt::print(" Mean Gen Time (derived)    = {:.5e} +/- {:.5e} seconds\n",
+          simulation::mean_generation_time_derived, t_n1 * simulation::mean_generation_time_derived_std);
+        fmt::print(" Mean Gen Time (direct)     = {:.5e} +/- {:.5e} seconds\n",
+          simulation::mean_generation_time, t_n1 * simulation::mean_generation_time_std);
+        fmt::print(" Alpha (k_p-1)/l            = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_k_based, t_n1 * simulation::alpha_k_based_std);
-        fmt::print(" Alpha (rho-beta)/tau_p     = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (rho-beta)/Lambda    = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_static, t_n1 * simulation::alpha_static_std);
-        fmt::print(" Alpha (1/tau_p - 1/tau_r)  = {:.5e} +/- {:.5e} 1/seconds\n",
-          simulation::alpha_rate_based, t_n1 * simulation::alpha_rate_based_std);
         // Print bias-corrected values if system is delayed critical
         if (simulation::is_delayed_critical) {
           fmt::print(" *** Delayed Critical System Detected (k >= 1.0, k_p < 1.0) ***\n");
@@ -587,7 +585,7 @@ void print_results()
             simulation::keff_bias);
           fmt::print(" k-prompt (corrected)       = {:.5f} +/- {:.5f}\n",
             simulation::keff_prompt_corrected, t_n1 * simulation::keff_prompt_corrected_std);
-          fmt::print(" Alpha Corrected (k_p-1)/t  = {:.5e} +/- {:.5e} 1/seconds\n",
+          fmt::print(" Alpha Corrected (k_p-1)/l  = {:.5e} +/- {:.5e} 1/seconds\n",
             simulation::alpha_k_based_corrected, t_n1 * simulation::alpha_k_based_corrected_std);
         }
       }
@@ -617,17 +615,15 @@ void print_results()
         " Beta-effective             = {:.5f}\n", simulation::beta_eff);
       if (settings::calculate_alpha) {
         fmt::print(
-          " Mean Removal Time          = {:.5e} seconds\n", simulation::prompt_removal_time);
+          " Prompt Neutron Lifetime    = {:.5e} seconds\n", simulation::prompt_neutron_lifetime);
         fmt::print(
-          " Mean Prod Time (derived)   = {:.5e} seconds\n", simulation::prompt_prod_time_derived);
+          " Mean Gen Time (derived)    = {:.5e} seconds\n", simulation::mean_generation_time_derived);
         fmt::print(
-          " Mean Prod Time (direct)    = {:.5e} seconds\n", simulation::prompt_prod_time_direct);
+          " Mean Gen Time (direct)     = {:.5e} seconds\n", simulation::mean_generation_time);
         fmt::print(
-          " Alpha (k_p-1)/tau_r        = {:.5e} 1/seconds\n", simulation::alpha_k_based);
+          " Alpha (k_p-1)/l            = {:.5e} 1/seconds\n", simulation::alpha_k_based);
         fmt::print(
-          " Alpha (rho-beta)/tau_p     = {:.5e} 1/seconds\n", simulation::alpha_static);
-        fmt::print(
-          " Alpha (1/tau_p - 1/tau_r)  = {:.5e} 1/seconds\n", simulation::alpha_rate_based);
+          " Alpha (rho-beta)/Lambda    = {:.5e} 1/seconds\n", simulation::alpha_static);
         // Print bias-corrected values if system is delayed critical
         if (simulation::is_delayed_critical) {
           fmt::print(" *** Delayed Critical System Detected (k >= 1.0, k_p < 1.0) ***\n");
@@ -635,7 +631,7 @@ void print_results()
             simulation::keff_bias);
           fmt::print(" k-prompt (corrected)       = {:.5f}\n",
             simulation::keff_prompt_corrected);
-          fmt::print(" Alpha Corrected (k_p-1)/t  = {:.5e} 1/seconds\n",
+          fmt::print(" Alpha Corrected (k_p-1)/l  = {:.5e} 1/seconds\n",
             simulation::alpha_k_based_corrected);
         }
       }

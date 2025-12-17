@@ -33,27 +33,25 @@ extern double keff_prompt;            //!< Mean k_prompt over active generations
 extern double keff_prompt_std;        //!< Standard deviation of k_prompt
 extern double beta_eff;               //!< Effective delayed neutron fraction
 extern double beta_eff_std;           //!< Standard deviation of beta_eff
-extern double alpha_k_based;          //!< Alpha eigenvalue: α = (k_p - 1) / τ_r
+extern double alpha_k_based;          //!< Alpha eigenvalue: α = (k_p - 1) / ℓ
 extern double alpha_k_based_std;      //!< Standard deviation of alpha_k_based
-extern double alpha_static;           //!< Alpha eigenvalue: α = (ρ - β_eff) / τ_p
+extern double alpha_static;           //!< Alpha eigenvalue: α = (ρ - β_eff) / Λ
 extern double alpha_static_std;       //!< Standard deviation of alpha_static
-extern double alpha_rate_based;       //!< Alpha eigenvalue: α = 1/τ_p - 1/τ_r (rate balance)
-extern double alpha_rate_based_std;   //!< Standard deviation of alpha_rate_based
 
 // Bias-corrected values for delayed critical systems (k_eff >= 1.0 && k_prompt < 1.0)
 extern bool is_delayed_critical;      //!< True if system is delayed critical
 extern double keff_bias;              //!< Bias correction: 1.0 - k_eff (only for DC systems)
 extern double keff_prompt_corrected;  //!< k_prompt + bias (corrected for DC systems)
 extern double keff_prompt_corrected_std; //!< Standard deviation of corrected k_prompt
-extern double alpha_k_based_corrected;   //!< Corrected α = (k_p_corrected - 1) / τ_r
+extern double alpha_k_based_corrected;   //!< Corrected α = (k_p_corrected - 1) / ℓ
 extern double alpha_k_based_corrected_std; //!< Standard deviation of corrected alpha
 
-extern double prompt_removal_time;    //!< Mean removal time τ_r (birth to absorption/leakage)
-extern double prompt_removal_time_std;    //!< Standard deviation of removal time
-extern double prompt_prod_time_derived;   //!< Mean production time τ_p = τ_r/k (derived)
-extern double prompt_prod_time_derived_std;   //!< Standard deviation of derived production time
-extern double prompt_prod_time_direct;    //!< Mean production time τ_p (direct fission measurement)
-extern double prompt_prod_time_direct_std;    //!< Standard deviation of direct production time
+extern double prompt_neutron_lifetime;     //!< Prompt neutron lifetime ℓ (birth to absorption/leakage)
+extern double prompt_neutron_lifetime_std; //!< Standard deviation of prompt neutron lifetime
+extern double mean_generation_time_derived;    //!< Mean generation time Λ = ℓ/k (derived)
+extern double mean_generation_time_derived_std; //!< Standard deviation of derived generation time
+extern double mean_generation_time;        //!< Mean generation time Λ (direct fission measurement)
+extern double mean_generation_time_std;    //!< Standard deviation of direct generation time
 extern int kinetics_tally_index;   //!< Index of internal kinetics tally
 
 // Unused alpha calculation state variables (kept for ABI compatibility)
