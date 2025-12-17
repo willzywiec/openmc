@@ -469,12 +469,12 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             lifetime = f"{result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s" if result.get("lifetime") else "N/A"
             gen_time = f"{result['gen_time']:.4e} +/- {result['gen_time_unc']:.4e} s" if result.get("gen_time") else "N/A"
 
-            print(f"  k-eff       = {keff}")
-            print(f"  k-prompt    = {k_prompt}")
-            print(f"  alpha       = {alpha}")
-            print(f"  beta-eff    = {beta_eff}")
-            print(f"  lifetime    = {lifetime}")
-            print(f"  gen-time    = {gen_time}")
+            print(f"  k-eff           = {keff}")
+            print(f"  k-prompt        = {k_prompt}")
+            print(f"  alpha           = {alpha}")
+            print(f"  beta-eff        = {beta_eff}")
+            print(f"  prompt lifetime = {lifetime}")
+            print(f"  prompt gen time = {gen_time}")
 
             # Warn if kinetics parameters are missing
             if not result.get("k_prompt"):
