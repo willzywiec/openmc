@@ -102,23 +102,28 @@ def modify_settings_for_alpha(settings_path: Path, quick_mode: bool = False):
     Modify settings.xml to enable alpha eigenvalue calculation.
 
     Sets:
-    - calculate_alpha = true
+    - calculate_alpha = true (under <kinetics> element)
     - calculate_prompt_k = true (automatically enabled by calculate_alpha)
     - Optionally reduces particles/batches for quick mode
     """
     tree = ET.parse(settings_path)
     root = tree.getroot()
 
-    # Add or update calculate_alpha
-    calc_alpha = root.find('calculate_alpha')
+    # Find or create kinetics element (required by OpenMC C++ code)
+    kinetics = root.find('kinetics')
+    if kinetics is None:
+        kinetics = ET.SubElement(root, 'kinetics')
+
+    # Add or update calculate_alpha under kinetics
+    calc_alpha = kinetics.find('calculate_alpha')
     if calc_alpha is None:
-        calc_alpha = ET.SubElement(root, 'calculate_alpha')
+        calc_alpha = ET.SubElement(kinetics, 'calculate_alpha')
     calc_alpha.text = 'true'
 
-    # Add or update calculate_prompt_k (for completeness)
-    calc_prompt_k = root.find('calculate_prompt_k')
+    # Add or update calculate_prompt_k under kinetics
+    calc_prompt_k = kinetics.find('calculate_prompt_k')
     if calc_prompt_k is None:
-        calc_prompt_k = ET.SubElement(root, 'calculate_prompt_k')
+        calc_prompt_k = ET.SubElement(kinetics, 'calculate_prompt_k')
     calc_prompt_k.text = 'true'
 
     if quick_mode:
@@ -136,7 +141,7 @@ def modify_settings_for_alpha(settings_path: Path, quick_mode: bool = False):
             inactive.text = '10'
 
     tree.write(settings_path, xml_declaration=True, encoding='utf-8')
-    print(f"  Enabled calculate_alpha=true, calculate_prompt_k=true")
+    print(f"  Enabled <kinetics><calculate_alpha>true</calculate_alpha></kinetics>")
 
 
 def setup_benchmark(name: str, icsbep_path: str, run_dir: Path, quick_mode: bool = False) -> bool:
