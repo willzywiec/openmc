@@ -7,9 +7,9 @@ calculations enabled. Saves all results (alpha, keff, k-prompt, beta-effective,
 prompt neutron lifetime) to a single .xlsx file.
 
 Usage:
-    python run_alpha.py              # Run all benchmarks
-    python run_alpha.py --dry-run    # List benchmarks without running
-    python run_alpha.py --quick      # Quick run with fewer particles
+    python batch.py              # Run all benchmarks
+    python batch.py --dry-run    # List benchmarks without running
+    python batch.py --quick      # Quick run with fewer particles
 """
 
 import os
@@ -46,6 +46,55 @@ def get_script_dir():
 def get_icsbep_dir():
     """Get the icsbep directory path."""
     return get_script_dir().parent / "icsbep"
+
+
+def fix_materials(materials_path: Path):
+    """
+    Fix materials.xml to replace problematic nuclide names.
+
+    Replaces:
+    - C0 (natural carbon) with C12/C13 at natural abundances (98.93%/1.07%)
+    - Other X0 nuclides that may not be in the library
+    """
+    tree = ET.parse(materials_path)
+    root = tree.getroot()
+
+    # Natural abundances for carbon
+    C12_FRAC = 0.9893
+    C13_FRAC = 0.0107
+
+    modified = False
+
+    for material in root.findall('.//material'):
+        nuclides_to_remove = []
+        nuclides_to_add = []
+
+        for nuclide in material.findall('nuclide'):
+            name = nuclide.get('name')
+            ao = nuclide.get('ao')
+
+            if name == 'C0':
+                # Replace C0 with C12 and C13
+                nuclides_to_remove.append(nuclide)
+                ao_val = float(ao)
+                nuclides_to_add.append(('C12', ao_val * C12_FRAC))
+                nuclides_to_add.append(('C13', ao_val * C13_FRAC))
+                modified = True
+
+        # Remove old nuclides
+        for nuclide in nuclides_to_remove:
+            material.remove(nuclide)
+
+        # Add new nuclides
+        for name, ao_val in nuclides_to_add:
+            new_nuclide = ET.SubElement(material, 'nuclide')
+            new_nuclide.set('ao', str(ao_val))
+            new_nuclide.set('name', name)
+
+    if modified:
+        tree.write(materials_path, xml_declaration=True, encoding='utf-8')
+        return True
+    return False
 
 
 def modify_settings_for_alpha(settings_path: Path, quick_mode: bool = False):
@@ -114,6 +163,11 @@ def setup_benchmark(name: str, icsbep_path: str, run_dir: Path, quick_mode: bool
         else:
             print(f"  Warning: Missing {xml_file} in {source_dir}")
             return False
+
+    # Fix materials (replace C0 with C12/C13, etc.)
+    materials_path = run_dir / 'materials.xml'
+    if fix_materials(materials_path):
+        print(f"  Fixed materials.xml (replaced C0 with C12/C13)")
 
     # Modify settings for alpha calculation
     settings_path = run_dir / 'settings.xml'
@@ -391,16 +445,22 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
         # Print results
         if result["success"]:
             print(f"  Completed in {result['runtime']:.1f}s")
-            if result.get("keff"):
-                print(f"  k-eff       = {result['keff']:.6f} +/- {result['keff_unc']:.6f}")
-            if result.get("k_prompt"):
-                print(f"  k-prompt    = {result['k_prompt']:.6f} +/- {result['k_prompt_unc']:.6f}")
-            if result.get("alpha"):
-                print(f"  alpha       = {result['alpha']:.4e} +/- {result['alpha_unc']:.4e} 1/s")
-            if result.get("beta_eff"):
-                print(f"  beta-eff    = {result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}")
-            if result.get("lifetime"):
-                print(f"  lifetime    = {result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s")
+            # Always show all parameters
+            keff = f"{result['keff']:.6f} +/- {result['keff_unc']:.6f}" if result.get("keff") else "N/A"
+            k_prompt = f"{result['k_prompt']:.6f} +/- {result['k_prompt_unc']:.6f}" if result.get("k_prompt") else "N/A"
+            alpha = f"{result['alpha']:.4e} +/- {result['alpha_unc']:.4e} 1/s" if result.get("alpha") else "N/A"
+            beta_eff = f"{result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}" if result.get("beta_eff") else "N/A"
+            lifetime = f"{result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s" if result.get("lifetime") else "N/A"
+
+            print(f"  k-eff       = {keff}")
+            print(f"  k-prompt    = {k_prompt}")
+            print(f"  alpha       = {alpha}")
+            print(f"  beta-eff    = {beta_eff}")
+            print(f"  lifetime    = {lifetime}")
+
+            # Warn if kinetics parameters are missing
+            if not result.get("k_prompt"):
+                print("  WARNING: Kinetics parameters not found - check that OpenMC was built with alpha eigenvalue support")
         else:
             print(f"  FAILED: {result.get('error', 'Unknown error')[:200]}")
 
