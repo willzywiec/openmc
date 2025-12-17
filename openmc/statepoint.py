@@ -409,6 +409,51 @@ class StatePoint:
             return None
 
     @property
+    def is_delayed_critical(self):
+        """True if system is detected as delayed critical (k >= 1.0, k_p < 1.0)."""
+        if self.run_mode == 'eigenvalue' and 'is_delayed_critical' in self._f:
+            return bool(self._f['is_delayed_critical'][()])
+        else:
+            return None
+
+    @property
+    def keff_bias(self):
+        """k-effective bias for delayed critical systems.
+
+        For delayed critical systems (k >= 1.0, k_p < 1.0), this is calculated
+        as bias = 1.0 - k_eff. Used to correct k_prompt values.
+        """
+        if self.run_mode == 'eigenvalue' and 'keff_bias' in self._f:
+            return self._f['keff_bias'][()]
+        else:
+            return None
+
+    @property
+    def k_prompt_corrected(self):
+        """Bias-corrected prompt k-effective with uncertainty.
+
+        For delayed critical systems, this is k_prompt + keff_bias.
+        For other systems, this equals k_prompt.
+        """
+        if self.run_mode == 'eigenvalue' and 'k_prompt_corrected' in self._f:
+            return ufloat(*self._f['k_prompt_corrected'][()])
+        else:
+            return None
+
+    @property
+    def alpha_k_based_corrected(self):
+        """Bias-corrected alpha eigenvalue with uncertainty.
+
+        Calculated as: α = (k_p_corrected - 1) / τ_r
+        For delayed critical systems, uses the bias-corrected k_prompt.
+        For other systems, this equals alpha_k_based.
+        """
+        if self.run_mode == 'eigenvalue' and 'alpha_k_based_corrected' in self._f:
+            return ufloat(*self._f['alpha_k_based_corrected'][()])
+        else:
+            return None
+
+    @property
     def meshes(self):
         if not self._meshes_read:
             mesh_group = self._f['tallies/meshes']

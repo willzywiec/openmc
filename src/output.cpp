@@ -578,6 +578,16 @@ void print_results()
           simulation::alpha_k_based, t_n1 * simulation::alpha_k_based_std);
         fmt::print(" Alpha (rho-beta)/tau_p     = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_static, t_n1 * simulation::alpha_static_std);
+        // Print bias-corrected values if system is delayed critical
+        if (simulation::is_delayed_critical) {
+          fmt::print(" *** Delayed Critical System Detected (k >= 1.0, k_p < 1.0) ***\n");
+          fmt::print(" k-eff Bias                 = {:.5e}\n",
+            simulation::keff_bias);
+          fmt::print(" k-prompt (corrected)       = {:.5f} +/- {:.5f}\n",
+            simulation::keff_prompt_corrected, t_n1 * simulation::keff_prompt_corrected_std);
+          fmt::print(" Alpha Corrected (k_p-1)/t  = {:.5e} +/- {:.5e} 1/seconds\n",
+            simulation::alpha_k_based_corrected, t_n1 * simulation::alpha_k_based_corrected_std);
+        }
       }
     }
   } else {
@@ -614,6 +624,16 @@ void print_results()
           " Alpha (k_p-1)/tau_r        = {:.5e} 1/seconds\n", simulation::alpha_k_based);
         fmt::print(
           " Alpha (rho-beta)/tau_p     = {:.5e} 1/seconds\n", simulation::alpha_static);
+        // Print bias-corrected values if system is delayed critical
+        if (simulation::is_delayed_critical) {
+          fmt::print(" *** Delayed Critical System Detected (k >= 1.0, k_p < 1.0) ***\n");
+          fmt::print(" k-eff Bias                 = {:.5e}\n",
+            simulation::keff_bias);
+          fmt::print(" k-prompt (corrected)       = {:.5f}\n",
+            simulation::keff_prompt_corrected);
+          fmt::print(" Alpha Corrected (k_p-1)/t  = {:.5e} 1/seconds\n",
+            simulation::alpha_k_based_corrected);
+        }
       }
     }
   }

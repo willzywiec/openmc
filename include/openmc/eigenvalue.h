@@ -37,6 +37,15 @@ extern double alpha_k_based;          //!< Alpha eigenvalue: α = (k_p - 1) / τ
 extern double alpha_k_based_std;      //!< Standard deviation of alpha_k_based
 extern double alpha_static;           //!< Alpha eigenvalue: α = (ρ - β_eff) / τ_p
 extern double alpha_static_std;       //!< Standard deviation of alpha_static
+
+// Bias-corrected values for delayed critical systems (k_eff >= 1.0 && k_prompt < 1.0)
+extern bool is_delayed_critical;      //!< True if system is delayed critical
+extern double keff_bias;              //!< Bias correction: 1.0 - k_eff (only for DC systems)
+extern double keff_prompt_corrected;  //!< k_prompt + bias (corrected for DC systems)
+extern double keff_prompt_corrected_std; //!< Standard deviation of corrected k_prompt
+extern double alpha_k_based_corrected;   //!< Corrected α = (k_p_corrected - 1) / τ_r
+extern double alpha_k_based_corrected_std; //!< Standard deviation of corrected alpha
+
 extern double prompt_removal_time;    //!< Mean removal time τ_r (birth to absorption/leakage)
 extern double prompt_removal_time_std;    //!< Standard deviation of removal time
 extern double prompt_prod_time_derived;   //!< Mean production time τ_p = τ_r/k (derived)

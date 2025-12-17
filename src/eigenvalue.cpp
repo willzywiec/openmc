@@ -55,6 +55,15 @@ double alpha_k_based {0.0};
 double alpha_k_based_std {0.0};
 double alpha_static {0.0};
 double alpha_static_std {0.0};
+
+// Bias-corrected values for delayed critical systems
+bool is_delayed_critical {false};
+double keff_bias {0.0};
+double keff_prompt_corrected {0.0};
+double keff_prompt_corrected_std {0.0};
+double alpha_k_based_corrected {0.0};
+double alpha_k_based_corrected_std {0.0};
+
 // Mean removal time τ_r: time from birth to ANY removal (absorption or leakage)
 double prompt_removal_time {0.0};
 double prompt_removal_time_std {0.0};
@@ -711,6 +720,56 @@ void calculate_kinetics_parameters()
           simulation::alpha_static_std = std::sqrt(var_alpha);
         }
       }
+
+      // Check for delayed critical system and apply bias correction
+      // A system is delayed critical if k_eff >= 1.0 but k_prompt < 1.0
+      // In this case, the system is only critical due to delayed neutrons
+      simulation::is_delayed_critical =
+        (simulation::keff >= 1.0 && simulation::keff_prompt < 1.0);
+
+      if (simulation::is_delayed_critical) {
+        // Calculate bias: for a DC system, true k_eff should be exactly 1.0
+        simulation::keff_bias = 1.0 - simulation::keff;
+
+        // Apply bias correction to k_prompt
+        simulation::keff_prompt_corrected =
+          simulation::keff_prompt + simulation::keff_bias;
+
+        // Uncertainty propagation: σ_kp_corr² = σ_kp² + σ_keff²
+        // (bias = 1 - keff, so σ_bias = σ_keff)
+        simulation::keff_prompt_corrected_std =
+          std::sqrt(simulation::keff_prompt_std * simulation::keff_prompt_std +
+                    simulation::keff_std * simulation::keff_std);
+
+        // Calculate corrected alpha: α_corr = (k_p_corrected - 1) / τ_r
+        if (simulation::prompt_removal_time > 0.0) {
+          simulation::alpha_k_based_corrected =
+            (simulation::keff_prompt_corrected - 1.0) / simulation::prompt_removal_time;
+
+          // Error propagation for corrected alpha
+          if (n > 1) {
+            double dAlpha_dk = 1.0 / simulation::prompt_removal_time;
+            double dAlpha_dl =
+              -(simulation::keff_prompt_corrected - 1.0) /
+              (simulation::prompt_removal_time * simulation::prompt_removal_time);
+
+            double var_alpha =
+              dAlpha_dk * dAlpha_dk * simulation::keff_prompt_corrected_std *
+                simulation::keff_prompt_corrected_std +
+              dAlpha_dl * dAlpha_dl * simulation::prompt_removal_time_std *
+                simulation::prompt_removal_time_std;
+
+            simulation::alpha_k_based_corrected_std = std::sqrt(var_alpha);
+          }
+        }
+      } else {
+        // Not delayed critical - corrected values equal uncorrected values
+        simulation::keff_bias = 0.0;
+        simulation::keff_prompt_corrected = simulation::keff_prompt;
+        simulation::keff_prompt_corrected_std = simulation::keff_prompt_std;
+        simulation::alpha_k_based_corrected = simulation::alpha_k_based;
+        simulation::alpha_k_based_corrected_std = simulation::alpha_k_based_std;
+      }
     }
   }
 }
@@ -1006,6 +1065,16 @@ void write_eigenvalue_hdf5(hid_t group)
       array<double, 2> alpha_static_vals {
         simulation::alpha_static, simulation::alpha_static_std};
       write_dataset(group, "alpha_static", alpha_static_vals);
+
+      // Write bias correction values
+      write_dataset(group, "is_delayed_critical", simulation::is_delayed_critical);
+      write_dataset(group, "keff_bias", simulation::keff_bias);
+      array<double, 2> keff_prompt_corrected_vals {
+        simulation::keff_prompt_corrected, simulation::keff_prompt_corrected_std};
+      write_dataset(group, "k_prompt_corrected", keff_prompt_corrected_vals);
+      array<double, 2> alpha_k_corrected_vals {
+        simulation::alpha_k_based_corrected, simulation::alpha_k_based_corrected_std};
+      write_dataset(group, "alpha_k_based_corrected", alpha_k_corrected_vals);
     }
   }
 }
@@ -1068,6 +1137,25 @@ void read_eigenvalue_hdf5(hid_t group)
         read_dataset(group, "alpha_static", alpha_static_vals);
         simulation::alpha_static = alpha_static_vals[0];
         simulation::alpha_static_std = alpha_static_vals[1];
+      }
+      // Read bias correction values
+      if (object_exists(group, "is_delayed_critical")) {
+        read_dataset(group, "is_delayed_critical", simulation::is_delayed_critical);
+      }
+      if (object_exists(group, "keff_bias")) {
+        read_dataset(group, "keff_bias", simulation::keff_bias);
+      }
+      if (object_exists(group, "k_prompt_corrected")) {
+        array<double, 2> keff_prompt_corrected_vals;
+        read_dataset(group, "k_prompt_corrected", keff_prompt_corrected_vals);
+        simulation::keff_prompt_corrected = keff_prompt_corrected_vals[0];
+        simulation::keff_prompt_corrected_std = keff_prompt_corrected_vals[1];
+      }
+      if (object_exists(group, "alpha_k_based_corrected")) {
+        array<double, 2> alpha_k_corrected_vals;
+        read_dataset(group, "alpha_k_based_corrected", alpha_k_corrected_vals);
+        simulation::alpha_k_based_corrected = alpha_k_corrected_vals[0];
+        simulation::alpha_k_based_corrected_std = alpha_k_corrected_vals[1];
       }
     }
   }

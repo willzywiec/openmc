@@ -219,6 +219,13 @@ def run_benchmark(name: str, run_dir: Path) -> dict:
         "prod_time_derived_unc": None,
         "prod_time_direct": None,
         "prod_time_direct_unc": None,
+        # Bias correction values for delayed critical systems
+        "is_delayed_critical": None,
+        "keff_bias": None,
+        "k_prompt_corrected": None,
+        "k_prompt_corrected_unc": None,
+        "alpha_k_corrected": None,
+        "alpha_k_corrected_unc": None,
     }
 
     start_time = time.time()
@@ -314,6 +321,21 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["alpha_rho"] = sp.alpha_static.nominal_value
             results["alpha_rho_unc"] = sp.alpha_static.std_dev
 
+        # Bias correction values for delayed critical systems
+        if hasattr(sp, 'is_delayed_critical') and sp.is_delayed_critical is not None:
+            results["is_delayed_critical"] = sp.is_delayed_critical
+
+        if hasattr(sp, 'keff_bias') and sp.keff_bias is not None:
+            results["keff_bias"] = sp.keff_bias
+
+        if hasattr(sp, 'k_prompt_corrected') and sp.k_prompt_corrected is not None:
+            results["k_prompt_corrected"] = sp.k_prompt_corrected.nominal_value
+            results["k_prompt_corrected_unc"] = sp.k_prompt_corrected.std_dev
+
+        if hasattr(sp, 'alpha_k_based_corrected') and sp.alpha_k_based_corrected is not None:
+            results["alpha_k_corrected"] = sp.alpha_k_based_corrected.nominal_value
+            results["alpha_k_corrected_unc"] = sp.alpha_k_based_corrected.std_dev
+
     except Exception as e:
         print(f"  Warning: Could not read statepoint: {e}")
 
@@ -356,6 +378,9 @@ def write_results_xlsx(results: list, output_file: Path):
         "Removal Time (s)", "unc",
         "Prod Time Derived (s)", "unc",
         "Prod Time Direct (s)", "unc",
+        "Delayed Crit?", "k-eff Bias",
+        "k-prompt Corr", "k-prompt Corr unc",
+        "Alpha Corrected", "Alpha Corr unc",
         "Runtime (s)", "Status"
     ]
 
@@ -386,6 +411,12 @@ def write_results_xlsx(results: list, output_file: Path):
             r.get("prod_time_derived_unc"),
             r.get("prod_time_direct"),
             r.get("prod_time_direct_unc"),
+            "YES" if r.get("is_delayed_critical") else "NO" if r.get("is_delayed_critical") is False else "",
+            r.get("keff_bias"),
+            r.get("k_prompt_corrected"),
+            r.get("k_prompt_corrected_unc"),
+            r.get("alpha_k_corrected"),
+            r.get("alpha_k_corrected_unc"),
             r.get("runtime"),
             "OK" if r.get("success") else "FAILED"
         ]
@@ -396,14 +427,14 @@ def write_results_xlsx(results: list, output_file: Path):
 
             # Format numbers
             if isinstance(value, float):
-                # Alpha, lifetime, gen time (derived), gen time (direct) - scientific notation
-                if col in [6, 7, 8, 9, 12, 13, 14, 15, 16, 17]:
+                # Alpha, lifetime, gen time, bias correction - scientific notation
+                if col in [6, 7, 8, 9, 12, 13, 14, 15, 16, 17, 19, 22, 23]:
                     cell.number_format = '0.00E+00'
                 else:
                     cell.number_format = '0.000000'
 
-    # Adjust column widths (19 columns now)
-    column_widths = [15, 12, 12, 12, 12, 16, 10, 16, 10, 12, 12, 14, 14, 16, 16, 16, 16, 12, 10]
+    # Adjust column widths (25 columns now)
+    column_widths = [15, 12, 12, 12, 12, 16, 10, 16, 10, 12, 12, 14, 14, 16, 16, 16, 16, 12, 12, 12, 12, 14, 14, 12, 10]
     for col, width in enumerate(column_widths, 1):
         ws.column_dimensions[openpyxl.utils.get_column_letter(col)].width = width
 
@@ -510,6 +541,16 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             print(f"  mean removal time    = {removal_time}")
             print(f"  mean prod time (der) = {prod_time_d}")
             print(f"  mean prod time (dir) = {prod_time_dir}")
+
+            # Show bias correction info if delayed critical
+            if result.get("is_delayed_critical"):
+                print(f"  *** DELAYED CRITICAL SYSTEM DETECTED ***")
+                bias = f"{result['keff_bias']:.6e}" if result.get("keff_bias") else "N/A"
+                k_prompt_corr = f"{result['k_prompt_corrected']:.6f} +/- {result['k_prompt_corrected_unc']:.6f}" if result.get("k_prompt_corrected") else "N/A"
+                alpha_corr = f"{result['alpha_k_corrected']:.4e} +/- {result['alpha_k_corrected_unc']:.4e} 1/s" if result.get("alpha_k_corrected") else "N/A"
+                print(f"  k-eff bias           = {bias}")
+                print(f"  k-prompt (corrected) = {k_prompt_corr}")
+                print(f"  alpha (corrected)    = {alpha_corr}")
 
             # Warn if kinetics parameters are missing
             if not result.get("k_prompt"):
