@@ -381,51 +381,93 @@ log_info "Setting up Python virtual environment..."
 
 cd "${SCRIPT_DIR}"
 
-# Create virtual environment if it doesn't exist
+# Fix for RHEL/CentOS where Python 3.12 installs to lib64 but looks in lib
+# This sets up the environment so Python can find its modules
+if [[ -d "/usr/lib64/python3.12" ]] && [[ ! -d "/usr/lib/python3.12" ]]; then
+    log_info "Detected Python 3.12 lib64 installation, setting up environment..."
+    export PYTHONHOME=/usr
+    export PYTHONPATH=/usr/lib64/python3.12:/usr/lib64/python3.12/lib-dynload
+fi
+
+# Create virtual environment if it doesn't exist or is broken
 VENV_DIR="${SCRIPT_DIR}/.env"
-if [[ ! -d "${VENV_DIR}" ]]; then
+if [[ ! -f "${VENV_DIR}/bin/activate" ]]; then
+    # Remove broken venv if it exists
+    [[ -d "${VENV_DIR}" ]] && rm -rf "${VENV_DIR}"
+
     log_info "Creating Python virtual environment at ${VENV_DIR}..."
-    python3 -m venv "${VENV_DIR}"
-    log_success "Virtual environment created"
+
+    # Try creating venv normally first
+    if ! python3 -m venv "${VENV_DIR}" 2>/dev/null; then
+        log_warning "Standard venv creation failed, trying without pip..."
+        # Create without pip to avoid subprocess issues on some systems
+        if ! python3 -m venv --without-pip "${VENV_DIR}" 2>/dev/null; then
+            log_error "Failed to create Python virtual environment"
+            log_warning "Continuing without Python bindings..."
+            SKIP_PYTHON=true
+        fi
+    fi
+
+    if [[ "${SKIP_PYTHON}" != true ]]; then
+        log_success "Virtual environment created"
+    fi
 else
     log_info "Virtual environment already exists at ${VENV_DIR}"
 fi
 
-# Activate virtual environment
-log_info "Activating virtual environment..."
-source "${VENV_DIR}/bin/activate"
+# Skip Python setup if venv creation failed
+if [[ "${SKIP_PYTHON}" != true ]]; then
+    # Activate virtual environment
+    log_info "Activating virtual environment..."
+    source "${VENV_DIR}/bin/activate"
 
-# Upgrade pip and setuptools in virtual environment
-# PEP 660 editable installs require pip >= 21.3 and setuptools >= 64.0
-log_info "Upgrading pip and setuptools..."
-python -m pip install --upgrade pip setuptools wheel --quiet --timeout=120 --retries=5 || {
-    log_warning "Failed to upgrade pip/setuptools, continuing with existing version..."
-}
-
-# Install OpenMC Python API in development mode
-log_info "Installing OpenMC Python package in development mode..."
-PYTHON_INSTALL_SUCCESS=false
-if python -m pip install -e . --timeout=120 --retries=5 2>&1; then
-    PYTHON_INSTALL_SUCCESS=true
-else
-    log_warning "Editable install failed (requires pip >= 21.3, setuptools >= 64.0)"
-    log_info "Falling back to regular install..."
-    if python -m pip install . --timeout=120 --retries=5 2>&1; then
-        PYTHON_INSTALL_SUCCESS=true
-    else
-        log_warning "Python package install failed."
-        log_warning "This may be due to Python version requirements (requires Python >= 3.11)"
-        log_warning "OpenMC binary is still available - Python bindings will not work."
-        PYTHON_VERSION=$(python3 --version 2>&1 || echo "unknown")
-        log_warning "Your Python version: ${PYTHON_VERSION}"
+    # Check if pip is available, if not bootstrap it
+    if ! python -m pip --version &>/dev/null; then
+        log_info "Bootstrapping pip..."
+        curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+        python /tmp/get-pip.py --quiet || {
+            log_warning "Failed to bootstrap pip"
+            SKIP_PYTHON=true
+        }
+        rm -f /tmp/get-pip.py
     fi
 fi
 
-if [[ "${PYTHON_INSTALL_SUCCESS}" == true ]]; then
-    log_success "Python virtual environment setup complete"
-    log_success "OpenMC Python bindings installed"
+if [[ "${SKIP_PYTHON}" != true ]]; then
+    # Upgrade pip and setuptools in virtual environment
+    # PEP 660 editable installs require pip >= 21.3 and setuptools >= 64.0
+    log_info "Upgrading pip and setuptools..."
+    python -m pip install --upgrade pip setuptools wheel --quiet --timeout=120 --retries=5 || {
+        log_warning "Failed to upgrade pip/setuptools, continuing with existing version..."
+    }
+
+    # Install OpenMC Python API in development mode
+    log_info "Installing OpenMC Python package in development mode..."
+    PYTHON_INSTALL_SUCCESS=false
+    if python -m pip install -e . --timeout=120 --retries=5 2>&1; then
+        PYTHON_INSTALL_SUCCESS=true
+    else
+        log_warning "Editable install failed (requires pip >= 21.3, setuptools >= 64.0)"
+        log_info "Falling back to regular install..."
+        if python -m pip install . --timeout=120 --retries=5 2>&1; then
+            PYTHON_INSTALL_SUCCESS=true
+        else
+            log_warning "Python package install failed."
+            log_warning "This may be due to Python version requirements (requires Python >= 3.11)"
+            log_warning "OpenMC binary is still available - Python bindings will not work."
+            PYTHON_VERSION=$(python3 --version 2>&1 || echo "unknown")
+            log_warning "Your Python version: ${PYTHON_VERSION}"
+        fi
+    fi
+
+    if [[ "${PYTHON_INSTALL_SUCCESS}" == true ]]; then
+        log_success "Python virtual environment setup complete"
+        log_success "OpenMC Python bindings installed"
+    else
+        log_warning "Continuing without Python bindings..."
+    fi
 else
-    log_warning "Continuing without Python bindings..."
+    log_warning "Skipping Python setup due to earlier errors"
 fi
 
 ################################################################################
