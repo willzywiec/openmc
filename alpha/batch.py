@@ -6,15 +6,15 @@ Runs ICSBEP benchmarks matching the examples/alpha folder with alpha eigenvalue
 calculations enabled. Saves all results to a single .xlsx file.
 
 Alpha eigenvalue is calculated two ways:
-  - α = (k_p - 1) / ℓ        (using prompt lifetime)
-  - α = (ρ - β_eff) / Λ      (using generation time, reactivity, delayed fraction)
+  - α = (k_p - 1) / τ_r      (using mean removal time)
+  - α = (ρ - β_eff) / τ_p    (using mean production time, more robust to k_eff bias)
 
 Where:
   k_p = prompt k-effective
-  ℓ = prompt neutron lifetime (birth to removal)
+  τ_r = mean removal time (birth to absorption/leakage)
+  τ_p = mean production time (birth to next-generation fission)
   ρ = (k - 1) / k = reactivity
   β_eff = effective delayed neutron fraction
-  Λ = mean neutron generation time (direct measurement)
 
 Usage:
     python batch.py              # Run all benchmarks
@@ -213,12 +213,12 @@ def run_benchmark(name: str, run_dir: Path) -> dict:
         "alpha_rho_unc": None,
         "beta_eff": None,
         "beta_eff_unc": None,
-        "lifetime": None,
-        "lifetime_unc": None,
-        "gen_time": None,
-        "gen_time_unc": None,
-        "gen_time_direct": None,
-        "gen_time_direct_unc": None,
+        "removal_time": None,
+        "removal_time_unc": None,
+        "prod_time_derived": None,
+        "prod_time_derived_unc": None,
+        "prod_time_direct": None,
+        "prod_time_direct_unc": None,
     }
 
     start_time = time.time()
@@ -289,20 +289,20 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["beta_eff"] = sp.beta_eff.nominal_value
             results["beta_eff_unc"] = sp.beta_eff.std_dev
 
-        # Prompt neutron lifetime
-        if hasattr(sp, 'prompt_lifetime') and sp.prompt_lifetime is not None:
-            results["lifetime"] = sp.prompt_lifetime.nominal_value
-            results["lifetime_unc"] = sp.prompt_lifetime.std_dev
+        # Mean removal time
+        if hasattr(sp, 'mean_removal_time') and sp.mean_removal_time is not None:
+            results["removal_time"] = sp.mean_removal_time.nominal_value
+            results["removal_time_unc"] = sp.mean_removal_time.std_dev
 
-        # Prompt generation time (derived from lifetime)
-        if hasattr(sp, 'prompt_gen_time') and sp.prompt_gen_time is not None:
-            results["gen_time"] = sp.prompt_gen_time.nominal_value
-            results["gen_time_unc"] = sp.prompt_gen_time.std_dev
+        # Mean production time (derived)
+        if hasattr(sp, 'mean_prod_time_derived') and sp.mean_prod_time_derived is not None:
+            results["prod_time_derived"] = sp.mean_prod_time_derived.nominal_value
+            results["prod_time_derived_unc"] = sp.mean_prod_time_derived.std_dev
 
-        # Prompt generation time (direct measurement)
-        if hasattr(sp, 'prompt_gen_time_direct') and sp.prompt_gen_time_direct is not None:
-            results["gen_time_direct"] = sp.prompt_gen_time_direct.nominal_value
-            results["gen_time_direct_unc"] = sp.prompt_gen_time_direct.std_dev
+        # Mean production time (direct measurement)
+        if hasattr(sp, 'mean_prod_time_direct') and sp.mean_prod_time_direct is not None:
+            results["prod_time_direct"] = sp.mean_prod_time_direct.nominal_value
+            results["prod_time_direct_unc"] = sp.mean_prod_time_direct.std_dev
 
         # Alpha eigenvalue (k_p - 1) / l
         if hasattr(sp, 'alpha_k_based') and sp.alpha_k_based is not None:
@@ -350,12 +350,12 @@ def write_results_xlsx(results: list, output_file: Path):
         "Benchmark",
         "k-eff", "k-eff unc",
         "k-prompt", "k-prompt unc",
-        "Alpha (k_p-1)/l", "unc",
-        "Alpha (rho-b)/L", "unc",
+        "Alpha (k_p-1)/tau_r", "unc",
+        "Alpha (rho-b)/tau_p", "unc",
         "Beta-eff", "Beta-eff unc",
-        "Lifetime (s)", "Lifetime unc",
-        "Gen Time Derived (s)", "Gen Time Derived unc",
-        "Gen Time Direct (s)", "Gen Time Direct unc",
+        "Removal Time (s)", "unc",
+        "Prod Time Derived (s)", "unc",
+        "Prod Time Direct (s)", "unc",
         "Runtime (s)", "Status"
     ]
 
@@ -380,12 +380,12 @@ def write_results_xlsx(results: list, output_file: Path):
             r.get("alpha_rho_unc"),
             r.get("beta_eff"),
             r.get("beta_eff_unc"),
-            r.get("lifetime"),
-            r.get("lifetime_unc"),
-            r.get("gen_time"),
-            r.get("gen_time_unc"),
-            r.get("gen_time_direct"),
-            r.get("gen_time_direct_unc"),
+            r.get("removal_time"),
+            r.get("removal_time_unc"),
+            r.get("prod_time_derived"),
+            r.get("prod_time_derived_unc"),
+            r.get("prod_time_direct"),
+            r.get("prod_time_direct_unc"),
             r.get("runtime"),
             "OK" if r.get("success") else "FAILED"
         ]
@@ -498,18 +498,18 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             alpha_k = f"{result['alpha_k']:.4e} +/- {result['alpha_k_unc']:.4e} 1/s" if result.get("alpha_k") else "N/A"
             alpha_rho = f"{result['alpha_rho']:.4e} +/- {result['alpha_rho_unc']:.4e} 1/s" if result.get("alpha_rho") else "N/A"
             beta_eff = f"{result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}" if result.get("beta_eff") else "N/A"
-            lifetime = f"{result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s" if result.get("lifetime") else "N/A"
-            gen_time = f"{result['gen_time']:.4e} +/- {result['gen_time_unc']:.4e} s" if result.get("gen_time") else "N/A"
-            gen_time_direct = f"{result['gen_time_direct']:.4e} +/- {result['gen_time_direct_unc']:.4e} s" if result.get("gen_time_direct") else "N/A"
+            removal_time = f"{result['removal_time']:.4e} +/- {result['removal_time_unc']:.4e} s" if result.get("removal_time") else "N/A"
+            prod_time_d = f"{result['prod_time_derived']:.4e} +/- {result['prod_time_derived_unc']:.4e} s" if result.get("prod_time_derived") else "N/A"
+            prod_time_dir = f"{result['prod_time_direct']:.4e} +/- {result['prod_time_direct_unc']:.4e} s" if result.get("prod_time_direct") else "N/A"
 
             print(f"  k-eff                = {keff}")
             print(f"  k-prompt             = {k_prompt}")
-            print(f"  alpha (k_p-1)/l      = {alpha_k}")
-            print(f"  alpha (rho-b)/L      = {alpha_rho}")
+            print(f"  alpha (k_p-1)/tau_r  = {alpha_k}")
+            print(f"  alpha (rho-b)/tau_p  = {alpha_rho}")
             print(f"  beta-eff             = {beta_eff}")
-            print(f"  prompt lifetime      = {lifetime}")
-            print(f"  gen time (derived)   = {gen_time}")
-            print(f"  gen time (direct)    = {gen_time_direct}")
+            print(f"  mean removal time    = {removal_time}")
+            print(f"  mean prod time (der) = {prod_time_d}")
+            print(f"  mean prod time (dir) = {prod_time_dir}")
 
             # Warn if kinetics parameters are missing
             if not result.get("k_prompt"):

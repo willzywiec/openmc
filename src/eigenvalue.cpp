@@ -55,15 +55,15 @@ double alpha_k_based {0.0};
 double alpha_k_based_std {0.0};
 double alpha_static {0.0};
 double alpha_static_std {0.0};
-// Prompt neutron lifetime (ℓ): time from birth to ANY removal (absorption or leakage)
-double prompt_lifetime {0.0};
-double prompt_lifetime_std {0.0};
-// Prompt generation time (Λ): derived from lifetime by Λ = ℓ / k
-double prompt_gen_time {0.0};
-double prompt_gen_time_std {0.0};
-// Prompt generation time (Λ): direct measurement from fission events only
-double prompt_gen_time_direct {0.0};
-double prompt_gen_time_direct_std {0.0};
+// Mean removal time τ_r: time from birth to ANY removal (absorption or leakage)
+double prompt_removal_time {0.0};
+double prompt_removal_time_std {0.0};
+// Mean production time τ_p: derived from removal time by τ_p = τ_r / k
+double prompt_prod_time_derived {0.0};
+double prompt_prod_time_derived_std {0.0};
+// Mean production time τ_p: direct measurement from fission events only
+double prompt_prod_time_direct {0.0};
+double prompt_prod_time_direct_std {0.0};
 
 // Index of internal kinetics tally (for alpha calculations)
 int kinetics_tally_index {-1};
@@ -603,10 +603,10 @@ void calculate_kinetics_parameters()
       // Calculate prompt neutron lifetime: ℓ = num / denom
       // Average time from birth to removal (absorption or leakage)
       if (gen_time_denom > 0.0) {
-        simulation::prompt_lifetime = gen_time_num / gen_time_denom;
+        simulation::prompt_removal_time = gen_time_num / gen_time_denom;
 
         // Error propagation for prompt neutron lifetime
-        if (n > 1 && simulation::prompt_lifetime > 0.0) {
+        if (n > 1 && simulation::prompt_removal_time > 0.0) {
           double dl_dnum = 1.0 / gen_time_denom;
           double dl_ddenom = -gen_time_num / (gen_time_denom * gen_time_denom);
 
@@ -614,28 +614,28 @@ void calculate_kinetics_parameters()
                          dl_ddenom * dl_ddenom * gen_time_denom_std *
                            gen_time_denom_std;
 
-          simulation::prompt_lifetime_std = std::sqrt(var_l);
+          simulation::prompt_removal_time_std = std::sqrt(var_l);
         }
 
         // Calculate derived generation time: Λ = ℓ / k
         // This is an approximation based on the lifetime
         if (simulation::keff_prompt > 0.0) {
-          simulation::prompt_gen_time =
-            simulation::prompt_lifetime / simulation::keff_prompt;
+          simulation::prompt_prod_time_derived =
+            simulation::prompt_removal_time / simulation::keff_prompt;
 
           // Error propagation for derived generation time
           if (n > 1) {
             double dLambda_dl = 1.0 / simulation::keff_prompt;
-            double dLambda_dk = -simulation::prompt_lifetime /
+            double dLambda_dk = -simulation::prompt_removal_time /
                                 (simulation::keff_prompt * simulation::keff_prompt);
 
             double var_Lambda =
-              dLambda_dl * dLambda_dl * simulation::prompt_lifetime_std *
-                simulation::prompt_lifetime_std +
+              dLambda_dl * dLambda_dl * simulation::prompt_removal_time_std *
+                simulation::prompt_removal_time_std +
               dLambda_dk * dLambda_dk * simulation::keff_prompt_std *
                 simulation::keff_prompt_std;
 
-            simulation::prompt_gen_time_std = std::sqrt(var_Lambda);
+            simulation::prompt_prod_time_derived_std = std::sqrt(var_Lambda);
           }
         }
       }
@@ -643,10 +643,10 @@ void calculate_kinetics_parameters()
       // Calculate direct generation time from fission events: Λ = Σ(t×ν×w) / Σ(ν×w)
       // This is the physically accurate generation time (birth-to-birth)
       if (fission_time_denom > 0.0) {
-        simulation::prompt_gen_time_direct = fission_time_num / fission_time_denom;
+        simulation::prompt_prod_time_direct = fission_time_num / fission_time_denom;
 
         // Error propagation for direct generation time
-        if (n > 1 && simulation::prompt_gen_time_direct > 0.0) {
+        if (n > 1 && simulation::prompt_prod_time_direct > 0.0) {
           double dL_dnum = 1.0 / fission_time_denom;
           double dL_ddenom = -fission_time_num / (fission_time_denom * fission_time_denom);
 
@@ -654,29 +654,29 @@ void calculate_kinetics_parameters()
                          dL_ddenom * dL_ddenom * fission_time_denom_std *
                            fission_time_denom_std;
 
-          simulation::prompt_gen_time_direct_std = std::sqrt(var_L);
+          simulation::prompt_prod_time_direct_std = std::sqrt(var_L);
         }
       }
 
       // Calculate alpha eigenvalue using lifetime: α = (k_p - 1) / ℓ
       // This is the prompt neutron approximation from point kinetics
-      if (simulation::prompt_lifetime > 0.0) {
+      if (simulation::prompt_removal_time > 0.0) {
         simulation::alpha_k_based =
-          (simulation::keff_prompt - 1.0) / simulation::prompt_lifetime;
+          (simulation::keff_prompt - 1.0) / simulation::prompt_removal_time;
 
         // Error propagation for alpha
         // For α = (k - 1) / ℓ: σ_α² ≈ (1/ℓ)² σ_k² + ((k-1)/ℓ²)² σ_ℓ²
         if (n > 1) {
-          double dAlpha_dk = 1.0 / simulation::prompt_lifetime;
+          double dAlpha_dk = 1.0 / simulation::prompt_removal_time;
           double dAlpha_dl =
             -(simulation::keff_prompt - 1.0) /
-            (simulation::prompt_lifetime * simulation::prompt_lifetime);
+            (simulation::prompt_removal_time * simulation::prompt_removal_time);
 
           double var_alpha =
             dAlpha_dk * dAlpha_dk * simulation::keff_prompt_std *
               simulation::keff_prompt_std +
-            dAlpha_dl * dAlpha_dl * simulation::prompt_lifetime_std *
-              simulation::prompt_lifetime_std;
+            dAlpha_dl * dAlpha_dl * simulation::prompt_removal_time_std *
+              simulation::prompt_removal_time_std;
 
           simulation::alpha_k_based_std = std::sqrt(var_alpha);
         }
@@ -685,28 +685,28 @@ void calculate_kinetics_parameters()
       // Calculate alpha eigenvalue using generation time: α = (ρ - β_eff) / Λ
       // This is the inhour equation form using reactivity and delayed neutron fraction
       // where ρ = (k - 1) / k is reactivity and Λ is mean generation time
-      if (simulation::prompt_gen_time_direct > 0.0 && simulation::keff > 0.0) {
+      if (simulation::prompt_prod_time_direct > 0.0 && simulation::keff > 0.0) {
         double rho = (simulation::keff - 1.0) / simulation::keff;  // reactivity
         simulation::alpha_static =
-          (rho - simulation::beta_eff) / simulation::prompt_gen_time_direct;
+          (rho - simulation::beta_eff) / simulation::prompt_prod_time_direct;
 
         // Error propagation for alpha_static
         // For α = (ρ - β) / Λ where ρ = (k-1)/k:
         // ∂α/∂k = 1/(k²Λ), ∂α/∂β = -1/Λ, ∂α/∂Λ = -(ρ-β)/Λ²
         if (n > 1) {
           double dAlpha_dk = 1.0 / (simulation::keff * simulation::keff *
-                                    simulation::prompt_gen_time_direct);
-          double dAlpha_dbeta = -1.0 / simulation::prompt_gen_time_direct;
+                                    simulation::prompt_prod_time_direct);
+          double dAlpha_dbeta = -1.0 / simulation::prompt_prod_time_direct;
           double dAlpha_dLambda =
             -(rho - simulation::beta_eff) /
-            (simulation::prompt_gen_time_direct * simulation::prompt_gen_time_direct);
+            (simulation::prompt_prod_time_direct * simulation::prompt_prod_time_direct);
 
           double var_alpha =
             dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
             dAlpha_dbeta * dAlpha_dbeta * simulation::beta_eff_std *
               simulation::beta_eff_std +
-            dAlpha_dLambda * dAlpha_dLambda * simulation::prompt_gen_time_direct_std *
-              simulation::prompt_gen_time_direct_std;
+            dAlpha_dLambda * dAlpha_dLambda * simulation::prompt_prod_time_direct_std *
+              simulation::prompt_prod_time_direct_std;
 
           simulation::alpha_static_std = std::sqrt(var_alpha);
         }
@@ -992,13 +992,13 @@ void write_eigenvalue_hdf5(hid_t group)
     // Write alpha eigenvalues if calculated
     if (settings::calculate_alpha) {
       array<double, 2> prompt_lifetime_vals {
-        simulation::prompt_lifetime, simulation::prompt_lifetime_std};
+        simulation::prompt_removal_time, simulation::prompt_removal_time_std};
       write_dataset(group, "prompt_lifetime", prompt_lifetime_vals);
       array<double, 2> prompt_gen_time_vals {
-        simulation::prompt_gen_time, simulation::prompt_gen_time_std};
+        simulation::prompt_prod_time_derived, simulation::prompt_prod_time_derived_std};
       write_dataset(group, "prompt_gen_time", prompt_gen_time_vals);
       array<double, 2> prompt_gen_time_direct_vals {
-        simulation::prompt_gen_time_direct, simulation::prompt_gen_time_direct_std};
+        simulation::prompt_prod_time_direct, simulation::prompt_prod_time_direct_std};
       write_dataset(group, "prompt_gen_time_direct", prompt_gen_time_direct_vals);
       array<double, 2> alpha_k_vals {
         simulation::alpha_k_based, simulation::alpha_k_based_std};
@@ -1042,22 +1042,22 @@ void read_eigenvalue_hdf5(hid_t group)
       if (object_exists(group, "prompt_lifetime")) {
         array<double, 2> prompt_lifetime_vals;
         read_dataset(group, "prompt_lifetime", prompt_lifetime_vals);
-        simulation::prompt_lifetime = prompt_lifetime_vals[0];
-        simulation::prompt_lifetime_std = prompt_lifetime_vals[1];
+        simulation::prompt_removal_time = prompt_lifetime_vals[0];
+        simulation::prompt_removal_time_std = prompt_lifetime_vals[1];
       }
       // Read prompt generation time (derived from lifetime)
       if (object_exists(group, "prompt_gen_time")) {
         array<double, 2> prompt_gen_time_vals;
         read_dataset(group, "prompt_gen_time", prompt_gen_time_vals);
-        simulation::prompt_gen_time = prompt_gen_time_vals[0];
-        simulation::prompt_gen_time_std = prompt_gen_time_vals[1];
+        simulation::prompt_prod_time_derived = prompt_gen_time_vals[0];
+        simulation::prompt_prod_time_derived_std = prompt_gen_time_vals[1];
       }
       // Read prompt generation time (direct measurement)
       if (object_exists(group, "prompt_gen_time_direct")) {
         array<double, 2> prompt_gen_time_direct_vals;
         read_dataset(group, "prompt_gen_time_direct", prompt_gen_time_direct_vals);
-        simulation::prompt_gen_time_direct = prompt_gen_time_direct_vals[0];
-        simulation::prompt_gen_time_direct_std = prompt_gen_time_direct_vals[1];
+        simulation::prompt_prod_time_direct = prompt_gen_time_direct_vals[0];
+        simulation::prompt_prod_time_direct_std = prompt_gen_time_direct_vals[1];
       }
       array<double, 2> alpha_k_vals;
       read_dataset(group, "alpha_k_based", alpha_k_vals);

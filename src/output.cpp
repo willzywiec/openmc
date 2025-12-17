@@ -568,15 +568,15 @@ void print_results()
       fmt::print(" Beta-effective             = {:.5f} +/- {:.5f}\n",
         simulation::beta_eff, t_n1 * simulation::beta_eff_std);
       if (settings::calculate_alpha) {
-        fmt::print(" Prompt Lifetime            = {:.5e} +/- {:.5e} seconds\n",
-          simulation::prompt_lifetime, t_n1 * simulation::prompt_lifetime_std);
-        fmt::print(" Gen Time (derived)         = {:.5e} +/- {:.5e} seconds\n",
-          simulation::prompt_gen_time, t_n1 * simulation::prompt_gen_time_std);
-        fmt::print(" Gen Time (direct)          = {:.5e} +/- {:.5e} seconds\n",
-          simulation::prompt_gen_time_direct, t_n1 * simulation::prompt_gen_time_direct_std);
-        fmt::print(" Alpha (k_p-1)/l            = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Mean Removal Time          = {:.5e} +/- {:.5e} seconds\n",
+          simulation::prompt_removal_time, t_n1 * simulation::prompt_removal_time_std);
+        fmt::print(" Mean Prod Time (derived)   = {:.5e} +/- {:.5e} seconds\n",
+          simulation::prompt_prod_time_derived, t_n1 * simulation::prompt_prod_time_derived_std);
+        fmt::print(" Mean Prod Time (direct)    = {:.5e} +/- {:.5e} seconds\n",
+          simulation::prompt_prod_time_direct, t_n1 * simulation::prompt_prod_time_direct_std);
+        fmt::print(" Alpha (k_p-1)/tau_r        = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_k_based, t_n1 * simulation::alpha_k_based_std);
-        fmt::print(" Alpha (rho-beta)/Lambda    = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (rho-beta)/tau_p     = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_static, t_n1 * simulation::alpha_static_std);
       }
     }
@@ -605,15 +605,15 @@ void print_results()
         " Beta-effective             = {:.5f}\n", simulation::beta_eff);
       if (settings::calculate_alpha) {
         fmt::print(
-          " Prompt Lifetime            = {:.5e} seconds\n", simulation::prompt_lifetime);
+          " Mean Removal Time          = {:.5e} seconds\n", simulation::prompt_removal_time);
         fmt::print(
-          " Gen Time (derived)         = {:.5e} seconds\n", simulation::prompt_gen_time);
+          " Mean Prod Time (derived)   = {:.5e} seconds\n", simulation::prompt_prod_time_derived);
         fmt::print(
-          " Gen Time (direct)          = {:.5e} seconds\n", simulation::prompt_gen_time_direct);
+          " Mean Prod Time (direct)    = {:.5e} seconds\n", simulation::prompt_prod_time_direct);
         fmt::print(
-          " Alpha (k_p-1)/l            = {:.5e} 1/seconds\n", simulation::alpha_k_based);
+          " Alpha (k_p-1)/tau_r        = {:.5e} 1/seconds\n", simulation::alpha_k_based);
         fmt::print(
-          " Alpha (rho-beta)/Lambda    = {:.5e} 1/seconds\n", simulation::alpha_static);
+          " Alpha (rho-beta)/tau_p     = {:.5e} 1/seconds\n", simulation::alpha_static);
       }
     }
   }

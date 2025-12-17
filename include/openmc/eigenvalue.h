@@ -33,16 +33,16 @@ extern double keff_prompt;            //!< Mean k_prompt over active generations
 extern double keff_prompt_std;        //!< Standard deviation of k_prompt
 extern double beta_eff;               //!< Effective delayed neutron fraction
 extern double beta_eff_std;           //!< Standard deviation of beta_eff
-extern double alpha_k_based;          //!< Alpha eigenvalue: α = (k_p - 1) / ℓ
+extern double alpha_k_based;          //!< Alpha eigenvalue: α = (k_p - 1) / τ_r
 extern double alpha_k_based_std;      //!< Standard deviation of alpha_k_based
-extern double alpha_static;           //!< Alpha eigenvalue: α = (ρ - β_eff) / Λ
+extern double alpha_static;           //!< Alpha eigenvalue: α = (ρ - β_eff) / τ_p
 extern double alpha_static_std;       //!< Standard deviation of alpha_static
-extern double prompt_lifetime;        //!< Prompt neutron lifetime ℓ (birth to removal)
-extern double prompt_lifetime_std;    //!< Standard deviation of lifetime
-extern double prompt_gen_time;        //!< Prompt generation time Λ = ℓ/k (derived)
-extern double prompt_gen_time_std;    //!< Standard deviation of generation time
-extern double prompt_gen_time_direct; //!< Prompt generation time (direct measurement)
-extern double prompt_gen_time_direct_std; //!< Standard deviation of direct gen time
+extern double prompt_removal_time;    //!< Mean removal time τ_r (birth to absorption/leakage)
+extern double prompt_removal_time_std;    //!< Standard deviation of removal time
+extern double prompt_prod_time_derived;   //!< Mean production time τ_p = τ_r/k (derived)
+extern double prompt_prod_time_derived_std;   //!< Standard deviation of derived production time
+extern double prompt_prod_time_direct;    //!< Mean production time τ_p (direct fission measurement)
+extern double prompt_prod_time_direct_std;    //!< Standard deviation of direct production time
 extern int kinetics_tally_index;   //!< Index of internal kinetics tally
 
 // Unused alpha calculation state variables (kept for ABI compatibility)
