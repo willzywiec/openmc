@@ -347,11 +347,12 @@ class StatePoint:
 
     @property
     def prompt_gen_time(self):
-        """Prompt neutron generation time with uncertainty.
+        """Prompt neutron generation time (derived from lifetime) with uncertainty.
 
-        The prompt generation time (Λ) is the mean time from birth-to-birth of
-        the fission chain. Related to lifetime by Λ = ℓ/k. This is the natural
-        parameter for the alpha eigenvalue: α = (k - 1) / Λ.
+        The prompt generation time (Λ) is derived from the prompt lifetime (ℓ)
+        using the relationship Λ = ℓ/k. For a more accurate measurement, see
+        prompt_gen_time_direct which measures generation time directly at
+        fission events.
         """
         if self.run_mode == 'eigenvalue' and 'prompt_gen_time' in self._f:
             return ufloat(*self._f['prompt_gen_time'][()])
@@ -359,11 +360,25 @@ class StatePoint:
             return None
 
     @property
-    def alpha_k_based(self):
-        """Alpha eigenvalue (k-based method) with uncertainty.
+    def prompt_gen_time_direct(self):
+        """Prompt neutron generation time (direct measurement) with uncertainty.
 
-        Calculated as: α = (k_prompt - 1) / Λ
-        where Λ is the prompt generation time (birth-to-birth of fission chain).
+        The prompt generation time (Λ) measured directly by scoring time-to-fission
+        events weighted by nu (neutrons produced). This is the physically accurate
+        birth-to-birth time used for calculating the alpha eigenvalue: α = (k - 1) / Λ.
+        """
+        if self.run_mode == 'eigenvalue' and 'prompt_gen_time_direct' in self._f:
+            return ufloat(*self._f['prompt_gen_time_direct'][()])
+        else:
+            return None
+
+    @property
+    def alpha_k_based(self):
+        """Alpha eigenvalue using prompt lifetime with uncertainty.
+
+        Calculated as: α = (k_p - 1) / ℓ
+        where k_p is the prompt k-effective and ℓ is the prompt neutron lifetime.
+        This is the prompt neutron approximation from point kinetics.
         """
         if self.run_mode == 'eigenvalue' and 'alpha_k_based' in self._f:
             return ufloat(*self._f['alpha_k_based'][()])
@@ -372,7 +387,13 @@ class StatePoint:
 
     @property
     def alpha_static(self):
-        """Alpha eigenvalue (COG Static method) with uncertainty."""
+        """Alpha eigenvalue using generation time with uncertainty.
+
+        Calculated as: α = (ρ - β_eff) / Λ
+        where ρ = (k-1)/k is reactivity, β_eff is effective delayed neutron
+        fraction, and Λ is the mean neutron generation time (direct measurement).
+        This is the inhour equation form.
+        """
         if self.run_mode == 'eigenvalue' and 'alpha_static' in self._f:
             return ufloat(*self._f['alpha_static'][()])
         else:

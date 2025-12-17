@@ -336,7 +336,9 @@ enum TallyScore {
   SCORE_PROMPT_CHAIN_NU_FISSION_RATE = -27,  // prompt nu-fission rate
   SCORE_PROMPT_CHAIN_ABSORPTION_RATE = -28,  // prompt absorption rate
   SCORE_PROMPT_CHAIN_POPULATION = -29,       // prompt neutron population
-  SCORE_PROMPT_CHAIN_LEAKAGE_RATE = -30      // prompt leakage rate
+  SCORE_PROMPT_CHAIN_LEAKAGE_RATE = -30,     // prompt leakage rate
+  SCORE_PROMPT_CHAIN_FISSION_TIME_NUM = -31, // direct gen time numerator (fission only)
+  SCORE_PROMPT_CHAIN_FISSION_TIME_DENOM = -32 // direct gen time denominator (fission only)
 };
 
 // Global tally parameters
