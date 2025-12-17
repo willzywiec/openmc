@@ -3,15 +3,18 @@
 Alpha Eigenvalue Batch Runner for ICSBEP Benchmarks
 ====================================================
 Runs ICSBEP benchmarks matching the examples/alpha folder with alpha eigenvalue
-calculations enabled. Saves all results (alpha, keff, k-prompt, beta-effective,
-prompt neutron lifetime, generation time derived, generation time direct) to a
-single .xlsx file.
+calculations enabled. Saves all results to a single .xlsx file.
 
-Generation time is measured two ways:
-  - Derived: Λ = ℓ/k (from lifetime and k-effective)
-  - Direct: Birth-to-fission time weighted by ν (neutrons produced)
+Alpha eigenvalue is calculated two ways:
+  - α = (k_p - 1) / ℓ        (using prompt lifetime)
+  - α = (ρ - β_eff) / Λ      (using generation time, reactivity, delayed fraction)
 
-The alpha eigenvalue uses the direct generation time: α = (k - 1) / Λ
+Where:
+  k_p = prompt k-effective
+  ℓ = prompt neutron lifetime (birth to removal)
+  ρ = (k - 1) / k = reactivity
+  β_eff = effective delayed neutron fraction
+  Λ = mean neutron generation time (direct measurement)
 
 Usage:
     python batch.py              # Run all benchmarks
@@ -204,8 +207,10 @@ def run_benchmark(name: str, run_dir: Path) -> dict:
         "keff_unc": None,
         "k_prompt": None,
         "k_prompt_unc": None,
-        "alpha": None,
-        "alpha_unc": None,
+        "alpha_k": None,
+        "alpha_k_unc": None,
+        "alpha_rho": None,
+        "alpha_rho_unc": None,
         "beta_eff": None,
         "beta_eff_unc": None,
         "lifetime": None,
@@ -299,10 +304,15 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["gen_time_direct"] = sp.prompt_gen_time_direct.nominal_value
             results["gen_time_direct_unc"] = sp.prompt_gen_time_direct.std_dev
 
-        # Alpha eigenvalue
+        # Alpha eigenvalue (k_p - 1) / l
         if hasattr(sp, 'alpha_k_based') and sp.alpha_k_based is not None:
-            results["alpha"] = sp.alpha_k_based.nominal_value
-            results["alpha_unc"] = sp.alpha_k_based.std_dev
+            results["alpha_k"] = sp.alpha_k_based.nominal_value
+            results["alpha_k_unc"] = sp.alpha_k_based.std_dev
+
+        # Alpha eigenvalue (rho - beta_eff) / Lambda
+        if hasattr(sp, 'alpha_static') and sp.alpha_static is not None:
+            results["alpha_rho"] = sp.alpha_static.nominal_value
+            results["alpha_rho_unc"] = sp.alpha_static.std_dev
 
     except Exception as e:
         print(f"  Warning: Could not read statepoint: {e}")
@@ -340,7 +350,8 @@ def write_results_xlsx(results: list, output_file: Path):
         "Benchmark",
         "k-eff", "k-eff unc",
         "k-prompt", "k-prompt unc",
-        "Alpha (1/s)", "Alpha unc",
+        "Alpha (k_p-1)/l", "unc",
+        "Alpha (rho-b)/L", "unc",
         "Beta-eff", "Beta-eff unc",
         "Lifetime (s)", "Lifetime unc",
         "Gen Time Derived (s)", "Gen Time Derived unc",
@@ -363,8 +374,10 @@ def write_results_xlsx(results: list, output_file: Path):
             r.get("keff_unc"),
             r.get("k_prompt"),
             r.get("k_prompt_unc"),
-            r.get("alpha"),
-            r.get("alpha_unc"),
+            r.get("alpha_k"),
+            r.get("alpha_k_unc"),
+            r.get("alpha_rho"),
+            r.get("alpha_rho_unc"),
             r.get("beta_eff"),
             r.get("beta_eff_unc"),
             r.get("lifetime"),
@@ -384,13 +397,13 @@ def write_results_xlsx(results: list, output_file: Path):
             # Format numbers
             if isinstance(value, float):
                 # Alpha, lifetime, gen time (derived), gen time (direct) - scientific notation
-                if col in [6, 7, 10, 11, 12, 13, 14, 15]:
+                if col in [6, 7, 8, 9, 12, 13, 14, 15, 16, 17]:
                     cell.number_format = '0.00E+00'
                 else:
                     cell.number_format = '0.000000'
 
-    # Adjust column widths
-    column_widths = [15, 12, 12, 12, 12, 14, 14, 12, 12, 14, 14, 14, 14, 14, 14, 12, 10]
+    # Adjust column widths (19 columns now)
+    column_widths = [15, 12, 12, 12, 12, 16, 10, 16, 10, 12, 12, 14, 14, 16, 16, 16, 16, 12, 10]
     for col, width in enumerate(column_widths, 1):
         ws.column_dimensions[openpyxl.utils.get_column_letter(col)].width = width
 
@@ -482,7 +495,8 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             # Always show all parameters
             keff = f"{result['keff']:.6f} +/- {result['keff_unc']:.6f}" if result.get("keff") else "N/A"
             k_prompt = f"{result['k_prompt']:.6f} +/- {result['k_prompt_unc']:.6f}" if result.get("k_prompt") else "N/A"
-            alpha = f"{result['alpha']:.4e} +/- {result['alpha_unc']:.4e} 1/s" if result.get("alpha") else "N/A"
+            alpha_k = f"{result['alpha_k']:.4e} +/- {result['alpha_k_unc']:.4e} 1/s" if result.get("alpha_k") else "N/A"
+            alpha_rho = f"{result['alpha_rho']:.4e} +/- {result['alpha_rho_unc']:.4e} 1/s" if result.get("alpha_rho") else "N/A"
             beta_eff = f"{result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}" if result.get("beta_eff") else "N/A"
             lifetime = f"{result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s" if result.get("lifetime") else "N/A"
             gen_time = f"{result['gen_time']:.4e} +/- {result['gen_time_unc']:.4e} s" if result.get("gen_time") else "N/A"
@@ -490,7 +504,8 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
 
             print(f"  k-eff                = {keff}")
             print(f"  k-prompt             = {k_prompt}")
-            print(f"  alpha                = {alpha}")
+            print(f"  alpha (k_p-1)/l      = {alpha_k}")
+            print(f"  alpha (rho-b)/L      = {alpha_rho}")
             print(f"  beta-eff             = {beta_eff}")
             print(f"  prompt lifetime      = {lifetime}")
             print(f"  gen time (derived)   = {gen_time}")

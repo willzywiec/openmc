@@ -574,8 +574,10 @@ void print_results()
           simulation::prompt_gen_time, t_n1 * simulation::prompt_gen_time_std);
         fmt::print(" Gen Time (direct)          = {:.5e} +/- {:.5e} seconds\n",
           simulation::prompt_gen_time_direct, t_n1 * simulation::prompt_gen_time_direct_std);
-        fmt::print(" Alpha Eigenvalue           = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (k_p-1)/l            = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_k_based, t_n1 * simulation::alpha_k_based_std);
+        fmt::print(" Alpha (rho-beta)/Lambda    = {:.5e} +/- {:.5e} 1/seconds\n",
+          simulation::alpha_static, t_n1 * simulation::alpha_static_std);
       }
     }
   } else {
@@ -609,7 +611,9 @@ void print_results()
         fmt::print(
           " Gen Time (direct)          = {:.5e} seconds\n", simulation::prompt_gen_time_direct);
         fmt::print(
-          " Alpha Eigenvalue           = {:.5e} 1/seconds\n", simulation::alpha_k_based);
+          " Alpha (k_p-1)/l            = {:.5e} 1/seconds\n", simulation::alpha_k_based);
+        fmt::print(
+          " Alpha (rho-beta)/Lambda    = {:.5e} 1/seconds\n", simulation::alpha_static);
       }
     }
   }

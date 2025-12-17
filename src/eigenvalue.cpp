@@ -656,33 +656,59 @@ void calculate_kinetics_parameters()
 
           simulation::prompt_gen_time_direct_std = std::sqrt(var_L);
         }
+      }
 
-        // Calculate alpha eigenvalue using DIRECT generation time: α = (k - 1) / Λ
-        // This is the fundamental relationship from reactor kinetics
-        if (simulation::prompt_gen_time_direct > 0.0) {
-          simulation::alpha_k_based =
-            (simulation::keff_prompt - 1.0) / simulation::prompt_gen_time_direct;
+      // Calculate alpha eigenvalue using lifetime: α = (k_p - 1) / ℓ
+      // This is the prompt neutron approximation from point kinetics
+      if (simulation::prompt_lifetime > 0.0) {
+        simulation::alpha_k_based =
+          (simulation::keff_prompt - 1.0) / simulation::prompt_lifetime;
 
-          // Error propagation for alpha
-          // For α = (k - 1) / Λ: σ_α² ≈ (1/Λ)² σ_k² + ((k-1)/Λ²)² σ_Λ²
-          if (n > 1) {
-            double dAlpha_dk = 1.0 / simulation::prompt_gen_time_direct;
-            double dAlpha_dLambda =
-              -(simulation::keff_prompt - 1.0) /
-              (simulation::prompt_gen_time_direct * simulation::prompt_gen_time_direct);
+        // Error propagation for alpha
+        // For α = (k - 1) / ℓ: σ_α² ≈ (1/ℓ)² σ_k² + ((k-1)/ℓ²)² σ_ℓ²
+        if (n > 1) {
+          double dAlpha_dk = 1.0 / simulation::prompt_lifetime;
+          double dAlpha_dl =
+            -(simulation::keff_prompt - 1.0) /
+            (simulation::prompt_lifetime * simulation::prompt_lifetime);
 
-            double var_alpha =
-              dAlpha_dk * dAlpha_dk * simulation::keff_prompt_std *
-                simulation::keff_prompt_std +
-              dAlpha_dLambda * dAlpha_dLambda * simulation::prompt_gen_time_direct_std *
-                simulation::prompt_gen_time_direct_std;
+          double var_alpha =
+            dAlpha_dk * dAlpha_dk * simulation::keff_prompt_std *
+              simulation::keff_prompt_std +
+            dAlpha_dl * dAlpha_dl * simulation::prompt_lifetime_std *
+              simulation::prompt_lifetime_std;
 
-            simulation::alpha_k_based_std = std::sqrt(var_alpha);
-          }
+          simulation::alpha_k_based_std = std::sqrt(var_alpha);
+        }
+      }
 
-          // Set alpha_static to the same value as alpha_k_based
-          simulation::alpha_static = simulation::alpha_k_based;
-          simulation::alpha_static_std = simulation::alpha_k_based_std;
+      // Calculate alpha eigenvalue using generation time: α = (ρ - β_eff) / Λ
+      // This is the inhour equation form using reactivity and delayed neutron fraction
+      // where ρ = (k - 1) / k is reactivity and Λ is mean generation time
+      if (simulation::prompt_gen_time_direct > 0.0 && simulation::keff > 0.0) {
+        double rho = (simulation::keff - 1.0) / simulation::keff;  // reactivity
+        simulation::alpha_static =
+          (rho - simulation::beta_eff) / simulation::prompt_gen_time_direct;
+
+        // Error propagation for alpha_static
+        // For α = (ρ - β) / Λ where ρ = (k-1)/k:
+        // ∂α/∂k = 1/(k²Λ), ∂α/∂β = -1/Λ, ∂α/∂Λ = -(ρ-β)/Λ²
+        if (n > 1) {
+          double dAlpha_dk = 1.0 / (simulation::keff * simulation::keff *
+                                    simulation::prompt_gen_time_direct);
+          double dAlpha_dbeta = -1.0 / simulation::prompt_gen_time_direct;
+          double dAlpha_dLambda =
+            -(rho - simulation::beta_eff) /
+            (simulation::prompt_gen_time_direct * simulation::prompt_gen_time_direct);
+
+          double var_alpha =
+            dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
+            dAlpha_dbeta * dAlpha_dbeta * simulation::beta_eff_std *
+              simulation::beta_eff_std +
+            dAlpha_dLambda * dAlpha_dLambda * simulation::prompt_gen_time_direct_std *
+              simulation::prompt_gen_time_direct_std;
+
+          simulation::alpha_static_std = std::sqrt(var_alpha);
         }
       }
     }
@@ -1085,8 +1111,10 @@ void setup_kinetics_tallies()
 void run_alpha_iterations()
 {
   // Alpha is now calculated during normal eigenvalue batches in
-  // calculate_kinetics_parameters() using α = (k_prompt - 1) / Λ
-  // where Λ is the prompt generation time. No separate iterations are needed.
+  // calculate_kinetics_parameters() using two methods:
+  //   alpha_k_based: α = (k_p - 1) / ℓ  (prompt lifetime)
+  //   alpha_static:  α = (ρ - β_eff) / Λ  (generation time)
+  // No separate iterations are needed.
 }
 
 } // namespace openmc
