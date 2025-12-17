@@ -421,6 +421,11 @@ if [[ "${SKIP_PYTHON}" != true ]]; then
     log_info "Activating virtual environment..."
     source "${VENV_DIR}/bin/activate"
 
+    # IMPORTANT: Unset PYTHONHOME/PYTHONPATH after activation
+    # The venv has its own paths and these variables interfere with it
+    unset PYTHONHOME
+    unset PYTHONPATH
+
     # Check if pip is available, if not bootstrap it
     if ! python -m pip --version &>/dev/null; then
         log_info "Bootstrapping pip..."
