@@ -1159,18 +1159,30 @@ void score_general_ce_nonanalog(Particle& p, int i_tally, int start_index,
       break;
 
     case SCORE_PROMPT_CHAIN_FISSION_TIME_NUM:
-      // Score lifetime * nu * weight for prompt neutrons at fission only
-      // This is the direct generation time numerator (time to next generation)
-      if (!p.is_delayed() && p.fission()) {
-        score = p.lifetime() * p.wgt_bank();
+      // Score lifetime × nu-fission for prompt neutrons (generation time numerator)
+      // For tracklength: use cross-section weighting
+      if (!p.is_delayed()) {
+        if (p.macro_xs().fission == 0)
+          continue;
+        if (i_nuclide >= 0) {
+          score = p.lifetime() * p.neutron_xs(i_nuclide).nu_fission * atom_density * flux;
+        } else {
+          score = p.lifetime() * p.macro_xs().nu_fission * flux;
+        }
       }
       break;
 
     case SCORE_PROMPT_CHAIN_FISSION_TIME_DENOM:
-      // Score nu * weight for prompt neutrons at fission only
-      // This is the direct generation time denominator
-      if (!p.is_delayed() && p.fission()) {
-        score = p.wgt_bank();
+      // Score nu-fission for prompt neutrons (generation time denominator)
+      // For tracklength: use cross-section weighting
+      if (!p.is_delayed()) {
+        if (p.macro_xs().fission == 0)
+          continue;
+        if (i_nuclide >= 0) {
+          score = p.neutron_xs(i_nuclide).nu_fission * atom_density * flux;
+        } else {
+          score = p.macro_xs().nu_fission * flux;
+        }
       }
       break;
 
@@ -2619,18 +2631,40 @@ void score_general_mg(Particle& p, int i_tally, int start_index,
       break;
 
     case SCORE_PROMPT_CHAIN_FISSION_TIME_NUM:
-      // Score lifetime * nu * weight for prompt neutrons at fission only
-      // This is the direct generation time numerator (time to next generation)
-      if (!p.is_delayed() && p.fission()) {
-        score = p.lifetime() * p.wgt_bank();
+      // Score lifetime × nu-fission for prompt neutrons (generation time numerator)
+      if (!p.is_delayed()) {
+        if (tally.estimator_ == TallyEstimator::ANALOG) {
+          if (p.fission()) {
+            score = p.lifetime() * p.wgt_bank();
+          }
+        } else {
+          if (i_nuclide >= 0) {
+            score = p.lifetime() * atom_density * flux *
+                    nuc_xs.get_xs(MgxsType::NU_FISSION, p_g, nuc_t, nuc_a);
+          } else {
+            score = p.lifetime() * flux *
+                    macro_xs.get_xs(MgxsType::NU_FISSION, p_g, macro_t, macro_a);
+          }
+        }
       }
       break;
 
     case SCORE_PROMPT_CHAIN_FISSION_TIME_DENOM:
-      // Score nu * weight for prompt neutrons at fission only
-      // This is the direct generation time denominator
-      if (!p.is_delayed() && p.fission()) {
-        score = p.wgt_bank();
+      // Score nu-fission for prompt neutrons (generation time denominator)
+      if (!p.is_delayed()) {
+        if (tally.estimator_ == TallyEstimator::ANALOG) {
+          if (p.fission()) {
+            score = p.wgt_bank();
+          }
+        } else {
+          if (i_nuclide >= 0) {
+            score = atom_density * flux *
+                    nuc_xs.get_xs(MgxsType::NU_FISSION, p_g, nuc_t, nuc_a);
+          } else {
+            score = flux *
+                    macro_xs.get_xs(MgxsType::NU_FISSION, p_g, macro_t, macro_a);
+          }
+        }
       }
       break;
 
