@@ -7,12 +7,12 @@ This guide explains how to use OpenMC's alpha eigenvalue calculation capability 
 The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates alpha using the IFP (Iterated Fission Probability) method:
 
 ```
-α = (β_eff - ρ) / Λ_eff
+α = (ρ - β_eff) / Λ_eff
 ```
 
 Where:
-- **β_eff**: Effective delayed neutron fraction (IFP-weighted)
 - **ρ**: Reactivity, ρ = (k - 1) / k
+- **β_eff**: Effective delayed neutron fraction (IFP-weighted)
 - **Λ_eff**: IFP-weighted effective generation time
 
 All kinetics parameters are computed using IFP infrastructure:
@@ -25,9 +25,9 @@ All kinetics parameters are computed using IFP infrastructure:
 
 | Alpha Value | System State | Behavior |
 |-------------|--------------|----------|
-| α > 0 | Subcritical (ρ < β_eff) | Prompt neutrons decaying, delayed neutrons sustaining |
-| α = 0 | Delayed critical (ρ = β_eff) | Prompt neutron population stable |
-| α < 0 | Prompt supercritical (ρ > β_eff) | Prompt neutron population growing exponentially |
+| α < 0 | Subcritical (ρ < β_eff) | Prompt neutrons decaying |
+| α = 0 | Prompt critical (ρ = β_eff) | Prompt neutron population stable |
+| α > 0 | Prompt supercritical (ρ > β_eff) | Prompt neutron population growing exponentially |
 
 ## Quick Start
 

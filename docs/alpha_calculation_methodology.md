@@ -6,12 +6,12 @@ The alpha eigenvalue (α) represents the time rate of change of the neutron popu
 
 **Formula:**
 ```
-α = (β_eff - ρ) / Λ_eff
+α = (ρ - β_eff) / Λ_eff
 ```
 
 **Definitions:**
-- **β_eff** = effective delayed neutron fraction (IFP-weighted)
 - **ρ** = reactivity = (k - 1) / k
+- **β_eff** = effective delayed neutron fraction (IFP-weighted)
 - **Λ_eff** = IFP-weighted effective generation time
 
 ---
@@ -19,9 +19,9 @@ The alpha eigenvalue (α) represents the time rate of change of the neutron popu
 ## Physical Meaning
 
 The alpha eigenvalue describes prompt neutron population dynamics:
-- **α > 0**: Subcritical on prompt timescale (ρ < β_eff) → prompt neutrons decaying
-- **α = 0**: Delayed critical (ρ = β_eff) → prompt neutron population stable
-- **α < 0**: Prompt supercritical (ρ > β_eff) → prompt neutrons growing exponentially
+- **α < 0**: Subcritical (ρ < β_eff) → prompt neutrons decaying
+- **α = 0**: Prompt critical (ρ = β_eff) → prompt neutron population stable
+- **α > 0**: Prompt supercritical (ρ > β_eff) → prompt neutrons growing exponentially
 
 ### IFP-Weighted Quantities
 
@@ -93,8 +93,8 @@ lambda_eff_ifp = ifp_time_num / (ifp_denom * keff);
 // ρ = (k - 1) / k
 double rho = (keff - 1.0) / keff;
 
-// α = (β_eff - ρ) / Λ_eff
-alpha_ifp = (beta_eff - rho) / lambda_eff_ifp;
+// α = (ρ - β_eff) / Λ_eff
+alpha_ifp = (rho - beta_eff) / lambda_eff_ifp;
 ```
 
 ### 4. Uncertainty Propagation
@@ -111,15 +111,15 @@ Standard deviations are calculated using error propagation:
 σ_Λ² ≈ (∂Λ/∂num)² σ_num² + (∂Λ/∂denom)² σ_denom² + (∂Λ/∂k)² σ_k²
 ```
 
-**For α = (β - ρ) / Λ:**
+**For α = (ρ - β) / Λ:**
 ```
 σ_α² ≈ (∂α/∂β)² σ_β² + (∂α/∂k)² σ_k² + (∂α/∂Λ)² σ_Λ²
 ```
 
 where:
-- ∂α/∂β = 1/Λ
-- ∂α/∂k = -1/(k²Λ)
-- ∂α/∂Λ = -(β - ρ)/Λ²
+- ∂α/∂β = -1/Λ
+- ∂α/∂k = 1/(k²Λ)
+- ∂α/∂Λ = -(ρ - β)/Λ²
 
 ---
 
@@ -136,10 +136,10 @@ For a typical fast system (Godiva) near critical:
 ```
 ρ = (k - 1) / k = (1.0001 - 1.0) / 1.0001 ≈ 0.0001
 
-α = (β_eff - ρ) / Λ_eff = (0.0065 - 0.0001) / 5.7e-9 ≈ 1.12e6 s⁻¹
+α = (ρ - β_eff) / Λ_eff = (0.0001 - 0.0065) / 5.7e-9 ≈ -1.12e6 s⁻¹
 ```
 
-The positive alpha (with β_eff > ρ) indicates the system is subcritical on the prompt timescale - prompt neutrons decay but delayed neutrons sustain the chain reaction.
+The negative alpha (with ρ < β_eff) indicates the system is subcritical on the prompt timescale - prompt neutrons decay, but delayed neutrons sustain the chain reaction.
 
 ---
 
@@ -151,7 +151,7 @@ OpenMC prints alpha results in the summary:
  k-prompt                   = 0.99350 +/- 0.00045
  Beta-effective             = 0.00650 +/- 0.00010
  Lambda_eff (IFP)           = 5.70000e-09 +/- 2.50000e-11 seconds
- Alpha (IFP)                = 1.12000e+06 +/- 1.80000e+04 1/seconds
+ Alpha (IFP)                = -1.12000e+06 +/- 1.80000e+04 1/seconds
 ```
 
 The values are also written to statepoint files for post-processing via:
@@ -174,7 +174,7 @@ The values are also written to statepoint files for post-processing via:
 
 The alpha calculation uses the inhour equation from reactor kinetics theory:
 ```
-α = (β_eff - ρ) / Λ_eff
+α = (ρ - β_eff) / Λ_eff
 ```
 
 The IFP method provides adjoint-weighted quantities that correctly account for neutron importance, making it suitable for heterogeneous reactor calculations.
