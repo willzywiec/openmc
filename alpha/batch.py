@@ -283,20 +283,15 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["beta_eff"] = sp.beta_eff.nominal_value
             results["beta_eff_unc"] = sp.beta_eff.std_dev
 
-        # Prompt neutron lifetime
-        if hasattr(sp, 'prompt_neutron_lifetime') and sp.prompt_neutron_lifetime is not None:
-            results["lifetime"] = sp.prompt_neutron_lifetime.nominal_value
-            results["lifetime_unc"] = sp.prompt_neutron_lifetime.std_dev
+        # IFP-weighted effective generation time (Lambda_eff)
+        if hasattr(sp, 'lambda_eff_ifp') and sp.lambda_eff_ifp is not None:
+            results["gen_time"] = sp.lambda_eff_ifp.nominal_value
+            results["gen_time_unc"] = sp.lambda_eff_ifp.std_dev
 
-        # Mean generation time
-        if hasattr(sp, 'mean_generation_time') and sp.mean_generation_time is not None:
-            results["gen_time"] = sp.mean_generation_time.nominal_value
-            results["gen_time_unc"] = sp.mean_generation_time.std_dev
-
-        # Alpha eigenvalue: (rho - beta_eff) / Lambda
-        if hasattr(sp, 'alpha') and sp.alpha is not None:
-            results["alpha"] = sp.alpha.nominal_value
-            results["alpha_unc"] = sp.alpha.std_dev
+        # IFP-weighted alpha eigenvalue: (k - 1) / Lambda_eff
+        if hasattr(sp, 'alpha_ifp') and sp.alpha_ifp is not None:
+            results["alpha"] = sp.alpha_ifp.nominal_value
+            results["alpha_unc"] = sp.alpha_ifp.std_dev
 
     except Exception as e:
         print(f"  Warning: Could not read statepoint: {e}")
