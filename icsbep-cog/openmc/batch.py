@@ -56,8 +56,9 @@ class BenchmarkResult:
     beta_eff_std: Optional[float] = None
     gen_time: Optional[float] = None
     gen_time_std: Optional[float] = None
-    # Timing
-    runtime_seconds: Optional[float] = None
+    # Alpha eigenvalue
+    alpha: Optional[float] = None
+    alpha_std: Optional[float] = None
 
 
 def get_benchmark_dirs(base_dir: Path, category: str = None, benchmark: str = None) -> List[Path]:
@@ -162,7 +163,7 @@ print("Kinetics-enabled model generated successfully")
 
 
 def parse_openmc_output(output: str, statepoint_path: Path = None) -> Dict[str, Any]:
-    """Parse OpenMC output to extract k-effective and kinetics results."""
+    """Parse OpenMC output to extract k-effective, kinetics results, and alpha eigenvalue."""
     results = {
         'keff': None,
         'keff_std': None,
@@ -170,6 +171,8 @@ def parse_openmc_output(output: str, statepoint_path: Path = None) -> Dict[str, 
         'beta_eff_std': None,
         'gen_time': None,
         'gen_time_std': None,
+        'alpha': None,
+        'alpha_std': None,
     }
 
     # Parse k-effective from output
@@ -204,6 +207,15 @@ def parse_openmc_output(output: str, statepoint_path: Path = None) -> Dict[str, 
         if match.group(2):
             results['gen_time_std'] = float(match.group(2))
 
+    # Parse alpha eigenvalue if present
+    # Alpha = (k-1) / (Lambda * k) where Lambda is generation time
+    alpha_pattern = r'[Aa]lpha\s*(?:eigenvalue)?\s*[:=]\s*([\d.eE+-]+)\s*(?:\+/-|±)?\s*([\d.eE+-]+)?'
+    match = re.search(alpha_pattern, output, re.IGNORECASE)
+    if match:
+        results['alpha'] = float(match.group(1))
+        if match.group(2):
+            results['alpha_std'] = float(match.group(2))
+
     # Try to extract from statepoint file if available
     if statepoint_path and statepoint_path.exists():
         try:
@@ -224,6 +236,9 @@ def parse_openmc_output(output: str, statepoint_path: Path = None) -> Dict[str, 
                     elif 'generation' in name.lower() or 'lambda' in name.lower():
                         results['gen_time'] = value.nominal_value
                         results['gen_time_std'] = value.std_dev
+                    elif 'alpha' in name.lower():
+                        results['alpha'] = value.nominal_value
+                        results['alpha_std'] = value.std_dev
 
             sp.close()
         except Exception as e:
@@ -250,7 +265,6 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
     model_file = bench_dir / 'model.py'
 
     result = BenchmarkResult(name=bench_name, category=category, success=False)
-    start_time = time.time()
 
     try:
         # Change to benchmark directory
@@ -312,8 +326,6 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
                 timeout=7200  # 2 hour timeout for OpenMC runs
             )
 
-            result.runtime_seconds = time.time() - start_time
-
             # Parse results from output
             full_output = proc_result.stdout + proc_result.stderr
 
@@ -328,6 +340,8 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
             result.beta_eff_std = parsed['beta_eff_std']
             result.gen_time = parsed['gen_time']
             result.gen_time_std = parsed['gen_time_std']
+            result.alpha = parsed['alpha']
+            result.alpha_std = parsed['alpha_std']
 
             os.chdir(original_dir)
 
@@ -343,13 +357,11 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
 
         os.chdir(original_dir)
         result.success = True
-        result.runtime_seconds = time.time() - start_time
         return result
 
     except subprocess.TimeoutExpired:
         os.chdir(original_dir)
         result.error_message = "Timeout"
-        result.runtime_seconds = time.time() - start_time
         return result
     except Exception as e:
         try:
@@ -357,7 +369,6 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
         except:
             pass
         result.error_message = str(e)[:500]
-        result.runtime_seconds = time.time() - start_time
         return result
 
 
@@ -394,7 +405,8 @@ def export_results_to_excel(results: List[BenchmarkResult], output_file: Path):
         'k-eff', 'k-eff Std Dev',
         'Beta-eff', 'Beta-eff Std Dev',
         'Gen Time (s)', 'Gen Time Std Dev',
-        'Runtime (s)', 'Error'
+        'Alpha (1/s)', 'Alpha Std Dev',
+        'Error'
     ]
 
     for col, header in enumerate(headers, 1):
@@ -416,7 +428,8 @@ def export_results_to_excel(results: List[BenchmarkResult], output_file: Path):
             result.beta_eff_std,
             result.gen_time,
             result.gen_time_std,
-            result.runtime_seconds,
+            result.alpha,
+            result.alpha_std,
             result.error_message if not result.success else ''
         ]
 
@@ -430,17 +443,15 @@ def export_results_to_excel(results: List[BenchmarkResult], output_file: Path):
                     cell.number_format = '0.00000'
                 elif col in [6, 7]:  # beta-eff columns
                     cell.number_format = '0.00000E+00'
-                elif col in [8, 9]:  # gen time columns
+                elif col in [8, 9, 10, 11]:  # gen time and alpha columns
                     cell.number_format = '0.00E+00'
-                else:
-                    cell.number_format = '0.00'
 
             # Color status column
             if col == 3:
                 cell.fill = success_fill if result.success else fail_fill
 
     # Adjust column widths
-    column_widths = [15, 10, 10, 12, 12, 12, 12, 12, 12, 10, 50]
+    column_widths = [15, 10, 10, 12, 12, 12, 12, 12, 12, 12, 12, 50]
     for col, width in enumerate(column_widths, 1):
         ws_summary.column_dimensions[get_column_letter(col)].width = width
 
@@ -470,7 +481,8 @@ def export_results_to_excel(results: List[BenchmarkResult], output_file: Path):
                 result.beta_eff_std,
                 result.gen_time,
                 result.gen_time_std,
-                result.runtime_seconds,
+                result.alpha,
+                result.alpha_std,
                 result.error_message if not result.success else ''
             ]
 
@@ -483,10 +495,8 @@ def export_results_to_excel(results: List[BenchmarkResult], output_file: Path):
                         cell.number_format = '0.00000'
                     elif col in [6, 7]:
                         cell.number_format = '0.00000E+00'
-                    elif col in [8, 9]:
+                    elif col in [8, 9, 10, 11]:
                         cell.number_format = '0.00E+00'
-                    else:
-                        cell.number_format = '0.00'
 
                 if col == 3:
                     cell.fill = success_fill if result.success else fail_fill
@@ -509,6 +519,7 @@ def export_results_to_excel(results: List[BenchmarkResult], output_file: Path):
         ['With k-eff', len([r for r in results if r.keff is not None])],
         ['With Beta-eff', len([r for r in results if r.beta_eff is not None])],
         ['With Gen Time', len([r for r in results if r.gen_time is not None])],
+        ['With Alpha', len([r for r in results if r.alpha is not None])],
         ['', ''],
         ['Category Breakdown', ''],
     ]
@@ -539,7 +550,8 @@ def export_results_to_csv(results: List[BenchmarkResult], output_file: Path):
         'k-eff', 'k-eff Std Dev',
         'Beta-eff', 'Beta-eff Std Dev',
         'Gen Time (s)', 'Gen Time Std Dev',
-        'Runtime (s)', 'Error'
+        'Alpha (1/s)', 'Alpha Std Dev',
+        'Error'
     ]
 
     with open(output_file, 'w', newline='') as f:
@@ -557,7 +569,8 @@ def export_results_to_csv(results: List[BenchmarkResult], output_file: Path):
                 result.beta_eff_std,
                 result.gen_time,
                 result.gen_time_std,
-                result.runtime_seconds,
+                result.alpha,
+                result.alpha_std,
                 result.error_message if not result.success else ''
             ])
 
@@ -664,8 +677,9 @@ def main():
                 status = "[OK]" if result.success else "[FAIL]"
                 keff_str = f"k={result.keff:.5f}" if result.keff else "k=N/A"
                 beta_str = f"β={result.beta_eff:.5e}" if result.beta_eff else ""
+                alpha_str = f"α={result.alpha:.5e}" if result.alpha else ""
 
-                print(f"{status} {result.category}/{result.name}: {keff_str} {beta_str}")
+                print(f"{status} {result.category}/{result.name}: {keff_str} {beta_str} {alpha_str}")
 
                 if not result.success and not args.continue_on_error:
                     executor.shutdown(wait=False)
@@ -679,9 +693,10 @@ def main():
             status = "[OK]" if result.success else "[FAIL]"
             keff_str = f"k={result.keff:.5f}" if result.keff else "k=N/A"
             beta_str = f"β={result.beta_eff:.5e}" if result.beta_eff else ""
+            alpha_str = f"α={result.alpha:.5e}" if result.alpha else ""
             progress = f"[{i+1}/{len(benchmark_dirs)}]"
 
-            print(f"{progress} {status} {result.category}/{result.name}: {keff_str} {beta_str}")
+            print(f"{progress} {status} {result.category}/{result.name}: {keff_str} {beta_str} {alpha_str}")
 
             if not result.success and not args.continue_on_error:
                 print(f"Error: {result.error_message}")
@@ -696,11 +711,13 @@ def main():
     failed = len([r for r in results if not r.success])
     with_keff = len([r for r in results if r.keff is not None])
     with_beta = len([r for r in results if r.beta_eff is not None])
+    with_alpha = len([r for r in results if r.alpha is not None])
 
     print(f"Successful: {successful}")
     print(f"Failed: {failed}")
     print(f"With k-eff: {with_keff}")
     print(f"With beta-eff: {with_beta}")
+    print(f"With alpha: {with_alpha}")
 
     # Export results
     if results:
