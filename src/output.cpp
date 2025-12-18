@@ -566,9 +566,9 @@ void print_results()
       // IFP-weighted alpha eigenvalue (requires IFP to be enabled)
       if (settings::calculate_alpha && settings::ifp_on &&
           simulation::lambda_eff_ifp > 0.0) {
-        fmt::print(" Lambda_eff (IFP)           = {:.5e} +/- {:.5e} seconds\n",
+        fmt::print(" Lambda-effective (IFP)     = {:.5e} +/- {:.5e} seconds\n",
           simulation::lambda_eff_ifp, t_n1 * simulation::lambda_eff_ifp_std);
-        fmt::print(" Alpha (IFP)                = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (Static)             = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_ifp, t_n1 * simulation::alpha_ifp_std);
       }
     }
@@ -598,9 +598,9 @@ void print_results()
       // IFP-weighted alpha eigenvalue (requires IFP to be enabled)
       if (settings::calculate_alpha && settings::ifp_on &&
           simulation::lambda_eff_ifp > 0.0) {
-        fmt::print(" Lambda_eff (IFP)           = {:.5e} seconds\n",
+        fmt::print(" Lambda-effective (IFP)     = {:.5e} seconds\n",
           simulation::lambda_eff_ifp);
-        fmt::print(" Alpha (IFP)                = {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (Static)             = {:.5e} 1/seconds\n",
           simulation::alpha_ifp);
       }
     }

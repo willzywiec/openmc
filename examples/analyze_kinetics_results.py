@@ -29,8 +29,8 @@ print("=" * 70)
 print(f"k-effective:              {sp.keff}")
 print(f"k-prompt:                 {sp.k_prompt}")
 print(f"Beta-effective:           {sp.beta_eff}")
-print(f"Lambda_eff (IFP):         {gen_time_us:.6e}+/-{gen_time_std_us:.6e} us")
-print(f"Alpha (IFP):              {alpha_us:.6e}+/-{alpha_std_us:.6e} 1/us")
+print(f"Lambda-effective (IFP):   {gen_time_us:.6e}+/-{gen_time_std_us:.6e} us")
+print(f"Alpha (Static):           {alpha_us:.6e}+/-{alpha_std_us:.6e} 1/us")
 
 # Expected results for Godiva (from Cullen et al. 2003):
 print("\nExpected values for Godiva (UCRL-TR-201506):")

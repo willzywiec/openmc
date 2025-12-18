@@ -4,7 +4,7 @@ This guide explains how to use OpenMC's alpha eigenvalue calculation capability 
 
 ## Overview
 
-The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates alpha using the IFP (Iterated Fission Probability) method:
+The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system:
 
 ```
 α = (ρ - β_eff) / Λ_eff
@@ -12,12 +12,12 @@ The alpha eigenvalue (α) describes the time-dependent behavior of the neutron p
 
 Where:
 - **ρ**: Reactivity, ρ = (k - 1) / k
-- **β_eff**: Effective delayed neutron fraction (IFP-weighted)
+- **β_eff**: Effective delayed neutron fraction (from k-prompt)
 - **Λ_eff**: IFP-weighted effective generation time
 
-All kinetics parameters are computed using IFP infrastructure:
+The kinetics parameters are computed as:
 ```
-β_eff = ifp-beta-numerator / ifp-denominator
+β_eff = (k - k_prompt) / k
 Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 ```
 
@@ -62,8 +62,8 @@ sp = openmc.StatePoint('statepoint.150.h5')
 print(f"k-effective:           {sp.keff}")
 print(f"k-prompt:              {sp.k_prompt}")
 print(f"Beta-effective:        {sp.beta_eff}")
-print(f"Lambda_eff (IFP):      {sp.lambda_eff_ifp} seconds")
-print(f"Alpha (IFP):           {sp.alpha_ifp} 1/seconds")
+print(f"Lambda-effective (IFP): {sp.lambda_eff_ifp} seconds")
+print(f"Alpha (Static):         {sp.alpha_ifp} 1/seconds")
 ```
 
 ## Detailed Usage
@@ -188,8 +188,8 @@ print("=" * 50)
 print(f"k-effective:        {sp.keff.nominal_value:.5f} +/- {sp.keff.std_dev:.5f}")
 print(f"k-prompt:           {sp.k_prompt.nominal_value:.5f} +/- {sp.k_prompt.std_dev:.5f}")
 print(f"Beta-effective:     {sp.beta_eff.nominal_value:.5f} +/- {sp.beta_eff.std_dev:.5f}")
-print(f"Lambda_eff (IFP):   {sp.lambda_eff_ifp.nominal_value*1e9:.2f} +/- {sp.lambda_eff_ifp.std_dev*1e9:.2f} ns")
-print(f"Alpha (IFP):        {sp.alpha_ifp.nominal_value/1e6:.4f} +/- {sp.alpha_ifp.std_dev/1e6:.4f} gen/us")
+print(f"Lambda-effective (IFP): {sp.lambda_eff_ifp.nominal_value*1e9:.2f} +/- {sp.lambda_eff_ifp.std_dev*1e9:.2f} ns")
+print(f"Alpha (Static):         {sp.alpha_ifp.nominal_value/1e6:.4f} +/- {sp.alpha_ifp.std_dev/1e6:.4f} gen/us")
 ```
 
 ## Output Format
@@ -202,22 +202,22 @@ When running OpenMC with alpha calculations enabled, the output will include a k
   k-effective (Combined)      = 1.00012 +/- 0.00045
   k-prompt                    = 0.99312 +/- 0.00044
   Beta-effective              = 0.00700 +/- 0.00012
-  Lambda_eff (IFP)            = 5.70000e-09 +/- 2.50000e-11 seconds
-  Alpha (IFP)                 = 1.75000e+04 +/- 1.80000e+02 1/seconds
+  Lambda-effective (IFP)      = 5.70000e-09 +/- 2.50000e-11 seconds
+  Alpha (Static)              = 1.75000e+04 +/- 1.80000e+02 1/seconds
 ```
 
 ## Implementation Details
 
-### IFP Method
+### Calculation Methods
 
-The alpha eigenvalue calculation uses OpenMC's existing Iterated Fission Probability (IFP) infrastructure. IFP provides adjoint-weighted quantities that properly account for the importance of neutrons at different energies and positions.
+**β_eff (Effective Delayed Neutron Fraction)**: Calculated from k-prompt using the formula β_eff = (k - k_prompt) / k. This approach uses the difference between total k-effective and prompt k-effective to determine the delayed neutron fraction.
 
-The effective generation time is computed as:
+**Λ_eff (Effective Generation Time)**: Calculated using OpenMC's Iterated Fission Probability (IFP) infrastructure. IFP provides adjoint-weighted quantities that properly account for the importance of neutrons at different energies and positions:
 ```
 Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 ```
 
-This uses the same IFP scores already available for beta-effective calculations:
+IFP scores used:
 - `ifp-time-numerator`: IFP-weighted time to fission
 - `ifp-denominator`: IFP normalization factor
 
