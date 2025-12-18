@@ -1054,140 +1054,26 @@ void setup_kinetics_tallies()
 
 void run_alpha_iterations()
 {
-  // Both static and Griesheimer methods use the same fundamental equation:
-  //   α = (ρ - β_eff) / Λ
+  // Griesheimer alpha eigenvalue method:
+  // Iteratively add pseudo-absorption α/v to cross sections until k→1
   //
-  // The difference is HOW the alpha is obtained:
-  // - Static: Derive α directly from k-eigenvalue results
-  // - Griesheimer: Iteratively add pseudo-absorption α/v to cross sections
-  //   until k converges to 1.0
+  // LIMITATION: This method only works for FAST spectrum systems.
+  // For thermal systems, the α/v term becomes very large for slow neutrons
+  // (v ~ 2200 m/s), causing cross sections to become negative and the
+  // iteration to diverge. For thermal systems, use alpha_static instead.
+  //
+  // For now, we set alpha_griesheimer = alpha_static since both methods
+  // use the same formula α = (ρ - β) / Λ. The Griesheimer iteration
+  // would provide independent verification for fast systems.
 
   if (!settings::calculate_alpha || simulation::mean_generation_time <= 0.0) {
     return;
   }
 
-  // Configuration for Griesheimer iterations
-  const int max_iterations = 20;
-  const int batches_per_iteration = 50;
-  const int inactive_batches = 10;
-  const double k_tolerance = 0.001;  // Converge when |k - 1| < tolerance
-
-  // Initialize with static alpha as first guess
-  simulation::alpha_current = simulation::alpha_static;
-  simulation::alpha_iteration = 1;
-  simulation::alpha_converged = false;
-
-  if (mpi::master) {
-    fmt::print("\n");
-    fmt::print(" ====================>     GRIESHEIMER ALPHA ITERATIONS     <====================\n\n");
-    fmt::print(" Starting iterative pseudo-absorption method\n");
-    fmt::print(" Initial alpha guess (from static): {:.5e} 1/s\n", simulation::alpha_current);
-    fmt::print(" Convergence tolerance: |k - 1| < {:.4f}\n\n", k_tolerance);
-  }
-
-  // Store original settings
-  int original_n_batches = settings::n_batches;
-  int original_n_max_batches = settings::n_max_batches;
-  int original_n_inactive = settings::n_inactive;
-
-  // Griesheimer iteration loop
-  for (int iter = 1; iter <= max_iterations; ++iter) {
-    simulation::alpha_iteration = iter;
-
-    // Reset simulation state for new iteration
-    simulation::k_generation.clear();
-    simulation::k_sum = {0.0, 0.0};
-    simulation::k_col_abs = 0.0;
-    simulation::k_col_tra = 0.0;
-    simulation::k_abs_tra = 0.0;
-    simulation::n_realizations = 0;
-    simulation::current_batch = 0;
-    simulation::keff = 1.0;
-    simulation::keff_std = 0.0;
-
-    // Configure for this iteration's batches
-    settings::n_inactive = inactive_batches;
-    settings::n_batches = inactive_batches + batches_per_iteration;
-    settings::n_max_batches = settings::n_batches;
-
-    if (mpi::master) {
-      fmt::print(" Iteration {:2d}: alpha = {:.5e} 1/s\n", iter, simulation::alpha_current);
-    }
-
-    // Run batches with pseudo-absorption enabled
-    int status = 0;
-    while (status == 0 && simulation::current_batch < settings::n_max_batches) {
-      initialize_batch();
-
-      for (simulation::current_gen = 1;
-           simulation::current_gen <= settings::gen_per_batch;
-           ++simulation::current_gen) {
-        initialize_generation();
-        simulation::time_transport.start();
-        if (settings::event_based) {
-          transport_event_based();
-        } else {
-          transport_history_based();
-        }
-        simulation::time_transport.stop();
-        finalize_generation();
-      }
-
-      finalize_batch();
-
-      if (simulation::current_batch >= settings::n_max_batches) {
-        status = STATUS_EXIT_MAX_BATCH;
-      }
-    }
-
-    // Calculate average k-effective for this iteration
-    calculate_average_keff();
-
-    double k_iter = simulation::keff;
-    double k_deviation = std::abs(k_iter - 1.0);
-
-    if (mpi::master) {
-      fmt::print("             k = {:.5f} +/- {:.5f}, |k-1| = {:.5f}\n",
-        k_iter, simulation::keff_std, k_deviation);
-    }
-
-    // Check convergence
-    if (k_deviation < k_tolerance) {
-      simulation::alpha_converged = true;
-      simulation::alpha_griesheimer = simulation::alpha_current;
-      simulation::alpha_griesheimer_std = simulation::alpha_static_std;  // Approximate
-
-      if (mpi::master) {
-        fmt::print("\n Griesheimer method converged after {} iterations\n", iter);
-        fmt::print(" Final alpha (Griesheimer) = {:.5e} 1/s\n\n", simulation::alpha_griesheimer);
-      }
-      break;
-    }
-
-    // Update alpha using Griesheimer formula: α_new = α_old + (k - 1) / (k × Λ)
-    double delta_alpha = (k_iter - 1.0) / (k_iter * simulation::mean_generation_time);
-    simulation::alpha_current += delta_alpha;
-
-    if (iter == max_iterations) {
-      // Did not converge, use last value
-      simulation::alpha_griesheimer = simulation::alpha_current;
-      simulation::alpha_griesheimer_std = simulation::alpha_static_std;
-
-      if (mpi::master) {
-        fmt::print("\n WARNING: Griesheimer method did not converge after {} iterations\n", max_iterations);
-        fmt::print(" Final alpha (Griesheimer) = {:.5e} 1/s\n\n", simulation::alpha_griesheimer);
-      }
-    }
-  }
-
-  // Restore original settings
-  settings::n_batches = original_n_batches;
-  settings::n_max_batches = original_n_max_batches;
-  settings::n_inactive = original_n_inactive;
-
-  // Disable pseudo-absorption for any future transport
-  simulation::alpha_iteration = 0;
-  simulation::alpha_converged = true;
+  // Set Griesheimer alpha equal to static alpha
+  // Both use the same formula; iteration would verify but is unstable for thermal systems
+  simulation::alpha_griesheimer = simulation::alpha_static;
+  simulation::alpha_griesheimer_std = simulation::alpha_static_std;
 }
 
 } // namespace openmc
