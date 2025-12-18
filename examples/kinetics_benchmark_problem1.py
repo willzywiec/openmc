@@ -145,5 +145,5 @@ with open(output_file, 'w') as f:
     for line in results:
         f.write(line + "\n")
 
-print(f"\nResults saved to: {output_file}")
+print(f"Results saved to: {output_file}\n")
 
