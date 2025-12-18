@@ -971,6 +971,16 @@ void setup_kinetics_tallies()
 
   // No filters - tally over entire geometry
   tally->set_filters({});
+
+  // IMPORTANT: Set ifp_parameter to Both since we need all IFP quantities
+  // (generation time from ifp-time-numerator and beta from ifp-beta-numerator).
+  // This is necessary for programmatically created tallies because set_scores()
+  // doesn't automatically set ifp_parameter like the XML-based tally constructor does.
+  // We check if it's not already Both to avoid overwriting user's setting if they
+  // already have IFP tallies that set it to Both.
+  if (settings::ifp_parameter != IFPParameter::Both) {
+    settings::ifp_parameter = IFPParameter::Both;
+  }
 }
 
 } // namespace openmc
