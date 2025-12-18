@@ -383,6 +383,15 @@ class StatePoint:
             return None
 
     @property
+    def alpha(self):
+        """Alpha eigenvalue with uncertainty (alias for alpha_static).
+
+        Provided for backwards compatibility. Use alpha_static or
+        alpha_griesheimer for explicit method selection.
+        """
+        return self.alpha_static
+
+    @property
     def meshes(self):
         if not self._meshes_read:
             mesh_group = self._f['tallies/meshes']
