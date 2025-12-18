@@ -36,11 +36,11 @@ extern double beta_eff_std;           //!< Standard deviation of beta_eff
 extern double alpha;                  //!< Alpha eigenvalue: α = (ρ - β_eff) / Λ
 extern double alpha_std;              //!< Standard deviation of alpha
 
-// Prompt neutron kinetics timing parameters
-extern double prompt_neutron_lifetime;     //!< Prompt neutron lifetime ℓ (birth to absorption/leakage)
-extern double prompt_neutron_lifetime_std; //!< Standard deviation of prompt neutron lifetime
-extern double mean_generation_time;        //!< Mean generation time Λ (direct fission measurement)
-extern double mean_generation_time_std;    //!< Standard deviation of mean generation time
+// Neutron timing parameters
+extern double prompt_neutron_lifetime;     //!< Prompt neutron lifetime ℓ [s]
+extern double prompt_neutron_lifetime_std; //!< Std dev of prompt neutron lifetime
+extern double mean_generation_time;        //!< Mean generation time Λ [s]
+extern double mean_generation_time_std;    //!< Std dev of mean generation time
 extern int kinetics_tally_index;   //!< Index of internal kinetics tally
 
 // Unused alpha calculation state variables (kept for ABI compatibility)

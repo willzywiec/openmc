@@ -4,8 +4,8 @@ Analyze kinetics results from an OpenMC eigenvalue simulation.
 Displays:
 - k-effective and k-prompt
 - Effective delayed neutron fraction (beta_eff)
-- Prompt neutron lifetime (ℓ): time from birth to absorption/leakage
-- Mean generation time (Λ): time from birth to causing fission
+- Prompt neutron lifetime (ℓ): time from neutron birth to absorption or leakage
+- Mean generation time (Λ): time from neutron birth to next-generation fission
 - Alpha eigenvalue: α = (ρ - β_eff) / Λ
 """
 

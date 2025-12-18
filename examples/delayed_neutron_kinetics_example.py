@@ -4,9 +4,9 @@ Example demonstrating delayed neutron kinetics calculations in OpenMC.
 This example shows how to enable calculation of:
 - k_prompt: prompt neutron k-effective
 - beta_eff: effective delayed neutron fraction
-- prompt_neutron_lifetime: time from birth to absorption/leakage (ℓ)
-- mean_generation_time: time from birth to causing fission (Λ)
-- alpha: reactor kinetics parameter α = (ρ - β_eff) / Λ
+- prompt_neutron_lifetime (ℓ): time from neutron birth to absorption or leakage
+- mean_generation_time (Λ): time from neutron birth to next-generation fission
+- alpha: α = (ρ - β_eff) / Λ
 
 The kinetics parameters are automatically calculated during an eigenvalue
 simulation when enabled in the settings.

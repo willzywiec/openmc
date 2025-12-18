@@ -9,8 +9,8 @@ Alpha eigenvalue is calculated as:
   α = (ρ - β_eff) / Λ
 
 Where:
-  ℓ = prompt neutron lifetime (birth to absorption/leakage)
-  Λ = mean generation time (birth to next-generation fission)
+  ℓ = prompt neutron lifetime (neutron birth to absorption or leakage)
+  Λ = mean generation time (neutron birth to next-generation fission)
   ρ = (k - 1) / k = reactivity
   β_eff = effective delayed neutron fraction
 
