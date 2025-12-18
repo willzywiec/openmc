@@ -47,6 +47,10 @@ extern double lambda_eff_ifp_std;     //!< Standard deviation of Λ_eff
 // Index of internal kinetics tally (for alpha calculations using IFP scores)
 extern int kinetics_tally_index;
 
+// Accumulators for k_prompt statistics
+extern double k_prompt_sum;
+extern double k_prompt_sum_sq;
+
 } // namespace simulation
 
 //==============================================================================

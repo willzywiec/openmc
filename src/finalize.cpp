@@ -170,6 +170,13 @@ int openmc_finalize()
   // Deallocate arrays
   free_memory();
 
+  // Reset kinetics tally index (tally was freed in free_memory_tally)
+  simulation::kinetics_tally_index = -1;
+
+  // Reset k_prompt accumulators
+  simulation::k_prompt_sum = 0.0;
+  simulation::k_prompt_sum_sq = 0.0;
+
 #ifdef OPENMC_LIBMESH_ENABLED
   settings::libmesh_init.reset();
 #endif

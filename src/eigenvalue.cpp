@@ -63,6 +63,10 @@ double lambda_eff_ifp_std {0.0};
 // Index of internal kinetics tally (for alpha calculations using IFP)
 int kinetics_tally_index {-1};
 
+// Accumulators for k_prompt statistics (reset in openmc_finalize)
+double k_prompt_sum {0.0};
+double k_prompt_sum_sq {0.0};
+
 } // namespace simulation
 
 //==============================================================================
@@ -491,14 +495,12 @@ void calculate_kinetics_parameters()
     // For inactive generations, use current generation values as estimates
     simulation::keff_prompt = simulation::k_prompt[i];
   } else {
-    // Accumulate sums for k_prompt
-    static double k_prompt_sum = 0.0;
-    static double k_prompt_sum_sq = 0.0;
-    k_prompt_sum += simulation::k_prompt[i];
-    k_prompt_sum_sq += std::pow(simulation::k_prompt[i], 2);
+    // Accumulate sums for k_prompt (using namespace-level variables)
+    simulation::k_prompt_sum += simulation::k_prompt[i];
+    simulation::k_prompt_sum_sq += std::pow(simulation::k_prompt[i], 2);
 
     // Calculate mean k_prompt
-    simulation::keff_prompt = k_prompt_sum / n;
+    simulation::keff_prompt = simulation::k_prompt_sum / n;
 
     // Calculate standard deviation if we have enough samples
     if (n > 1) {
@@ -511,7 +513,7 @@ void calculate_kinetics_parameters()
       }
       simulation::keff_prompt_std =
         t_value *
-        std::sqrt((k_prompt_sum_sq / n - std::pow(simulation::keff_prompt, 2)) /
+        std::sqrt((simulation::k_prompt_sum_sq / n - std::pow(simulation::keff_prompt, 2)) /
                   (n - 1));
     }
 
