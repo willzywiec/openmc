@@ -7,15 +7,17 @@ This guide explains how to use OpenMC's alpha eigenvalue calculation capability 
 The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates alpha using the IFP (Iterated Fission Probability) method:
 
 ```
-α = (k - 1) / Λ_eff
+α = (β_eff - ρ) / Λ_eff
 ```
 
 Where:
-- **k**: Effective multiplication factor (k-effective)
+- **β_eff**: Effective delayed neutron fraction (IFP-weighted)
+- **ρ**: Reactivity, ρ = (k - 1) / k
 - **Λ_eff**: IFP-weighted effective generation time
 
-The effective generation time is computed using existing IFP infrastructure:
+All kinetics parameters are computed using IFP infrastructure:
 ```
+β_eff = ifp-beta-numerator / ifp-denominator
 Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 ```
 
@@ -23,9 +25,9 @@ The effective generation time is computed using existing IFP infrastructure:
 
 | Alpha Value | System State | Behavior |
 |-------------|--------------|----------|
-| α > 0 | Supercritical | Neutron population growing exponentially |
-| α = 0 | Critical | Neutron population stable |
-| α < 0 | Subcritical | Neutron population decaying exponentially |
+| α > 0 | Subcritical (ρ < β_eff) | Prompt neutrons decaying, delayed neutrons sustaining |
+| α = 0 | Delayed critical (ρ = β_eff) | Prompt neutron population stable |
+| α < 0 | Prompt supercritical (ρ > β_eff) | Prompt neutron population growing exponentially |
 
 ## Quick Start
 
@@ -45,8 +47,9 @@ settings.particles = 10000
 settings.calculate_alpha = True  # Enable alpha eigenvalue calculation
 
 # Note: calculate_alpha automatically enables:
-# - calculate_prompt_k (for beta-effective calculation)
+# - calculate_prompt_k
 # - IFP (Iterated Fission Probability) with 10 generations by default
+# IFP is used to calculate β_eff, Λ_eff, and α
 settings.export_to_xml()
 
 # Run OpenMC
