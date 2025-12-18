@@ -2,143 +2,109 @@
 
 ## Overview
 
-The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates alpha using the inhour equation:
+The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates alpha using the IFP (Iterated Fission Probability) method:
 
 **Formula:**
 ```
-α = (ρ - β_eff) / Λ
+α = (k - 1) / Λ_eff
 ```
 
 **Definitions:**
-- **ρ** = (k - 1) / k is reactivity
-- **β_eff** = effective delayed neutron fraction = (k - k_prompt) / k
-- **Λ** = mean generation time (mean time from neutron birth to fission)
+- **k** = effective multiplication factor (k-effective)
+- **Λ_eff** = IFP-weighted effective generation time
 
 ---
 
 ## Physical Meaning
 
 The alpha eigenvalue describes population dynamics:
-- **α > 0**: Supercritical (k > 1 + β_eff) → population growing exponentially
-- **α = 0**: Delayed critical → population stable
-- **α < 0**: Subcritical or prompt subcritical → population decaying exponentially
+- **α > 0**: Supercritical (k > 1) → population growing exponentially
+- **α = 0**: Critical (k = 1) → population stable
+- **α < 0**: Subcritical (k < 1) → population decaying exponentially
 
-### Mean Generation Time (Λ)
+### Effective Generation Time (Λ_eff)
 
-The mean generation time is the average time from neutron birth to fission (production of the next generation). This is measured directly by scoring at fission events:
+The effective generation time is computed using the IFP method, which provides adjoint-weighted quantities:
 
 ```
-Λ = Σ(time × ν × weight) / Σ(ν × weight)
+Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 ```
 
-where the sums are taken over all fission events, and ν is the number of neutrons produced.
-
-**Important**: Mean generation time is NOT the same as prompt neutron lifetime. The lifetime (ℓ) is the average time to any removal (absorption or leakage), while generation time (Λ) is specifically the time to fission. These are related but distinct quantities.
+The IFP method properly accounts for the importance of neutrons at different energies and positions, giving physically meaningful results for reactor kinetics.
 
 ---
 
 ## Implementation
 
-### 1. Tally Setup
+### 1. IFP Infrastructure
 
-During initialization, if `calculate_alpha = True`, OpenMC creates an internal tally with prompt-chain scores:
+OpenMC's existing IFP (Iterated Fission Probability) infrastructure is used for alpha calculations. The same scores used for beta-effective calculations provide the generation time:
+
+- `ifp-time-numerator`: IFP-weighted time to fission
+- `ifp-denominator`: IFP normalization factor
+
+### 2. Tally Setup
+
+During initialization, if `calculate_alpha = True`, OpenMC creates an internal tally:
 
 ```cpp
 void setup_kinetics_tallies()
 {
+  if (!settings::calculate_alpha || !settings::ifp_on)
+    return;
+
   auto* tally = Tally::create();
   tally->set_writable(false);  // Internal use only
 
   vector<std::string> scores;
-  // Mean generation time scores (at fission events only)
-  scores.push_back("prompt-chain-fission-time-num");   // Σ(time × ν × weight)
-  scores.push_back("prompt-chain-fission-time-denom"); // Σ(ν × weight)
-  // Diagnostic scores
-  scores.push_back("prompt-chain-nu-fission-rate");
-  scores.push_back("prompt-chain-absorption-rate");
-  scores.push_back("prompt-chain-leakage-rate");
-  scores.push_back("prompt-chain-population");
+  scores.push_back("ifp-time-numerator");
+  scores.push_back("ifp-denominator");
 
   tally->set_scores(scores);
   tally->set_filters({});  // Tally over entire geometry
 }
 ```
 
-### 2. Scoring at Fission Events
-
-The mean generation time is calculated from scores accumulated at fission events:
-
-```cpp
-// At each fission event for prompt neutrons:
-// Numerator: time since birth × number of neutrons produced × weight
-fission_time_num += lifetime * nu * weight;
-// Denominator: number of neutrons produced × weight
-fission_time_denom += nu * weight;
-```
-
 ### 3. Calculation During Active Batches
 
 For each active generation, `calculate_kinetics_parameters()` computes:
 
-#### Step 1: Mean Generation Time
+#### Step 1: Effective Generation Time
 
 ```cpp
-// Extract tally results (accumulated over active batches)
-double fission_time_num = results(0, 0, SUM) / n_active;
-double fission_time_denom = results(0, 1, SUM) / n_active;
+// Get IFP tally results
+double ifp_time_num = ifp_tally_results(IFP_TIME_NUM);
+double ifp_denom = ifp_tally_results(IFP_DENOM);
 
-// Calculate mean generation time: Λ = Σ(t × ν × w) / Σ(ν × w)
-mean_generation_time = fission_time_num / fission_time_denom;
+// Calculate effective generation time
+// Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+lambda_eff_ifp = ifp_time_num / (ifp_denom * keff);
 ```
 
 #### Step 2: Alpha Eigenvalue
 
 ```cpp
-// Calculate reactivity
-double rho = (keff - 1.0) / keff;
-
-// α = (ρ - β_eff) / Λ
-alpha = (rho - beta_eff) / mean_generation_time;
+// α = (k - 1) / Λ_eff
+alpha_ifp = (keff - 1.0) / lambda_eff_ifp;
 ```
 
 ### 4. Uncertainty Propagation
 
 Standard deviations are calculated using error propagation:
 
-**For mean generation time Λ:**
+**For Λ_eff:**
 ```
-σ_Λ² ≈ (∂Λ/∂num)² σ_num² + (∂Λ/∂denom)² σ_denom²
+σ_Λ² ≈ (∂Λ/∂num)² σ_num² + (∂Λ/∂denom)² σ_denom² + (∂Λ/∂k)² σ_k²
 ```
 
-**For α = (ρ - β)/Λ:**
+**For α = (k - 1) / Λ_eff:**
 ```
-σ_α² ≈ (∂α/∂k)² σ_k² + (∂α/∂β)² σ_β² + (∂α/∂Λ)² σ_Λ²
+σ_α² ≈ (∂α/∂k)² σ_k² + (∂α/∂Λ)² σ_Λ²
 ```
 
 where:
-- ∂α/∂k = 1/(k²Λ)
-- ∂α/∂β = -1/Λ
-- ∂α/∂Λ = -(ρ - β)/Λ²
-
----
-
-## Tally Scores Explained
-
-### Active Scores (Used in Calculation)
-
-| Index | Score | Description |
-|-------|-------|-------------|
-| 0 | `prompt-chain-fission-time-num` | Σ(time × ν × weight) at fission events |
-| 1 | `prompt-chain-fission-time-denom` | Σ(ν × weight) at fission events |
-
-### Diagnostic Scores
-
-| Index | Score | Description |
-|-------|-------|-------------|
-| 2 | `prompt-chain-nu-fission-rate` | Fission production rate |
-| 3 | `prompt-chain-absorption-rate` | Total absorption rate |
-| 4 | `prompt-chain-leakage-rate` | Leakage rate |
-| 5 | `prompt-chain-population` | Prompt neutron population |
+- ∂α/∂k = 1/Λ_eff
+- ∂α/∂Λ = -(k - 1)/Λ_eff²
 
 ---
 
@@ -148,19 +114,14 @@ For a typical fast system (Godiva):
 
 **Given:**
 - k = 1.0001
-- k_prompt = 0.993
-- Λ (mean generation time) = 5.7 × 10⁻⁹ seconds
+- Λ_eff (IFP-weighted) = 5.7 × 10⁻⁹ seconds
 
 **Calculate:**
 ```
-ρ = (k - 1) / k = (1.0001 - 1.0) / 1.0001 = 0.0001
-
-β_eff = (k - k_prompt) / k = (1.0001 - 0.993) / 1.0001 = 0.0071
-
-α = (ρ - β_eff) / Λ = (0.0001 - 0.0071) / 5.7e-9 = -1.23e6 s⁻¹
+α = (k - 1) / Λ_eff = (1.0001 - 1.0) / 5.7e-9 = 1.75e4 s⁻¹
 ```
 
-The negative alpha means the prompt neutron population decays at ~1.23 million per second, requiring delayed neutrons to sustain criticality.
+The positive alpha means the neutron population grows at ~17,500 per second for this slightly supercritical system.
 
 ---
 
@@ -171,18 +132,20 @@ OpenMC prints alpha results in the summary:
 ```
  k-prompt                   = 0.99300 +/- 0.00045
  Beta-effective             = 0.00700 +/- 0.00010
- Mean Generation Time       = 5.70000e-09 +/- 2.50000e-11 seconds
- Alpha                      = -1.23000e+06 +/- 1.80000e+04 1/seconds
+ Lambda_eff (IFP)           = 5.70000e-09 +/- 2.50000e-11 seconds
+ Alpha (IFP)                = 1.75000e+04 +/- 1.80000e+02 1/seconds
 ```
 
-The values are also written to statepoint files for post-processing.
+The values are also written to statepoint files for post-processing via:
+- `sp.lambda_eff_ifp` - IFP-weighted effective generation time
+- `sp.alpha_ifp` - IFP-weighted alpha eigenvalue
 
 ---
 
 ## Code Location
 
 - **Setup**: `openmc/src/eigenvalue.cpp::setup_kinetics_tallies()`
-- **Scoring (Fission)**: `openmc/src/tallies/tally_scoring.cpp::score_analog_tally_ce()`
+- **IFP Scoring**: `openmc/src/ifp.cpp`
 - **Alpha Calculation**: `openmc/src/eigenvalue.cpp::calculate_kinetics_parameters()`
 - **Output**: `openmc/src/output.cpp::print_results()`
 
@@ -190,4 +153,4 @@ The values are also written to statepoint files for post-processing.
 
 ## References
 
-The alpha calculation uses the fundamental equation α = (ρ - β_eff) / Λ from reactor kinetics theory (the inhour equation). The mean generation time Λ is measured directly as the ν-weighted time-to-fission, which correctly captures the birth-to-birth behavior of the fission chain.
+The alpha calculation uses the fundamental relationship α = (k - 1) / Λ_eff from reactor kinetics theory. The IFP method provides adjoint-weighted generation times that correctly account for neutron importance, making it suitable for heterogeneous reactor calculations.

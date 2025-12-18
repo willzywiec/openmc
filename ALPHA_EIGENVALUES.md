@@ -4,24 +4,28 @@ This guide explains how to use OpenMC's alpha eigenvalue calculation capability 
 
 ## Overview
 
-The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates alpha using the inhour equation:
+The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates alpha using the IFP (Iterated Fission Probability) method:
 
 ```
-α = (ρ - β_eff) / Λ
+α = (k - 1) / Λ_eff
 ```
 
 Where:
-- **ρ**: Reactivity, ρ = (k - 1) / k
-- **β_eff**: Effective delayed neutron fraction
-- **Λ**: Mean generation time (mean time from neutron birth to fission)
+- **k**: Effective multiplication factor (k-effective)
+- **Λ_eff**: IFP-weighted effective generation time
+
+The effective generation time is computed using existing IFP infrastructure:
+```
+Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+```
 
 ### Physical Interpretation
 
 | Alpha Value | System State | Behavior |
 |-------------|--------------|----------|
-| α > 0 | Supercritical | Prompt neutron population growing exponentially |
-| α = 0 | Critical | Prompt neutron population stable |
-| α < 0 | Subcritical | Prompt neutron population decaying exponentially |
+| α > 0 | Supercritical | Neutron population growing exponentially |
+| α = 0 | Critical | Neutron population stable |
+| α < 0 | Subcritical | Neutron population decaying exponentially |
 
 ## Quick Start
 
@@ -40,7 +44,7 @@ settings.inactive = 50
 settings.particles = 10000
 settings.calculate_alpha = True  # Enable alpha eigenvalue calculation
 
-# Note: calculate_alpha automatically enables calculate_prompt_k
+# Note: calculate_alpha automatically enables calculate_prompt_k and IFP
 settings.export_to_xml()
 
 # Run OpenMC
@@ -53,8 +57,8 @@ sp = openmc.StatePoint('statepoint.150.h5')
 print(f"k-effective:           {sp.keff}")
 print(f"k-prompt:              {sp.k_prompt}")
 print(f"Beta-effective:        {sp.beta_eff}")
-print(f"Mean generation time:  {sp.mean_generation_time} seconds")
-print(f"Alpha:                 {sp.alpha} 1/seconds")
+print(f"Lambda_eff (IFP):      {sp.lambda_eff_ifp} seconds")
+print(f"Alpha (IFP):           {sp.alpha_ifp} 1/seconds")
 ```
 
 ## Detailed Usage
@@ -98,12 +102,12 @@ print(f"k-prompt = {k_prompt.nominal_value:.5f} +/- {k_prompt.std_dev:.5f}")
 beta = sp.beta_eff
 print(f"beta-eff = {beta.nominal_value:.5f} +/- {beta.std_dev:.5f}")
 
-# Mean generation time (in seconds)
-gen_time = sp.mean_generation_time
-print(f"Λ = {gen_time.nominal_value:.3e} +/- {gen_time.std_dev:.3e} s")
+# IFP-weighted effective generation time (in seconds)
+lambda_eff = sp.lambda_eff_ifp
+print(f"Λ_eff = {lambda_eff.nominal_value:.3e} +/- {lambda_eff.std_dev:.3e} s")
 
-# Alpha eigenvalue (in 1/seconds)
-alpha = sp.alpha
+# IFP-weighted alpha eigenvalue (in 1/seconds)
+alpha = sp.alpha_ifp
 print(f"alpha = {alpha.nominal_value:.3e} +/- {alpha.std_dev:.3e} 1/s")
 ```
 
@@ -115,7 +119,7 @@ Alpha eigenvalue is often reported in different units:
 sp = openmc.StatePoint('statepoint.150.h5')
 
 # Alpha in 1/seconds (default)
-alpha_per_sec = sp.alpha.nominal_value
+alpha_per_sec = sp.alpha_ifp.nominal_value
 
 # Alpha in generations per microsecond
 alpha_per_us = alpha_per_sec / 1e6
@@ -123,11 +127,11 @@ alpha_per_us = alpha_per_sec / 1e6
 # Alpha in generations per millisecond
 alpha_per_ms = alpha_per_sec / 1e3
 
-# Mean generation time in microseconds
-gen_time_us = sp.mean_generation_time.nominal_value * 1e6
+# Effective generation time in microseconds
+lambda_eff_us = sp.lambda_eff_ifp.nominal_value * 1e6
 
 print(f"Alpha: {alpha_per_us:.4f} gen/us")
-print(f"Mean generation time: {gen_time_us:.2f} us")
+print(f"Lambda_eff: {lambda_eff_us:.2f} us")
 ```
 
 ## Complete Example: Godiva Benchmark
@@ -179,8 +183,8 @@ print("=" * 50)
 print(f"k-effective:        {sp.keff.nominal_value:.5f} +/- {sp.keff.std_dev:.5f}")
 print(f"k-prompt:           {sp.k_prompt.nominal_value:.5f} +/- {sp.k_prompt.std_dev:.5f}")
 print(f"Beta-effective:     {sp.beta_eff.nominal_value:.5f} +/- {sp.beta_eff.std_dev:.5f}")
-print(f"Mean gen time:      {sp.mean_generation_time.nominal_value*1e9:.2f} +/- {sp.mean_generation_time.std_dev*1e9:.2f} ns")
-print(f"Alpha:              {sp.alpha.nominal_value/1e6:.4f} +/- {sp.alpha.std_dev/1e6:.4f} gen/us")
+print(f"Lambda_eff (IFP):   {sp.lambda_eff_ifp.nominal_value*1e9:.2f} +/- {sp.lambda_eff_ifp.std_dev*1e9:.2f} ns")
+print(f"Alpha (IFP):        {sp.alpha_ifp.nominal_value/1e6:.4f} +/- {sp.alpha_ifp.std_dev/1e6:.4f} gen/us")
 ```
 
 ## Output Format
@@ -193,20 +197,30 @@ When running OpenMC with alpha calculations enabled, the output will include a k
   k-effective (Combined)      = 1.00012 +/- 0.00045
   k-prompt                    = 0.99312 +/- 0.00044
   Beta-effective              = 0.00700 +/- 0.00012
-  Mean Generation Time        = 5.70000e-09 +/- 2.50000e-11 seconds
-  Alpha                       = -1.21500e+06 +/- 1.80000e+04 1/seconds
+  Lambda_eff (IFP)            = 5.70000e-09 +/- 2.50000e-11 seconds
+  Alpha (IFP)                 = 1.75000e+04 +/- 1.80000e+02 1/seconds
 ```
 
-## Internal Tallies
+## Implementation Details
 
-When `calculate_alpha = True`, OpenMC automatically creates internal tallies to track:
+### IFP Method
 
-- `prompt-chain-fission-time-num`: Numerator for mean generation time (Σ time × ν × weight at fission)
-- `prompt-chain-fission-time-denom`: Denominator for mean generation time (Σ ν × weight at fission)
-- `prompt-chain-nu-fission-rate`: Fission production rate (diagnostic)
-- `prompt-chain-absorption-rate`: Absorption rate (diagnostic)
-- `prompt-chain-leakage-rate`: Leakage rate (diagnostic)
-- `prompt-chain-population`: Neutron population (diagnostic)
+The alpha eigenvalue calculation uses OpenMC's existing Iterated Fission Probability (IFP) infrastructure. IFP provides adjoint-weighted quantities that properly account for the importance of neutrons at different energies and positions.
+
+The effective generation time is computed as:
+```
+Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+```
+
+This uses the same IFP scores already available for beta-effective calculations:
+- `ifp-time-numerator`: IFP-weighted time to fission
+- `ifp-denominator`: IFP normalization factor
+
+### Internal Tallies
+
+When `calculate_alpha = True`, OpenMC automatically creates an internal tally with:
+- `ifp-time-numerator`
+- `ifp-denominator`
 
 These tallies are managed internally and do not need to be created by the user.
 
