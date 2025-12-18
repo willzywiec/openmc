@@ -134,21 +134,21 @@ u1_cell1.region = -surf2
 u1_cell2 = openmc.Cell(fill=mat4)
 u1_cell2.region = -surf3
 u1_cell3 = openmc.Cell(fill=mat4)
-u1_cell3.region = -surf51
+u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = -surf52
+u1_cell4.region = 
 u1_cell5 = openmc.Cell(fill=mat4)
-u1_cell5.region = -surf53
+u1_cell5.region = 
 u1_cell6 = openmc.Cell(fill=mat4)
-u1_cell6.region = -surf54
+u1_cell6.region = 
 u1_cell7 = openmc.Cell(fill=mat1)
-u1_cell7.region = +surf1 & +surf2 & +surf3 & -surf4 & -surf10 & +surf51 & +surf52 & +surf53 & +surf54
+u1_cell7.region = +surf1 & +surf2 & +surf3 & -surf4 & -surf10
 u1_cell8 = openmc.Cell(fill=mat6)
-u1_cell8.region = +surf1 & +surf2 & +surf3 & -surf4 & +surf10 & +surf51 & +surf52 & +surf53 & +surf54
+u1_cell8.region = +surf1 & +surf2 & +surf3 & -surf4 & +surf10
 u1_cell9 = openmc.Cell(fill=mat6)
 u1_cell9.region = +surf4 & -surf5
 u1_cell10 = openmc.Cell(fill=mat5)
-u1_cell10.region = +surf4 & +surf5 & -surf6 & +surf51 & +surf52 & +surf53 & +surf54
+u1_cell10.region = +surf4 & +surf5 & -surf6
 u1_cell11 = openmc.Cell(fill=mat6)
 u1_cell11.region = +surf6 & -surf7
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7, u1_cell8, u1_cell9, u1_cell10, u1_cell11])
@@ -275,7 +275,7 @@ universe9.add_cell(openmc.Cell(fill=lattice9))
 
 # Slit
 cell1 = openmc.Cell(cell_id=1, fill=universe9)
-cell1.region = -surf21 & +surf9 & -surf22
+cell1.region = -surf21 & -surf22
 
 # Core
 cell2 = openmc.Cell(cell_id=2, fill=universe5)

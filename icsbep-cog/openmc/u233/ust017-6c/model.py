@@ -58,31 +58,31 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 
 # SOL
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1 & -surf2
+cell1.region = 
 
 # ALP
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2
+cell2.region = 
 
 # SOL
 cell3 = openmc.Cell(cell_id=3, fill=mat1)
-cell3.region = +surf1 & +surf2 & -surf3 & -surf4 & -surf8
+cell3.region = 
 
 # AlT
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
-cell4.region = +surf1 & +surf2 & +surf3 & -surf4
+cell4.region = 
 
 # ALL
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf3 & +surf4 & -surf5
+cell5.region = 
 
 # H2O
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
-cell6.region = +surf2 & +surf4 & -surf6 & -surf7 & -surf9
+cell6.region = 
 
 # TANK
 cell7 = openmc.Cell(cell_id=7, fill=mat4)
-cell7.region = +surf2 & +surf6 & -surf7
+cell7.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7])
 geometry = openmc.Geometry(root_universe)

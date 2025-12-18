@@ -56,19 +56,19 @@ surf99 = openmc.model.RectangularParallelepiped(-499.5, 499.5, -499.5, 499.5, -4
 u1_cell0 = openmc.Cell(fill=mat1)
 u1_cell0.region = -surf1
 u1_cell1 = openmc.Cell(fill=mat1)
-u1_cell1.region = -surf2
+u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat1)
-u1_cell2.region = -surf3
+u1_cell2.region = 
 u1_cell3 = openmc.Cell(fill=mat1)
-u1_cell3.region = -surf4
+u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat1)
-u1_cell4.region = -surf5
+u1_cell4.region = 
 u1_cell5 = openmc.Cell(fill=mat1)
-u1_cell5.region = -surf6
+u1_cell5.region = 
 u1_cell6 = openmc.Cell()
-u1_cell6.region = +surf91 & -surf99 & +surf1 & +surf2 & +surf3 & +surf4 & +surf5 & +surf6
+u1_cell6.region = +surf91 & -surf99 & +surf1
 u1_cell7 = openmc.Cell(fill=mat2)
-u1_cell7.region = -surf91 & -surf99 & +surf1 & +surf2 & +surf3 & +surf4 & +surf5 & +surf6
+u1_cell7.region = -surf91 & -surf99 & +surf1
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7])
 
 u2_cell0 = openmc.Cell()
@@ -84,12 +84,12 @@ universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1])
 # LINE
 cell1 = openmc.Cell(cell_id=1, fill=universe1)
 cell1.translation = (-2.61, 13.561958, 0.0)
-cell1.region = -surf90 & +surf16 & -surf21
+cell1.region = -surf90 & +surf16
 
 # LINE
 cell2 = openmc.Cell(cell_id=2, fill=universe1)
 cell2.translation = (-10.44, 9.041305, 0.0)
-cell2.region = -surf90 & +surf15 & -surf16 & -surf22
+cell2.region = -surf90 & +surf15 & -surf16
 
 # LINE
 cell3 = openmc.Cell(cell_id=3, fill=universe1)
@@ -99,7 +99,7 @@ cell3.region = -surf90 & +surf14 & -surf15
 # LINE
 cell4 = openmc.Cell(cell_id=4, fill=universe1)
 cell4.translation = (-10.44, 0.0, 0.0)
-cell4.region = -surf90 & +surf13 & -surf14 & -surf22
+cell4.region = -surf90 & +surf13 & -surf14
 
 # LINE
 cell5 = openmc.Cell(cell_id=5, fill=universe1)
@@ -109,16 +109,16 @@ cell5.region = -surf90 & +surf12 & -surf13
 # LINE
 cell6 = openmc.Cell(cell_id=6, fill=universe1)
 cell6.translation = (-10.44, -9.041305, 0.0)
-cell6.region = -surf90 & +surf11 & -surf12 & -surf22
+cell6.region = -surf90 & +surf11 & -surf12
 
 # LINE
 cell7 = openmc.Cell(cell_id=7, fill=universe1)
 cell7.translation = (-7.83, -13.561958, 0.0)
-cell7.region = -surf90 & -surf11 & -surf21
+cell7.region = -surf90 & -surf11
 
 # H2O
 cell16 = openmc.Cell(cell_id=16, fill=mat2)
-cell16.region = -surf91 & -surf99 & +surf1 & +surf2 & +surf3 & +surf4 & +surf5 & +surf6
+cell16.region = -surf91 & -surf99 & +surf1
 
 # H2O
 cell19 = openmc.Cell(cell_id=19, fill=mat2)

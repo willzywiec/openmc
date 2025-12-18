@@ -77,35 +77,35 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat8)
-u1_cell0.region = -surf4 & -surf6
+u1_cell0.region = 
 u1_cell1 = openmc.Cell(fill=mat2)
-u1_cell1.region = +surf4 & +surf5 & -surf6
+u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = -surf6 & +surf10 & -surf11
+u1_cell2.region = 
 u1_cell3 = openmc.Cell(fill=mat5)
-u1_cell3.region = +surf11 & -surf12
+u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat6)
-u1_cell4.region = +surf12 & -surf13
+u1_cell4.region = 
 u1_cell5 = openmc.Cell(fill=mat1)
-u1_cell5.region = +surf13 & -surf14 & -surf15
+u1_cell5.region = 
 u1_cell6 = openmc.Cell(fill=mat2)
-u1_cell6.region = +surf13 & +surf14 & -surf15
+u1_cell6.region = 
 u1_cell7 = openmc.Cell(fill=mat2)
-u1_cell7.region = +surf15 & -surf16
+u1_cell7.region = 
 u1_cell8 = openmc.Cell(fill=mat4)
-u1_cell8.region = +surf16 & -surf17
+u1_cell8.region = 
 u1_cell9 = openmc.Cell(fill=mat9)
-u1_cell9.region = +surf17 & -surf21
+u1_cell9.region = 
 u1_cell10 = openmc.Cell(fill=mat6)
-u1_cell10.region = +surf21 & -surf22
+u1_cell10.region = 
 u1_cell11 = openmc.Cell(fill=mat1)
-u1_cell11.region = -surf14 & +surf22 & -surf23
+u1_cell11.region = 
 u1_cell12 = openmc.Cell(fill=mat2)
-u1_cell12.region = +surf14 & +surf22 & -surf23
+u1_cell12.region = 
 u1_cell13 = openmc.Cell(fill=mat2)
-u1_cell13.region = +surf23 & -surf24
+u1_cell13.region = 
 u1_cell14 = openmc.Cell(fill=mat4)
-u1_cell14.region = +surf24 & -surf25
+u1_cell14.region = 
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7, u1_cell8, u1_cell9, u1_cell10, u1_cell11, u1_cell12, u1_cell13, u1_cell14])
 
 # ------------------------------------------------------------------------------
@@ -114,39 +114,39 @@ universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, 
 
 # Spprt
 cell1 = openmc.Cell(cell_id=1, fill=mat7)
-cell1.region = -surf1 & -surf2
+cell1.region = 
 
 # Table
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = -surf1 & +surf2 & -surf3
+cell2.region = 
 
 # Stack1
 cell3 = openmc.Cell(cell_id=3, fill=universe1)
 cell3.translation = (3.82, 3.82, 0.0)
-cell3.region = -surf1 & +surf3 & -surf41
+cell3.region = 
 
 # Stack2
 cell4 = openmc.Cell(cell_id=4, fill=universe1)
 cell4.translation = (-3.82, 3.82, 0.0)
-cell4.region = -surf1 & +surf3 & -surf42
+cell4.region = 
 
 # Stack3
 cell5 = openmc.Cell(cell_id=5, fill=universe1)
 cell5.translation = (-3.82, -3.82, 0.0)
-cell5.region = -surf1 & +surf3 & -surf43
+cell5.region = 
 
 # Stack4
 cell6 = openmc.Cell(cell_id=6, fill=universe1)
 cell6.translation = (3.82, -3.82, 0.0)
-cell6.region = -surf1 & +surf3 & -surf44
+cell6.region = 
 
 # Poly
 cell7 = openmc.Cell(cell_id=7, fill=mat10)
-cell7.region = +surf3 & -surf31
+cell7.region = 
 
 # THS
 cell23 = openmc.Cell(cell_id=23, fill=mat4)
-cell23.region = +surf24 & -surf25
+cell23.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell23])
 geometry = openmc.Geometry(root_universe)

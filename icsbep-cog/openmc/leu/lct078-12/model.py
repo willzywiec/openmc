@@ -278,16 +278,16 @@ cell1.region = -surf15 & -surf16
 # dtct1
 cell2 = openmc.Cell(cell_id=2, fill=universe3)
 cell2.translation = (-25.4, 6.84, 0.0)
-cell2.region = -surf26 & -surf16
+cell2.region = -surf16
 
 # dtct2
 cell3 = openmc.Cell(cell_id=3, fill=universe3)
 cell3.translation = (25.4, 6.84, 0.0)
-cell3.region = -surf27 & -surf16
+cell3.region = -surf16
 
 # assy
 cell4 = openmc.Cell(cell_id=4, fill=universe4)
-cell4.region = +surf15 & -surf16 & +surf26 & +surf27
+cell4.region = +surf15 & -surf16
 
 # Al6061
 cell15 = openmc.Cell(cell_id=15, fill=mat4)

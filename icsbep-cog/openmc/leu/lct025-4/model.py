@@ -177,7 +177,7 @@ cell14.region = +surf5 & +surf6 & +surf7 & -surf8
 
 # ALLES
 cell15 = openmc.Cell(cell_id=15, fill=universe1)
-cell15.region = +surf8 & +surf21 & +surf22 & +surf23 & +surf24 & -surf14
+cell15.region = +surf8 & -surf14
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell8, cell14, cell15])
 geometry = openmc.Geometry(root_universe)

@@ -78,11 +78,11 @@ surf4 = openmc.ZCylinder(surface_id=4, x0=-31.333, y0=18.667, r=25.0, boundary_t
 
 # Pu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = +surf1 & -surf2
+cell1.region = +surf1
 
 # Oil
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = +surf1 & +surf2 & -surf3 & -surf4
+cell2.region = +surf1 & -surf3 & -surf4
 
 # Oil
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
@@ -94,7 +94,7 @@ cell4.region = -surf1 & +surf3 & -surf4
 
 # Air
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = +surf1 & +surf2 & +surf3 & -surf4
+cell5.region = +surf1 & +surf3 & -surf4
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)

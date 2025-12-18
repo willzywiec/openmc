@@ -177,11 +177,11 @@ universe2.add_cell(openmc.Cell(fill=lattice2))
 # Assy
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
 cell1.translation = (-14.855, 14.855, 0.0)
-cell1.region = +surf18 & -surf10 & +surf21 & +surf22 & +surf23 & +surf24
+cell1.region = +surf18 & -surf10
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = +surf18 & -surf10 & +surf20 & -surf21 & -surf10 & -surf22 & -surf10 & -surf23 & -surf10 & -surf24
+cell2.region = +surf18 & -surf10 & +surf20
 
 # Absr
 cell3 = openmc.Cell(cell_id=3, fill=mat5)
@@ -190,11 +190,11 @@ cell3.region = +surf18 & +surf10 & -surf11
 # Assy
 cell4 = openmc.Cell(cell_id=4, fill=universe2)
 cell4.translation = (14.855, 14.855, 0.0)
-cell4.region = +surf18 & -surf12 & +surf26 & +surf27 & +surf28 & +surf29
+cell4.region = +surf18 & -surf12
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf18 & -surf12 & +surf25 & -surf26 & -surf12 & -surf27 & -surf12 & -surf28 & -surf12 & -surf29
+cell5.region = +surf18 & -surf12 & +surf25
 
 # Absr
 cell6 = openmc.Cell(cell_id=6, fill=mat5)
@@ -203,11 +203,11 @@ cell6.region = +surf18 & +surf12 & -surf13
 # Assy
 cell7 = openmc.Cell(cell_id=7, fill=universe2)
 cell7.translation = (-14.855, -14.855, 0.0)
-cell7.region = +surf18 & -surf14 & +surf31 & +surf32 & +surf33 & +surf34
+cell7.region = +surf18 & -surf14
 
 # SST
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = +surf18 & -surf14 & +surf30 & -surf31 & -surf14 & -surf32 & -surf14 & -surf33 & -surf14 & -surf34
+cell8.region = +surf18 & -surf14
 
 # Absr
 cell9 = openmc.Cell(cell_id=9, fill=mat5)
@@ -216,11 +216,11 @@ cell9.region = +surf18 & +surf14 & -surf15
 # Assy
 cell10 = openmc.Cell(cell_id=10, fill=universe2)
 cell10.translation = (14.855, -14.855, 0.0)
-cell10.region = +surf18 & -surf16 & +surf36 & +surf37 & +surf38 & +surf39
+cell10.region = +surf18 & -surf16
 
 # SST
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
-cell11.region = +surf18 & -surf16 & +surf35 & -surf36 & -surf16 & -surf37 & -surf16 & -surf38 & -surf16 & -surf39
+cell11.region = +surf18 & -surf16
 
 # Absr
 cell12 = openmc.Cell(cell_id=12, fill=mat5)

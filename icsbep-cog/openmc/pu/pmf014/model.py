@@ -127,143 +127,143 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 
 # VOID
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = +surf4 & -surf5 & +surf20 & -surf24
+cell1.region = 
 
 # VOID
 cell2 = openmc.Cell(cell_id=2)
-cell2.region = +surf4 & -surf5 & +surf28 & -surf31
+cell2.region = 
 
 # VOID
 cell3 = openmc.Cell(cell_id=3)
-cell3.region = +surf6 & -surf7 & +surf20 & -surf24
+cell3.region = 
 
 # VOID
 cell4 = openmc.Cell(cell_id=4)
-cell4.region = +surf4 & -surf7 & +surf24 & -surf25
+cell4.region = 
 
 # VOID
 cell5 = openmc.Cell(cell_id=5)
-cell5.region = +surf8 & -surf9 & +surf20 & -surf24
+cell5.region = 
 
 # VOID
 cell6 = openmc.Cell(cell_id=6)
-cell6.region = +surf10 & -surf11 & +surf20 & -surf24
+cell6.region = 
 
 # VOID
 cell7 = openmc.Cell(cell_id=7)
-cell7.region = +surf8 & -surf11 & +surf24 & -surf27
+cell7.region = 
 
 # VOID
 cell8 = openmc.Cell(cell_id=8)
-cell8.region = +surf12 & -surf13 & +surf20 & -surf31
+cell8.region = 
 
 # VOID
 cell9 = openmc.Cell(cell_id=9)
-cell9.region = +surf14 & -surf15 & +surf20 & -surf31
+cell9.region = 
 
 # REG0l
 cell10 = openmc.Cell(cell_id=10, fill=mat1)
-cell10.region = +surf1 & -surf2 & +surf23 & -surf24
+cell10.region = 
 
 # REG02
 cell11 = openmc.Cell(cell_id=11, fill=mat2)
-cell11.region = +surf2 & -surf3 & +surf22 & -surf24
+cell11.region = 
 
 # REG03
 cell12 = openmc.Cell(cell_id=12, fill=mat3)
-cell12.region = +surf1 & -surf2 & +surf22 & -surf23
+cell12.region = 
 
 # REG03
 cell13 = openmc.Cell(cell_id=13, fill=mat3)
-cell13.region = +surf1 & -surf2 & +surf24 & -surf26
+cell13.region = 
 
 # REG04
 cell14 = openmc.Cell(cell_id=14, fill=mat4)
-cell14.region = +surf1 & -surf2 & +surf21 & -surf22
+cell14.region = 
 
 # REG05
 cell15 = openmc.Cell(cell_id=15, fill=mat5)
-cell15.region = +surf1 & -surf2 & +surf26 & -surf29
+cell15.region = 
 
 # REG05
 cell16 = openmc.Cell(cell_id=16, fill=mat5)
-cell16.region = +surf1 & -surf2 & +surf30 & -surf31
+cell16.region = 
 
 # RBG06
 cell17 = openmc.Cell(cell_id=17, fill=mat6)
-cell17.region = +surf1 & -surf2 & +surf29 & -surf30
+cell17.region = 
 
 # REG07
 cell18 = openmc.Cell(cell_id=18, fill=mat7)
-cell18.region = +surf2 & -surf3 & +surf21 & -surf22
+cell18.region = 
 
 # REG08
 cell19 = openmc.Cell(cell_id=19, fill=mat8)
-cell19.region = +surf2 & -surf3 & +surf24 & -surf26
+cell19.region = 
 
 # REG08
 cell20 = openmc.Cell(cell_id=20, fill=mat5)
-cell20.region = +surf2 & -surf3 & +surf29 & -surf30
+cell20.region = 
 
 # REG09
 cell21 = openmc.Cell(cell_id=21, fill=mat9)
-cell21.region = +surf2 & -surf3 & +surf26 & -surf29
+cell21.region = 
 
 # REG09
 cell22 = openmc.Cell(cell_id=22, fill=mat9)
-cell22.region = +surf2 & -surf3 & +surf30 & -surf31
+cell22.region = 
 
 # REG10
 cell23 = openmc.Cell(cell_id=23, fill=mat10)
-cell23.region = -surf1 & +surf20 & -surf31
+cell23.region = 
 
 # REG11
 cell24 = openmc.Cell(cell_id=24, fill=mat11)
-cell24.region = +surf1 & -surf3 & +surf20 & -surf21
+cell24.region = 
 
 # REGll
 cell25 = openmc.Cell(cell_id=25, fill=mat11)
-cell25.region = +surf5 & -surf12 & +surf28 & -surf31
+cell25.region = 
 
 # REG11
 cell26 = openmc.Cell(cell_id=26, fill=mat11)
-cell26.region = +surf13 & -surf14 & +surf20 & -surf31
+cell26.region = 
 
 # REG11
 cell27 = openmc.Cell(cell_id=27, fill=mat11)
-cell27.region = +surf15 & -surf16 & +surf20 & -surf31
+cell27.region = 
 
 # REG12
 cell28 = openmc.Cell(cell_id=28, fill=mat12)
-cell28.region = +surf3 & -surf4 & +surf20 & -surf31
+cell28.region = 
 
 # REG12
 cell29 = openmc.Cell(cell_id=29, fill=mat12)
-cell29.region = +surf4 & -surf8 & +surf25 & -surf27
+cell29.region = 
 
 # REG12
 cell30 = openmc.Cell(cell_id=30, fill=mat12)
-cell30.region = +surf7 & -surf8 & +surf20 & -surf25
+cell30.region = 
 
 # REG12
 cell31 = openmc.Cell(cell_id=31, fill=mat12)
-cell31.region = +surf4 & -surf12 & +surf27 & -surf28
+cell31.region = 
 
 # REG12
 cell32 = openmc.Cell(cell_id=32, fill=mat12)
-cell32.region = +surf11 & -surf12 & +surf20 & -surf27
+cell32.region = 
 
 # REGl3
 cell33 = openmc.Cell(cell_id=33, fill=mat13)
-cell33.region = +surf5 & -surf6 & +surf20 & -surf24
+cell33.region = 
 
 # REG14
 cell34 = openmc.Cell(cell_id=34, fill=mat14)
-cell34.region = +surf9 & -surf10 & +surf20 & -surf24
+cell34.region = 
 
 # REG14
 cell35 = openmc.Cell(cell_id=35, fill=mat15)
-cell35.region = +surf16 & -surf17 & +surf20 & -surf31
+cell35.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30, cell31, cell32, cell33, cell34, cell35])
 geometry = openmc.Geometry(root_universe)

@@ -105,39 +105,39 @@ cell1.region = +surf1 & -surf2 & -surf3
 
 # Pu
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = +surf3 & +surf4 & -surf5
+cell2.region = +surf3
 
 # HEU
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf3 & +surf5 & -surf6 & +surf8
+cell3.region = +surf3 & +surf8
 
 # Al
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = +surf3 & +surf6 & -surf7
+cell4.region = +surf3
 
 # Pu
 cell5 = openmc.Cell(cell_id=5, fill=mat1)
-cell5.region = +surf11 & -surf12
+cell5.region = 
 
 # Pu
 cell6 = openmc.Cell(cell_id=6, fill=mat1)
-cell6.region = -surf10 & +surf12 & -surf13
+cell6.region = -surf10
 
 # HEU
 cell7 = openmc.Cell(cell_id=7, fill=mat2)
-cell7.region = -surf10 & +surf13 & -surf14 & +surf20
+cell7.region = -surf10 & +surf20
 
 # Al
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = -surf10 & +surf14 & -surf15
+cell8.region = -surf10
 
 # Cu
 cell9 = openmc.Cell(cell_id=9, fill=mat5)
-cell9.region = -surf10 & +surf15 & -surf16 & -surf21
+cell9.region = -surf10 & -surf21
 
 # Steel
 cell10 = openmc.Cell(cell_id=10, fill=mat4)
-cell10.region = -surf10 & +surf16 & -surf17
+cell10.region = -surf10 & -surf17
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10])
 geometry = openmc.Geometry(root_universe)

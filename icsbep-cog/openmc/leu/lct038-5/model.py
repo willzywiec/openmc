@@ -142,11 +142,11 @@ u1_cell0.region = -surf1 & -surf2
 u1_cell1 = openmc.Cell(fill=mat4)
 u1_cell1.region = +surf1 & -surf2
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = +surf1 & +surf2 & -surf3
+u1_cell2.region = +surf1 & +surf2
 u1_cell3 = openmc.Cell(fill=mat4)
-u1_cell3.region = +surf3 & -surf4 & +surf5
+u1_cell3.region = -surf4 & +surf5
 u1_cell4 = openmc.Cell(fill=mat5)
-u1_cell4.region = +surf3 & -surf4 & -surf5
+u1_cell4.region = -surf4 & -surf5
 u1_cell5 = openmc.Cell(fill=mat3)
 u1_cell5.region = +surf4 & -surf6
 u1_cell6 = openmc.Cell(fill=mat3)
@@ -209,44 +209,44 @@ universe3.add_cell(openmc.Cell(fill=lattice3))
 # Assy
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
 cell1.translation = (-14.4, 14.4, 0.0)
-cell1.region = -surf10 & +surf12 & -surf14 & +surf21 & +surf22 & +surf32
+cell1.region = -surf10 & +surf12 & -surf14
 
 # Assy
 cell2 = openmc.Cell(cell_id=2, fill=universe3)
 cell2.translation = (-14.4, -14.4, 0.0)
-cell2.region = +surf10 & -surf11 & +surf12 & -surf14 & +surf23 & +surf24 & +surf34
+cell2.region = +surf10 & -surf11 & +surf12 & -surf14
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = -surf10 & +surf12 & -surf14 & -surf21
+cell3.region = -surf10 & +surf12 & -surf14
 
 # SST
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = -surf10 & +surf12 & -surf14 & -surf22
+cell4.region = -surf10 & +surf12 & -surf14
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf10 & -surf11 & +surf12 & -surf14 & -surf23
+cell5.region = +surf10 & -surf11 & +surf12 & -surf14
 
 # SST
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
-cell6.region = +surf10 & -surf11 & +surf12 & -surf14 & -surf24
+cell6.region = +surf10 & -surf11 & +surf12 & -surf14
 
 # Air
 cell7 = openmc.Cell(cell_id=7, fill=mat4)
-cell7.region = -surf10 & +surf12 & -surf14 & +surf21 & +surf22 & -surf31 & -surf32
+cell7.region = -surf10 & +surf12 & -surf14 & -surf31
 
 # SST
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = -surf10 & +surf12 & -surf14 & +surf21 & +surf22 & +surf31 & -surf32
+cell8.region = -surf10 & +surf12 & -surf14 & +surf31
 
 # Air
 cell9 = openmc.Cell(cell_id=9, fill=mat4)
-cell9.region = +surf10 & -surf11 & +surf12 & -surf14 & +surf23 & +surf24 & -surf33 & -surf34
+cell9.region = +surf10 & -surf11 & +surf12 & -surf14 & -surf33
 
 # SST
 cell10 = openmc.Cell(cell_id=10, fill=mat3)
-cell10.region = +surf10 & -surf11 & +surf12 & -surf14 & +surf23 & +surf24 & +surf33 & -surf34
+cell10.region = +surf10 & -surf11 & +surf12 & -surf14 & +surf33
 
 # Cncrt
 cell11 = openmc.Cell(cell_id=11, fill=mat6)

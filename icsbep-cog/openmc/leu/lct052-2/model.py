@@ -161,15 +161,15 @@ cell4.region = +surf11 & -surf12
 
 # AGS
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf11 & +surf12 & -surf13 & -surf20
+cell5.region = +surf11 & +surf12 & -surf20
 
 # Soln
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = -surf5 & +surf13 & -surf20
+cell6.region = -surf5 & -surf20
 
 # Refl
 cell7 = openmc.Cell(cell_id=7, fill=universe4)
-cell7.region = -surf1 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
+cell7.region = -surf1 & +surf20
 
 # Grid
 cell12 = openmc.Cell(cell_id=12, fill=mat3)

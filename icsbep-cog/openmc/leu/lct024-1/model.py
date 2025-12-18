@@ -182,23 +182,23 @@ universe3.add_cell(openmc.Cell(fill=lattice3))
 
 # core
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = -surf99 & +surf1001 & -surf1058 & +surf2001 & -surf2048
+cell1.region = -surf99
 
 # h2o
 cell2 = openmc.Cell(cell_id=2, fill=mat4)
-cell2.region = -surf99 & -surf1001
+cell2.region = -surf99
 
 # h2o
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
-cell3.region = -surf99 & +surf1001 & -surf1058 & -surf2001
+cell3.region = -surf99
 
 # h2o
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = -surf99 & +surf1001 & -surf1058 & +surf2048
+cell4.region = -surf99
 
 # h2o
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = -surf99 & +surf1058
+cell5.region = -surf99
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)

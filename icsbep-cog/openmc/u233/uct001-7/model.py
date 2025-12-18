@@ -251,21 +251,21 @@ surf420 = openmc.YPlane(surface_id=420, y0=25.12063)
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat3)
-u1_cell0.region = -surf10 & +surf13 & -surf14 & -surf17
+u1_cell0.region = -surf10 & +surf13 & -surf14
 u1_cell1 = openmc.Cell(fill=mat4)
-u1_cell1.region = -surf10 & -surf13 & -surf17
+u1_cell1.region = -surf10 & -surf13
 u1_cell2 = openmc.Cell(fill=mat4)
-u1_cell2.region = -surf10 & +surf14 & -surf17
+u1_cell2.region = -surf10 & +surf14
 u1_cell3 = openmc.Cell()
-u1_cell3.region = +surf10 & -surf11 & -surf17
+u1_cell3.region = +surf10 & -surf11
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = +surf11 & -surf12 & -surf17
+u1_cell4.region = +surf11 & -surf12
 u1_cell5 = openmc.Cell(fill=mat6)
-u1_cell5.region = +surf12 & +surf15 & -surf16 & -surf17
+u1_cell5.region = +surf12 & +surf15 & -surf16
 u1_cell6 = openmc.Cell(fill=mat1)
-u1_cell6.region = +surf12 & -surf15 & -surf17
+u1_cell6.region = +surf12 & -surf15
 u1_cell7 = openmc.Cell(fill=mat1)
-u1_cell7.region = +surf12 & +surf16 & -surf17
+u1_cell7.region = +surf12 & +surf16
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7])
 
 u2_cell0 = openmc.Cell(fill=mat5)
@@ -279,7 +279,7 @@ u2_cell3.region = +surf21 & -surf22 & -surf23
 u2_cell4 = openmc.Cell(fill=mat4)
 u2_cell4.region = +surf22 & -surf23
 u2_cell5 = openmc.Cell(fill=mat1)
-u2_cell5.region = +surf23 & -surf17
+u2_cell5.region = +surf23
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, u2_cell3, u2_cell4, u2_cell5])
 
 u3_cell0 = openmc.Cell(fill=mat1)
@@ -314,7 +314,7 @@ cell4.region = -surf1 & (-surf100_0 & -surf100_1 & -surf100_2 & -surf100_3 & -su
 
 # H2O
 cell21 = openmc.Cell(cell_id=21, fill=mat1)
-cell21.region = +surf12 & +surf16 & -surf17
+cell21.region = +surf12 & +surf16
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell21])
 geometry = openmc.Geometry(root_universe)

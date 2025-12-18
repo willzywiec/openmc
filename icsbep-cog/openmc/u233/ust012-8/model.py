@@ -73,7 +73,7 @@ surf8 = openmc.ZCylinder(surface_id=8, x0=-1.27, y0=127., r=46.0375, boundary_ty
 
 # Air
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = -surf1 & +surf9
+cell1.region = -surf1
 
 # Air
 cell2 = openmc.Cell(cell_id=2)
@@ -81,11 +81,11 @@ cell2.region = +surf1 & -surf5 & -surf8
 
 # Air
 cell3 = openmc.Cell(cell_id=3)
-cell3.region = +surf2 & +surf4 & +surf6 & -surf7 & -surf8 & +surf10
+cell3.region = +surf2 & +surf4 & +surf6 & -surf7 & -surf8
 
 # Soln
 cell4 = openmc.Cell(cell_id=4, fill=mat1)
-cell4.region = -surf1 & -surf9
+cell4.region = -surf1
 
 # Soln
 cell5 = openmc.Cell(cell_id=5, fill=mat1)
@@ -109,7 +109,7 @@ cell9.region = +surf4 & +surf6 & +surf7 & -surf8
 
 # Water
 cell10 = openmc.Cell(cell_id=10, fill=mat3)
-cell10.region = +surf2 & +surf4 & +surf6 & -surf7 & -surf8 & -surf10
+cell10.region = +surf2 & +surf4 & +surf6 & -surf7 & -surf8
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10])
 geometry = openmc.Geometry(root_universe)

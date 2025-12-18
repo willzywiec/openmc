@@ -182,13 +182,13 @@ u4_cell0.region = +surf7 & -surf8
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0])
 
 u5_cell0 = openmc.Cell(fill=mat5)
-u5_cell0.region = -surf701 & +surf904 & -surf999
+u5_cell0.region = +surf904 & -surf999
 u5_cell1 = openmc.Cell(fill=mat5)
-u5_cell1.region = +surf707 & +surf904 & -surf999
+u5_cell1.region = +surf904 & -surf999
 u5_cell2 = openmc.Cell(fill=mat2)
-u5_cell2.region = -surf701 & -surf904 & -surf999
+u5_cell2.region = -surf904 & -surf999
 u5_cell3 = openmc.Cell(fill=mat2)
-u5_cell3.region = +surf707 & -surf904 & -surf999
+u5_cell3.region = -surf904 & -surf999
 universe5 = openmc.Universe(universe_id=5, cells=[u5_cell0, u5_cell1, u5_cell2, u5_cell3])
 
 # ------------------------------------------------------------------------------
@@ -202,201 +202,201 @@ cell1.region = +surf904 & -surf999
 # Ftube
 cell2 = openmc.Cell(cell_id=2, fill=universe3)
 cell2.translation = (-40.0, -40.0, 0.0)
-cell2.region = -surf101 & +surf903 & -surf904 & -surf999
+cell2.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell3 = openmc.Cell(cell_id=3, fill=universe3)
 cell3.translation = (-40.0, -29.8, 0.0)
-cell3.region = -surf102 & +surf903 & -surf904 & -surf999
+cell3.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell4 = openmc.Cell(cell_id=4, fill=universe3)
 cell4.translation = (-40.0, -19.6, 0.0)
-cell4.region = -surf103 & +surf903 & -surf904 & -surf999
+cell4.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell5 = openmc.Cell(cell_id=5, fill=universe3)
 cell5.translation = (-40.0, -9.4, 0.0)
-cell5.region = -surf104 & +surf903 & -surf904 & -surf999
+cell5.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell6 = openmc.Cell(cell_id=6, fill=universe3)
 cell6.translation = (-40.0, 0.8, 0.0)
-cell6.region = -surf105 & +surf903 & -surf904 & -surf999
+cell6.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell7 = openmc.Cell(cell_id=7, fill=universe3)
 cell7.translation = (-40.0, 11.0, 0.0)
-cell7.region = -surf106 & +surf903 & -surf904 & -surf999
+cell7.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell8 = openmc.Cell(cell_id=8, fill=universe3)
 cell8.translation = (-29.8, -40.0, 0.0)
-cell8.region = -surf111 & +surf903 & -surf904 & -surf999
+cell8.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell9 = openmc.Cell(cell_id=9, fill=universe3)
 cell9.translation = (-29.8, -29.8, 0.0)
-cell9.region = -surf112 & +surf903 & -surf904 & -surf999
+cell9.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell10 = openmc.Cell(cell_id=10, fill=universe3)
 cell10.translation = (-29.8, -19.6, 0.0)
-cell10.region = -surf113 & +surf903 & -surf904 & -surf999
+cell10.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell11 = openmc.Cell(cell_id=11, fill=universe3)
 cell11.translation = (-29.8, -9.4, 0.0)
-cell11.region = -surf114 & +surf903 & -surf904 & -surf999
+cell11.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell12 = openmc.Cell(cell_id=12, fill=universe3)
 cell12.translation = (-29.8, 0.8, 0.0)
-cell12.region = -surf115 & +surf903 & -surf904 & -surf999
+cell12.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell13 = openmc.Cell(cell_id=13, fill=universe3)
 cell13.translation = (-29.8, 11.0, 0.0)
-cell13.region = -surf116 & +surf903 & -surf904 & -surf999
+cell13.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell14 = openmc.Cell(cell_id=14, fill=universe3)
 cell14.translation = (-29.8, 21.2, 0.0)
-cell14.region = -surf117 & +surf903 & -surf904 & -surf999
+cell14.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell15 = openmc.Cell(cell_id=15, fill=universe3)
 cell15.translation = (-19.6, -40.0, 0.0)
-cell15.region = -surf121 & +surf903 & -surf904 & -surf999
+cell15.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell16 = openmc.Cell(cell_id=16, fill=universe3)
 cell16.translation = (-19.6, -29.8, 0.0)
-cell16.region = -surf122 & +surf903 & -surf904 & -surf999
+cell16.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell17 = openmc.Cell(cell_id=17, fill=universe3)
 cell17.translation = (-19.6, -19.6, 0.0)
-cell17.region = -surf123 & +surf903 & -surf904 & -surf999
+cell17.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell18 = openmc.Cell(cell_id=18, fill=universe3)
 cell18.translation = (-19.6, -9.4, 0.0)
-cell18.region = -surf124 & +surf903 & -surf904 & -surf999
+cell18.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell19 = openmc.Cell(cell_id=19, fill=universe3)
 cell19.translation = (-19.6, 0.8, 0.0)
-cell19.region = -surf125 & +surf903 & -surf904 & -surf999
+cell19.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell20 = openmc.Cell(cell_id=20, fill=universe3)
 cell20.translation = (-19.6, 11.0, 0.0)
-cell20.region = -surf126 & +surf903 & -surf904 & -surf999
+cell20.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell21 = openmc.Cell(cell_id=21, fill=universe3)
 cell21.translation = (-19.6, 21.2, 0.0)
-cell21.region = -surf127 & +surf903 & -surf904 & -surf999
+cell21.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell22 = openmc.Cell(cell_id=22, fill=universe3)
 cell22.translation = (-9.4, -40.0, 0.0)
-cell22.region = -surf131 & +surf903 & -surf904 & -surf999
+cell22.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell23 = openmc.Cell(cell_id=23, fill=universe3)
 cell23.translation = (-9.4, -29.8, 0.0)
-cell23.region = -surf132 & +surf903 & -surf904 & -surf999
+cell23.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell24 = openmc.Cell(cell_id=24, fill=universe3)
 cell24.translation = (-9.4, -19.6, 0.0)
-cell24.region = -surf133 & +surf903 & -surf904 & -surf999
+cell24.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell25 = openmc.Cell(cell_id=25, fill=universe3)
 cell25.translation = (-9.4, -9.4, 0.0)
-cell25.region = -surf134 & +surf903 & -surf904 & -surf999
+cell25.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell26 = openmc.Cell(cell_id=26, fill=universe3)
 cell26.translation = (-9.4, 0.8, 0.0)
-cell26.region = -surf135 & +surf903 & -surf904 & -surf999
+cell26.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell27 = openmc.Cell(cell_id=27, fill=universe3)
 cell27.translation = (-9.4, 11.0, 0.0)
-cell27.region = -surf136 & +surf903 & -surf904 & -surf999
+cell27.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell28 = openmc.Cell(cell_id=28, fill=universe3)
 cell28.translation = (-9.4, 21.2, 0.0)
-cell28.region = -surf137 & +surf903 & -surf904 & -surf999
+cell28.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell29 = openmc.Cell(cell_id=29, fill=universe3)
 cell29.translation = (0.8, -40.0, 0.0)
-cell29.region = -surf141 & +surf903 & -surf904 & -surf999
+cell29.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell30 = openmc.Cell(cell_id=30, fill=universe3)
 cell30.translation = (0.8, -29.8, 0.0)
-cell30.region = -surf142 & +surf903 & -surf904 & -surf999
+cell30.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell31 = openmc.Cell(cell_id=31, fill=universe3)
 cell31.translation = (0.8, -19.6, 0.0)
-cell31.region = -surf143 & +surf903 & -surf904 & -surf999
+cell31.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell32 = openmc.Cell(cell_id=32, fill=universe3)
 cell32.translation = (0.8, -9.4, 0.0)
-cell32.region = -surf144 & +surf903 & -surf904 & -surf999
+cell32.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell33 = openmc.Cell(cell_id=33, fill=universe3)
 cell33.translation = (0.8, 0.8, 0.0)
-cell33.region = -surf145 & +surf903 & -surf904 & -surf999
+cell33.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell34 = openmc.Cell(cell_id=34, fill=universe3)
 cell34.translation = (0.8, 11.0, 0.0)
-cell34.region = -surf146 & +surf903 & -surf904 & -surf999
+cell34.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell35 = openmc.Cell(cell_id=35, fill=universe3)
 cell35.translation = (0.8, 21.2, 0.0)
-cell35.region = -surf147 & +surf903 & -surf904 & -surf999
+cell35.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell36 = openmc.Cell(cell_id=36, fill=universe3)
 cell36.translation = (11.0, -29.8, 0.0)
-cell36.region = -surf151 & +surf903 & -surf904 & -surf999
+cell36.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell37 = openmc.Cell(cell_id=37, fill=universe3)
 cell37.translation = (11.0, -19.6, 0.0)
-cell37.region = -surf152 & +surf903 & -surf904 & -surf999
+cell37.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell38 = openmc.Cell(cell_id=38, fill=universe3)
 cell38.translation = (11.0, -9.4, 0.0)
-cell38.region = -surf153 & +surf903 & -surf904 & -surf999
+cell38.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell39 = openmc.Cell(cell_id=39, fill=universe3)
 cell39.translation = (11.0, 0.8, 0.0)
-cell39.region = -surf154 & +surf903 & -surf904 & -surf999
+cell39.region = +surf903 & -surf904 & -surf999
 
 # Ftube
 cell40 = openmc.Cell(cell_id=40, fill=universe3)
 cell40.translation = (11.0, 11.0, 0.0)
-cell40.region = -surf155 & +surf903 & -surf904 & -surf999
+cell40.region = +surf903 & -surf904 & -surf999
 
 # Water
 cell41 = openmc.Cell(cell_id=41, fill=mat2)
-cell41.region = +surf903 & -surf904 & -surf999 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106
+cell41.region = +surf903 & -surf904 & -surf999
 
 # Plate
 cell42 = openmc.Cell(cell_id=42, fill=mat4)
@@ -408,11 +408,11 @@ cell43.region = +surf3 & +surf902 & -surf903 & -surf999
 
 # Water
 cell44 = openmc.Cell(cell_id=44, fill=mat2)
-cell44.region = -surf801 & +surf901 & -surf902 & -surf999
+cell44.region = +surf901 & -surf902 & -surf999
 
 # Water
 cell45 = openmc.Cell(cell_id=45, fill=mat2)
-cell45.region = +surf813 & +surf901 & -surf902 & -surf999
+cell45.region = +surf901 & -surf902 & -surf999
 
 # Water
 cell46 = openmc.Cell(cell_id=46, fill=mat2)
@@ -420,7 +420,7 @@ cell46.region = -surf901 & -surf999
 
 # Water
 cell55 = openmc.Cell(cell_id=55, fill=mat2)
-cell55.region = +surf707 & -surf904 & -surf999
+cell55.region = -surf904 & -surf999
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30, cell31, cell32, cell33, cell34, cell35, cell36, cell37, cell38, cell39, cell40, cell41, cell42, cell43, cell44, cell45, cell46, cell55])
 geometry = openmc.Geometry(root_universe)

@@ -274,11 +274,11 @@ universe9.add_cell(openmc.Cell(fill=lattice9))
 
 # Slit
 cell1 = openmc.Cell(cell_id=1, fill=universe9)
-cell1.region = -surf21 & +surf9 & -surf22
+cell1.region = -surf21 & -surf22
 
 # Zr4
 cell2 = openmc.Cell(cell_id=2, fill=mat4)
-cell2.region = -surf51 & -surf52 & -surf53 & -surf54
+cell2.region = 
 
 # Core
 cell3 = openmc.Cell(cell_id=3, fill=universe5)
@@ -286,7 +286,7 @@ cell3.region = -surf7 & (-surf20_0 & -surf20_1 & -surf20_2 & -surf20_3 & -surf20
 
 # Alles
 cell4 = openmc.Cell(cell_id=4, fill=universe1)
-cell4.region = -surf7 & (+surf20_0 | +surf20_1 | +surf20_2 | +surf20_3 | +surf20_4 | +surf20_5 | +surf20_6 | +surf20_7) & +surf51 & +surf52 & +surf53 & +surf54
+cell4.region = -surf7 & (+surf20_0 | +surf20_1 | +surf20_2 | +surf20_3 | +surf20_4 | +surf20_5 | +surf20_6 | +surf20_7)
 
 # H2O
 cell13 = openmc.Cell(cell_id=13, fill=mat6)

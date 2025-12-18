@@ -82,15 +82,15 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1
+u1_cell0.region = 
 u1_cell1 = openmc.Cell(fill=mat2)
-u1_cell1.region = +surf1 & -surf2 & -surf4
+u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat3)
-u1_cell2.region = +surf1 & +surf2 & -surf3
+u1_cell2.region = 
 u1_cell3 = openmc.Cell()
-u1_cell3.region = +surf1 & +surf2 & +surf3 & -surf4
+u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = +surf2 & +surf4 & -surf5
+u1_cell4.region = 
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4])
 
 # ------------------------------------------------------------------------------
@@ -100,118 +100,118 @@ universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, 
 # CanPart
 cell1 = openmc.Cell(cell_id=1, fill=universe1)
 cell1.translation = (0.0, 0.0, 10.715)
-cell1.region = -surf11 & +surf31
+cell1.region = 
 
 # CanPart
 cell2 = openmc.Cell(cell_id=2, fill=universe1)
 cell2.translation = (11.994, 0.0, 10.715)
-cell2.region = +surf11 & -surf12 & +surf31
+cell2.region = 
 
 # CanPart
 cell3 = openmc.Cell(cell_id=3, fill=universe1)
 cell3.translation = (0.0, -11.994, 10.715)
-cell3.region = +surf11 & +surf12 & -surf13 & +surf31
+cell3.region = 
 
 # CanPart
 cell4 = openmc.Cell(cell_id=4, fill=universe1)
 cell4.translation = (11.994, -11.994, 10.715)
-cell4.region = +surf11 & +surf12 & +surf13 & -surf14 & +surf31
+cell4.region = 
 
 # CanPart
 cell5 = openmc.Cell(cell_id=5, fill=universe1)
 cell5.translation = (0.0, 0.0, 18.97)
-cell5.region = -surf21 & +surf41
+cell5.region = 
 
 # CanPart
 cell6 = openmc.Cell(cell_id=6, fill=universe1)
 cell6.translation = (11.994, 0.0, 18.97)
-cell6.region = +surf21 & -surf22 & +surf41
+cell6.region = 
 
 # CanPart
 cell7 = openmc.Cell(cell_id=7, fill=universe1)
 cell7.translation = (0.0, -11.994, 18.97)
-cell7.region = +surf21 & +surf22 & -surf23 & +surf41
+cell7.region = 
 
 # CanPart
 cell8 = openmc.Cell(cell_id=8, fill=universe1)
 cell8.translation = (11.994, -11.994, 18.97)
-cell8.region = +surf21 & +surf22 & +surf23 & -surf24 & +surf41
+cell8.region = 
 
 # Tray
 cell9 = openmc.Cell(cell_id=9, fill=mat5)
-cell9.region = -surf31
+cell9.region = 
 
 # Tray
 cell10 = openmc.Cell(cell_id=10, fill=mat5)
-cell10.region = -surf32 & +surf11 & +surf12 & +surf13 & +surf14 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105
+cell10.region = 
 
 # Tray
 cell11 = openmc.Cell(cell_id=11, fill=mat5)
-cell11.region = -surf33 & +surf41
+cell11.region = 
 
 # Tray
 cell12 = openmc.Cell(cell_id=12, fill=mat5)
-cell12.region = -surf41
+cell12.region = 
 
 # Tray
 cell13 = openmc.Cell(cell_id=13, fill=mat5)
-cell13.region = -surf42 & +surf21 & +surf22 & +surf23 & +surf24 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105
+cell13.region = 
 
 # Tray
 cell14 = openmc.Cell(cell_id=14, fill=mat5)
-cell14.region = -surf43
+cell14.region = 
 
 # Water
 cell15 = openmc.Cell(cell_id=15, fill=mat6)
-cell15.region = -surf32 & -surf101
+cell15.region = 
 
 # Water
 cell16 = openmc.Cell(cell_id=16, fill=mat6)
-cell16.region = -surf32 & -surf102
+cell16.region = 
 
 # Water
 cell17 = openmc.Cell(cell_id=17, fill=mat6)
-cell17.region = -surf32 & -surf103
+cell17.region = 
 
 # Water
 cell18 = openmc.Cell(cell_id=18, fill=mat6)
-cell18.region = -surf32 & -surf104
+cell18.region = 
 
 # Water
 cell19 = openmc.Cell(cell_id=19, fill=mat6)
-cell19.region = -surf32 & -surf105
+cell19.region = 
 
 # Water
 cell20 = openmc.Cell(cell_id=20, fill=mat6)
-cell20.region = -surf42 & -surf101
+cell20.region = 
 
 # Water
 cell21 = openmc.Cell(cell_id=21, fill=mat6)
-cell21.region = -surf42 & -surf102
+cell21.region = 
 
 # Water
 cell22 = openmc.Cell(cell_id=22, fill=mat6)
-cell22.region = -surf42 & -surf103
+cell22.region = 
 
 # Water
 cell23 = openmc.Cell(cell_id=23, fill=mat6)
-cell23.region = -surf42 & -surf104
+cell23.region = 
 
 # Water
 cell24 = openmc.Cell(cell_id=24, fill=mat6)
-cell24.region = -surf42 & -surf105
+cell24.region = 
 
 # Water
 cell25 = openmc.Cell(cell_id=25, fill=mat6)
-cell25.region = -surf6 & -surf7 & -surf8 & +surf11 & +surf12 & +surf13 & +surf14 & +surf21 & +surf22 & +surf23 & +surf24 & +surf31 & +surf32 & +surf33 & +surf41 & +surf42 & +surf43
+cell25.region = 
 
 # Tank
 cell26 = openmc.Cell(cell_id=26, fill=mat5)
-cell26.region = +surf7 & -surf8
+cell26.region = 
 
 # SS304L
 cell32 = openmc.Cell(cell_id=32, fill=mat4)
-cell32.region = +surf2 & +surf4 & -surf5
+cell32.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell32])
 geometry = openmc.Geometry(root_universe)

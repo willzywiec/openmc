@@ -210,11 +210,11 @@ universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2, 
 # Assy
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
 cell1.translation = (-15.3, 15.3, 0.0)
-cell1.region = +surf18 & -surf10 & +surf21 & +surf22 & +surf23 & +surf24
+cell1.region = +surf18 & -surf10
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = +surf18 & -surf10 & +surf20 & -surf21 & -surf10 & -surf22 & -surf10 & -surf23 & -surf10 & -surf24
+cell2.region = +surf18 & -surf10 & +surf20
 
 # Boral
 cell3 = openmc.Cell(cell_id=3, fill=universe3)
@@ -224,11 +224,11 @@ cell3.region = +surf18 & +surf10 & -surf11
 # Assy
 cell4 = openmc.Cell(cell_id=4, fill=universe2)
 cell4.translation = (15.3, 15.3, 0.0)
-cell4.region = +surf18 & -surf12 & +surf26 & +surf27 & +surf28 & +surf29
+cell4.region = +surf18 & -surf12
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf18 & -surf12 & +surf25 & -surf26 & -surf12 & -surf27 & -surf12 & -surf28 & -surf12 & -surf29
+cell5.region = +surf18 & -surf12 & +surf25
 
 # Boral
 cell6 = openmc.Cell(cell_id=6, fill=universe3)
@@ -238,11 +238,11 @@ cell6.region = +surf18 & +surf12 & -surf13
 # Assy
 cell7 = openmc.Cell(cell_id=7, fill=universe2)
 cell7.translation = (-15.3, -15.3, 0.0)
-cell7.region = +surf18 & -surf14 & +surf31 & +surf32 & +surf33 & +surf34
+cell7.region = +surf18 & -surf14
 
 # SST
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = +surf18 & -surf14 & +surf30 & -surf31 & -surf14 & -surf32 & -surf14 & -surf33 & -surf14 & -surf34
+cell8.region = +surf18 & -surf14
 
 # Boral
 cell9 = openmc.Cell(cell_id=9, fill=universe3)
@@ -252,11 +252,11 @@ cell9.region = +surf18 & +surf14 & -surf15
 # Assy
 cell10 = openmc.Cell(cell_id=10, fill=universe2)
 cell10.translation = (15.3, -15.3, 0.0)
-cell10.region = +surf18 & -surf16 & +surf36 & +surf37 & +surf38 & +surf39
+cell10.region = +surf18 & -surf16
 
 # SST
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
-cell11.region = +surf18 & -surf16 & +surf35 & -surf36 & -surf16 & -surf37 & -surf16 & -surf38 & -surf16 & -surf39
+cell11.region = +surf18 & -surf16
 
 # Boral
 cell12 = openmc.Cell(cell_id=12, fill=universe3)

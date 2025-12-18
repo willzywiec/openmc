@@ -165,31 +165,31 @@ universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, 
 
 # Core
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf31 & +surf32 & +surf33 & +surf34 & +surf35 & +surf36 & +surf37 & +surf38 & +surf39 & +surf40 & +surf41 & +surf42
+cell1.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11)
 
 # Refl
 cell2 = openmc.Cell(cell_id=2, fill=universe4)
-cell2.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf31 & +surf4 & -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf37
+cell2.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
 
 # Refl
 cell3 = openmc.Cell(cell_id=3, fill=universe4)
-cell3.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf32 & +surf4 & -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf38
+cell3.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
 
 # Refl
 cell4 = openmc.Cell(cell_id=4, fill=universe4)
-cell4.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf33 & +surf4 & -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf39
+cell4.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
 
 # Refl
 cell5 = openmc.Cell(cell_id=5, fill=universe4)
-cell5.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf34 & +surf4 & -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf40
+cell5.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
 
 # Refl
 cell6 = openmc.Cell(cell_id=6, fill=universe4)
-cell6.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf35 & +surf4 & -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf41
+cell6.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
 
 # Refl
 cell7 = openmc.Cell(cell_id=7, fill=universe4)
-cell7.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf36 & +surf4 & -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf42
+cell7.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
 
 # Refl
 cell8 = openmc.Cell(cell_id=8, fill=universe4)
@@ -205,15 +205,15 @@ cell10.region = +surf11 & -surf12
 
 # AGS
 cell11 = openmc.Cell(cell_id=11, fill=mat2)
-cell11.region = +surf11 & +surf12 & -surf13 & -surf20
+cell11.region = +surf11 & +surf12 & -surf20
 
 # Soln
 cell12 = openmc.Cell(cell_id=12, fill=mat4)
-cell12.region = -surf5 & +surf13 & -surf20
+cell12.region = -surf5 & -surf20
 
 # Refl
 cell13 = openmc.Cell(cell_id=13, fill=universe4)
-cell13.region = -surf1 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
+cell13.region = -surf1 & +surf20
 
 # Grid
 cell18 = openmc.Cell(cell_id=18, fill=mat3)

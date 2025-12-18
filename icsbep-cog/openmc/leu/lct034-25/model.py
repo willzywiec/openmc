@@ -206,11 +206,11 @@ universe2.add_cell(openmc.Cell(fill=lattice2))
 # Assy
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
 cell1.translation = (-16.73, 16.73, 0.0)
-cell1.region = +surf18 & -surf10 & +surf21 & +surf22 & +surf23
+cell1.region = +surf18 & -surf10
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = +surf18 & -surf10 & +surf20 & -surf21 & -surf10 & -surf22 & -surf10 & -surf23
+cell2.region = +surf18 & -surf10 & +surf20
 
 # Abstl
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
@@ -239,11 +239,11 @@ cell8.region = +surf18 & +surf10 & +surf111 & +surf112 & -surf113 & +surf103
 # Assy
 cell9 = openmc.Cell(cell_id=9, fill=universe2)
 cell9.translation = (16.73, 16.73, 0.0)
-cell9.region = +surf18 & -surf12 & +surf26 & +surf27 & +surf28
+cell9.region = +surf18 & -surf12
 
 # SST
 cell10 = openmc.Cell(cell_id=10, fill=mat3)
-cell10.region = +surf18 & -surf12 & +surf25 & -surf26 & -surf12 & -surf27 & -surf12 & -surf28
+cell10.region = +surf18 & -surf12 & +surf25
 
 # Abstl
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
@@ -272,11 +272,11 @@ cell16.region = +surf18 & +surf12 & +surf131 & +surf132 & -surf133 & +surf123
 # Assy
 cell17 = openmc.Cell(cell_id=17, fill=universe2)
 cell17.translation = (-16.73, -16.73, 0.0)
-cell17.region = +surf18 & -surf14 & +surf31 & +surf32 & +surf33
+cell17.region = +surf18 & -surf14
 
 # SST
 cell18 = openmc.Cell(cell_id=18, fill=mat3)
-cell18.region = +surf18 & -surf14 & +surf30 & -surf31 & -surf14 & -surf32 & -surf14 & -surf33
+cell18.region = +surf18 & -surf14
 
 # Abstl
 cell19 = openmc.Cell(cell_id=19, fill=mat3)
@@ -305,11 +305,11 @@ cell24.region = +surf18 & +surf14 & +surf151 & +surf152 & -surf153 & +surf143
 # Assy
 cell25 = openmc.Cell(cell_id=25, fill=universe2)
 cell25.translation = (16.73, -16.73, 0.0)
-cell25.region = +surf18 & -surf16 & +surf36 & +surf37 & +surf38
+cell25.region = +surf18 & -surf16
 
 # SST
 cell26 = openmc.Cell(cell_id=26, fill=mat3)
-cell26.region = +surf18 & -surf16 & +surf35 & -surf36 & -surf16 & -surf37 & -surf16 & -surf38
+cell26.region = +surf18 & -surf16
 
 # Abstl
 cell27 = openmc.Cell(cell_id=27, fill=mat3)

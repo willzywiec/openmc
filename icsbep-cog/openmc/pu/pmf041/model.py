@@ -185,91 +185,91 @@ materials = openmc.Materials([mat101, mat102, mat103, mat104, mat201, mat202, ma
 
 # VOID
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = -surf100
+cell1.region = 
 
 # LAYER1
 cell2 = openmc.Cell(cell_id=2, fill=mat101)
-cell2.region = +surf100 & -surf101
+cell2.region = 
 
 # LAYER2
 cell3 = openmc.Cell(cell_id=3, fill=mat102)
-cell3.region = +surf101 & -surf102
+cell3.region = 
 
 # LAYER3
 cell4 = openmc.Cell(cell_id=4, fill=mat103)
-cell4.region = +surf102 & -surf103
+cell4.region = 
 
 # LAYER4
 cell5 = openmc.Cell(cell_id=5, fill=mat104)
-cell5.region = +surf103 & -surf104
+cell5.region = 
 
 # DU01
 cell6 = openmc.Cell(cell_id=6, fill=mat201)
-cell6.region = +surf104 & -surf201
+cell6.region = 
 
 # DU02
 cell7 = openmc.Cell(cell_id=7, fill=mat202)
-cell7.region = +surf201 & -surf202
+cell7.region = 
 
 # DU03
 cell8 = openmc.Cell(cell_id=8, fill=mat203)
-cell8.region = +surf202 & -surf203
+cell8.region = 
 
 # DU04
 cell9 = openmc.Cell(cell_id=9, fill=mat204)
-cell9.region = +surf203 & -surf204
+cell9.region = 
 
 # DU05
 cell10 = openmc.Cell(cell_id=10, fill=mat205)
-cell10.region = +surf204 & -surf205
+cell10.region = 
 
 # DU06
 cell11 = openmc.Cell(cell_id=11, fill=mat206)
-cell11.region = +surf205 & -surf206
+cell11.region = 
 
 # DU07
 cell12 = openmc.Cell(cell_id=12, fill=mat207)
-cell12.region = +surf206 & -surf207
+cell12.region = 
 
 # DU08
 cell13 = openmc.Cell(cell_id=13, fill=mat208)
-cell13.region = +surf207 & -surf208
+cell13.region = 
 
 # DU09
 cell14 = openmc.Cell(cell_id=14, fill=mat209)
-cell14.region = +surf208 & -surf209
+cell14.region = 
 
 # DU10
 cell15 = openmc.Cell(cell_id=15, fill=mat210)
-cell15.region = +surf209 & -surf210
+cell15.region = 
 
 # DU11
 cell16 = openmc.Cell(cell_id=16, fill=mat211)
-cell16.region = +surf210 & -surf211
+cell16.region = 
 
 # DU12
 cell17 = openmc.Cell(cell_id=17, fill=mat212)
-cell17.region = +surf211 & -surf212
+cell17.region = 
 
 # DU13
 cell18 = openmc.Cell(cell_id=18, fill=mat213)
-cell18.region = +surf212 & -surf213
+cell18.region = 
 
 # DU14
 cell19 = openmc.Cell(cell_id=19, fill=mat214)
-cell19.region = +surf213 & -surf214
+cell19.region = 
 
 # DU15
 cell20 = openmc.Cell(cell_id=20, fill=mat215)
-cell20.region = +surf214 & -surf215
+cell20.region = 
 
 # DU16
 cell21 = openmc.Cell(cell_id=21, fill=mat216)
-cell21.region = +surf215 & -surf216
+cell21.region = 
 
 # DU17
 cell22 = openmc.Cell(cell_id=22, fill=mat217)
-cell22.region = +surf216 & -surf217
+cell22.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22])
 geometry = openmc.Geometry(root_universe)

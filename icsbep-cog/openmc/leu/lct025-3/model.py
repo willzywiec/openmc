@@ -197,13 +197,13 @@ universe3 = openmc.Universe(universe_id=3, cells=[])
 u4_cell0 = openmc.Cell(fill=mat4)
 u4_cell0.region = -surf8 & -surf14
 u4_cell1 = openmc.Cell(fill=mat4)
-u4_cell1.region = -surf21 & -surf14
+u4_cell1.region = -surf14
 u4_cell2 = openmc.Cell(fill=mat4)
-u4_cell2.region = -surf22 & -surf14
+u4_cell2.region = -surf14
 u4_cell3 = openmc.Cell(fill=mat4)
-u4_cell3.region = -surf23 & -surf14
+u4_cell3.region = -surf14
 u4_cell4 = openmc.Cell(fill=mat4)
-u4_cell4.region = -surf24 & -surf14
+u4_cell4.region = -surf14
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 # Lattice 5: 31x19 array
@@ -268,41 +268,41 @@ universe6.add_cell(openmc.Cell(fill=lattice6))
 
 # array1
 cell1 = openmc.Cell(cell_id=1, fill=universe5)
-cell1.region = -surf14 & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5 & -surf31_6 & -surf31_7 & -surf31_8 & -surf31_9 & -surf31_10 & -surf31_11) & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110
+cell1.region = -surf14 & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5 & -surf31_6 & -surf31_7 & -surf31_8 & -surf31_9 & -surf31_10 & -surf31_11)
 
 # array2
 cell2 = openmc.Cell(cell_id=2, fill=universe6)
-cell2.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & +surf201 & +surf202 & +surf203 & +surf204 & +surf205 & +surf206
+cell2.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
 
 # FROD
 cell3 = openmc.Cell(cell_id=3, fill=universe3)
 cell3.translation = (-7.5, 12.990381, 0.0)
-cell3.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf201
+cell3.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
 
 # FROD
 cell4 = openmc.Cell(cell_id=4, fill=universe3)
 cell4.translation = (7.5, 12.990381, 0.0)
-cell4.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf202
+cell4.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
 
 # FROD
 cell5 = openmc.Cell(cell_id=5, fill=universe3)
 cell5.translation = (-15.0, 0.0, 0.0)
-cell5.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf203
+cell5.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
 
 # FROD
 cell6 = openmc.Cell(cell_id=6, fill=universe3)
 cell6.translation = (15.0, 0.0, 0.0)
-cell6.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf204
+cell6.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
 
 # FROD
 cell7 = openmc.Cell(cell_id=7, fill=universe3)
 cell7.translation = (-7.5, -12.990381, 0.0)
-cell7.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf205
+cell7.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
 
 # FROD
 cell8 = openmc.Cell(cell_id=8, fill=universe3)
 cell8.translation = (7.5, -12.990381, 0.0)
-cell8.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf206
+cell8.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
 
 # D16
 cell9 = openmc.Cell(cell_id=9, fill=mat3)
@@ -322,11 +322,11 @@ cell21.region = +surf5 & +surf6 & +surf7 & -surf8
 
 # ALLES
 cell22 = openmc.Cell(cell_id=22, fill=universe1)
-cell22.region = +surf8 & +surf21 & +surf22 & +surf23 & +surf24 & -surf14
+cell22.region = +surf8 & -surf14
 
 # ALLES
 cell28 = openmc.Cell(cell_id=28, fill=universe1)
-cell28.region = +surf8 & +surf21 & +surf22 & +surf23 & +surf24 & -surf14
+cell28.region = +surf8 & -surf14
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell15, cell21, cell22, cell28])
 geometry = openmc.Geometry(root_universe)

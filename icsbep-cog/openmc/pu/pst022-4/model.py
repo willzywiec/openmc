@@ -70,71 +70,71 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 
 # SOLN
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = +surf1 & -surf2 & +surf5 & -surf6
+cell1.region = 
 
 # WATER
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = -surf2 & +surf7 & -surf8
+cell2.region = 
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = +surf1 & +surf4 & -surf5 & -surf7
+cell3.region = 
 
 # SST
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = -surf1 & -surf7
+cell4.region = 
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf3 & +surf5 & -surf6 & -surf7 & +surf11 & +surf12 & +surf13 & +surf14 & +surf15 & +surf16 & +surf17 & +surf18
+cell5.region = 
 
 # SST
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
-cell6.region = +surf1 & +surf6 & -surf7
+cell6.region = 
 
 # AIR
 cell7 = openmc.Cell(cell_id=7, fill=mat6)
-cell7.region = +surf3 & +surf5 & -surf6 & -surf7 & -surf11
+cell7.region = 
 
 # AIR
 cell8 = openmc.Cell(cell_id=8, fill=mat6)
-cell8.region = +surf3 & +surf5 & -surf6 & -surf7 & -surf12
+cell8.region = 
 
 # AIR
 cell9 = openmc.Cell(cell_id=9, fill=mat6)
-cell9.region = +surf3 & +surf5 & -surf6 & -surf7 & -surf13
+cell9.region = 
 
 # AIR
 cell10 = openmc.Cell(cell_id=10, fill=mat6)
-cell10.region = +surf3 & +surf5 & -surf6 & -surf7 & -surf14
+cell10.region = 
 
 # AIR
 cell11 = openmc.Cell(cell_id=11, fill=mat6)
-cell11.region = +surf3 & +surf5 & -surf6 & -surf7 & -surf15
+cell11.region = 
 
 # AIR
 cell12 = openmc.Cell(cell_id=12, fill=mat6)
-cell12.region = +surf3 & +surf5 & -surf6 & -surf7 & -surf16
+cell12.region = 
 
 # AIR
 cell13 = openmc.Cell(cell_id=13, fill=mat6)
-cell13.region = +surf3 & +surf5 & -surf6 & -surf7 & -surf17
+cell13.region = 
 
 # AIR
 cell14 = openmc.Cell(cell_id=14, fill=mat6)
-cell14.region = +surf3 & +surf5 & -surf6 & -surf7 & -surf18
+cell14.region = 
 
 # AIR
 cell15 = openmc.Cell(cell_id=15, fill=mat6)
-cell15.region = +surf2 & -surf3 & +surf5 & -surf6
+cell15.region = 
 
 # AIR
 cell16 = openmc.Cell(cell_id=16, fill=mat6)
-cell16.region = +surf1 & -surf4 & -surf7
+cell16.region = 
 
 # AIR
 cell17 = openmc.Cell(cell_id=17, fill=mat6)
-cell17.region = +surf2 & +surf7 & -surf8
+cell17.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17])
 geometry = openmc.Geometry(root_universe)

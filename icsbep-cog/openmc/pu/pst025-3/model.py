@@ -129,167 +129,167 @@ cell2.region = +surf2 & -surf3 & -surf4
 
 # Crate
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf3 & -surf4 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110
+cell3.region = +surf3 & -surf4
 
 # Water
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = +surf3 & -surf4 & -surf101 & +surf3 & +surf3 & -surf4 & -surf102 & +surf3 & +surf3 & -surf4 & -surf103
+cell4.region = +surf3 & -surf4
 
 # Water
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf3 & -surf4 & -surf104 & +surf3 & +surf3 & -surf4 & -surf105 & +surf3 & +surf3 & -surf4 & -surf106
+cell5.region = +surf3 & -surf4
 
 # Water
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
-cell6.region = +surf3 & -surf4 & -surf107 & +surf3 & +surf3 & -surf4 & -surf108 & +surf3 & +surf3 & -surf4 & -surf109
+cell6.region = +surf3 & -surf4
 
 # Water
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
-cell7.region = +surf3 & -surf4 & -surf110
+cell7.region = +surf3 & -surf4
 
 # Water
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = +surf3 & -surf4 & -surf111 & +surf3 & +surf3 & -surf4 & -surf112 & +surf3 & +surf3 & -surf4 & -surf113
+cell8.region = +surf3 & -surf4
 
 # Water
 cell9 = openmc.Cell(cell_id=9, fill=mat3)
-cell9.region = +surf3 & -surf4 & -surf114 & +surf3 & +surf3 & -surf4 & -surf115 & +surf3 & +surf3 & -surf4 & -surf116
+cell9.region = +surf3 & -surf4
 
 # Water
 cell10 = openmc.Cell(cell_id=10, fill=mat3)
-cell10.region = +surf3 & -surf4 & -surf117 & +surf3 & +surf3 & -surf4 & -surf118 & +surf3 & +surf3 & -surf4 & -surf119
+cell10.region = +surf3 & -surf4
 
 # Water
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
-cell11.region = +surf3 & -surf4 & -surf120
+cell11.region = +surf3 & -surf4
 
 # Water
 cell12 = openmc.Cell(cell_id=12, fill=mat3)
-cell12.region = +surf3 & -surf4 & -surf121 & +surf3 & +surf3 & -surf4 & -surf122 & +surf3 & +surf3 & -surf4 & -surf123
+cell12.region = +surf3 & -surf4
 
 # Water
 cell13 = openmc.Cell(cell_id=13, fill=mat3)
-cell13.region = +surf3 & -surf4 & -surf124 & +surf3 & +surf3 & -surf4 & -surf125 & +surf3 & +surf3 & -surf4 & -surf126
+cell13.region = +surf3 & -surf4
 
 # Water
 cell14 = openmc.Cell(cell_id=14, fill=mat3)
-cell14.region = +surf3 & -surf4 & -surf127 & +surf3 & +surf3 & -surf4 & -surf128 & +surf3 & +surf3 & -surf4 & -surf129
+cell14.region = +surf3 & -surf4
 
 # Water
 cell15 = openmc.Cell(cell_id=15, fill=mat3)
-cell15.region = +surf3 & -surf4 & -surf130
+cell15.region = +surf3 & -surf4
 
 # Water
 cell16 = openmc.Cell(cell_id=16, fill=mat3)
-cell16.region = +surf3 & -surf4 & -surf131 & +surf3 & +surf3 & -surf4 & -surf132 & +surf3 & +surf3 & -surf4 & -surf133
+cell16.region = +surf3 & -surf4
 
 # Water
 cell17 = openmc.Cell(cell_id=17, fill=mat3)
-cell17.region = +surf3 & -surf4 & -surf134 & +surf3 & +surf3 & -surf4 & -surf135 & +surf3 & +surf3 & -surf4 & -surf136
+cell17.region = +surf3 & -surf4
 
 # Water
 cell18 = openmc.Cell(cell_id=18, fill=mat3)
-cell18.region = +surf3 & -surf4 & -surf137 & +surf3 & +surf3 & -surf4 & -surf138 & +surf3 & +surf3 & -surf4 & -surf139
+cell18.region = +surf3 & -surf4
 
 # Water
 cell19 = openmc.Cell(cell_id=19, fill=mat3)
-cell19.region = +surf3 & -surf4 & -surf140
+cell19.region = +surf3 & -surf4
 
 # Water
 cell20 = openmc.Cell(cell_id=20, fill=mat3)
-cell20.region = +surf3 & -surf4 & -surf141 & +surf3 & +surf3 & -surf4 & -surf142 & +surf3 & +surf3 & -surf4 & -surf143
+cell20.region = +surf3 & -surf4
 
 # Water
 cell21 = openmc.Cell(cell_id=21, fill=mat3)
-cell21.region = +surf3 & -surf4 & -surf144 & +surf3 & +surf3 & -surf4 & -surf145 & +surf3 & +surf3 & -surf4 & -surf146
+cell21.region = +surf3 & -surf4
 
 # Water
 cell22 = openmc.Cell(cell_id=22, fill=mat3)
-cell22.region = +surf3 & -surf4 & -surf147 & +surf3 & +surf3 & -surf4 & -surf148 & +surf3 & +surf3 & -surf4 & -surf149
+cell22.region = +surf3 & -surf4
 
 # Water
 cell23 = openmc.Cell(cell_id=23, fill=mat3)
-cell23.region = +surf3 & -surf4 & -surf150
+cell23.region = +surf3 & -surf4
 
 # Water
 cell24 = openmc.Cell(cell_id=24, fill=mat3)
-cell24.region = +surf3 & -surf4 & -surf151 & +surf3 & +surf3 & -surf4 & -surf152 & +surf3 & +surf3 & -surf4 & -surf153
+cell24.region = +surf3 & -surf4
 
 # Water
 cell25 = openmc.Cell(cell_id=25, fill=mat3)
-cell25.region = +surf3 & -surf4 & -surf154 & +surf3 & +surf3 & -surf4 & -surf155 & +surf3 & +surf3 & -surf4 & -surf156
+cell25.region = +surf3 & -surf4
 
 # Water
 cell26 = openmc.Cell(cell_id=26, fill=mat3)
-cell26.region = +surf3 & -surf4 & -surf157 & +surf3 & +surf3 & -surf4 & -surf158 & +surf3 & +surf3 & -surf4 & -surf159
+cell26.region = +surf3 & -surf4
 
 # Water
 cell27 = openmc.Cell(cell_id=27, fill=mat3)
-cell27.region = +surf3 & -surf4 & -surf160
+cell27.region = +surf3 & -surf4
 
 # Water
 cell28 = openmc.Cell(cell_id=28, fill=mat3)
-cell28.region = +surf3 & -surf4 & -surf161 & +surf3 & +surf3 & -surf4 & -surf162 & +surf3 & +surf3 & -surf4 & -surf163
+cell28.region = +surf3 & -surf4
 
 # Water
 cell29 = openmc.Cell(cell_id=29, fill=mat3)
-cell29.region = +surf3 & -surf4 & -surf164 & +surf3 & +surf3 & -surf4 & -surf165 & +surf3 & +surf3 & -surf4 & -surf166
+cell29.region = +surf3 & -surf4
 
 # Water
 cell30 = openmc.Cell(cell_id=30, fill=mat3)
-cell30.region = +surf3 & -surf4 & -surf167 & +surf3 & +surf3 & -surf4 & -surf168 & +surf3 & +surf3 & -surf4 & -surf169
+cell30.region = +surf3 & -surf4
 
 # Water
 cell31 = openmc.Cell(cell_id=31, fill=mat3)
-cell31.region = +surf3 & -surf4 & -surf170
+cell31.region = +surf3 & -surf4
 
 # Water
 cell32 = openmc.Cell(cell_id=32, fill=mat3)
-cell32.region = +surf3 & -surf4 & -surf171 & +surf3 & +surf3 & -surf4 & -surf172 & +surf3 & +surf3 & -surf4 & -surf173
+cell32.region = +surf3 & -surf4
 
 # Water
 cell33 = openmc.Cell(cell_id=33, fill=mat3)
-cell33.region = +surf3 & -surf4 & -surf174 & +surf3 & +surf3 & -surf4 & -surf175 & +surf3 & +surf3 & -surf4 & -surf176
+cell33.region = +surf3 & -surf4
 
 # Water
 cell34 = openmc.Cell(cell_id=34, fill=mat3)
-cell34.region = +surf3 & -surf4 & -surf177 & +surf3 & +surf3 & -surf4 & -surf178 & +surf3 & +surf3 & -surf4 & -surf179
+cell34.region = +surf3 & -surf4
 
 # Water
 cell35 = openmc.Cell(cell_id=35, fill=mat3)
-cell35.region = +surf3 & -surf4 & -surf180
+cell35.region = +surf3 & -surf4
 
 # Water
 cell36 = openmc.Cell(cell_id=36, fill=mat3)
-cell36.region = +surf3 & -surf4 & -surf181 & +surf3 & +surf3 & -surf4 & -surf182 & +surf3 & +surf3 & -surf4 & -surf183
+cell36.region = +surf3 & -surf4
 
 # Water
 cell37 = openmc.Cell(cell_id=37, fill=mat3)
-cell37.region = +surf3 & -surf4 & -surf184 & +surf3 & +surf3 & -surf4 & -surf185 & +surf3 & +surf3 & -surf4 & -surf186
+cell37.region = +surf3 & -surf4
 
 # Water
 cell38 = openmc.Cell(cell_id=38, fill=mat3)
-cell38.region = +surf3 & -surf4 & -surf187 & +surf3 & +surf3 & -surf4 & -surf188 & +surf3 & +surf3 & -surf4 & -surf189
+cell38.region = +surf3 & -surf4
 
 # Water
 cell39 = openmc.Cell(cell_id=39, fill=mat3)
-cell39.region = +surf3 & -surf4 & -surf190
+cell39.region = +surf3 & -surf4
 
 # Water
 cell40 = openmc.Cell(cell_id=40, fill=mat3)
-cell40.region = +surf3 & -surf4 & -surf191 & +surf3 & +surf3 & -surf4 & -surf192 & +surf3 & +surf3 & -surf4 & -surf193
+cell40.region = +surf3 & -surf4
 
 # Water
 cell41 = openmc.Cell(cell_id=41, fill=mat3)
-cell41.region = +surf3 & -surf4 & -surf194 & +surf3 & +surf3 & -surf4 & -surf195 & +surf3 & +surf3 & -surf4 & -surf196
+cell41.region = +surf3 & -surf4
 
 # Water
 cell42 = openmc.Cell(cell_id=42, fill=mat3)
-cell42.region = +surf3 & -surf4 & -surf197 & +surf3 & +surf3 & -surf4 & -surf198 & +surf3 & +surf3 & -surf4 & -surf199
+cell42.region = +surf3 & -surf4
 
 # Water
 cell43 = openmc.Cell(cell_id=43, fill=mat3)
-cell43.region = +surf3 & -surf4 & -surf200
+cell43.region = +surf3 & -surf4
 
 # Water
 cell44 = openmc.Cell(cell_id=44, fill=mat3)

@@ -150,13 +150,13 @@ universe3 = openmc.Universe(universe_id=3, cells=[])
 u4_cell0 = openmc.Cell(fill=mat6)
 u4_cell0.region = -surf3
 u4_cell1 = openmc.Cell(fill=mat6)
-u4_cell1.region = -surf4
+u4_cell1.region = 
 u4_cell2 = openmc.Cell(fill=mat6)
-u4_cell2.region = -surf5
+u4_cell2.region = 
 u4_cell3 = openmc.Cell(fill=mat6)
-u4_cell3.region = -surf6
+u4_cell3.region = 
 u4_cell4 = openmc.Cell(fill=mat6)
-u4_cell4.region = -surf7
+u4_cell4.region = 
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 # Lattice 5: 27x17 array
@@ -217,64 +217,64 @@ universe6.add_cell(openmc.Cell(fill=lattice6))
 
 # flt5c
 cell1 = openmc.Cell(cell_id=1, fill=universe5)
-cell1.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110 & +surf111 & +surf112
+cell1.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell2 = openmc.Cell(cell_id=2, fill=mat6)
-cell2.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf101
+cell2.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell3 = openmc.Cell(cell_id=3, fill=mat6)
-cell3.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf102
+cell3.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell4 = openmc.Cell(cell_id=4, fill=mat6)
-cell4.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf103
+cell4.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell5 = openmc.Cell(cell_id=5, fill=mat6)
-cell5.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf104
+cell5.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell6 = openmc.Cell(cell_id=6, fill=mat6)
-cell6.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf105
+cell6.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell7 = openmc.Cell(cell_id=7, fill=mat6)
-cell7.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf106
+cell7.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell8 = openmc.Cell(cell_id=8, fill=mat6)
-cell8.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf107
+cell8.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell9 = openmc.Cell(cell_id=9, fill=mat6)
-cell9.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf108
+cell9.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell10 = openmc.Cell(cell_id=10, fill=mat6)
-cell10.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf109
+cell10.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell11 = openmc.Cell(cell_id=11, fill=mat6)
-cell11.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf110
+cell11.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell12 = openmc.Cell(cell_id=12, fill=mat6)
-cell12.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf111
+cell12.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # water
 cell13 = openmc.Cell(cell_id=13, fill=mat6)
-cell13.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22 & -surf112
+cell13.region = -surf14 & (-surf21_0 & -surf21_1 & -surf21_2 & -surf21_3 & -surf21_4 & -surf21_5 & -surf21_6 & -surf21_7 & -surf21_8 & -surf21_9 & -surf21_10 & -surf21_11) & -surf22
 
 # elttc
 cell14 = openmc.Cell(cell_id=14, fill=universe6)
-cell14.region = -surf14 & (+surf21_0 | +surf21_1 | +surf21_2 | +surf21_3 | +surf21_4 | +surf21_5 | +surf21_6 | +surf21_7 | +surf21_8 | +surf21_9 | +surf21_10 | +surf21_11) & -surf22 & +surf113
+cell14.region = -surf14 & (+surf21_0 | +surf21_1 | +surf21_2 | +surf21_3 | +surf21_4 | +surf21_5 | +surf21_6 | +surf21_7 | +surf21_8 | +surf21_9 | +surf21_10 | +surf21_11) & -surf22
 
 # frod
 cell15 = openmc.Cell(cell_id=15, fill=universe1)
 cell15.translation = (-30.1752, 0.0, 0.0)
-cell15.region = -surf14 & (+surf21_0 | +surf21_1 | +surf21_2 | +surf21_3 | +surf21_4 | +surf21_5 | +surf21_6 | +surf21_7 | +surf21_8 | +surf21_9 | +surf21_10 | +surf21_11) & -surf22 & -surf113
+cell15.region = -surf14 & (+surf21_0 | +surf21_1 | +surf21_2 | +surf21_3 | +surf21_4 | +surf21_5 | +surf21_6 | +surf21_7 | +surf21_8 | +surf21_9 | +surf21_10 | +surf21_11) & -surf22
 
 # else
 cell16 = openmc.Cell(cell_id=16, fill=universe2)
@@ -290,11 +290,11 @@ cell26.region = -surf14 & -surf15
 
 # else
 cell27 = openmc.Cell(cell_id=27, fill=universe2)
-cell27.region = +surf3 & +surf4 & +surf5 & +surf6 & +surf7 & -surf14
+cell27.region = +surf3 & -surf14
 
 # else
 cell33 = openmc.Cell(cell_id=33, fill=universe2)
-cell33.region = +surf3 & +surf4 & +surf5 & +surf6 & +surf7 & -surf14
+cell33.region = +surf3 & -surf14
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell20, cell26, cell27, cell33])
 geometry = openmc.Geometry(root_universe)

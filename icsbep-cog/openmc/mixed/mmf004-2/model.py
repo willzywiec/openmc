@@ -123,35 +123,35 @@ cell1.region = +surf1 & -surf2 & -surf3
 
 # HEU
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf3 & +surf4 & -surf5 & +surf7
+cell2.region = +surf3 & +surf7
 
 # BeO
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = +surf3 & +surf5 & -surf6 & +surf8 & +surf9
+cell3.region = +surf3 & +surf8 & +surf9
 
 # Pu
 cell4 = openmc.Cell(cell_id=4, fill=mat1)
-cell4.region = +surf11 & -surf12
+cell4.region = 
 
 # HEU
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf12 & -surf13
+cell5.region = 
 
 # HEU
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
-cell6.region = -surf10 & +surf13 & -surf14 & +surf20
+cell6.region = -surf10 & +surf20
 
 # BeO
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
-cell7.region = -surf10 & +surf14 & -surf15 & +surf21
+cell7.region = -surf10 & +surf21
 
 # Cu
 cell8 = openmc.Cell(cell_id=8, fill=mat6)
-cell8.region = -surf10 & +surf15 & -surf16 & -surf22
+cell8.region = -surf10 & -surf22
 
 # Steel
 cell9 = openmc.Cell(cell_id=9, fill=mat5)
-cell9.region = -surf10 & +surf16 & -surf17
+cell9.region = -surf10 & -surf17
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9])
 geometry = openmc.Geometry(root_universe)

@@ -87,7 +87,7 @@ universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = -surf4 & +surf11 & +surf12
+cell1.region = -surf4
 
 # Conc
 cell2 = openmc.Cell(cell_id=2, fill=mat2)

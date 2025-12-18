@@ -312,227 +312,227 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 
 # Al
 cell1 = openmc.Cell(cell_id=1, fill=mat8)
-cell1.region = -surf1
+cell1.region = 
 
 # SS304
 cell2 = openmc.Cell(cell_id=2, fill=mat5)
-cell2.region = +surf1 & -surf2
+cell2.region = 
 
 # SS304
 cell3 = openmc.Cell(cell_id=3, fill=mat5)
-cell3.region = +surf2 & -surf3
+cell3.region = 
 
 # SS304
 cell4 = openmc.Cell(cell_id=4, fill=mat5)
-cell4.region = +surf3 & -surf4 & +surf15
+cell4.region = 
 
 # Al
 cell5 = openmc.Cell(cell_id=5, fill=mat8)
-cell5.region = +surf5 & +surf6 & +surf7 & -surf8
+cell5.region = 
 
 # Al
 cell6 = openmc.Cell(cell_id=6, fill=mat8)
-cell6.region = +surf7 & +surf8 & -surf9
+cell6.region = 
 
 # Al
 cell7 = openmc.Cell(cell_id=7, fill=mat8)
-cell7.region = -surf10 & +surf11 & -surf12
+cell7.region = 
 
 # Al
 cell8 = openmc.Cell(cell_id=8, fill=mat8)
-cell8.region = +surf12 & -surf13 & +surf14 & +surf14 & +surf15
+cell8.region = 
 
 # SS304
 cell9 = openmc.Cell(cell_id=9, fill=mat5)
-cell9.region = -surf14
+cell9.region = 
 
 # SS304
 cell10 = openmc.Cell(cell_id=10, fill=mat5)
-cell10.region = +surf14 & -surf15
+cell10.region = 
 
 # Al
 cell11 = openmc.Cell(cell_id=11, fill=mat7)
-cell11.region = +surf10 & +surf17 & -surf18 & -surf19
+cell11.region = 
 
 # Np
 cell12 = openmc.Cell(cell_id=12, fill=mat1)
-cell12.region = -surf21
+cell12.region = 
 
 # W
 cell13 = openmc.Cell(cell_id=13, fill=mat2)
-cell13.region = +surf22 & -surf23
+cell13.region = 
 
 # Ni
 cell14 = openmc.Cell(cell_id=14, fill=mat3)
-cell14.region = +surf24 & -surf25
+cell14.region = 
 
 # Ni
 cell15 = openmc.Cell(cell_id=15, fill=mat3)
-cell15.region = +surf26 & -surf27
+cell15.region = 
 
 # Al
 cell16 = openmc.Cell(cell_id=16, fill=mat8)
-cell16.region = +surf31 & -surf32
+cell16.region = 
 
 # Al
 cell17 = openmc.Cell(cell_id=17, fill=mat8)
-cell17.region = +surf31 & +surf32 & -surf33
+cell17.region = 
 
 # SS301
 cell18 = openmc.Cell(cell_id=18, fill=mat6)
-cell18.region = +surf33 & +surf34 & -surf35
+cell18.region = 
 
 # Al
 cell19 = openmc.Cell(cell_id=19, fill=mat8)
-cell19.region = +surf31 & +surf35 & -surf36
+cell19.region = 
 
 # Al
 cell20 = openmc.Cell(cell_id=20, fill=mat8)
-cell20.region = +surf33 & -surf41
+cell20.region = 
 
 # Al
 cell21 = openmc.Cell(cell_id=21, fill=mat8)
-cell21.region = +surf33 & -surf42
+cell21.region = 
 
 # Al
 cell22 = openmc.Cell(cell_id=22, fill=mat8)
-cell22.region = +surf41 & +surf42 & -surf43 & +surf55
+cell22.region = 
 
 # Al
 cell23 = openmc.Cell(cell_id=23, fill=mat8)
-cell23.region = +surf45 & -surf46
+cell23.region = 
 
 # Al
 cell24 = openmc.Cell(cell_id=24, fill=mat8)
-cell24.region = +surf50 & +surf51 & -surf52
+cell24.region = 
 
 # Al
 cell25 = openmc.Cell(cell_id=25, fill=mat8)
-cell25.region = +surf50 & +surf52 & -surf53 & +surf54 & +surf55
+cell25.region = 
 
 # SS304
 cell26 = openmc.Cell(cell_id=26, fill=mat5)
-cell26.region = -surf54
+cell26.region = 
 
 # SS304
 cell27 = openmc.Cell(cell_id=27, fill=mat5)
-cell27.region = +surf54 & -surf55
+cell27.region = 
 
 # HEU
 cell28 = openmc.Cell(cell_id=28, fill=mat21)
-cell28.region = -surf10 & +surf200 & +surf211 & -surf212 & +surf213 & +surf214
+cell28.region = 
 
 # HEU
 cell29 = openmc.Cell(cell_id=29, fill=mat23)
-cell29.region = -surf10 & +surf200 & +surf231 & -surf232 & +surf233 & +surf234
+cell29.region = 
 
 # HEU
 cell30 = openmc.Cell(cell_id=30, fill=mat25)
-cell30.region = -surf10 & +surf200 & +surf251 & -surf252 & +surf253 & +surf254
+cell30.region = 
 
 # HEU
 cell31 = openmc.Cell(cell_id=31, fill=mat27)
-cell31.region = -surf10 & +surf200 & +surf271 & -surf272 & +surf273 & +surf274
+cell31.region = 
 
 # HEU
 cell32 = openmc.Cell(cell_id=32, fill=mat29)
-cell32.region = -surf10 & +surf200 & +surf291 & -surf292 & +surf293 & +surf294
+cell32.region = 
 
 # HEU
 cell33 = openmc.Cell(cell_id=33, fill=mat31)
-cell33.region = -surf10 & +surf200 & +surf311 & -surf312 & +surf313 & +surf314
+cell33.region = 
 
 # HEU
 cell34 = openmc.Cell(cell_id=34, fill=mat33)
-cell34.region = -surf10 & +surf200 & +surf331 & -surf332 & +surf333 & +surf334
+cell34.region = 
 
 # HEU
 cell35 = openmc.Cell(cell_id=35, fill=mat35)
-cell35.region = -surf10 & +surf200 & +surf351 & -surf352 & +surf353 & +surf354
+cell35.region = 
 
 # HEU
 cell36 = openmc.Cell(cell_id=36, fill=mat37)
-cell36.region = -surf10 & +surf200 & +surf371 & -surf372 & +surf373 & +surf374
+cell36.region = 
 
 # HEU
 cell37 = openmc.Cell(cell_id=37, fill=mat39)
-cell37.region = -surf10 & +surf200 & +surf391 & -surf392 & +surf393 & +surf394
+cell37.region = 
 
 # HEU
 cell38 = openmc.Cell(cell_id=38, fill=mat41)
-cell38.region = -surf10 & +surf200 & +surf411 & -surf412 & +surf413 & +surf414
+cell38.region = 
 
 # HEU
 cell39 = openmc.Cell(cell_id=39, fill=mat43)
-cell39.region = -surf10 & +surf200 & +surf431 & -surf432 & +surf433 & +surf434
+cell39.region = 
 
 # HEU
 cell40 = openmc.Cell(cell_id=40, fill=mat45)
-cell40.region = -surf10 & +surf200 & +surf451 & -surf452 & +surf453 & +surf454
+cell40.region = 
 
 # HEU
 cell41 = openmc.Cell(cell_id=41, fill=mat47)
-cell41.region = -surf10 & +surf200 & +surf471 & -surf472 & +surf473 & +surf474
+cell41.region = 
 
 # HEU
 cell42 = openmc.Cell(cell_id=42, fill=mat49)
-cell42.region = -surf10 & +surf200 & +surf491 & -surf492 & +surf493 & +surf494
+cell42.region = 
 
 # HEU
 cell43 = openmc.Cell(cell_id=43, fill=mat22)
-cell43.region = +surf50 & +surf200 & +surf221 & -surf222 & +surf223 & +surf224
+cell43.region = 
 
 # HEU
 cell44 = openmc.Cell(cell_id=44, fill=mat24)
-cell44.region = +surf50 & +surf200 & +surf241 & -surf242 & +surf243 & +surf244
+cell44.region = 
 
 # HEU
 cell45 = openmc.Cell(cell_id=45, fill=mat26)
-cell45.region = +surf50 & +surf200 & +surf261 & -surf262 & +surf263 & +surf264
+cell45.region = 
 
 # HEU
 cell46 = openmc.Cell(cell_id=46, fill=mat28)
-cell46.region = +surf50 & +surf200 & +surf281 & -surf282 & +surf283 & +surf284
+cell46.region = 
 
 # HEU
 cell47 = openmc.Cell(cell_id=47, fill=mat30)
-cell47.region = +surf50 & +surf200 & +surf301 & -surf302 & +surf303 & +surf304
+cell47.region = 
 
 # HEU
 cell48 = openmc.Cell(cell_id=48, fill=mat32)
-cell48.region = +surf50 & +surf200 & +surf321 & -surf322 & +surf323 & +surf324
+cell48.region = 
 
 # HEU
 cell49 = openmc.Cell(cell_id=49, fill=mat34)
-cell49.region = +surf50 & +surf200 & +surf341 & -surf342 & +surf343 & +surf344
+cell49.region = 
 
 # HEU
 cell50 = openmc.Cell(cell_id=50, fill=mat36)
-cell50.region = +surf50 & +surf200 & +surf361 & -surf362 & +surf363 & +surf364
+cell50.region = 
 
 # HEU
 cell51 = openmc.Cell(cell_id=51, fill=mat38)
-cell51.region = +surf50 & +surf200 & +surf381 & -surf382 & +surf383 & +surf384
+cell51.region = 
 
 # HEU
 cell52 = openmc.Cell(cell_id=52, fill=mat40)
-cell52.region = +surf50 & +surf200 & +surf401 & -surf402 & +surf403 & +surf404
+cell52.region = 
 
 # HEU
 cell53 = openmc.Cell(cell_id=53, fill=mat42)
-cell53.region = +surf50 & +surf200 & +surf421 & -surf422 & +surf423 & +surf424
+cell53.region = 
 
 # HEU
 cell54 = openmc.Cell(cell_id=54, fill=mat44)
-cell54.region = +surf50 & +surf200 & +surf441 & -surf442 & +surf443 & +surf444
+cell54.region = 
 
 # HEU
 cell55 = openmc.Cell(cell_id=55, fill=mat46)
-cell55.region = +surf50 & +surf200 & +surf461 & -surf462 & +surf463 & +surf464
+cell55.region = 
 
 # HEU
 cell56 = openmc.Cell(cell_id=56, fill=mat48)
-cell56.region = +surf50 & +surf200 & +surf481 & -surf482 & +surf483 & +surf484
+cell56.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30, cell31, cell32, cell33, cell34, cell35, cell36, cell37, cell38, cell39, cell40, cell41, cell42, cell43, cell44, cell45, cell46, cell47, cell48, cell49, cell50, cell51, cell52, cell53, cell54, cell55, cell56])
 geometry = openmc.Geometry(root_universe)

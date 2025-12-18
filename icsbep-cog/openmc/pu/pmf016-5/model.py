@@ -82,21 +82,21 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1
+u1_cell0.region = 
 u1_cell1 = openmc.Cell(fill=mat2)
-u1_cell1.region = +surf1 & -surf2
+u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat3)
-u1_cell2.region = +surf1 & +surf2 & -surf3
+u1_cell2.region = 
 u1_cell3 = openmc.Cell()
-u1_cell3.region = +surf1 & +surf2 & +surf3 & -surf4
+u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = +surf4 & -surf5
+u1_cell4.region = 
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4])
 
 u2_cell0 = openmc.Cell(fill=mat6)
-u2_cell0.region = +surf6 & +surf7 & +surf8 & -surf9 & -surf10
+u2_cell0.region = 
 u2_cell1 = openmc.Cell(fill=mat5)
-u2_cell1.region = +surf6 & +surf7 & +surf8 & +surf10 & -surf11
+u2_cell1.region = 
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1])
 
 # ------------------------------------------------------------------------------
@@ -105,59 +105,59 @@ universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1])
 
 # Sleeve
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
-cell1.region = -surf11 & -surf20
+cell1.region = 
 
 # Sleeve
 cell2 = openmc.Cell(cell_id=2, fill=universe2)
 cell2.translation = (-13.05, -13.05, 0.0)
-cell2.region = -surf12 & -surf20
+cell2.region = 
 
 # Sleeve
 cell3 = openmc.Cell(cell_id=3, fill=universe2)
 cell3.translation = (0.0, -13.05, 0.0)
-cell3.region = -surf13 & -surf20
+cell3.region = 
 
 # Sleeve
 cell4 = openmc.Cell(cell_id=4, fill=universe2)
 cell4.translation = (13.05, -13.05, 0.0)
-cell4.region = -surf14 & -surf20
+cell4.region = 
 
 # Sleeve
 cell5 = openmc.Cell(cell_id=5, fill=universe2)
 cell5.translation = (-13.05, 0.0, 0.0)
-cell5.region = -surf15 & -surf20
+cell5.region = 
 
 # Sleeve
 cell6 = openmc.Cell(cell_id=6, fill=universe2)
 cell6.translation = (13.05, 0.0, 0.0)
-cell6.region = -surf16 & -surf20
+cell6.region = 
 
 # Sleeve
 cell7 = openmc.Cell(cell_id=7, fill=universe2)
 cell7.translation = (-13.05, 13.05, 0.0)
-cell7.region = -surf17 & -surf20
+cell7.region = 
 
 # Sleeve
 cell8 = openmc.Cell(cell_id=8, fill=universe2)
 cell8.translation = (0.0, 13.05, 0.0)
-cell8.region = -surf18 & -surf20
+cell8.region = 
 
 # Sleeve
 cell9 = openmc.Cell(cell_id=9, fill=universe2)
 cell9.translation = (13.05, 13.05, 0.0)
-cell9.region = -surf19 & -surf20
+cell9.region = 
 
 # Water
 cell10 = openmc.Cell(cell_id=10, fill=mat6)
-cell10.region = -surf9 & -surf20 & +surf11 & +surf12 & +surf13 & +surf14 & +surf15 & +surf16 & +surf17 & +surf18 & +surf19
+cell10.region = 
 
 # SS304L
 cell16 = openmc.Cell(cell_id=16, fill=mat4)
-cell16.region = +surf4 & -surf5
+cell16.region = 
 
 # Al3003
 cell19 = openmc.Cell(cell_id=19, fill=mat5)
-cell19.region = +surf6 & +surf7 & +surf8 & +surf10 & -surf11
+cell19.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell16, cell19])
 geometry = openmc.Geometry(root_universe)

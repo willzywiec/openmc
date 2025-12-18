@@ -244,15 +244,15 @@ universe6.add_cell(openmc.Cell(fill=lattice6))
 
 # lttc
 cell1 = openmc.Cell(cell_id=1, fill=universe6)
-cell1.region = -surf14 & +surf426
+cell1.region = -surf14
 
 # lttc
 cell2 = openmc.Cell(cell_id=2, fill=universe5)
-cell2.region = -surf14 & +surf401 & -surf426
+cell2.region = -surf14
 
 # lttc
 cell3 = openmc.Cell(cell_id=3, fill=universe4)
-cell3.region = -surf14 & -surf401
+cell3.region = -surf14
 
 # Clad
 cell7 = openmc.Cell(cell_id=7, fill=mat2)

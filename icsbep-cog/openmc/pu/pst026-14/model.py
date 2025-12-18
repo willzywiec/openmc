@@ -143,7 +143,7 @@ cell2.region = +surf2 & -surf3 & -surf4
 
 # Crate
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf3 & -surf4 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110
+cell3.region = +surf3 & -surf4
 
 # Frame
 cell4 = openmc.Cell(cell_id=4, fill=mat2)

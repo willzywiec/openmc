@@ -681,7 +681,7 @@ universe3.add_cell(openmc.Cell(fill=lattice3))
 
 # core
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = (-surf91_0 & -surf91_1 & -surf91_2 & -surf91_3 & -surf91_4 & -surf91_5 & -surf91_6 & -surf91_7 & -surf91_8 & -surf91_9 & -surf91_10 & -surf91_11) & -surf99 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26 & +surf27 & +surf28 & +surf29 & +surf30 & +surf31 & +surf32
+cell1.region = (-surf91_0 & -surf91_1 & -surf91_2 & -surf91_3 & -surf91_4 & -surf91_5 & -surf91_6 & -surf91_7 & -surf91_8 & -surf91_9 & -surf91_10 & -surf91_11) & -surf99
 
 root_universe = openmc.Universe(cells=[cell1])
 geometry = openmc.Geometry(root_universe)

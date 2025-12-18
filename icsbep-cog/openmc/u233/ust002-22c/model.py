@@ -54,11 +54,11 @@ surf3 = openmc.ZCylinder(surface_id=3, x0=-15.3691, y0=36.0176, r=25.6336, bound
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = -surf1 & +surf4
+cell1.region = -surf1
 
 # Soln
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = -surf1 & -surf4
+cell2.region = -surf1
 
 # Al2S
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
