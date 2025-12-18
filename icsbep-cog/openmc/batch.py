@@ -647,6 +647,46 @@ def export_results_to_csv(results: List[BenchmarkResult], output_file: Path):
     print(f"Results exported to: {output_file}")
 
 
+def init_csv_file(output_file: Path):
+    """Initialize CSV file with headers for incremental writing."""
+    import csv
+
+    headers = [
+        'Benchmark', 'Category', 'Status',
+        'k-eff', 'k-eff Std Dev',
+        'Beta-eff', 'Beta-eff Std Dev',
+        'Gen Time (s)', 'Gen Time Std Dev',
+        'Alpha (1/s)', 'Alpha Std Dev',
+        'Error'
+    ]
+
+    with open(output_file, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(headers)
+
+
+def append_result_to_csv(result: BenchmarkResult, output_file: Path):
+    """Append a single result to CSV file (for incremental updates)."""
+    import csv
+
+    with open(output_file, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            result.name,
+            result.category,
+            'Success' if result.success else 'Failed',
+            result.keff,
+            result.keff_std,
+            result.beta_eff,
+            result.beta_eff_std,
+            result.gen_time,
+            result.gen_time_std,
+            result.alpha,
+            result.alpha_std,
+            result.error_message if not result.success else ''
+        ])
+
+
 def list_benchmarks(base_dir: Path):
     """List all available benchmarks."""
     categories = ['ieu', 'leu', 'mixed', 'pu', 'smf', 'u233']
@@ -729,6 +769,14 @@ def main():
     openmc_args = args.openmc_args.split() if args.openmc_args else None
     enable_kinetics = not args.no_kinetics
 
+    # Set up output paths
+    output_path = base_dir / args.output
+    csv_path = output_path.with_suffix('.csv')
+
+    # Initialize CSV file for incremental writing
+    init_csv_file(csv_path)
+    print(f"Writing results incrementally to: {csv_path}")
+
     start_time = time.time()
     results: List[BenchmarkResult] = []
 
@@ -743,6 +791,9 @@ def main():
             for future in as_completed(futures):
                 result = future.result()
                 results.append(result)
+
+                # Write result to CSV immediately
+                append_result_to_csv(result, csv_path)
 
                 status = "[OK]" if result.success else "[FAIL]"
                 keff_str = f"k={result.keff:.5f}" if result.keff else "k=N/A"
@@ -759,6 +810,9 @@ def main():
         for i, bench_dir in enumerate(benchmark_dirs):
             result = run_benchmark(bench_dir, args.run, enable_kinetics, openmc_args)
             results.append(result)
+
+            # Write result to CSV immediately
+            append_result_to_csv(result, csv_path)
 
             status = "[OK]" if result.success else "[FAIL]"
             keff_str = f"k={result.keff:.5f}" if result.keff else "k=N/A"
@@ -789,14 +843,12 @@ def main():
     print(f"With beta-eff: {with_beta}")
     print(f"With alpha: {with_alpha}")
 
-    # Export results
-    if results:
-        output_path = base_dir / args.output
-        if args.output.endswith('.xlsx') and HAS_OPENPYXL:
-            export_results_to_excel(results, output_path)
-        else:
-            csv_path = output_path.with_suffix('.csv')
-            export_results_to_csv(results, csv_path)
+    # CSV was already written incrementally
+    print(f"CSV results saved to: {csv_path}")
+
+    # Also export to Excel if openpyxl is available
+    if results and args.output.endswith('.xlsx') and HAS_OPENPYXL:
+        export_results_to_excel(results, output_path)
 
     if failed > 0:
         sys.exit(1)
