@@ -6,7 +6,8 @@ This example shows how to enable calculation of:
 - beta_eff: effective delayed neutron fraction
 - prompt_neutron_lifetime (ℓ): time from neutron birth to absorption or leakage
 - mean_generation_time (Λ): time from neutron birth to next-generation fission
-- alpha: α = (ρ - β_eff) / Λ
+- alpha_static: α = (ρ - β_eff) / Λ (from inhour equation)
+- alpha_griesheimer: α = (ρ - β_eff) / Λ (same formula, iterative method)
 
 The kinetics parameters are automatically calculated during an eigenvalue
 simulation when enabled in the settings.
@@ -71,7 +72,8 @@ settings.export_to_xml()
 # print(f"Beta-effective: {sp.beta_eff}")
 # print(f"Prompt neutron lifetime: {sp.prompt_neutron_lifetime}")
 # print(f"Mean generation time: {sp.mean_generation_time}")
-# print(f"Alpha: {sp.alpha}")
+# print(f"Alpha (static): {sp.alpha_static}")
+# print(f"Alpha (Griesheimer): {sp.alpha_griesheimer}")
 
 print("Example files created successfully!")
 print("To run this example:")

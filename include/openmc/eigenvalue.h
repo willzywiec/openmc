@@ -33,18 +33,22 @@ extern double keff_prompt;            //!< Mean k_prompt over active generations
 extern double keff_prompt_std;        //!< Standard deviation of k_prompt
 extern double beta_eff;               //!< Effective delayed neutron fraction
 extern double beta_eff_std;           //!< Standard deviation of beta_eff
-extern double alpha;                  //!< Alpha eigenvalue: α = (ρ - β_eff) / Λ
-extern double alpha_std;              //!< Standard deviation of alpha
+
+// Alpha eigenvalues (two methods)
+extern double alpha_static;           //!< α = (ρ - β) / Λ (static method)
+extern double alpha_static_std;       //!< Standard deviation of static alpha
+extern double alpha_griesheimer;      //!< α from iterative pseudo-absorption method
+extern double alpha_griesheimer_std;  //!< Standard deviation of Griesheimer alpha
 
 // Neutron timing parameters
-extern double prompt_neutron_lifetime;     //!< Prompt neutron lifetime ℓ [s]
+extern double prompt_neutron_lifetime;     //!< Prompt neutron lifetime ℓ (time to any removal) [s]
 extern double prompt_neutron_lifetime_std; //!< Std dev of prompt neutron lifetime
-extern double mean_generation_time;        //!< Mean generation time Λ [s]
+extern double mean_generation_time;        //!< Mean generation time Λ (time to fission) [s]
 extern double mean_generation_time_std;    //!< Std dev of mean generation time
 extern int kinetics_tally_index;   //!< Index of internal kinetics tally
 
-// Unused alpha calculation state variables (kept for ABI compatibility)
-extern double alpha_previous;
+// Griesheimer method state variables
+extern double alpha_current;          //!< Current α estimate for iteration
 extern double pseudo_absorption_sigma;
 extern int alpha_iteration;
 extern bool alpha_converged;

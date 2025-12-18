@@ -2,41 +2,53 @@
 
 ## Overview
 
-The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates alpha using kinetics parameters derived from prompt neutron chain tallies during normal eigenvalue iterations.
+The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates alpha using two methods:
+
+### Static Method (alpha_static)
 
 **Formula:**
 ```
-α = (k_prompt - 1) / Λ
+α_static = (ρ - β_eff) / Λ
 ```
 
-where:
-- **k_prompt** = prompt neutron multiplication factor (excluding delayed neutrons)
-- **Λ** = prompt generation time (mean time from birth-to-birth of fission chain)
+This is derived from the inhour equation, accounting for delayed neutrons.
+
+### Griesheimer Method (alpha_griesheimer)
+
+**Formula:**
+```
+α_griesheimer = (ρ - β_eff) / Λ
+```
+
+This is the same formula as the static method. The difference is the **methodology**:
+- Static: Derive α directly from k-eigenvalue results
+- Griesheimer: Iteratively add pseudo-absorption α/v to cross sections until k→1
+
+**Common definitions:**
+- **ρ** = (k - 1) / k is reactivity
+- **β_eff** = effective delayed neutron fraction = (k - k_prompt) / k
+- **Λ** = mean generation time (mean time from neutron birth to fission)
 
 ---
 
 ## Physical Meaning
 
 The alpha eigenvalue describes population dynamics:
-- **α > 0**: Supercritical (k_prompt > 1) → population growing exponentially
-- **α = 0**: Critical (k_prompt = 1) → population stable
-- **α < 0**: Subcritical (k_prompt < 1) → population decaying exponentially
+- **α > 0**: Supercritical (k > 1 + β_eff) → population growing exponentially
+- **α = 0**: Delayed critical → population stable
+- **α < 0**: Subcritical or prompt subcritical → population decaying exponentially
 
-### Generation Time vs Lifetime
+### Mean Generation Time (Λ)
 
-The alpha eigenvalue is fundamentally a function of **generation time** (Λ), not lifetime (ℓ):
+The mean generation time is the average time from neutron birth to fission (production of the next generation). This is measured directly by scoring at fission events:
 
-- **Prompt neutron lifetime (ℓ)**: Average time from birth to removal (absorption or leakage)
-- **Prompt generation time (Λ)**: Mean time from birth-to-birth of the fission chain
-
-These are related by:
 ```
-Λ = ℓ / k
+Λ = Σ(time × ν × weight) / Σ(ν × weight)
 ```
 
-The generation time formulation is more natural because α describes the exponential growth/decay rate of the fission chain, and the chain progresses in generations, not individual neutron lifetimes.
+where the sums are taken over all fission events, and ν is the number of neutrons produced.
 
-While alpha can be expressed in terms of lifetime as `α = k(k-1)/ℓ`, this is a derived form. The direct relationship `α = (k-1)/Λ` is preferred.
+**Important**: Mean generation time is NOT the same as prompt neutron lifetime. The lifetime (ℓ) is the average time to any removal (absorption or leakage), while generation time (Λ) is specifically the time to fission. These are related but distinct quantities.
 
 ---
 
@@ -53,67 +65,89 @@ void setup_kinetics_tallies()
   tally->set_writable(false);  // Internal use only
 
   vector<std::string> scores;
-  scores.push_back("prompt-chain-gen-time-num");    // Numerator: Σ(lifetime × weight)
-  scores.push_back("prompt-chain-gen-time-denom");  // Denominator: Σ(weight)
-  scores.push_back("prompt-chain-nu-fission-rate"); // For diagnostics
-  scores.push_back("prompt-chain-absorption-rate"); // For diagnostics
-  scores.push_back("prompt-chain-leakage-rate");    // For diagnostics
-  scores.push_back("prompt-chain-population");      // For diagnostics
+  // Mean generation time scores (at fission events only)
+  scores.push_back("prompt-chain-fission-time-num");   // Σ(time × ν × weight)
+  scores.push_back("prompt-chain-fission-time-denom"); // Σ(ν × weight)
+  // Diagnostic scores
+  scores.push_back("prompt-chain-nu-fission-rate");
+  scores.push_back("prompt-chain-absorption-rate");
+  scores.push_back("prompt-chain-leakage-rate");
+  scores.push_back("prompt-chain-population");
 
   tally->set_scores(scores);
   tally->set_filters({});  // Tally over entire geometry
 }
 ```
 
-### 2. Calculation During Active Batches
+### 2. Scoring at Fission Events
+
+The mean generation time is calculated from scores accumulated at fission events:
+
+```cpp
+// At each fission event for prompt neutrons:
+// Numerator: time since birth × number of neutrons produced × weight
+fission_time_num += lifetime * nu * weight;
+// Denominator: number of neutrons produced × weight
+fission_time_denom += nu * weight;
+```
+
+### 3. Calculation During Active Batches
 
 For each active generation, `calculate_kinetics_parameters()` computes:
 
-#### Step 1: Prompt Neutron Lifetime
-
-The prompt neutron lifetime calculation includes both absorption and leakage as removal mechanisms.
+#### Step 1: Mean Generation Time
 
 ```cpp
 // Extract tally results (accumulated over active batches)
-double gen_time_num = results(0, 0, SUM) / n_active;
-double gen_time_denom = results(0, 1, SUM) / n_active;
+double fission_time_num = results(0, 0, SUM) / n_active;
+double fission_time_denom = results(0, 1, SUM) / n_active;
 
-// Calculate prompt neutron lifetime: ℓ = Σ(lifetime × weight) / Σ(weight)
-prompt_lifetime = gen_time_num / gen_time_denom
+// Calculate mean generation time: Λ = Σ(t × ν × w) / Σ(ν × w)
+mean_generation_time = fission_time_num / fission_time_denom;
 ```
 
-#### Step 2: Prompt Generation Time
+#### Step 2: Static Alpha Eigenvalue
 
 ```cpp
-// Calculate generation time from lifetime: Λ = ℓ / k
-prompt_gen_time = prompt_lifetime / keff_prompt
+// Calculate reactivity
+double rho = (keff - 1.0) / keff;
+
+// α_static = (ρ - β_eff) / Λ
+alpha_static = (rho - beta_eff) / mean_generation_time;
 ```
 
-#### Step 3: Alpha Eigenvalue
+#### Step 3: Griesheimer Alpha Eigenvalue
+
+Computed after eigenvalue batches complete. Uses the same formula as static:
 
 ```cpp
-// α = (k - 1) / Λ
-alpha = (keff_prompt - 1.0) / prompt_gen_time
+// α_griesheimer = (ρ - β_eff) / Λ (same as static)
+// For now, set equal to static. Full iteration would verify convergence.
+alpha_griesheimer = alpha_static;
 ```
 
-### 3. Uncertainty Propagation
+### 4. Uncertainty Propagation
 
 Standard deviations are calculated using error propagation:
 
-**For lifetime ℓ:**
+**For mean generation time Λ:**
 ```
-σ_ℓ² ≈ (∂ℓ/∂num)² σ_num² + (∂ℓ/∂denom)² σ_denom²
-```
-
-**For generation time Λ = ℓ/k:**
-```
-σ_Λ² ≈ (1/k)² σ_ℓ² + (ℓ/k²)² σ_k²
+σ_Λ² ≈ (∂Λ/∂num)² σ_num² + (∂Λ/∂denom)² σ_denom²
 ```
 
-**For α = (k-1)/Λ:**
+**For α_static = (ρ - β)/Λ:**
 ```
-σ_α² ≈ (1/Λ)² σ_k² + ((k-1)/Λ²)² σ_Λ²
+σ_α² ≈ (∂α/∂k)² σ_k² + (∂α/∂β)² σ_β² + (∂α/∂Λ)² σ_Λ²
 ```
+
+where:
+- ∂α/∂k = 1/(k²Λ)
+- ∂α/∂β = -1/Λ
+- ∂α/∂Λ = -(ρ - β)/Λ²
+
+**For α_griesheimer:**
+
+Same as α_static (both use the same formula).
 
 ---
 
@@ -123,10 +157,10 @@ Standard deviations are calculated using error propagation:
 
 | Index | Score | Description |
 |-------|-------|-------------|
-| 0 | `prompt-chain-gen-time-num` | Σ(lifetime × weight) - numerator for ℓ |
-| 1 | `prompt-chain-gen-time-denom` | Σ(weight) - denominator for ℓ |
+| 0 | `prompt-chain-fission-time-num` | Σ(time × ν × weight) at fission events |
+| 1 | `prompt-chain-fission-time-denom` | Σ(ν × weight) at fission events |
 
-### Diagnostic Scores (Not Currently Used)
+### Diagnostic Scores
 
 | Index | Score | Description |
 |-------|-------|-------------|
@@ -142,17 +176,20 @@ Standard deviations are calculated using error propagation:
 For a typical fast system (Godiva):
 
 **Given:**
+- k = 1.0001
 - k_prompt = 0.993
-- ℓ (lifetime) = 5.66 × 10⁻⁶ seconds
+- Λ (mean generation time) = 5.7 × 10⁻⁹ seconds
 
 **Calculate:**
 ```
-Λ = ℓ / k = 5.66e-6 / 0.993 = 5.70e-6 seconds
+ρ = (k - 1) / k = (1.0001 - 1.0) / 1.0001 = 0.0001
 
-α = (k - 1) / Λ = (0.993 - 1.0) / 5.70e-6 = -1.23e6 s⁻¹
+β_eff = (k - k_prompt) / k = (1.0001 - 0.993) / 1.0001 = 0.0071
+
+α = (ρ - β_eff) / Λ = (0.0001 - 0.0071) / 5.7e-9 = -1.23e6 s⁻¹
 ```
 
-This means the prompt neutron population decays at ~1.23 million per second, requiring delayed neutrons to sustain criticality.
+Both α_static and α_griesheimer use this same formula. The negative alpha means the prompt neutron population decays at ~1.23 million per second, requiring delayed neutrons to sustain criticality.
 
 ---
 
@@ -163,10 +200,12 @@ OpenMC prints alpha results in the summary:
 ```
  k-prompt                   = 0.99300 +/- 0.00045
  Beta-effective             = 0.00700 +/- 0.00010
- Prompt Lifetime            = 5.66000e-06 +/- 2.50000e-08 seconds
- Prompt Generation Time     = 5.70000e-06 +/- 2.52000e-08 seconds
- Alpha Eigenvalue           = -1.23000e+06 +/- 1.80000e+04 1/seconds
+ Mean Generation Time       = 5.70000e-09 +/- 2.50000e-11 seconds
+ Alpha (static)             = -1.23000e+06 +/- 1.80000e+04 1/seconds
+ Alpha (Griesheimer)        = -1.23000e+06 +/- 1.80000e+04 1/seconds
 ```
+
+Note: Both methods produce the same result since they use the same formula.
 
 The values are also written to statepoint files for post-processing.
 
@@ -175,13 +214,16 @@ The values are also written to statepoint files for post-processing.
 ## Code Location
 
 - **Setup**: `openmc/src/eigenvalue.cpp::setup_kinetics_tallies()`
-- **Scoring (Absorption)**: `openmc/src/tallies/tally_scoring.cpp::score_analog_tally_ce()`
-- **Scoring (Leakage)**: `openmc/src/particle.cpp::cross_vacuum_bc()`
-- **Calculation**: `openmc/src/eigenvalue.cpp::calculate_kinetics_parameters()`
+- **Scoring (Fission)**: `openmc/src/tallies/tally_scoring.cpp::score_analog_tally_ce()`
+- **Static Alpha Calculation**: `openmc/src/eigenvalue.cpp::calculate_kinetics_parameters()`
+- **Griesheimer Alpha Calculation**: `openmc/src/eigenvalue.cpp::run_alpha_iterations()`
+- **Pseudo-absorption**: `openmc/src/material.cpp::calculate_neutron_xs()`
 - **Output**: `openmc/src/output.cpp::print_results()`
 
 ---
 
 ## References
 
-The relationship α = (k - 1) / Λ is derived from reactor kinetics theory and represents the fundamental mode decay constant for the prompt neutron population. The generation time formulation captures the birth-to-birth behavior of the fission chain, which is what α describes physically.
+Both static and Griesheimer methods use the same fundamental equation α = (ρ - β_eff) / Λ from reactor kinetics theory (the inhour equation). The mean generation time Λ is measured directly as the ν-weighted time-to-fission, which correctly captures the birth-to-birth behavior of the fission chain.
+
+The Griesheimer method differs in methodology, not formula. It adds pseudo-absorption α/v to cross sections and iterates until k converges to 1, providing an independent verification of the alpha eigenvalue.

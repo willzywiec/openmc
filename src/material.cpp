@@ -15,6 +15,7 @@
 #include "openmc/capi.h"
 #include "openmc/container_util.h"
 #include "openmc/cross_sections.h"
+#include "openmc/eigenvalue.h"
 #include "openmc/error.h"
 #include "openmc/file_utils.h"
 #include "openmc/hdf5_interface.h"
@@ -897,6 +898,17 @@ void Material::calculate_neutron_xs(Particle& p) const
     p.macro_xs().absorption += atom_density * micro.absorption;
     p.macro_xs().fission += atom_density * micro.fission;
     p.macro_xs().nu_fission += atom_density * micro.nu_fission;
+  }
+
+  // Add pseudo-absorption term for Griesheimer alpha eigenvalue method.
+  // During alpha iterations, we add α/v to cross sections where α is the
+  // current estimate and v is neutron speed. When α > 0 (supercritical),
+  // this adds absorption to reduce k. When α < 0 (subcritical), it reduces
+  // absorption to increase k. Iterations continue until k approaches 1.
+  if (simulation::alpha_iteration > 0 && !simulation::alpha_converged) {
+    double pseudo_sigma = simulation::alpha_current / p.speed();
+    p.macro_xs().total += pseudo_sigma;
+    p.macro_xs().absorption += pseudo_sigma;
   }
 }
 
