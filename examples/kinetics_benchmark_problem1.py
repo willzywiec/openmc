@@ -132,12 +132,10 @@ if sp.k_prompt is not None:
     results.append(f" k-prompt                   = {sp.k_prompt.nominal_value:.5f} +/- {sp.k_prompt.std_dev:.5f}")
 if sp.beta_eff is not None:
     results.append(f" Beta-effective             = {sp.beta_eff.nominal_value:.5f} +/- {sp.beta_eff.std_dev:.5f}")
-if sp.prompt_neutron_lifetime is not None:
-    results.append(f" Prompt Neutron Lifetime    = {sp.prompt_neutron_lifetime.nominal_value:.5e} +/- {sp.prompt_neutron_lifetime.std_dev:.5e} seconds")
-if sp.mean_generation_time is not None:
-    results.append(f" Mean Generation Time       = {sp.mean_generation_time.nominal_value:.5e} +/- {sp.mean_generation_time.std_dev:.5e} seconds")
-if sp.alpha is not None:
-    results.append(f" Alpha Eigenvalue           = {sp.alpha.nominal_value:.5e} +/- {sp.alpha.std_dev:.5e} 1/seconds")
+if sp.lambda_eff_ifp is not None:
+    results.append(f" Lambda_eff (IFP)           = {sp.lambda_eff_ifp.nominal_value:.5e} +/- {sp.lambda_eff_ifp.std_dev:.5e} seconds")
+if sp.alpha_ifp is not None:
+    results.append(f" Alpha (IFP)                = {sp.alpha_ifp.nominal_value:.5e} +/- {sp.alpha_ifp.std_dev:.5e} 1/seconds")
 
 # Print results
 print("\n" + "=" * 70)

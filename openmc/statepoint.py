@@ -334,40 +334,26 @@ class StatePoint:
             return None
 
     @property
-    def prompt_neutron_lifetime(self):
-        """Prompt neutron lifetime (ℓ) with uncertainty.
+    def lambda_eff_ifp(self):
+        """IFP-weighted effective generation time (Λ_eff) with uncertainty.
 
-        The prompt neutron lifetime is the average time from neutron birth to
-        removal (absorption or leakage).
+        The effective generation time computed using the Iterated Fission
+        Probability (IFP) method: Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
         """
-        if self.run_mode == 'eigenvalue' and 'prompt_lifetime' in self._f:
-            return ufloat(*self._f['prompt_lifetime'][()])
+        if self.run_mode == 'eigenvalue' and 'lambda_eff_ifp' in self._f:
+            return ufloat(*self._f['lambda_eff_ifp'][()])
         else:
             return None
 
     @property
-    def mean_generation_time(self):
-        """Mean generation time (Λ) with uncertainty.
+    def alpha_ifp(self):
+        """IFP-weighted alpha eigenvalue with uncertainty.
 
-        The mean generation time measured directly by scoring time-to-fission
-        events weighted by nu (neutrons produced). This is the physically accurate
-        birth-to-fission time used in alpha calculations.
+        Calculated as: α = (k - 1) / Λ_eff
+        where Λ_eff is the IFP-weighted effective generation time.
         """
-        if self.run_mode == 'eigenvalue' and 'mean_generation_time' in self._f:
-            return ufloat(*self._f['mean_generation_time'][()])
-        else:
-            return None
-
-    @property
-    def alpha(self):
-        """Alpha eigenvalue with uncertainty.
-
-        Calculated as: α = (ρ - β) / Λ
-        where ρ = (k-1)/k is reactivity, β is effective delayed neutron
-        fraction, and Λ is the mean generation time.
-        """
-        if self.run_mode == 'eigenvalue' and 'alpha' in self._f:
-            return ufloat(*self._f['alpha'][()])
+        if self.run_mode == 'eigenvalue' and 'alpha_ifp' in self._f:
+            return ufloat(*self._f['alpha_ifp'][()])
         else:
             return None
 

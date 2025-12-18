@@ -4,12 +4,12 @@ Example demonstrating delayed neutron kinetics calculations in OpenMC.
 This example shows how to enable calculation of:
 - k_prompt: prompt neutron k-effective
 - beta_eff: effective delayed neutron fraction
-- prompt_neutron_lifetime (ℓ): time from neutron birth to absorption or leakage
-- mean_generation_time (Λ): time from neutron birth to next-generation fission
-- alpha: α = (ρ - β_eff) / Λ (from inhour equation)
+- lambda_eff_ifp: IFP-weighted effective generation time (Λ_eff)
+- alpha_ifp: α = (k - 1) / Λ_eff (IFP-weighted alpha eigenvalue)
 
 The kinetics parameters are automatically calculated during an eigenvalue
-simulation when enabled in the settings.
+simulation when enabled in the settings. Alpha calculation requires IFP
+(Iterated Fission Probability) to be enabled.
 
 Author: William Zywiec (willzywiec@gmail.com)
 """
@@ -55,8 +55,8 @@ settings.particles = 10000
 # This will calculate k_prompt and beta_eff
 settings.calculate_prompt_k = True
 
-# Enable alpha eigenvalue calculations
-# This will also calculate prompt_neutron_lifetime, mean_generation_time, and alpha
+# Enable alpha eigenvalue calculations (requires IFP)
+# This will calculate lambda_eff_ifp and alpha_ifp
 settings.calculate_alpha = True
 
 settings.export_to_xml()
@@ -69,9 +69,8 @@ settings.export_to_xml()
 # print(f"k-effective: {sp.keff}")
 # print(f"k-prompt: {sp.k_prompt}")
 # print(f"Beta-effective: {sp.beta_eff}")
-# print(f"Prompt neutron lifetime: {sp.prompt_neutron_lifetime}")
-# print(f"Mean generation time: {sp.mean_generation_time}")
-# print(f"Alpha: {sp.alpha}")
+# print(f"Lambda_eff (IFP): {sp.lambda_eff_ifp}")
+# print(f"Alpha (IFP): {sp.alpha_ifp}")
 
 print("Example files created successfully!")
 print("To run this example:")

@@ -4,6 +4,8 @@
 #ifndef OPENMC_EIGENVALUE_H
 #define OPENMC_EIGENVALUE_H
 
+#include <algorithm>
+#include <cmath>
 #include <cstdint> // for int64_t
 
 #include "xtensor/xtensor.hpp"
@@ -34,16 +36,16 @@ extern double keff_prompt_std;        //!< Standard deviation of k_prompt
 extern double beta_eff;               //!< Effective delayed neutron fraction
 extern double beta_eff_std;           //!< Standard deviation of beta_eff
 
-// Alpha eigenvalue
-extern double alpha;           //!< α = (ρ - β) / Λ
-extern double alpha_std;       //!< Standard deviation of alpha
+// IFP-weighted alpha eigenvalue
+// Computed from existing IFP scores: α = (k - 1) / Λ_eff
+// where Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+extern double alpha_ifp;              //!< α from IFP-weighted Λ_eff [/s]
+extern double alpha_ifp_std;          //!< Standard deviation of α_ifp
+extern double lambda_eff_ifp;         //!< IFP-weighted generation time Λ_eff [s]
+extern double lambda_eff_ifp_std;     //!< Standard deviation of Λ_eff
 
-// Neutron timing parameters
-extern double prompt_neutron_lifetime;     //!< Prompt neutron lifetime ℓ (time to any removal) [s]
-extern double prompt_neutron_lifetime_std; //!< Std dev of prompt neutron lifetime
-extern double mean_generation_time;        //!< Mean generation time Λ (time to fission) [s]
-extern double mean_generation_time_std;    //!< Std dev of mean generation time
-extern int kinetics_tally_index;   //!< Index of internal kinetics tally
+// Index of internal kinetics tally (for alpha calculations using IFP scores)
+extern int kinetics_tally_index;
 
 } // namespace simulation
 
@@ -66,13 +68,13 @@ void calculate_average_keff();
 
 //! Calculate delayed neutron kinetics parameters
 //!
-//! This function calculates k_prompt, beta_eff, and alpha eigenvalues
+//! This function calculates k_prompt, beta_eff, and alpha eigenvalue
 //! over active generations. Results are stored in simulation namespace.
 void calculate_kinetics_parameters();
 
 //! Setup internal tallies for alpha eigenvalue calculations
 //!
-//! Creates tallies with prompt chain scores needed for alpha calculations
+//! Creates a tally with IFP scores needed for alpha calculation
 void setup_kinetics_tallies();
 
 //! Calculates a minimum variance estimate of k-effective

@@ -52,18 +52,15 @@ double keff_prompt_std {0.0};
 double beta_eff {0.0};
 double beta_eff_std {0.0};
 
-// Alpha eigenvalue: α = (ρ - β) / Λ
-double alpha {0.0};
-double alpha_std {0.0};
+// IFP-weighted alpha eigenvalue
+// Computed from existing IFP scores: α = (k - 1) / Λ_eff
+// where Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+double alpha_ifp {0.0};
+double alpha_ifp_std {0.0};
+double lambda_eff_ifp {0.0};
+double lambda_eff_ifp_std {0.0};
 
-// Prompt neutron lifetime ℓ: time from birth to any removal (absorption or leakage)
-double prompt_neutron_lifetime {0.0};
-double prompt_neutron_lifetime_std {0.0};
-// Mean generation time Λ: time from birth to fission (used in alpha calculation)
-double mean_generation_time {0.0};
-double mean_generation_time_std {0.0};
-
-// Index of internal kinetics tally (for alpha calculations)
+// Index of internal kinetics tally (for alpha calculations using IFP)
 int kinetics_tally_index {-1};
 
 } // namespace simulation
@@ -536,125 +533,66 @@ void calculate_kinetics_parameters()
       }
     }
 
-    // Calculate alpha eigenvalues if enabled and tally exists
-    if (settings::calculate_alpha && simulation::kinetics_tally_index >= 0) {
+    // Calculate IFP-weighted alpha eigenvalue if enabled and tally exists
+    // Uses existing IFP scores: ifp-time-numerator and ifp-denominator
+    // Formula: Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+    //          α = (k - 1) / Λ_eff
+    if (settings::calculate_alpha && simulation::kinetics_tally_index >= 0 &&
+        settings::ifp_on) {
       auto& tally = *model::tallies[simulation::kinetics_tally_index];
       const auto& results = tally.results();
-
-      // Extract tally results (shape: [filter_bins, scores*nuclides,
-      // result_types]) No filters (n_filter_bins=1), no nuclides, so just
-      // access scores Score indices: 0=gen_time_num, 1=gen_time_denom,
-      // Score indices:
-      //   0=gen_time_num, 1=gen_time_denom (for lifetime)
-      //   2=fission_time_num, 3=fission_time_denom (for direct gen time)
-      //   4=nu_fission_rate, 5=absorption_rate, 6=leakage_rate, 7=population
-      // Result type indices: 0=VALUE, 1=SUM, 2=SUM_SQ
-      //
-      // NOTE: Must use TallyResult::SUM (index 1), not VALUE (index 0)!
-      // The SUM is already normalized per particle and accumulated over
-      // batches. Divide by n_realizations to get the average per batch.
 
       int sum_idx = static_cast<int>(TallyResult::SUM);
       int sum_sq_idx = static_cast<int>(TallyResult::SUM_SQ);
 
-      // Lifetime scores (at any removal: absorption or leakage)
-      double gen_time_num = results(0, 0, sum_idx) / n;
-      double gen_time_denom = results(0, 1, sum_idx) / n;
+      // IFP scores are at indices 0 and 1
+      double ifp_time_num = results(0, 0, sum_idx) / n;
+      double ifp_denom = results(0, 1, sum_idx) / n;
 
-      // Direct generation time scores (at fission only, weighted by ν)
-      double fission_time_num = results(0, 2, sum_idx) / n;
-      double fission_time_denom = results(0, 3, sum_idx) / n;
+      if (ifp_denom > 0.0 && simulation::keff > 0.0) {
+        // Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+        simulation::lambda_eff_ifp = ifp_time_num / (ifp_denom * simulation::keff);
 
-      // Diagnostic scores
-      double nu_fission_rate = results(0, 4, sum_idx) / n;
-      double absorption_rate = results(0, 5, sum_idx) / n;
-      double leakage_rate = results(0, 6, sum_idx) / n;
-      double population = results(0, 7, sum_idx) / n;
+        // Calculate α = (k - 1) / Λ_eff
+        if (simulation::lambda_eff_ifp > 0.0) {
+          simulation::alpha_ifp =
+            (simulation::keff - 1.0) / simulation::lambda_eff_ifp;
 
-      // Calculate standard deviations for tally scores (if n > 1)
-      double gen_time_num_std = 0.0;
-      double gen_time_denom_std = 0.0;
-      double fission_time_num_std = 0.0;
-      double fission_time_denom_std = 0.0;
+          // Error propagation for IFP-weighted alpha
+          if (n > 1) {
+            auto calc_std = [&](int score_idx) {
+              double mean = results(0, score_idx, sum_idx) / n;
+              double sum_sq = results(0, score_idx, sum_sq_idx) / n;
+              double variance = (sum_sq - mean * mean) / (n - 1);
+              return (variance > 0.0) ? std::sqrt(variance) : 0.0;
+            };
 
-      if (n > 1) {
-        // Standard deviation of mean: σ = sqrt((SUM_SQ/n - mean²)/(n-1))
-        auto calc_std = [&](int score_idx) {
-          double mean = results(0, score_idx, sum_idx) / n;
-          double sum_sq = results(0, score_idx, sum_sq_idx) / n;
-          double variance = (sum_sq - mean * mean) / (n - 1);
-          return (variance > 0.0) ? std::sqrt(variance) : 0.0;
-        };
+            double ifp_time_num_std = calc_std(0);
+            double ifp_denom_std = calc_std(1);
 
-        gen_time_num_std = calc_std(0);
-        gen_time_denom_std = calc_std(1);
-        fission_time_num_std = calc_std(2);
-        fission_time_denom_std = calc_std(3);
-      }
+            // Error propagation for Λ_eff = num / (denom × k)
+            double dL_dnum = 1.0 / (ifp_denom * simulation::keff);
+            double dL_ddenom = -ifp_time_num / (ifp_denom * ifp_denom * simulation::keff);
+            double dL_dk = -ifp_time_num / (ifp_denom * simulation::keff * simulation::keff);
 
-      // Calculate prompt neutron lifetime: ℓ = num / denom
-      // Average time from birth to removal (absorption or leakage)
-      if (gen_time_denom > 0.0) {
-        simulation::prompt_neutron_lifetime = gen_time_num / gen_time_denom;
+            double var_L = dL_dnum * dL_dnum * ifp_time_num_std * ifp_time_num_std +
+                           dL_ddenom * dL_ddenom * ifp_denom_std * ifp_denom_std +
+                           dL_dk * dL_dk * simulation::keff_std * simulation::keff_std;
+            simulation::lambda_eff_ifp_std = std::sqrt(var_L);
 
-        // Error propagation for prompt neutron lifetime
-        if (n > 1 && simulation::prompt_neutron_lifetime > 0.0) {
-          double dl_dnum = 1.0 / gen_time_denom;
-          double dl_ddenom = -gen_time_num / (gen_time_denom * gen_time_denom);
+            // Error propagation for α = (k-1)/Λ
+            double dAlpha_dk = 1.0 / simulation::lambda_eff_ifp;
+            double dAlpha_dLambda =
+              -(simulation::keff - 1.0) /
+              (simulation::lambda_eff_ifp * simulation::lambda_eff_ifp);
 
-          double var_l = dl_dnum * dl_dnum * gen_time_num_std * gen_time_num_std +
-                         dl_ddenom * dl_ddenom * gen_time_denom_std *
-                           gen_time_denom_std;
+            double var_alpha_ifp =
+              dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
+              dAlpha_dLambda * dAlpha_dLambda * simulation::lambda_eff_ifp_std *
+                simulation::lambda_eff_ifp_std;
 
-          simulation::prompt_neutron_lifetime_std = std::sqrt(var_l);
-        }
-      }
-
-      // Calculate mean generation time from fission events: Λ = Σ(t×ν×w) / Σ(ν×w)
-      // This is the physically accurate generation time (birth-to-fission)
-      if (fission_time_denom > 0.0) {
-        simulation::mean_generation_time = fission_time_num / fission_time_denom;
-
-        // Error propagation for mean generation time
-        if (n > 1 && simulation::mean_generation_time > 0.0) {
-          double dL_dnum = 1.0 / fission_time_denom;
-          double dL_ddenom = -fission_time_num / (fission_time_denom * fission_time_denom);
-
-          double var_L = dL_dnum * dL_dnum * fission_time_num_std * fission_time_num_std +
-                         dL_ddenom * dL_ddenom * fission_time_denom_std *
-                           fission_time_denom_std;
-
-          simulation::mean_generation_time_std = std::sqrt(var_L);
-        }
-      }
-
-      // Calculate alpha: α = (ρ - β) / Λ
-      // Inhour equation using reactivity and delayed neutron fraction
-      // where ρ = (k - 1) / k is reactivity and Λ is mean generation time
-      if (simulation::mean_generation_time > 0.0 && simulation::keff > 0.0) {
-        double rho = (simulation::keff - 1.0) / simulation::keff;  // reactivity
-        simulation::alpha =
-          (rho - simulation::beta_eff) / simulation::mean_generation_time;
-
-        // Error propagation for alpha
-        // For α = (ρ - β) / Λ where ρ = (k-1)/k:
-        // ∂α/∂k = 1/(k²Λ), ∂α/∂β = -1/Λ, ∂α/∂Λ = -(ρ-β)/Λ²
-        if (n > 1) {
-          double dAlpha_dk = 1.0 / (simulation::keff * simulation::keff *
-                                    simulation::mean_generation_time);
-          double dAlpha_dbeta = -1.0 / simulation::mean_generation_time;
-          double dAlpha_dLambda =
-            -(rho - simulation::beta_eff) /
-            (simulation::mean_generation_time * simulation::mean_generation_time);
-
-          double var_alpha =
-            dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
-            dAlpha_dbeta * dAlpha_dbeta * simulation::beta_eff_std *
-              simulation::beta_eff_std +
-            dAlpha_dLambda * dAlpha_dLambda * simulation::mean_generation_time_std *
-              simulation::mean_generation_time_std;
-
-          simulation::alpha_std = std::sqrt(var_alpha);
+            simulation::alpha_ifp_std = std::sqrt(var_alpha_ifp);
+          }
         }
       }
     }
@@ -935,16 +873,14 @@ void write_eigenvalue_hdf5(hid_t group)
       simulation::beta_eff, simulation::beta_eff_std};
     write_dataset(group, "beta_eff", beta_eff_vals);
 
-    // Write alpha eigenvalue and timing parameters if calculated
-    if (settings::calculate_alpha) {
-      array<double, 2> prompt_lifetime_vals {
-        simulation::prompt_neutron_lifetime, simulation::prompt_neutron_lifetime_std};
-      write_dataset(group, "prompt_lifetime", prompt_lifetime_vals);
-      array<double, 2> gen_time_vals {
-        simulation::mean_generation_time, simulation::mean_generation_time_std};
-      write_dataset(group, "mean_generation_time", gen_time_vals);
-      array<double, 2> alpha_vals {simulation::alpha, simulation::alpha_std};
-      write_dataset(group, "alpha", alpha_vals);
+    // Write IFP-weighted alpha eigenvalue if calculated
+    if (settings::calculate_alpha && settings::ifp_on) {
+      array<double, 2> lambda_eff_ifp_vals {
+        simulation::lambda_eff_ifp, simulation::lambda_eff_ifp_std};
+      write_dataset(group, "lambda_eff_ifp", lambda_eff_ifp_vals);
+      array<double, 2> alpha_ifp_vals {
+        simulation::alpha_ifp, simulation::alpha_ifp_std};
+      write_dataset(group, "alpha_ifp", alpha_ifp_vals);
     }
   }
 }
@@ -975,25 +911,19 @@ void read_eigenvalue_hdf5(hid_t group)
     simulation::beta_eff = beta_eff_vals[0];
     simulation::beta_eff_std = beta_eff_vals[1];
 
-    // Read alpha eigenvalue and timing parameters if they exist
-    if (settings::calculate_alpha) {
-      if (object_exists(group, "prompt_lifetime")) {
-        array<double, 2> prompt_lifetime_vals;
-        read_dataset(group, "prompt_lifetime", prompt_lifetime_vals);
-        simulation::prompt_neutron_lifetime = prompt_lifetime_vals[0];
-        simulation::prompt_neutron_lifetime_std = prompt_lifetime_vals[1];
+    // Read IFP-weighted alpha eigenvalue if it exists
+    if (settings::calculate_alpha && settings::ifp_on) {
+      if (object_exists(group, "lambda_eff_ifp")) {
+        array<double, 2> lambda_eff_ifp_vals;
+        read_dataset(group, "lambda_eff_ifp", lambda_eff_ifp_vals);
+        simulation::lambda_eff_ifp = lambda_eff_ifp_vals[0];
+        simulation::lambda_eff_ifp_std = lambda_eff_ifp_vals[1];
       }
-      if (object_exists(group, "mean_generation_time")) {
-        array<double, 2> gen_time_vals;
-        read_dataset(group, "mean_generation_time", gen_time_vals);
-        simulation::mean_generation_time = gen_time_vals[0];
-        simulation::mean_generation_time_std = gen_time_vals[1];
-      }
-      if (object_exists(group, "alpha")) {
-        array<double, 2> alpha_vals;
-        read_dataset(group, "alpha", alpha_vals);
-        simulation::alpha = alpha_vals[0];
-        simulation::alpha_std = alpha_vals[1];
+      if (object_exists(group, "alpha_ifp")) {
+        array<double, 2> alpha_ifp_vals;
+        read_dataset(group, "alpha_ifp", alpha_ifp_vals);
+        simulation::alpha_ifp = alpha_ifp_vals[0];
+        simulation::alpha_ifp_std = alpha_ifp_vals[1];
       }
     }
   }
@@ -1001,8 +931,8 @@ void read_eigenvalue_hdf5(hid_t group)
 
 void setup_kinetics_tallies()
 {
-  // Only create tallies if alpha calculations are enabled
-  if (!settings::calculate_alpha)
+  // Only create tallies if alpha calculations are enabled with IFP
+  if (!settings::calculate_alpha || !settings::ifp_on)
     return;
 
   // Create internal tally for kinetics parameters
@@ -1010,23 +940,12 @@ void setup_kinetics_tallies()
   simulation::kinetics_tally_index = tally->index();
   tally->set_writable(false); // Don't write to tallies.out
 
-  // Set scores for alpha eigenvalue calculations
+  // Use existing IFP scores for alpha calculation
+  // Formula: Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+  //          α = (k - 1) / Λ_eff
   vector<std::string> scores;
-
-  // Scores for lifetime calculation (used in derived generation time: Λ = ℓ/k)
-  scores.push_back("prompt-chain-gen-time-num");   // Index 0: Σ(lifetime × weight) at removal
-  scores.push_back("prompt-chain-gen-time-denom"); // Index 1: Σ(weight) at removal
-
-  // Scores for direct generation time measurement (fission events only)
-  // This gives Λ directly as the ν-weighted time to fission
-  scores.push_back("prompt-chain-fission-time-num");   // Index 2: Σ(lifetime × ν × weight) at fission
-  scores.push_back("prompt-chain-fission-time-denom"); // Index 3: Σ(ν × weight) at fission
-
-  // Additional scores (for diagnostics/validation)
-  scores.push_back("prompt-chain-nu-fission-rate");    // Index 4
-  scores.push_back("prompt-chain-absorption-rate");    // Index 5
-  scores.push_back("prompt-chain-leakage-rate");       // Index 6
-  scores.push_back("prompt-chain-population");         // Index 7
+  scores.push_back("ifp-time-numerator");  // Index 0: IFP-weighted lifetime numerator
+  scores.push_back("ifp-denominator");     // Index 1: IFP common denominator
 
   tally->set_scores(scores);
 
