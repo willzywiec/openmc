@@ -133,18 +133,11 @@ if sp.k_prompt is not None:
 if sp.beta_eff is not None:
     results.append(f" Beta-effective             = {sp.beta_eff.nominal_value:.5f} +/- {sp.beta_eff.std_dev:.5f}")
 if sp.lambda_eff_ifp is not None:
-    results.append(f" Lambda_eff (IFP)           = {sp.lambda_eff_ifp.nominal_value:.5e} +/- {sp.lambda_eff_ifp.std_dev:.5e} seconds")
+    results.append(f" Lambda-effective (IFP)     = {sp.lambda_eff_ifp.nominal_value:.5e} +/- {sp.lambda_eff_ifp.std_dev:.5e} seconds")
 if sp.alpha_ifp is not None:
-    results.append(f" Alpha (IFP)                = {sp.alpha_ifp.nominal_value:.5e} +/- {sp.alpha_ifp.std_dev:.5e} 1/seconds")
+    results.append(f" Alpha (Static)             = {sp.alpha_ifp.nominal_value:.5e} +/- {sp.alpha_ifp.std_dev:.5e} 1/seconds")
 
-# Print results
-print("\n" + "=" * 70)
-print("Results:")
-print("=" * 70)
-for line in results:
-    print(line)
-
-# Save results to file
+# Save results to file (OpenMC already prints results to stdout)
 output_file = "kinetics_results_problem1.txt"
 with open(output_file, 'w') as f:
     f.write("Kinetics Benchmark Problem 1: Godiva\n")

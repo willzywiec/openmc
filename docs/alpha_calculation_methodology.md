@@ -150,8 +150,8 @@ OpenMC prints alpha results in the summary:
 ```
  k-prompt                   = 0.99350 +/- 0.00045
  Beta-effective             = 0.00650 +/- 0.00010
- Lambda_eff (IFP)           = 5.70000e-09 +/- 2.50000e-11 seconds
- Alpha (IFP)                = -1.12000e+06 +/- 1.80000e+04 1/seconds
+ Lambda-effective (IFP)     = 5.70000e-09 +/- 2.50000e-11 seconds
+ Alpha (Static)             = -1.12000e+06 +/- 1.80000e+04 1/seconds
 ```
 
 The values are also written to statepoint files for post-processing via:
