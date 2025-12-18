@@ -3,7 +3,7 @@
 Batch runner for OpenMC ICSBEP benchmarks with results collection.
 
 This script runs all OpenMC model.py files in the benchmark directories,
-collects k-effective and point kinetics results, and exports to Excel.
+collects k-effective and point kinetics results, and exports to CSV.
 
 Usage:
     python batch.py                    # Generate XML files only (default)
@@ -12,9 +12,10 @@ Usage:
     python batch.py --category pu      # Run only plutonium benchmarks
     python batch.py --benchmark pmf001 # Run specific benchmark
     python batch.py --list             # List all available benchmarks
-    python batch.py --run --output results.xlsx  # Specify output file
+    python batch.py --run --output results.csv  # Specify output file
 
-Results are saved to 'benchmark_results.xlsx' by default.
+Results are saved to 'benchmark_results.csv' by default.
+Results are written incrementally as each benchmark completes.
 """
 
 import os
@@ -28,18 +29,6 @@ from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass, field, asdict
 from typing import Optional, List, Dict, Any
-
-# Try to import openpyxl for Excel output
-try:
-    from openpyxl import Workbook
-    from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
-    from openpyxl.utils import get_column_letter
-    HAS_OPENPYXL = True
-except ImportError:
-    HAS_OPENPYXL = False
-    print("Warning: openpyxl not installed. Excel output disabled.")
-    print("Install with: pip install openpyxl")
-
 
 @dataclass
 class BenchmarkResult:
@@ -442,177 +431,8 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
         return result
 
 
-def export_results_to_excel(results: List[BenchmarkResult], output_file: Path):
-    """Export results to Excel file."""
-    if not HAS_OPENPYXL:
-        print("Cannot export to Excel: openpyxl not installed")
-        # Fall back to CSV
-        csv_file = output_file.with_suffix('.csv')
-        export_results_to_csv(results, csv_file)
-        return
-
-    wb = Workbook()
-
-    # Summary sheet
-    ws_summary = wb.active
-    ws_summary.title = "Summary"
-
-    # Styles
-    header_font = Font(bold=True, color="FFFFFF")
-    header_fill = PatternFill(start_color="4472C4", end_color="4472C4", fill_type="solid")
-    success_fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
-    fail_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
-    thin_border = Border(
-        left=Side(style='thin'),
-        right=Side(style='thin'),
-        top=Side(style='thin'),
-        bottom=Side(style='thin')
-    )
-
-    # Headers
-    headers = [
-        'Benchmark', 'Category', 'Status',
-        'k-eff', 'k-eff Std Dev',
-        'Beta-eff', 'Beta-eff Std Dev',
-        'Gen Time (s)', 'Gen Time Std Dev',
-        'Alpha (1/s)', 'Alpha Std Dev',
-        'Error'
-    ]
-
-    for col, header in enumerate(headers, 1):
-        cell = ws_summary.cell(row=1, column=col, value=header)
-        cell.font = header_font
-        cell.fill = header_fill
-        cell.alignment = Alignment(horizontal='center')
-        cell.border = thin_border
-
-    # Data rows
-    for row_idx, result in enumerate(results, 2):
-        data = [
-            result.name,
-            result.category,
-            'Success' if result.success else 'Failed',
-            result.keff,
-            result.keff_std,
-            result.beta_eff,
-            result.beta_eff_std,
-            result.gen_time,
-            result.gen_time_std,
-            result.alpha,
-            result.alpha_std,
-            result.error_message if not result.success else ''
-        ]
-
-        for col, value in enumerate(data, 1):
-            cell = ws_summary.cell(row=row_idx, column=col, value=value)
-            cell.border = thin_border
-
-            # Format numbers
-            if isinstance(value, float):
-                if col in [4, 5]:  # k-eff columns
-                    cell.number_format = '0.00000'
-                elif col in [6, 7]:  # beta-eff columns
-                    cell.number_format = '0.00000E+00'
-                elif col in [8, 9, 10, 11]:  # gen time and alpha columns
-                    cell.number_format = '0.00E+00'
-
-            # Color status column
-            if col == 3:
-                cell.fill = success_fill if result.success else fail_fill
-
-    # Adjust column widths
-    column_widths = [15, 10, 10, 12, 12, 12, 12, 12, 12, 12, 12, 50]
-    for col, width in enumerate(column_widths, 1):
-        ws_summary.column_dimensions[get_column_letter(col)].width = width
-
-    # Create category summary sheets
-    categories = set(r.category for r in results)
-    for cat in sorted(categories):
-        cat_results = [r for r in results if r.category == cat]
-        ws = wb.create_sheet(title=cat.upper())
-
-        # Headers
-        for col, header in enumerate(headers, 1):
-            cell = ws.cell(row=1, column=col, value=header)
-            cell.font = header_font
-            cell.fill = header_fill
-            cell.alignment = Alignment(horizontal='center')
-            cell.border = thin_border
-
-        # Data
-        for row_idx, result in enumerate(cat_results, 2):
-            data = [
-                result.name,
-                result.category,
-                'Success' if result.success else 'Failed',
-                result.keff,
-                result.keff_std,
-                result.beta_eff,
-                result.beta_eff_std,
-                result.gen_time,
-                result.gen_time_std,
-                result.alpha,
-                result.alpha_std,
-                result.error_message if not result.success else ''
-            ]
-
-            for col, value in enumerate(data, 1):
-                cell = ws.cell(row=row_idx, column=col, value=value)
-                cell.border = thin_border
-
-                if isinstance(value, float):
-                    if col in [4, 5]:
-                        cell.number_format = '0.00000'
-                    elif col in [6, 7]:
-                        cell.number_format = '0.00000E+00'
-                    elif col in [8, 9, 10, 11]:
-                        cell.number_format = '0.00E+00'
-
-                if col == 3:
-                    cell.fill = success_fill if result.success else fail_fill
-
-        # Adjust column widths
-        for col, width in enumerate(column_widths, 1):
-            ws.column_dimensions[get_column_letter(col)].width = width
-
-    # Statistics sheet
-    ws_stats = wb.create_sheet(title="Statistics")
-
-    # Calculate statistics
-    successful = [r for r in results if r.success and r.keff is not None]
-
-    stats_data = [
-        ['Metric', 'Value'],
-        ['Total Benchmarks', len(results)],
-        ['Successful', len([r for r in results if r.success])],
-        ['Failed', len([r for r in results if not r.success])],
-        ['With k-eff', len([r for r in results if r.keff is not None])],
-        ['With Beta-eff', len([r for r in results if r.beta_eff is not None])],
-        ['With Gen Time', len([r for r in results if r.gen_time is not None])],
-        ['With Alpha', len([r for r in results if r.alpha is not None])],
-        ['', ''],
-        ['Category Breakdown', ''],
-    ]
-
-    for cat in sorted(categories):
-        cat_results = [r for r in results if r.category == cat]
-        cat_success = len([r for r in cat_results if r.success])
-        stats_data.append([f'  {cat.upper()}', f'{cat_success}/{len(cat_results)}'])
-
-    for row_idx, (label, value) in enumerate(stats_data, 1):
-        ws_stats.cell(row=row_idx, column=1, value=label)
-        ws_stats.cell(row=row_idx, column=2, value=value)
-
-    ws_stats.column_dimensions['A'].width = 20
-    ws_stats.column_dimensions['B'].width = 15
-
-    # Save workbook
-    wb.save(output_file)
-    print(f"Results exported to: {output_file}")
-
-
 def export_results_to_csv(results: List[BenchmarkResult], output_file: Path):
-    """Export results to CSV file (fallback if openpyxl not available)."""
+    """Export results to CSV file."""
     import csv
 
     headers = [
@@ -645,6 +465,46 @@ def export_results_to_csv(results: List[BenchmarkResult], output_file: Path):
             ])
 
     print(f"Results exported to: {output_file}")
+
+
+def init_csv_file(output_file: Path):
+    """Initialize CSV file with headers for incremental writing."""
+    import csv
+
+    headers = [
+        'Benchmark', 'Category', 'Status',
+        'k-eff', 'k-eff Std Dev',
+        'Beta-eff', 'Beta-eff Std Dev',
+        'Gen Time (s)', 'Gen Time Std Dev',
+        'Alpha (1/s)', 'Alpha Std Dev',
+        'Error'
+    ]
+
+    with open(output_file, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(headers)
+
+
+def append_result_to_csv(result: BenchmarkResult, output_file: Path):
+    """Append a single result to CSV file (for incremental updates)."""
+    import csv
+
+    with open(output_file, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            result.name,
+            result.category,
+            'Success' if result.success else 'Failed',
+            result.keff,
+            result.keff_std,
+            result.beta_eff,
+            result.beta_eff_std,
+            result.gen_time,
+            result.gen_time_std,
+            result.alpha,
+            result.alpha_std,
+            result.error_message if not result.success else ''
+        ])
 
 
 def list_benchmarks(base_dir: Path):
@@ -691,8 +551,8 @@ def main():
                        help='Run only specified benchmark')
     parser.add_argument('--list', '-l', action='store_true',
                        help='List all available benchmarks')
-    parser.add_argument('--output', '-o', type=str, default='benchmark_results.xlsx',
-                       help='Output file for results (default: benchmark_results.xlsx)')
+    parser.add_argument('--output', '-o', type=str, default='benchmark_results.csv',
+                       help='Output file for results (default: benchmark_results.csv)')
     parser.add_argument('--openmc-args', type=str, default='',
                        help='Additional arguments to pass to OpenMC (e.g., "-s 4")')
     parser.add_argument('--no-kinetics', action='store_true',
@@ -729,6 +589,14 @@ def main():
     openmc_args = args.openmc_args.split() if args.openmc_args else None
     enable_kinetics = not args.no_kinetics
 
+    # Set up output paths
+    output_path = base_dir / args.output
+    csv_path = output_path.with_suffix('.csv')
+
+    # Initialize CSV file for incremental writing
+    init_csv_file(csv_path)
+    print(f"Writing results incrementally to: {csv_path}")
+
     start_time = time.time()
     results: List[BenchmarkResult] = []
 
@@ -743,6 +611,9 @@ def main():
             for future in as_completed(futures):
                 result = future.result()
                 results.append(result)
+
+                # Write result to CSV immediately
+                append_result_to_csv(result, csv_path)
 
                 status = "[OK]" if result.success else "[FAIL]"
                 keff_str = f"k={result.keff:.5f}" if result.keff else "k=N/A"
@@ -759,6 +630,9 @@ def main():
         for i, bench_dir in enumerate(benchmark_dirs):
             result = run_benchmark(bench_dir, args.run, enable_kinetics, openmc_args)
             results.append(result)
+
+            # Write result to CSV immediately
+            append_result_to_csv(result, csv_path)
 
             status = "[OK]" if result.success else "[FAIL]"
             keff_str = f"k={result.keff:.5f}" if result.keff else "k=N/A"
@@ -789,14 +663,8 @@ def main():
     print(f"With beta-eff: {with_beta}")
     print(f"With alpha: {with_alpha}")
 
-    # Export results
-    if results:
-        output_path = base_dir / args.output
-        if args.output.endswith('.xlsx') and HAS_OPENPYXL:
-            export_results_to_excel(results, output_path)
-        else:
-            csv_path = output_path.with_suffix('.csv')
-            export_results_to_csv(results, csv_path)
+    # CSV was already written incrementally
+    print(f"Results saved to: {csv_path}")
 
     if failed > 0:
         sys.exit(1)
