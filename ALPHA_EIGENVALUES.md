@@ -4,7 +4,7 @@ This guide explains how to use OpenMC's alpha eigenvalue calculation capability 
 
 ## Overview
 
-The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates alpha using the IFP (Iterated Fission Probability) method:
+The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system:
 
 ```
 α = (ρ - β_eff) / Λ_eff
@@ -12,12 +12,12 @@ The alpha eigenvalue (α) describes the time-dependent behavior of the neutron p
 
 Where:
 - **ρ**: Reactivity, ρ = (k - 1) / k
-- **β_eff**: Effective delayed neutron fraction (IFP-weighted)
+- **β_eff**: Effective delayed neutron fraction (from k-prompt)
 - **Λ_eff**: IFP-weighted effective generation time
 
-All kinetics parameters are computed using IFP infrastructure:
+The kinetics parameters are computed as:
 ```
-β_eff = ifp-beta-numerator / ifp-denominator
+β_eff = (k - k_prompt) / k
 Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 ```
 
@@ -208,16 +208,16 @@ When running OpenMC with alpha calculations enabled, the output will include a k
 
 ## Implementation Details
 
-### IFP Method
+### Calculation Methods
 
-The alpha eigenvalue calculation uses OpenMC's existing Iterated Fission Probability (IFP) infrastructure. IFP provides adjoint-weighted quantities that properly account for the importance of neutrons at different energies and positions.
+**β_eff (Effective Delayed Neutron Fraction)**: Calculated from k-prompt using the formula β_eff = (k - k_prompt) / k. This approach uses the difference between total k-effective and prompt k-effective to determine the delayed neutron fraction.
 
-The effective generation time is computed as:
+**Λ_eff (Effective Generation Time)**: Calculated using OpenMC's Iterated Fission Probability (IFP) infrastructure. IFP provides adjoint-weighted quantities that properly account for the importance of neutrons at different energies and positions:
 ```
 Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 ```
 
-This uses the same IFP scores already available for beta-effective calculations:
+IFP scores used:
 - `ifp-time-numerator`: IFP-weighted time to fission
 - `ifp-denominator`: IFP normalization factor
 

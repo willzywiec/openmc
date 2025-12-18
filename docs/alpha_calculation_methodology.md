@@ -11,7 +11,7 @@ The alpha eigenvalue (α) represents the time rate of change of the neutron popu
 
 **Definitions:**
 - **ρ** = reactivity = (k - 1) / k
-- **β_eff** = effective delayed neutron fraction (IFP-weighted)
+- **β_eff** = effective delayed neutron fraction (from k-prompt)
 - **Λ_eff** = IFP-weighted effective generation time
 
 ---
@@ -23,16 +23,16 @@ The alpha eigenvalue describes prompt neutron population dynamics:
 - **α = 0**: Prompt critical (ρ = β_eff) → prompt neutron population stable
 - **α > 0**: Prompt supercritical (ρ > β_eff) → prompt neutrons growing exponentially
 
-### IFP-Weighted Quantities
+### Kinetics Parameters
 
-All kinetics parameters are computed using IFP adjoint weighting:
+The kinetics parameters are computed using two methods:
 
 ```
-β_eff = ifp-beta-numerator / ifp-denominator
-Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+β_eff = (k - k_prompt) / k          (from k-prompt)
+Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)   (from IFP)
 ```
 
-The IFP method properly accounts for the importance of neutrons at different energies and positions, giving physically meaningful results for reactor kinetics.
+The β_eff is calculated from the difference between total k-effective and prompt k-effective. The Λ_eff uses the IFP (Iterated Fission Probability) method which properly accounts for the importance of neutrons at different energies and positions.
 
 ---
 
@@ -40,11 +40,12 @@ The IFP method properly accounts for the importance of neutrons at different ene
 
 ### 1. IFP Infrastructure
 
-OpenMC's existing IFP (Iterated Fission Probability) infrastructure is used for all kinetics calculations:
+OpenMC's IFP (Iterated Fission Probability) infrastructure is used for generation time calculations:
 
 - `ifp-time-numerator`: IFP-weighted time to fission
-- `ifp-beta-numerator`: IFP-weighted delayed neutron fraction numerator
-- `ifp-denominator`: IFP normalization factor (common denominator)
+- `ifp-denominator`: IFP normalization factor
+
+β_eff is calculated separately from k-prompt (no IFP tally needed).
 
 ### 2. Tally Setup
 
@@ -62,7 +63,6 @@ void setup_kinetics_tallies()
   vector<std::string> scores;
   scores.push_back("ifp-time-numerator");   // Index 0
   scores.push_back("ifp-denominator");      // Index 1
-  scores.push_back("ifp-beta-numerator");   // Index 2
 
   tally->set_scores(scores);
   tally->set_filters({});  // Tally over entire geometry
@@ -76,8 +76,8 @@ For each active generation, `calculate_kinetics_parameters()` computes:
 #### Step 1: Effective Delayed Neutron Fraction
 
 ```cpp
-// β_eff = ifp-beta-numerator / ifp-denominator
-beta_eff = ifp_beta_num / ifp_denom;
+// β_eff = (k - k_prompt) / k
+beta_eff = (keff - keff_prompt) / keff;
 ```
 
 #### Step 2: Effective Generation Time
@@ -101,9 +101,9 @@ alpha_ifp = (rho - beta_eff) / lambda_eff_ifp;
 
 Standard deviations are calculated using error propagation:
 
-**For β_eff = beta_num / denom:**
+**For β_eff = (k - k_prompt) / k:**
 ```
-σ_β² ≈ (∂β/∂num)² σ_num² + (∂β/∂denom)² σ_denom²
+σ_β² ≈ (1/k)² σ_k_prompt² + (k_prompt/k²)² σ_k²
 ```
 
 **For Λ_eff:**
@@ -155,9 +155,9 @@ OpenMC prints alpha results in the summary:
 ```
 
 The values are also written to statepoint files for post-processing via:
-- `sp.beta_eff` - IFP-weighted effective delayed neutron fraction
+- `sp.beta_eff` - effective delayed neutron fraction (from k-prompt)
 - `sp.lambda_eff_ifp` - IFP-weighted effective generation time
-- `sp.alpha_ifp` - IFP-weighted alpha eigenvalue
+- `sp.alpha_ifp` - alpha eigenvalue
 
 ---
 
