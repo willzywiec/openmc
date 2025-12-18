@@ -222,23 +222,73 @@ def parse_openmc_output(output: str, statepoint_path: Path = None) -> Dict[str, 
             import openmc
             sp = openmc.StatePoint(str(statepoint_path))
 
-            # Get k-effective
+            # Get k-effective from statepoint
             if hasattr(sp, 'keff'):
                 results['keff'] = sp.keff.nominal_value
                 results['keff_std'] = sp.keff.std_dev
 
-            # Get kinetics data if available
-            if hasattr(sp, 'global_tallies'):
-                for name, value in sp.global_tallies.items():
-                    if 'beta' in name.lower():
-                        results['beta_eff'] = value.nominal_value
-                        results['beta_eff_std'] = value.std_dev
-                    elif 'generation' in name.lower() or 'lambda' in name.lower():
-                        results['gen_time'] = value.nominal_value
-                        results['gen_time_std'] = value.std_dev
-                    elif 'alpha' in name.lower():
-                        results['alpha'] = value.nominal_value
-                        results['alpha_std'] = value.std_dev
+            # Get kinetics data from statepoint
+            # OpenMC stores delayed neutron data when create_delayed_neutron_data=true
+
+            # Try to get beta-effective (sum of delayed neutron fractions)
+            if hasattr(sp, 'k_combined') and hasattr(sp.k_combined, 'nominal_value'):
+                k_eff = sp.k_combined.nominal_value
+            elif results['keff']:
+                k_eff = results['keff']
+            else:
+                k_eff = None
+
+            # Check for kinetics tallies to extract beta-effective
+            if hasattr(sp, 'tallies'):
+                for tally_id, tally in sp.tallies.items():
+                    try:
+                        scores = tally.scores if hasattr(tally, 'scores') else []
+                        score_strs = [str(s).lower() for s in scores]
+
+                        # Check if this tally has both delayed-nu-fission and nu-fission
+                        delayed_idx = None
+                        total_idx = None
+                        for i, s in enumerate(score_strs):
+                            if 'delayed' in s and 'nu' in s:
+                                delayed_idx = i
+                            elif 'nu-fission' in s or 'nu_fission' in s:
+                                if 'delayed' not in s:
+                                    total_idx = i
+
+                        if delayed_idx is not None and total_idx is not None:
+                            # Get mean values for each score
+                            mean = tally.mean
+                            std_dev = tally.std_dev
+
+                            # mean shape is typically (filters, nuclides, scores)
+                            # For a simple tally it's (1, 1, num_scores)
+                            delayed_mean = mean.flat[delayed_idx]
+                            delayed_std = std_dev.flat[delayed_idx]
+                            total_mean = mean.flat[total_idx]
+                            total_std = std_dev.flat[total_idx]
+
+                            if total_mean > 0:
+                                beta = delayed_mean / total_mean
+                                results['beta_eff'] = float(beta)
+                                # Propagate uncertainty
+                                if delayed_mean > 0 and (delayed_std > 0 or total_std > 0):
+                                    rel_err = ((delayed_std/delayed_mean)**2 +
+                                               (total_std/total_mean)**2) ** 0.5
+                                    results['beta_eff_std'] = float(beta * rel_err)
+                    except Exception:
+                        pass  # Continue if this tally can't be parsed
+
+            # Calculate alpha eigenvalue if we have k-eff and generation time
+            if results['keff'] and results['gen_time'] and results['alpha'] is None:
+                k = results['keff']
+                gen_time = results['gen_time']
+                if gen_time > 0 and k > 0:
+                    results['alpha'] = (k - 1.0) / (gen_time * k)
+                    if results['keff_std'] and results['gen_time_std']:
+                        # Propagate uncertainty (simplified)
+                        dk = results['keff_std']
+                        dl = results['gen_time_std']
+                        results['alpha_std'] = abs(results['alpha']) * ((dk/k)**2 + (dl/gen_time)**2)**0.5
 
             sp.close()
         except Exception as e:
@@ -292,7 +342,7 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
             result.error_message = f"Missing XML files: {missing}"
             return result
 
-        # Modify settings for kinetics if requested
+        # Modify settings and add kinetics tallies if requested
         if run_openmc and enable_kinetics:
             try:
                 # Read and modify settings.xml to enable kinetics
@@ -309,6 +359,26 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
                     )
                     with open(settings_file, 'w') as f:
                         f.write(settings_content)
+
+                # Create kinetics tallies for beta-effective calculation
+                tallies_file = bench_dir / 'tallies.xml'
+                # Only add if tallies.xml doesn't exist or doesn't have delayed-nu-fission
+                add_kinetics_tally = True
+                if tallies_file.exists():
+                    with open(tallies_file, 'r') as f:
+                        if 'delayed-nu-fission' in f.read():
+                            add_kinetics_tally = False
+
+                if add_kinetics_tally:
+                    tallies_content = '''<?xml version='1.0' encoding='utf-8'?>
+<tallies>
+  <tally id="1" name="kinetics">
+    <scores>delayed-nu-fission nu-fission</scores>
+  </tally>
+</tallies>
+'''
+                    with open(tallies_file, 'w') as f:
+                        f.write(tallies_content)
             except Exception as e:
                 # Non-fatal error, continue without kinetics
                 pass
