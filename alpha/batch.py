@@ -5,12 +5,10 @@ Alpha Eigenvalue Batch Runner for ICSBEP Benchmarks
 Runs ICSBEP benchmarks matching the examples/alpha folder with alpha eigenvalue
 calculations enabled. Saves all results to a single .xlsx file.
 
-Alpha eigenvalue is calculated two ways:
-  - α = (k_p - 1) / ℓ        (using prompt neutron lifetime)
-  - α = (ρ - β_eff) / Λ      (using mean generation time, more robust to k_eff bias)
+Alpha eigenvalue is calculated as:
+  α = (ρ - β_eff) / Λ
 
 Where:
-  k_p = prompt k-effective
   ℓ = prompt neutron lifetime (birth to absorption/leakage)
   Λ = mean generation time (birth to next-generation fission)
   ρ = (k - 1) / k = reactivity
@@ -207,25 +205,14 @@ def run_benchmark(name: str, run_dir: Path) -> dict:
         "keff_unc": None,
         "k_prompt": None,
         "k_prompt_unc": None,
-        "alpha_k": None,
-        "alpha_k_unc": None,
-        "alpha_rho": None,
-        "alpha_rho_unc": None,
         "beta_eff": None,
         "beta_eff_unc": None,
         "lifetime": None,
         "lifetime_unc": None,
-        "gen_time_derived": None,
-        "gen_time_derived_unc": None,
         "gen_time": None,
         "gen_time_unc": None,
-        # Bias correction values for delayed critical systems
-        "is_delayed_critical": None,
-        "keff_bias": None,
-        "k_prompt_corrected": None,
-        "k_prompt_corrected_unc": None,
-        "alpha_k_corrected": None,
-        "alpha_k_corrected_unc": None,
+        "alpha": None,
+        "alpha_unc": None,
     }
 
     start_time = time.time()
@@ -301,40 +288,15 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["lifetime"] = sp.prompt_neutron_lifetime.nominal_value
             results["lifetime_unc"] = sp.prompt_neutron_lifetime.std_dev
 
-        # Mean generation time (derived)
-        if hasattr(sp, 'mean_generation_time_derived') and sp.mean_generation_time_derived is not None:
-            results["gen_time_derived"] = sp.mean_generation_time_derived.nominal_value
-            results["gen_time_derived_unc"] = sp.mean_generation_time_derived.std_dev
-
-        # Mean generation time (direct measurement)
+        # Mean generation time
         if hasattr(sp, 'mean_generation_time') and sp.mean_generation_time is not None:
             results["gen_time"] = sp.mean_generation_time.nominal_value
             results["gen_time_unc"] = sp.mean_generation_time.std_dev
 
-        # Alpha eigenvalue (k_p - 1) / l
-        if hasattr(sp, 'alpha_k_based') and sp.alpha_k_based is not None:
-            results["alpha_k"] = sp.alpha_k_based.nominal_value
-            results["alpha_k_unc"] = sp.alpha_k_based.std_dev
-
-        # Alpha eigenvalue (rho - beta_eff) / Lambda
-        if hasattr(sp, 'alpha_static') and sp.alpha_static is not None:
-            results["alpha_rho"] = sp.alpha_static.nominal_value
-            results["alpha_rho_unc"] = sp.alpha_static.std_dev
-
-        # Bias correction values for delayed critical systems
-        if hasattr(sp, 'is_delayed_critical') and sp.is_delayed_critical is not None:
-            results["is_delayed_critical"] = sp.is_delayed_critical
-
-        if hasattr(sp, 'keff_bias') and sp.keff_bias is not None:
-            results["keff_bias"] = sp.keff_bias
-
-        if hasattr(sp, 'k_prompt_corrected') and sp.k_prompt_corrected is not None:
-            results["k_prompt_corrected"] = sp.k_prompt_corrected.nominal_value
-            results["k_prompt_corrected_unc"] = sp.k_prompt_corrected.std_dev
-
-        if hasattr(sp, 'alpha_k_based_corrected') and sp.alpha_k_based_corrected is not None:
-            results["alpha_k_corrected"] = sp.alpha_k_based_corrected.nominal_value
-            results["alpha_k_corrected_unc"] = sp.alpha_k_based_corrected.std_dev
+        # Alpha eigenvalue: (rho - beta_eff) / Lambda
+        if hasattr(sp, 'alpha') and sp.alpha is not None:
+            results["alpha"] = sp.alpha.nominal_value
+            results["alpha_unc"] = sp.alpha.std_dev
 
     except Exception as e:
         print(f"  Warning: Could not read statepoint: {e}")
@@ -372,15 +334,10 @@ def write_results_xlsx(results: list, output_file: Path):
         "Benchmark",
         "k-eff", "k-eff unc",
         "k-prompt", "k-prompt unc",
-        "Alpha (k_p-1)/l", "unc",
-        "Alpha (rho-b)/Lambda", "unc",
         "Beta-eff", "Beta-eff unc",
         "Lifetime (s)", "unc",
-        "Gen Time Derived (s)", "unc",
         "Gen Time (s)", "unc",
-        "Delayed Crit?", "k-eff Bias",
-        "k-prompt Corr", "k-prompt Corr unc",
-        "Alpha Corrected", "Alpha Corr unc",
+        "Alpha (1/s)", "unc",
         "Runtime (s)", "Status"
     ]
 
@@ -399,24 +356,14 @@ def write_results_xlsx(results: list, output_file: Path):
             r.get("keff_unc"),
             r.get("k_prompt"),
             r.get("k_prompt_unc"),
-            r.get("alpha_k"),
-            r.get("alpha_k_unc"),
-            r.get("alpha_rho"),
-            r.get("alpha_rho_unc"),
             r.get("beta_eff"),
             r.get("beta_eff_unc"),
             r.get("lifetime"),
             r.get("lifetime_unc"),
-            r.get("gen_time_derived"),
-            r.get("gen_time_derived_unc"),
             r.get("gen_time"),
             r.get("gen_time_unc"),
-            "YES" if r.get("is_delayed_critical") else "NO" if r.get("is_delayed_critical") is False else "",
-            r.get("keff_bias"),
-            r.get("k_prompt_corrected"),
-            r.get("k_prompt_corrected_unc"),
-            r.get("alpha_k_corrected"),
-            r.get("alpha_k_corrected_unc"),
+            r.get("alpha"),
+            r.get("alpha_unc"),
             r.get("runtime"),
             "OK" if r.get("success") else "FAILED"
         ]
@@ -427,15 +374,14 @@ def write_results_xlsx(results: list, output_file: Path):
 
             # Format numbers
             if isinstance(value, float):
-                # Alpha, lifetime, gen time, bias correction - scientific notation
-                # Columns: 6-9 (alphas), 12-17 (times), 19 (bias), 22-23 (corrected alpha)
-                if col in [6, 7, 8, 9, 12, 13, 14, 15, 16, 17, 19, 22, 23]:
+                # Lifetime, gen time, alpha - scientific notation (columns 8-13)
+                if col in [8, 9, 10, 11, 12, 13]:
                     cell.number_format = '0.00E+00'
                 else:
                     cell.number_format = '0.000000'
 
-    # Adjust column widths (25 columns now)
-    column_widths = [15, 12, 12, 12, 12, 16, 10, 16, 10, 12, 12, 14, 14, 16, 16, 14, 14, 12, 12, 12, 12, 14, 14, 12, 10]
+    # Adjust column widths (15 columns now)
+    column_widths = [15, 12, 12, 12, 12, 12, 12, 14, 14, 14, 14, 14, 14, 12, 10]
     for col, width in enumerate(column_widths, 1):
         ws.column_dimensions[openpyxl.utils.get_column_letter(col)].width = width
 
@@ -527,31 +473,17 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             # Always show all parameters
             keff = f"{result['keff']:.6f} +/- {result['keff_unc']:.6f}" if result.get("keff") else "N/A"
             k_prompt = f"{result['k_prompt']:.6f} +/- {result['k_prompt_unc']:.6f}" if result.get("k_prompt") else "N/A"
-            alpha_k = f"{result['alpha_k']:.4e} +/- {result['alpha_k_unc']:.4e} 1/s" if result.get("alpha_k") else "N/A"
-            alpha_rho = f"{result['alpha_rho']:.4e} +/- {result['alpha_rho_unc']:.4e} 1/s" if result.get("alpha_rho") else "N/A"
             beta_eff = f"{result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}" if result.get("beta_eff") else "N/A"
             lifetime = f"{result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s" if result.get("lifetime") else "N/A"
-            gen_time_d = f"{result['gen_time_derived']:.4e} +/- {result['gen_time_derived_unc']:.4e} s" if result.get("gen_time_derived") else "N/A"
             gen_time = f"{result['gen_time']:.4e} +/- {result['gen_time_unc']:.4e} s" if result.get("gen_time") else "N/A"
+            alpha = f"{result['alpha']:.4e} +/- {result['alpha_unc']:.4e} 1/s" if result.get("alpha") else "N/A"
 
-            print(f"  k-eff                = {keff}")
-            print(f"  k-prompt             = {k_prompt}")
-            print(f"  alpha (k_p-1)/l      = {alpha_k}")
-            print(f"  alpha (rho-b)/Lambda = {alpha_rho}")
-            print(f"  beta-eff             = {beta_eff}")
-            print(f"  neutron lifetime     = {lifetime}")
-            print(f"  gen time (derived)   = {gen_time_d}")
-            print(f"  gen time (direct)    = {gen_time}")
-
-            # Show bias correction info if delayed critical
-            if result.get("is_delayed_critical"):
-                print(f"  *** DELAYED CRITICAL SYSTEM DETECTED ***")
-                bias = f"{result['keff_bias']:.6e}" if result.get("keff_bias") else "N/A"
-                k_prompt_corr = f"{result['k_prompt_corrected']:.6f} +/- {result['k_prompt_corrected_unc']:.6f}" if result.get("k_prompt_corrected") else "N/A"
-                alpha_corr = f"{result['alpha_k_corrected']:.4e} +/- {result['alpha_k_corrected_unc']:.4e} 1/s" if result.get("alpha_k_corrected") else "N/A"
-                print(f"  k-eff bias           = {bias}")
-                print(f"  k-prompt (corrected) = {k_prompt_corr}")
-                print(f"  alpha (corrected)    = {alpha_corr}")
+            print(f"  k-eff           = {keff}")
+            print(f"  k-prompt        = {k_prompt}")
+            print(f"  beta-eff        = {beta_eff}")
+            print(f"  lifetime        = {lifetime}")
+            print(f"  gen time        = {gen_time}")
+            print(f"  alpha           = {alpha}")
 
             # Warn if kinetics parameters are missing
             if not result.get("k_prompt"):

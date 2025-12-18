@@ -51,26 +51,13 @@ double keff_prompt {0.0};
 double keff_prompt_std {0.0};
 double beta_eff {0.0};
 double beta_eff_std {0.0};
-double alpha_k_based {0.0};
-double alpha_k_based_std {0.0};
-double alpha_static {0.0};
-double alpha_static_std {0.0};
-
-// Bias-corrected values for delayed critical systems
-bool is_delayed_critical {false};
-double keff_bias {0.0};
-double keff_prompt_corrected {0.0};
-double keff_prompt_corrected_std {0.0};
-double alpha_k_based_corrected {0.0};
-double alpha_k_based_corrected_std {0.0};
+double alpha {0.0};
+double alpha_std {0.0};
 
 // Prompt neutron lifetime ℓ: time from birth to ANY removal (absorption or leakage)
 double prompt_neutron_lifetime {0.0};
 double prompt_neutron_lifetime_std {0.0};
-// Mean generation time Λ: derived from lifetime by Λ = ℓ/k
-double mean_generation_time_derived {0.0};
-double mean_generation_time_derived_std {0.0};
-// Mean generation time Λ: direct measurement from fission events only
+// Mean generation time Λ: direct measurement from fission events
 double mean_generation_time {0.0};
 double mean_generation_time_std {0.0};
 
@@ -625,36 +612,14 @@ void calculate_kinetics_parameters()
 
           simulation::prompt_neutron_lifetime_std = std::sqrt(var_l);
         }
-
-        // Calculate derived generation time: Λ = ℓ / k
-        // This is an approximation based on the lifetime
-        if (simulation::keff_prompt > 0.0) {
-          simulation::mean_generation_time_derived =
-            simulation::prompt_neutron_lifetime / simulation::keff_prompt;
-
-          // Error propagation for derived generation time
-          if (n > 1) {
-            double dLambda_dl = 1.0 / simulation::keff_prompt;
-            double dLambda_dk = -simulation::prompt_neutron_lifetime /
-                                (simulation::keff_prompt * simulation::keff_prompt);
-
-            double var_Lambda =
-              dLambda_dl * dLambda_dl * simulation::prompt_neutron_lifetime_std *
-                simulation::prompt_neutron_lifetime_std +
-              dLambda_dk * dLambda_dk * simulation::keff_prompt_std *
-                simulation::keff_prompt_std;
-
-            simulation::mean_generation_time_derived_std = std::sqrt(var_Lambda);
-          }
-        }
       }
 
-      // Calculate direct generation time from fission events: Λ = Σ(t×ν×w) / Σ(ν×w)
-      // This is the physically accurate generation time (birth-to-birth)
+      // Calculate mean generation time from fission events: Λ = Σ(t×ν×w) / Σ(ν×w)
+      // This is the physically accurate generation time (birth-to-fission)
       if (fission_time_denom > 0.0) {
         simulation::mean_generation_time = fission_time_num / fission_time_denom;
 
-        // Error propagation for direct generation time
+        // Error propagation for mean generation time
         if (n > 1 && simulation::mean_generation_time > 0.0) {
           double dL_dnum = 1.0 / fission_time_denom;
           double dL_ddenom = -fission_time_num / (fission_time_denom * fission_time_denom);
@@ -667,39 +632,15 @@ void calculate_kinetics_parameters()
         }
       }
 
-      // Calculate alpha eigenvalue using lifetime: α = (k_p - 1) / ℓ
-      // This is the prompt neutron approximation from point kinetics
-      if (simulation::prompt_neutron_lifetime > 0.0) {
-        simulation::alpha_k_based =
-          (simulation::keff_prompt - 1.0) / simulation::prompt_neutron_lifetime;
-
-        // Error propagation for alpha
-        // For α = (k - 1) / ℓ: σ_α² ≈ (1/ℓ)² σ_k² + ((k-1)/ℓ²)² σ_ℓ²
-        if (n > 1) {
-          double dAlpha_dk = 1.0 / simulation::prompt_neutron_lifetime;
-          double dAlpha_dl =
-            -(simulation::keff_prompt - 1.0) /
-            (simulation::prompt_neutron_lifetime * simulation::prompt_neutron_lifetime);
-
-          double var_alpha =
-            dAlpha_dk * dAlpha_dk * simulation::keff_prompt_std *
-              simulation::keff_prompt_std +
-            dAlpha_dl * dAlpha_dl * simulation::prompt_neutron_lifetime_std *
-              simulation::prompt_neutron_lifetime_std;
-
-          simulation::alpha_k_based_std = std::sqrt(var_alpha);
-        }
-      }
-
-      // Calculate alpha eigenvalue using generation time: α = (ρ - β_eff) / Λ
+      // Calculate alpha eigenvalue: α = (ρ - β_eff) / Λ
       // This is the inhour equation form using reactivity and delayed neutron fraction
       // where ρ = (k - 1) / k is reactivity and Λ is mean generation time
       if (simulation::mean_generation_time > 0.0 && simulation::keff > 0.0) {
         double rho = (simulation::keff - 1.0) / simulation::keff;  // reactivity
-        simulation::alpha_static =
+        simulation::alpha =
           (rho - simulation::beta_eff) / simulation::mean_generation_time;
 
-        // Error propagation for alpha_static
+        // Error propagation for alpha
         // For α = (ρ - β) / Λ where ρ = (k-1)/k:
         // ∂α/∂k = 1/(k²Λ), ∂α/∂β = -1/Λ, ∂α/∂Λ = -(ρ-β)/Λ²
         if (n > 1) {
@@ -717,58 +658,8 @@ void calculate_kinetics_parameters()
             dAlpha_dLambda * dAlpha_dLambda * simulation::mean_generation_time_std *
               simulation::mean_generation_time_std;
 
-          simulation::alpha_static_std = std::sqrt(var_alpha);
+          simulation::alpha_std = std::sqrt(var_alpha);
         }
-      }
-
-      // Check for delayed critical system and apply bias correction
-      // A system is delayed critical if k_eff >= 1.0 but k_prompt < 1.0
-      // In this case, the system is only critical due to delayed neutrons
-      simulation::is_delayed_critical =
-        (simulation::keff >= 1.0 && simulation::keff_prompt < 1.0);
-
-      if (simulation::is_delayed_critical) {
-        // Calculate bias: for a DC system, true k_eff should be exactly 1.0
-        simulation::keff_bias = 1.0 - simulation::keff;
-
-        // Apply bias correction to k_prompt
-        simulation::keff_prompt_corrected =
-          simulation::keff_prompt + simulation::keff_bias;
-
-        // Uncertainty propagation: σ_kp_corr² = σ_kp² + σ_keff²
-        // (bias = 1 - keff, so σ_bias = σ_keff)
-        simulation::keff_prompt_corrected_std =
-          std::sqrt(simulation::keff_prompt_std * simulation::keff_prompt_std +
-                    simulation::keff_std * simulation::keff_std);
-
-        // Calculate corrected alpha: α_corr = (k_p_corrected - 1) / ℓ
-        if (simulation::prompt_neutron_lifetime > 0.0) {
-          simulation::alpha_k_based_corrected =
-            (simulation::keff_prompt_corrected - 1.0) / simulation::prompt_neutron_lifetime;
-
-          // Error propagation for corrected alpha
-          if (n > 1) {
-            double dAlpha_dk = 1.0 / simulation::prompt_neutron_lifetime;
-            double dAlpha_dl =
-              -(simulation::keff_prompt_corrected - 1.0) /
-              (simulation::prompt_neutron_lifetime * simulation::prompt_neutron_lifetime);
-
-            double var_alpha =
-              dAlpha_dk * dAlpha_dk * simulation::keff_prompt_corrected_std *
-                simulation::keff_prompt_corrected_std +
-              dAlpha_dl * dAlpha_dl * simulation::prompt_neutron_lifetime_std *
-                simulation::prompt_neutron_lifetime_std;
-
-            simulation::alpha_k_based_corrected_std = std::sqrt(var_alpha);
-          }
-        }
-      } else {
-        // Not delayed critical - corrected values equal uncorrected values
-        simulation::keff_bias = 0.0;
-        simulation::keff_prompt_corrected = simulation::keff_prompt;
-        simulation::keff_prompt_corrected_std = simulation::keff_prompt_std;
-        simulation::alpha_k_based_corrected = simulation::alpha_k_based;
-        simulation::alpha_k_based_corrected_std = simulation::alpha_k_based_std;
       }
     }
   }
@@ -1048,33 +939,17 @@ void write_eigenvalue_hdf5(hid_t group)
       simulation::beta_eff, simulation::beta_eff_std};
     write_dataset(group, "beta_eff", beta_eff_vals);
 
-    // Write alpha eigenvalues if calculated
+    // Write alpha eigenvalue and timing parameters if calculated
     if (settings::calculate_alpha) {
       array<double, 2> prompt_lifetime_vals {
         simulation::prompt_neutron_lifetime, simulation::prompt_neutron_lifetime_std};
       write_dataset(group, "prompt_lifetime", prompt_lifetime_vals);
-      array<double, 2> prompt_gen_time_vals {
-        simulation::mean_generation_time_derived, simulation::mean_generation_time_derived_std};
-      write_dataset(group, "prompt_gen_time", prompt_gen_time_vals);
-      array<double, 2> prompt_gen_time_direct_vals {
+      array<double, 2> gen_time_vals {
         simulation::mean_generation_time, simulation::mean_generation_time_std};
-      write_dataset(group, "prompt_gen_time_direct", prompt_gen_time_direct_vals);
-      array<double, 2> alpha_k_vals {
-        simulation::alpha_k_based, simulation::alpha_k_based_std};
-      write_dataset(group, "alpha_k_based", alpha_k_vals);
-      array<double, 2> alpha_static_vals {
-        simulation::alpha_static, simulation::alpha_static_std};
-      write_dataset(group, "alpha_static", alpha_static_vals);
-
-      // Write bias correction values
-      write_dataset(group, "is_delayed_critical", simulation::is_delayed_critical);
-      write_dataset(group, "keff_bias", simulation::keff_bias);
-      array<double, 2> keff_prompt_corrected_vals {
-        simulation::keff_prompt_corrected, simulation::keff_prompt_corrected_std};
-      write_dataset(group, "k_prompt_corrected", keff_prompt_corrected_vals);
-      array<double, 2> alpha_k_corrected_vals {
-        simulation::alpha_k_based_corrected, simulation::alpha_k_based_corrected_std};
-      write_dataset(group, "alpha_k_based_corrected", alpha_k_corrected_vals);
+      write_dataset(group, "mean_generation_time", gen_time_vals);
+      array<double, 2> alpha_vals {
+        simulation::alpha, simulation::alpha_std};
+      write_dataset(group, "alpha", alpha_vals);
     }
   }
 }
@@ -1105,57 +980,25 @@ void read_eigenvalue_hdf5(hid_t group)
     simulation::beta_eff = beta_eff_vals[0];
     simulation::beta_eff_std = beta_eff_vals[1];
 
-    // Read alpha eigenvalues if they exist
-    if (settings::calculate_alpha && object_exists(group, "alpha_k_based")) {
-      // Read prompt neutron lifetime if it exists
+    // Read alpha eigenvalue and timing parameters if they exist
+    if (settings::calculate_alpha) {
       if (object_exists(group, "prompt_lifetime")) {
         array<double, 2> prompt_lifetime_vals;
         read_dataset(group, "prompt_lifetime", prompt_lifetime_vals);
         simulation::prompt_neutron_lifetime = prompt_lifetime_vals[0];
         simulation::prompt_neutron_lifetime_std = prompt_lifetime_vals[1];
       }
-      // Read mean generation time (derived from lifetime)
-      if (object_exists(group, "prompt_gen_time")) {
-        array<double, 2> prompt_gen_time_vals;
-        read_dataset(group, "prompt_gen_time", prompt_gen_time_vals);
-        simulation::mean_generation_time_derived = prompt_gen_time_vals[0];
-        simulation::mean_generation_time_derived_std = prompt_gen_time_vals[1];
+      if (object_exists(group, "mean_generation_time")) {
+        array<double, 2> gen_time_vals;
+        read_dataset(group, "mean_generation_time", gen_time_vals);
+        simulation::mean_generation_time = gen_time_vals[0];
+        simulation::mean_generation_time_std = gen_time_vals[1];
       }
-      // Read mean generation time (direct measurement)
-      if (object_exists(group, "prompt_gen_time_direct")) {
-        array<double, 2> prompt_gen_time_direct_vals;
-        read_dataset(group, "prompt_gen_time_direct", prompt_gen_time_direct_vals);
-        simulation::mean_generation_time = prompt_gen_time_direct_vals[0];
-        simulation::mean_generation_time_std = prompt_gen_time_direct_vals[1];
-      }
-      array<double, 2> alpha_k_vals;
-      read_dataset(group, "alpha_k_based", alpha_k_vals);
-      simulation::alpha_k_based = alpha_k_vals[0];
-      simulation::alpha_k_based_std = alpha_k_vals[1];
-      if (object_exists(group, "alpha_static")) {
-        array<double, 2> alpha_static_vals;
-        read_dataset(group, "alpha_static", alpha_static_vals);
-        simulation::alpha_static = alpha_static_vals[0];
-        simulation::alpha_static_std = alpha_static_vals[1];
-      }
-      // Read bias correction values
-      if (object_exists(group, "is_delayed_critical")) {
-        read_dataset(group, "is_delayed_critical", simulation::is_delayed_critical);
-      }
-      if (object_exists(group, "keff_bias")) {
-        read_dataset(group, "keff_bias", simulation::keff_bias);
-      }
-      if (object_exists(group, "k_prompt_corrected")) {
-        array<double, 2> keff_prompt_corrected_vals;
-        read_dataset(group, "k_prompt_corrected", keff_prompt_corrected_vals);
-        simulation::keff_prompt_corrected = keff_prompt_corrected_vals[0];
-        simulation::keff_prompt_corrected_std = keff_prompt_corrected_vals[1];
-      }
-      if (object_exists(group, "alpha_k_based_corrected")) {
-        array<double, 2> alpha_k_corrected_vals;
-        read_dataset(group, "alpha_k_based_corrected", alpha_k_corrected_vals);
-        simulation::alpha_k_based_corrected = alpha_k_corrected_vals[0];
-        simulation::alpha_k_based_corrected_std = alpha_k_corrected_vals[1];
+      if (object_exists(group, "alpha")) {
+        array<double, 2> alpha_vals;
+        read_dataset(group, "alpha", alpha_vals);
+        simulation::alpha = alpha_vals[0];
+        simulation::alpha_std = alpha_vals[1];
       }
     }
   }
