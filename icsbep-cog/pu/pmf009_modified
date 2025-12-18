@@ -1,0 +1,22 @@
+PU-MET-FAST-009: 11.154 kg Pu(4.90)-1.00Ga @ 15.90 g/cc in 7.9248 cm Al-2014 @ 2.82 g/cc
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom Densities per Table 4 in Section 3.3
+mat=1 bunches pu239 3.7592-2 pu240 1.9349-3 pu241 1.1797-4 ga 1.3733-3
+mat=2 bunches al 5.8787-2 cu 1.1759-3 si 2.4187-4 mn 2.4729-4 mg 3.4936-4
+geometry
+sector 1 core -1
+sector 2 refl 1 -2
+boundary vacuum 2
+picture cs material
+-14 0 14 -14 0 -14 14 0 -14
+volume
+-14 -14 -14 14 -14 -14 -14 14 -14
+28 28 28
+surfaces
+1 sphere 5.5118 $ per Section 3.2
+2 sphere 13.4366 $ TEK = 7.9248 cm
+end

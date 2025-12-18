@@ -1,0 +1,39 @@
+PU-SOL-THERM-033-14: 160.7 gPu(4.23)/L at H/X=153.2 with no poisons
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 9.515
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u235 1.5275-10 u238 2.1395-8 pu238 2.9677-8 pu239 3.8644-4 pu240 1.7050-5 pu241 1.1641-6 pu242 6.3968-8 am241 1.3971-7 $ Plutonium 
+                (h.h2o) 5.9381-2   o16 3.7973-2     n 2.9855-3    fe 3.2350-6    cr 1.3028-7    ni 3.4297-7    mn 1.4092-7    ca 1.9317-6 $  nitrate
+                     cu 1.2183-7    mg 2.3890-7    zn 4.4399-7    na 4.2095-7                                                             $  solution
+  mat=2 bunches      fe 5.9546-2    si 1.6469-3    ni 8.1061-3    mn 8.6597-4    si 1.6939-3     s 4.4504-5     p 6.1439-5     c 1.1883-4 $ SST
+  mat=3 bunches (h.h2o) 6.6706-2   o16 3.3353-2                                                                                           $ Water
+  mat=4 bunches       n 4.1985-5   o16 1.1263-5                                                                                           $ Air
+assign-mc
+  1 red 2 gray 3 sky 4 yellow
+geometry
+  sector 1 Soln  -1 -2 -3
+  sector 4 Air    1 -2 -3
+  sector 2 SST       2 -3
+  sector 3 H2O   -1  2  3 -4
+  sector 4 Air    1  2  3 -4
+  sector 2 SST       2  3  4 -5 -6
+  sector 4 Air       2  3  4  5 -6
+  boundary vacuum                6
+picture cs material color res=1500
+  -60   0  90 -60   0 -30  60   0 -30 title="axial view"
+picture cs material color res=1500
+  -20   0  30 -20   0 -10  20   0 -10 title="axial detail of vessel bottom"
+volume material $ Solution region volume
+  -18 -18   0  18 -18   0 -18  18   0
+   36  36  20
+surfaces
+   1 p z 19.03                          $ Critical solution height, Hc 
+   2 rev 3 0.0 0.0 0.6 17.98 80.7 17.98 $ SST solution tank, inner
+    tr 0 0 0 0 0 1 0 1 0                $  with X -> Z 
+   3 c z  18.28 -0.3 80.7               $ SST solution  tank, outer
+   4 c z  54.6 -25.9 62.8               $ SST reflector tank, inner
+   5 p z  63.2                          $ SST refelctor tank, top
+   6 c z  55.0 -26.3 85.7               $ SST reflector tank, outer, and BCD
+end

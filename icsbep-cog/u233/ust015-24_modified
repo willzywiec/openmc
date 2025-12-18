@@ -1,0 +1,30 @@
+U233-SOL-THERM-015-24; FALSTAFF; Sol'n No. 6; Sphere No. 5; 3.82 cm Be
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches 
+          u233 6.1063-4 u234 6.6470-6 u235 2.4447-7 u238 1.9450-6 $ Solution No. 6
+       (h.h2o) 6.3523-2  o16 3.2943-2    f 1.3530-3               $  @ H/X = 104
+  mat=2 w-p 8.0                                                   $ SS-347 @ 8.0 g/cc
+            fe 71.        cr 18.        ni 11.                    $  Fe-18Cr-11Ni
+  mat=3   (be) 1.82                                               $ Beryllium Metal
+assign-mc
+  1 yellow 2 gray 3 green
+geometry
+  sector 1 Soln  -1
+  sector 2 SS347  1 -2
+  sector 3 Be     2 -3
+  boundary vacuum    3
+picture cs material color
+  -8  0  8  -8  0 -8   8  0 -8
+volume material
+  -8 -8 -8  +8 -8 -8  -8 +8 -8
+  16 16 16
+surfaces
+  1 sphere 10.1625
+  2 sphere 10.2107
+  3 sphere 14.0307
+end

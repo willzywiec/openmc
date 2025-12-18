@@ -1,0 +1,76 @@
+LCT049-1S: Simplified model of R2-2R(6,6) with H/U=2 with d=2.60cm
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=8
+  -10.26 -10.26 -10  10.26 -10.26 -10
+  -10.26  10.26 -10  10.26  10.26 -10
+  -10.26 -10.26  10  10.26 -10.26  10
+  -10.26  10.26  10  10.26  10.26  10
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 3.4097-6 u235 3.6865-4 u236 2.8024-6 u238 6.9422-3 o16 2.2801-2 $ U(5)O2+H2O
+             (h.h2o) 1.4725-2                                                        $ H/U=2.0124
+  mat=2 bunches   al 5.8086-2   mg 1.9719-3   cu 1.0261-5   fe 1.0508-4  cr 6.2704-6 $ AG3
+                  mn 1.0089-4   si 6.9652-5   ti 6.8094-6   zn 4.9860-6              $  alloy
+  mat=3 bunches    c 5.4065-2  o16 9.4815-4    n 2.9332-4 (h.ch2) 8.8660-2           $ Rubber
+  mat=4 bunches    c 4.1215-2 (h.ch2) 8.2431-2                                       $ Polythene
+  mat=5 bunches    n 4.1985-5  o16 1.1263-5                                          $ Air
+assign-mc
+  1 red 2 yellow 3 black 4 sky 5 lime
+geometry
+  use unit 4 lttc  11 -18  21 -29  31 -39
+  boundary vacuum -11      21 -29  31 -39
+  boundary vacuum      18  21 -29  31 -39
+  boundary vacuum  11 -18 -21      31 -39
+  boundary vacuum  11 -18      29  31 -39
+  boundary vacuum  11 -18  21 -29 -31
+  boundary vacuum  11 -18  21 -29      39
+define unit 1 $ Core box
+  sector 1 UO2    -1 -2
+  sector 2 AG3     1 -2
+  sector 5 Air        2 -3 -4
+  sector 3 Rubber     2  3 -4
+  sector 2 AG3           3  4 -5
+  sector 5 Air        2     4  5 -6
+  sector 2 AG3                    6 -7
+  fill 5 $ Air
+define unit 2 $ Reflector box 
+  sector 4 Poly        -8
+  sector 5 Air   -6     8
+  sector 2 AG3    6 -7  8
+  fill 5 $ Air
+define unit 3 $ Air
+  sector 5 Air   -7
+  fill 5 $ Air
+define unit 4 $ Array
+   {x 11  -62.86 -42.34 -21.82  -1.30  1.30  21.82  42.34  62.86
+    y 21  -82.08 -61.56 -41.04 -20.52  0.00  20.52  41.04  61.56  82.08
+    z 31  -80.00 -60.00 -40.00 -20.00  0.00  20.00  40.00  60.00  80.00
+    fill
+    2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2
+    2 2 2 3 2 2 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 2 2 3 2 2 2
+    2 2 2 3 2 2 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 2 2 3 2 2 2
+    2 2 2 3 2 2 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 2 2 3 2 2 2
+    2 2 2 3 2 2 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 2 2 3 2 2 2
+    2 2 2 3 2 2 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 2 2 3 2 2 2
+    2 2 2 3 2 2 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 1 1 3 1 1 2 2 2 2 3 2 2 2
+    2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 2 2}
+picture cs material color   1 10  20   1  10   0 22  10   0 title="axial x-z detail of one fuel box"
+picture cs material color   1 21  10   1   0  10 22   0  10 title="plane x-y detail of one fuel box"
+picture cs material color -65 85 -70 -65 -85 -70 65 -85 -70 title="plane x-y view at z=-70.0"
+picture cs material color -65 85 -50 -65 -85 -50 65 -85 -50 title="plane x-y view at z=-50.0"
+picture cs material color -65 85  70 -65 -85  70 65 -85  70 title="plane x-y view at z=+70.0"
+picture cs material color -65 10  85 -65  10 -85 65  10 -85 title="axial x-z view at y=+10.0"
+picture cs material color -65 71  85 -65  71 -85 65  71 -85 title="axial x-z view at y=+71.0"
+surfaces 
+$ --- Core box
+  1 box 19.6  19.6  18.91 tr 0 0  0.145 $ UO2
+  2 box 19.9  19.9  19.16 tr 0 0  0.020 $ AG3 box
+  3 box 17.54 17.54  0.10 tr 0 0  9.650 $ Air
+  4 box 19.9  19.9   0.10 tr 0 0  9.650 $ Rubber
+  5 box 19.9  19.9   0.30 tr 0 0  9.850 $ AG3 lid
+  6 box 20.3  20.3  20.0                $ Air
+  7 box 20.5  20.5  20.0                $ AG3 tube
+$ --- Reflector
+  8 box 20.1  20.1  20.0                $ Polythene
+end

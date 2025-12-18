@@ -1,0 +1,138 @@
+LEU-COMP-THERM-102-15: 45 x 45 array of 444 fuel rods with 0.8001 cm square pitch
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 24.39
+assign-mc
+  1 purple 2 yellow 3 sky 4 yellow 5 gray 6 lime
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+ mat=1  bunches    u234 6.5539-6 u235 1.6010-3 u236 1.4632-5 u238 2.1296-2 o16 4.5837-2 ag 9.2319-9 $ U(6.90)O2 fuel
+                      b 2.3858-7   cd 1.2380-8   co 2.1620-8   cr 2.5100-6  cu 2.1316-7 fe 1.0311-5 $
+                     mn 2.8372-7   mo 1.2443-7   ni 3.4989-6    v 1.4813-8   w 3.5998-9             $
+ mat=2  bunches      al 5.9668-2   si 1.7561-4   fe 1.0303-4   cu 3.2339-5  mn 3.7407-4 zn 1.2571-5 $ Al-3003 @ 2.73 g/cc 
+ mat=3  bunches (h.h2o) 6.6659-2  o16 3.3329-2                                                      $ Water @ 0.99705 g/cc
+ mat=4  bunches      al 5.8376-2   si 4.1683-4   fe 1.8051-4   cu 7.9320-5  mn 2.6637-5 mg 6.9574-4 $ Al-6061 @ 2.70 g/cc
+                     cr 6.2542-5   zn 2.9839-5   ti 6.7918-6    v 3.1918-6                          $
+ mat=5  bunches      fe 1.2527-2   cr 3.6455-3   ni 1.5724-3   mn 1.8160-4   c 3.3225-5  p 7.2471-6 $ SS304
+                      s 4.6663-6   si 1.7761-4    n 3.5613-5                                        $
+ mat=6  bunches (h.ch2) 8.2755-2    c 4.1377-2                                                      $ CH2
+geometry
+   use unit 3 array   -15 -16                     $ 45 x 45 lattice
+   use unit 4 dtct1   -26 -16 tr -6.4122  28.94 0 $ 1st detector
+   use unit 4 dtct2   -27 -16 tr  6.4122 -28.94 0 $ 2nd detector
+   use unit 5 assy     15 -16  26  27             $ Water filled tank with upper and lower grid plates
+define unit 1 $ Fuel rod in an arbitrary larger unit cell
+   sector   2 Al3003  -1  -2         $ Lower end cap
+   sector   1 UO2     -1   2  -3     $ UO2 fuel
+   sector   5 SS304   -1   3   4  -5 $ SS-304 spring
+   sector   4 Al6061  -1   5  -6     $ Al-6061 spacer
+   sector   6 CH2     -1   6  -7     $ CH2 spacer
+   sector   2 Al3003  -1   2   8  -9 $ Al-3003 cladding
+   sector   3 H2O     -1   2   9     $ Water  inside hole
+   sector   3 H2O      1  11  14 -16 $ Water outside hole
+   sector   4 Al6061   1 -11     -16 $ Lower grid plate
+   sector   4 Al6061   1 -14     -16 $ Upper grid plate
+define unit 2 $ No fuel rod in an arbitrary larger unit cell
+   sector   3 H2O     -1 -11 -16 $ Water inside hole in lower grid plate
+   sector   3 H2O     -1 -14 -16 $ Water inside hole in upper grid plate
+   sector   4 Al6061   1 -11 -16 $ Lower grid plate
+   sector   4 Al6061   1 -14 -16 $ Upper grid plate
+   sector   3 H2O     11  14 -16 $ Water outside lower and upper grid plates
+ define unit 3 $ 45x45 array
+   {x 101 46 [-18.00225 18.00225]
+    y 201 46 [-18.00225 18.00225]
+    z 301    -999.99   999.99
+    fill
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 2 2 1 2 1 2 1 2 2 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 1 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 1 2 1 2 1 2 1 1 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2
+    2 2 2 2 2 2 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 1 2 2 2 2 2 2
+    2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2
+    2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2
+    2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2
+    2 2 2 2 2 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 2 2 2 2 2
+    2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2
+    2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2
+    2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2
+    2 2 2 2 2 2 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 2 1 2 2 2 2 2 2
+    2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 1 2 1 2 1 2 1 1 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 1 1 2 1 2 1 2 1 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 1 1 2 1 2 1 2 1 2 1 2 1 2 1 1 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 2 2 1 2 1 2 1 2 2 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 1 2 1 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2}
+define unit 4 $ Polyethylene-lined detector tube well
+   sector   4 Al6061  21 -22     $ Al-6061 detector tube well
+   sector   3 H2O     22 -23 -24 $   Water between tube wall and polyethylene
+   sector   6 CH2     23 -24     $   Detector polyethlene moderator
+   sector   3 H2O     22  24 -16 $   Water outside below critical height
+define unit 5 $ Water-filled tank with lower and upper grid plates
+   sector   3 H2O     11  14 -16 $ Water outside lower and upper grid plates
+   sector   4 Al6061 -11 -16     $ Al-6061 lower grid plate
+   sector   4 Al6061 -14 -16     $ Al-6061 upper grid plate
+picture cs material color -20  20   51  -20  -20    51   20  -20    51 title="loading patter of fuel rods in the upper grid plate"
+picture cs material color  -2.0 2.0 -1   -2.0 -2.0  -1    2.0 -2.0  -1 title="plane cell view of the end caps in the lower grid plate"
+picture cs material color  -2.0 2.0  1   -2.0 -2.0   1    2.0 -2.0   1 title="plane cell view of the fuel rods in the water"
+picture cs material color  -2.0 2.0 51   -2.0 -2.0  51    2.0 -2.0  51 title="plane cell view of the fuel rods in the upper grid plate"
+picture cs material color  -2.0 0    1   -2.0  0    -2    2.0  0    -2 title="axial cell view of the end caps in lower grid plate"
+picture cs material color  -2.0 0    3   -2.0  0     1    2.0  0     1 title="axial cell view of the fuel rods in the water"
+picture cs material color  -2.0 0   54   -2.0  0    50    2.0  0    50 title="axial cell view of the fuel rods in upper grid plate"
+picture cs material color  -2.0 0   69   -2.0  0    67    2.0  0    67 title="axial cell view of the top of the fuel rods"
+picture cs material color -47  47   -1  -47  -47    -1   47  -47    -1 title="plane view of the assembly through the lower grid plate"
+picture cs material color -47  47    1  -47  -47     1   47  -47     1 title="plane view of the assembly in the water"
+picture cs material color -47  47   51  -47  -47    51   47  -47    51 title="plane view of the assembly through the upper grid plate"
+picture cs material color -47   0   69  -47    0   -20   47    0   -20 title="axial view of the assembly"
+picture cs material color -6.4122 47 69 -6.4122 47 -47 -6.4122 -47 -47 title="axial view of the upper detector"
+picture cs material color  6.4122 47 69  6.4122 47 -47  6.4122 -47 -47 title="axial view of the lower detector"
+$ -- volume material -20.955 -20.955 -1.3 20.955 -20.955 -1.3 -20.955 20.955 -1.3 41.91 41.91 70 $ volume of the lattice (core) region
+surfaces
+$ -- Fuel rod within air/water filled hole through grid plates
+   1 cylinder z  0.333375 -1.27    68.2752 $ Hole containing fuel rod, water, or air/outer
+   2 cylinder z  0.317474 -1.27     0.0    $ Al-3003 lower end cap
+   3 cylinder z  0.262814  0.0     48.780  $ UO2 fuel
+   4 cylinder z  0.17526                   $ SS304 spring/inner
+   5 cylinder z  0.2286   48.780   50.4952 $ SS304 spring/outer
+   6 cylinder z  0.26289  50.4952  53.0352 $ Al-6061 spacer
+   7 cylinder z  0.26289  53.0352  68.2752 $ CH2 spacer
+   8 cylinder z  0.284519                  $ Al-3003 cladding/inner
+   9 cylinder z  0.317474  0.0     68.2752 $ Al-3003 cladding/outer
+$ --- Lower and upper grid plates, critical water height, lattice boundary and assembly outer boundary
+  11 cylinder z 46.355    -2.54     0.0    $ Al-6061 lower grid plate
+  14 box 41.91 41.91 2.54 tr 0 0 51.7652   $ Al-6061 upper grid plate/upper
+  15 box        36.0045   36.0045  999.0   $ X-Y lattice boundary
+  16 cylinder z 46.8376  -19.05    68.2752 $ Entire assembly/outer boundary (BCD)
+$ --- Detectors
+  21 cylinder z  2.8575    0.635   68.2752 $ Al-6061 tube/inner
+  22 cylinder z  3.175     0.0     68.2752 $ Al-6061 tube/outer
+  23 cylinder z  3.30581                   $ CH2/inner
+  24 cylinder z  5.75945   0.762   30.7848 $ CH2/outer
+  26 cylinder z  6.0       0.0     68.2752 tr -6.4122  28.94 0 $ Location of 1st detector
+  27 cylinder z  6.0       0.0     68.2752 tr  6.4122 -28.94 0 $ Location of 2nd detector
+end

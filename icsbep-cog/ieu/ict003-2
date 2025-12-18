@@ -1,0 +1,285 @@
+ICT003-2: TRIGA Mark II Reactor with U(20) Fuel - Core 133
+basic 
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+assign-mc
+  1 purple 2 orange 3 yellow 4 pink 5 gray 6 yellow 7 red 8 lime 9 sky 10 white
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches (h.zrh) 5.5253-2 (zr.zrh) 3.4530-2 u238 1.4625-3 u235 3.6801-4 $ Fuel in fuel rod
+  mat=2  bunches (h.zrh) 5.6284-2 (zr.zrh) 3.5175-2 u238 1.4898-3 u235 3.7487-4 $ Fuel in control rod
+  mat=3  bunches zr 4.2843-2                                                    $ Zr rod
+  mat=4  bunches b10 2.1443-2 b11 8.6310-2 c 2.7355-2                           $ B4C in absorber rod
+  mat=5  bunches fe 5.6860-2 cr 1.7360-2 ni 8.0948-3 mn 1.7295-3 si 3.3831-3    $ SS404 in clad, ends
+                  c 3.1643-4  p 6.1353-5  s 5.9256-5                            $  of rods, fittings
+  mat=6  bunches al 6.0262-2                                                    $ Al in clad, grids, transient rod
+  mat=7  bunches mo 6.4025-2                                                    $ Support disc in fuel rod
+  mat=8  bunches (c) 8.0221-2                                                   $ Graphite
+  mat=9  bunches (h.h2o) 6.6689-2 o16 3.3344-2                                  $ Water
+  mat=10 bunches n 4.3479-5 o16 1.0868-5                                        $ Air
+geometry
+  use unit 4 RX  -199
+  boundary vacuum 199
+define unit 4 $ Entire problem (fill appears infinite)
+$ --- Ring A
+  use unit 1 FR  -1
+$ --- Ring B
+  use unit 1 FR  -2 tr   4.0538     0        0
+  use unit 1 FR  -3 tr   2.0269     3.510694 0 
+  use unit 1 FR  -4 tr  -2.0269     3.510694 0
+  use unit 1 FR  -5 tr  -4.0538     0        0
+  use unit 1 FR  -6 tr  -2.0269    -3.510694 0 
+  use unit 1 FR  -7 tr   2.0269    -3.510694 0
+$ --- Ring C
+  use unit 1 FR  -8 tr   7.9807     0        0 
+  use unit 1 FR  -9 tr   6.911489   3.990350 0
+  use unit 1 FR -10 tr   3.990350   6.911489 0
+  use unit 2 CR -11 tr   0          7.9807   0 
+  use unit 1 FR -12 tr  -3.990350   6.911489 0
+  use unit 1 FR -13 tr  -6.911489   3.990350 0
+  use unit 1 FR -14 tr  -7.9807     0        0 
+  use unit 1 FR -15 tr  -6.911489  -3.990350 0
+  use unit 1 FR -16 tr  -3.990350  -6.911489 0
+  use unit 3 TT -17 tr   0         -7.9807   0 
+  use unit 1 FR -18 tr   3.990350  -6.911489 0
+  use unit 1 FR -19 tr   6.911489  -3.990350 0
+$ --- Ring D
+  use unit 2 CR  -20 tr 11.9456     0        0 
+  use unit 1 FR  -21 tr  11.225192   4.085636 0 
+  use unit 1 FR  -22 tr   9.150860   7.678484 0 
+  use unit 1 FR  -23 tr   5.972800  10.345193 0 
+  use unit 1 FR  -24 tr   2.074332  11.764119 0 
+  use unit 1 FR  -25 tr  -2.074332  11.764119 0 
+  use unit 1 FR  -26 tr  -5.972800  10.345193 0 
+  use unit 1 FR  -27 tr  -9.150860   7.678484 0 
+  use unit 1 FR  -28 tr -11.225192   4.085636 0 
+  use unit 2 CR  -29 tr -11.9456     0        0 
+  use unit 1 FR  -30 tr -11.225192  -4.085636 0 
+  use unit 1 FR  -31 tr  -9.150860  -7.678484 0 
+  use unit 1 FR  -32 tr  -5.972800 -10.345193 0 
+  use unit 1 FR  -33 tr  -2.074332 -11.764119 0 
+  use unit 1 FR  -34 tr   2.074332 -11.764119 0 
+  use unit 1 FR  -35 tr   5.972800 -10.345193 0 
+  use unit 1 FR  -36 tr   9.150860  -7.678484 0 
+  use unit 1 FR  -37 tr  11.225192  -4.085636 0 
+$ --- Ring E
+  sector  9 Hole -38 sector  9 Hole -39 sector  9 Hole -40 
+  use unit 1 FR  -41 tr  11.254029  11.254029 0 
+  use unit 1 FR  -42 tr   7.957800  13.783310 0 
+  use unit 1 FR  -43 tr   4.119260  15.373289 0 
+  use unit 1 FR  -44 tr   0         15.9156   0 
+  use unit 1 FR  -45 tr  -4.119260  15.373289 0 
+  use unit 1 FR  -46 tr  -7.957800  13.783310 0 
+  use unit 1 FR  -47 tr -11.254029  11.254029 0 
+  sector  9 Hole -48 sector  9 Hole -49 sector  9 Hole -50 
+  sector  9 Hole -51 sector  9 Hole -52 sector  9 Hole -53
+  sector  9 Hole -54 sector  9 Hole -55 sector  9 Hole -56 
+  sector  9 Hole -57 sector  9 Hole -58 sector  9 Hole -59 
+  sector  9 Hole -60 sector  9 Hole -61
+$ --- Ring F
+  sector  9 Hole -62 sector  9 Hole -63 sector  9 Hole -64 sector  9 Hole -65
+  sector  9 Hole -66 sector  9 Hole -67 sector  9 Hole -68 sector  9 Hole -69
+  sector  9 Hole -70 sector  9 Hole -71 sector  9 Hole -72 sector  9 Hole -73
+  sector  9 Hole -74 sector  9 Hole -75 sector  9 Hole -76 sector  9 Hole -77
+  sector  9 Hole -78 sector  9 Hole -79 sector  9 Hole -80 sector  9 Hole -81
+  sector  9 Hole -82 sector  9 Hole -83 sector  9 Hole -84 sector  9 Hole -85
+  sector  9 Hole -86 sector  9 Hole -87 sector  9 Hole -88 sector  9 Hole -89
+  sector  9 Hole -90 sector  9 Hole -91  
+$ --- Aluminum support grids
+  sector  6 Grid  -100  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+                       21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40
+                       41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60
+                       61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+                       81 82 83 84 85 86 87 88 89 90 91
+  sector  6 Grid  -101  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+                       21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40
+                       41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60
+                       61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80
+                       81 82 83 84 85 86 87 88 89 90 91
+$ --- Aluminum clad graphite reflector
+  sector  6 Clad   110 -111 -116
+  sector  6 Clad   111  115 -116
+  sector  8 Grpht  111 -112 -115
+  sector 10 Air    112 -113  114 -115
+  sector  8 Grpht  112 -113 -114 -115
+  sector  8 Grpht  113 -115
+$ --- Water/BCD
+  fill    9 $ Water 
+define unit 1 $ --- Fuel Rod, aka Fuel Element
+  sector  8 Grpht -201                     $ Graphite/lower
+  sector  7 Mo     201 -202                $ Mo disc
+  sector  3 Zr     202 -203 -204           $ Zr Rod
+  sector  1 U-ZrH  202  203 -204           $ U-ZrH Fuel
+  sector  8 Grpht  204 -205                $ Graphite/upper
+  sector 10 Air    201  202  204  205 -206 $ Clad/inner
+  sector  5 SS304  206 -207                $ Clad/outer
+  sector  9 Water  207 -199                $ Water outside 
+define unit 2 $ --- Control Rod, aka Fueled-Follower Control Rod
+  sector 10 Air   -301           -310      $ Void/lower
+  sector  5 SS304  301 -302      -310      $ SS304/lower
+  sector  3 Zr     302 -303 -304 -310      $ Zr Rod
+  sector  2 U-ZrH  302  303 -304 -310      $ U-ZrH Fuel
+  sector 10 Air    304 -305      -310      $ Void
+  sector  5 SS304  305 -306      -310      $ SS304/middle
+  sector  4 B4C    306 -307      -310      $ B4C Absorber
+  sector  5 SS304  307 -308      -310      $ SS304/upper
+  sector 10 Air    308 -309      -310      $ Void
+  sector 10 Air    301  302  304  305  306 $ Void w/in
+                   307  308  309 -310      $ SS304 clad
+  sector  5 SS304  310 -311                $ SS304 clad
+  sector  9 Water  311 -199                $ Water outside
+define unit 3 $ --- Transient Rod and Guide Tube
+  sector 10 Air   -401                     $ Void/lower
+  sector  4 B4C   -402                     $ B4C Absorber
+  sector 10 Air    402 -403                $ Void/middle
+  sector 10 Air   -404                     $ Void/upper
+  sector  6 Al     401  402  403  404 -405 $ Al clad/outer
+  sector  9 Water  405 -199                $ Water outside
+picture cs material color -100  0  100 -100    0 -100 100    0 -100 title="axial view"
+picture cs material color   -2   0  37   -2    0  -40   2    0  -40 title="axial detail of fuel rod"
+picture cs material color   -2   8  75   -2    8  -40   2    8  -40 title="axial detail of control rod"
+picture cs material color   -2  -8  75   -2   -8  -40   2   -8  -40 title="axial detail of transient rod"
+picture cs material color -100 100   1 -100 -100    1 100 -100    1 title="plane view" 
+picture cs material color  -60  60   1  -60  -60    1  60  -60    1 title="plane view thru annular groove" 
+picture cs material color  -23  23  29  -23  -23   29  23  -23   29 title="plane detail of upper grid" 
+picture cs material color  -23  23 -35  -23  -23  -35  23  -23  -35 title="plane detail of upper grid" 
+volume material -2 -2 -37 2 -2 -37 -2  2 -37 4 4  74 $ Volume calculation for the central fuel element
+volume material -2 -9 -37 2 -9 -37 -2 -7 -37 4 4 112 $ Volume calculation for a transient rod
+volume material -2  7 -37 2  7 -37 -2  9 -37 4 4 112 $ Volume calculation for a control rod
+surfaces
+$ --- Ring A
+     1 cylinder z 1.87706 -36.83 74.295
+$ --- Ring B
+     2 cylinder z 1.87706 -36.83 74.295 tr   4.0538     0        0 
+     3 cylinder z 1.87706 -36.83 74.295 tr   2.0269     3.510694 0
+     4 cylinder z 1.87706 -36.83 74.295 tr  -2.0269     3.510694 0
+     5 cylinder z 1.87706 -36.83 74.295 tr  -4.0538     0        0 
+     6 cylinder z 1.87706 -36.83 74.295 tr  -2.0269    -3.510694 0
+     7 cylinder z 1.87706 -36.83 74.295 tr   2.0269    -3.510694 0
+$ --- Ring C
+     8 cylinder z 1.87706 -36.83 74.295 tr   7.9807     0        0 
+     9 cylinder z 1.87706 -36.83 74.295 tr   6.911489   3.990350 0
+    10 cylinder z 1.87706 -36.83 74.295 tr   3.990350   6.911489 0
+    11 cylinder z 1.87706 -36.83 74.295 tr   0          7.9807   0 
+    12 cylinder z 1.87706 -36.83 74.295 tr  -3.990350   6.911489 0
+    13 cylinder z 1.87706 -36.83 74.295 tr  -6.911489   3.990350 0
+    14 cylinder z 1.87706 -36.83 74.295 tr  -7.9807     0        0 
+    15 cylinder z 1.87706 -36.83 74.295 tr  -6.911489  -3.990350 0
+    16 cylinder z 1.87706 -36.83 74.295 tr  -3.990350  -6.911489 0
+    17 cylinder z 1.87706 -36.83 74.295 tr   0         -7.9807   0 
+    18 cylinder z 1.87706 -36.83 74.295 tr   3.990350  -6.911489 0
+    19 cylinder z 1.87706 -36.83 74.295 tr   6.911489  -3.990350 0
+$ --- Ring D
+    20 cylinder z 1.87706 -36.83 74.295 tr  11.9456     0        0 
+    21 cylinder z 1.87706 -36.83 74.295 tr  11.225192   4.085636 0 
+    22 cylinder z 1.87706 -36.83 74.295 tr   9.150860   7.678484 0 
+    23 cylinder z 1.87706 -36.83 74.295 tr   5.972800  10.345193 0 
+    24 cylinder z 1.87706 -36.83 74.295 tr   2.074332  11.764119 0 
+    25 cylinder z 1.87706 -36.83 74.295 tr  -2.074332  11.764119 0 
+    26 cylinder z 1.87706 -36.83 74.295 tr  -5.972800  10.345193 0 
+    27 cylinder z 1.87706 -36.83 74.295 tr  -9.150860   7.678484 0 
+    28 cylinder z 1.87706 -36.83 74.295 tr -11.225192   4.085636 0 
+    29 cylinder z 1.87706 -36.83 74.295 tr -11.9456     0        0 
+    30 cylinder z 1.87706 -36.83 74.295 tr -11.225192  -4.085636 0 
+    31 cylinder z 1.87706 -36.83 74.295 tr  -9.150860  -7.678484 0 
+    32 cylinder z 1.87706 -36.83 74.295 tr  -5.972800 -10.345193 0 
+    33 cylinder z 1.87706 -36.83 74.295 tr  -2.074332 -11.764119 0 
+    34 cylinder z 1.87706 -36.83 74.295 tr   2.074332 -11.764119 0 
+    35 cylinder z 1.87706 -36.83 74.295 tr   5.972800 -10.345193 0 
+    36 cylinder z 1.87706 -36.83 74.295 tr   9.150860  -7.678484 0 
+    37 cylinder z 1.87706 -36.83 74.295 tr  11.225192  -4.085636 0 
+$ --- Ring E
+    38 cylinder z 1.87706 -36.83 74.295 tr  15.9156     0        0 
+    39 cylinder z 1.87706 -36.83 74.295 tr  15.373289   4.119260 0 
+    40 cylinder z 1.87706 -36.83 74.295 tr  13.783310   7.957800 0 
+    41 cylinder z 1.87706 -36.83 74.295 tr  11.254029  11.254029 0 
+    42 cylinder z 1.87706 -36.83 74.295 tr   7.957800  13.783310 0 
+    43 cylinder z 1.87706 -36.83 74.295 tr   4.119260  15.373289 0 
+    44 cylinder z 1.87706 -36.83 74.295 tr   0         15.9156   0 
+    45 cylinder z 1.87706 -36.83 74.295 tr  -4.119260  15.373289 0 
+    46 cylinder z 1.87706 -36.83 74.295 tr  -7.957800  13.783310 0 
+    47 cylinder z 1.87706 -36.83 74.295 tr -11.254029  11.254029 0 
+    48 cylinder z 1.87706 -36.83 74.295 tr -13.783310   7.957800 0 
+    49 cylinder z 1.87706 -36.83 74.295 tr -15.373289   4.119260 0 
+    50 cylinder z 1.87706 -36.83 74.295 tr -15.9156     0        0 
+    51 cylinder z 1.87706 -36.83 74.295 tr -15.373289  -4.119260 0 
+    52 cylinder z 1.87706 -36.83 74.295 tr -13.783310  -7.957800 0 
+    53 cylinder z 1.87706 -36.83 74.295 tr -11.254029 -11.254029 0 
+    54 cylinder z 1.87706 -36.83 74.295 tr  -7.957800 -13.783310 0 
+    55 cylinder z 1.87706 -36.83 74.295 tr  -4.119260 -15.373289 0 
+    56 cylinder z 1.87706 -36.83 74.295 tr   0        -15.9156   0 
+    57 cylinder z 1.87706 -36.83 74.295 tr   4.119260 -15.373289 0 
+    58 cylinder z 1.87706 -36.83 74.295 tr   7.957800 -13.783310 0 
+    59 cylinder z 1.87706 -36.83 74.295 tr  11.254029 -11.254029 0 
+    60 cylinder z 1.87706 -36.83 74.295 tr  13.783310  -7.957800 0 
+    61 cylinder z 1.87706 -36.83 74.295 tr  15.373289  -4.119260 0 
+$ --- Ring F
+    62 cylinder z 1.87706 -36.83 74.295 tr  19.8882     0        0 
+    63 cylinder z 1.87706 -36.83 74.295 tr  19.453595   4.134989 0 
+    64 cylinder z 1.87706 -36.83 74.295 tr  18.168775   8.089260 0 
+    65 cylinder z 1.87706 -36.83 74.295 tr  16.089892  11.689991 0 
+    66 cylinder z 1.87706 -36.83 74.295 tr  13.307803  14.779813 0 
+    67 cylinder z 1.87706 -36.83 74.295 tr   9.944100  17.223686 0 
+    68 cylinder z 1.87706 -36.83 74.295 tr   6.145792  18.914802 0 
+    69 cylinder z 1.87706 -36.83 74.295 tr   2.078883  19.779250 0 
+    70 cylinder z 1.87706 -36.83 74.295 tr  -2.078883  19.779250 0 
+    71 cylinder z 1.87706 -36.83 74.295 tr  -6.145792  18.914802 0 
+    72 cylinder z 1.87706 -36.83 74.295 tr  -9.944100  17.223686 0 
+    73 cylinder z 1.87706 -36.83 74.295 tr -13.307803  14.779813 0 
+    74 cylinder z 1.87706 -36.83 74.295 tr -16.089892  11.689991 0 
+    75 cylinder z 1.87706 -36.83 74.295 tr -18.168775   8.089260 0 
+    76 cylinder z 1.87706 -36.83 74.295 tr -19.453595   4.134989 0 
+    77 cylinder z 1.87706 -36.83 74.295 tr -19.8882     0        0 
+    78 cylinder z 1.87706 -36.83 74.295 tr -19.453595  -4.134989 0 
+    79 cylinder z 1.87706 -36.83 74.295 tr -18.168775  -8.089260 0 
+    80 cylinder z 1.87706 -36.83 74.295 tr -16.089892 -11.689991 0 
+    81 cylinder z 1.87706 -36.83 74.295 tr -13.307803 -14.779813 0 
+    82 cylinder z 1.87706 -36.83 74.295 tr  -9.944100 -17.223686 0 
+    83 cylinder z 1.87706 -36.83 74.295 tr  -6.145792 -18.914802 0 
+    84 cylinder z 1.87706 -36.83 74.295 tr  -2.078883 -19.779250 0 
+    85 cylinder z 1.87706 -36.83 74.295 tr   2.078883 -19.779250 0 
+    86 cylinder z 1.87706 -36.83 74.295 tr   6.145792 -18.914802 0 
+    87 cylinder z 1.87706 -36.83 74.295 tr   9.944100 -17.223686 0 
+    88 cylinder z 1.87706 -36.83 74.295 tr  13.307803 -14.779813 0 
+    89 cylinder z 1.87706 -36.83 74.295 tr  16.089892 -11.689991 0 
+    90 cylinder z 1.87706 -36.83 74.295 tr  18.168775  -8.089260 0 
+    91 cylinder z 1.87706 -36.83 74.295 tr  19.453595  -4.134989 0 
+$ --- Aluminum support grids
+   100 cylinder z 22.06 -36.20 -34.295  $ Lower aluminum support grid
+   101 cylinder z 22.06  28.88  30.785  $ Upper aluminum support grid
+$ --- Aluminum clad graphite reflector and water reflector
+   110 cylinder z 22.098                $ Cladding/inner
+   111 cylinder z 22.733                $ Graphite/inner
+   112 cylinder z 29.883                $ Groove/inner
+   113 cylinder z 36.957                $ Groove/outer
+   114 plane    z  0.851                $ Groove/lower
+   115 cylinder z 53.14  -26.975 26.975 $ Graphite/outer
+   116 cylinder z 54.41  -28.245 28.245 $ Cladding/outer
+   199 cylinder z 98.4  -100.0  100.0   $ Water/outer/bcd
+$ ---- Fuel Rod, aka Fuel Element
+   201 cylinder z 1.8161   -28.527375 -19.129375 $ Graphite/lower
+   202 cylinder z 1.82626  -19.129375 -19.05     $ Mo disc
+   203 cylinder z 0.3175                         $ Zr Rod
+   204 cylinder z 1.82245  -19.05      19.05     $ U-ZrH Fuel
+   205 cylinder z 1.8161    19.05      25.654    $ Graphite/upper
+   206 cylinder z 1.82626  -28.527375  25.654    $ Clad/inner
+   207 cylinder z 1.87706  -36.030     36.030    $ Clad/outer
+$ ---- Control Rod, aka Fueled-Follower Control Rod
+   301 cylinder z 1.69545  -35.56     -21.59     $ Void/lower
+   302 cylinder z 1.69545  -21.59     -19.05     $ SS304/lower
+   303 cylinder z 0.3175                         $ Zr Rod
+   304 cylinder z 1.666875 -19.05      19.05     $ U-ZrH Fuel
+   305 cylinder z 1.69545   19.05      19.84375  $ Void
+   306 cylinder z 1.69545   19.84375   21.11375  $ SS304/middle
+   307 cylinder z 1.666875  21.11375   59.69     $ B4C Absorber
+   308 cylinder z 1.69545   59.69      60.96     $ SS304/upper
+   309 cylinder z 1.69545   60.96      70.485    $ Void
+   310 cylinder z 1.69545  -35.56      70.485    $ Clad/inner
+   311 cylinder z 1.74625  -36.83      74.295    $ Clad/outer
+$ ---- Transient Rod and Guide Tube
+   401 cylinder z 1.51638  -35.56      19.84375  $ Void/lower 
+   402 cylinder z 1.51638   21.11375   59.21375  $ B4C Absorber
+   403 cylinder z 1.51638   59.21375   59.69     $ Void/middle
+   404 cylinder z 1.51638   60.96      70.485    $ Void/upper
+   405 cylinder z 1.87706  -36.83      74.295    $ Al clad/outer
+end

@@ -1,0 +1,28 @@
+IEU-MET-FAST-006-1S: Spherical assembly of 178.853 kg U(36) reflected by 140.700 kg Duralumin [Simplified Model] Rev. 2
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=6  3 0 0  -3 0 0  0 3 0  0 -3 0  0 0 3  0 0 -3
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 1.5518-4 u235 1.7161-2 u238 2.9310-2  w 1.0721-5 fe 1.2345-4  c 6.4888-4 cu 2.6755-4 ni 2.8969-4 $ U(36)
+  mat=2 bunches   al 5.2342-2   fe 9.5788-4   cu 9.8614-4                                                             $ 1st Duralumin layer
+  mat=3 bunches   al 5.2067-2   fe 9.5286-4   cu 9.8097-4                                                             $ 2nd Duralumin layer
+assign-mc
+  1 red 2 black 3 gray
+geometry
+  sector 1 U36     1 -2
+  sector 2 DURAL1  2 -3
+  sector 3 DURAL2  3 -4
+  boundary vacuum  4
+picture cs material color
+  -26   0  26 -26   0 -26  26  0 -26
+volume material
+  -25 -25 -25  25 -25 -25 -25 25 -25
+   50  50  50
+surfaces
+  1 sphere  2.100
+  2 sphere 13.25
+  3 sphere 15.00
+  4 sphere 25.00
+end

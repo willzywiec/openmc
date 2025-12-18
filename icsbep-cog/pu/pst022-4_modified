@@ -1,0 +1,61 @@
+PU-SOL-THERM-022 (Case 4) Hc = 41.08 @ H/X=612; 18.88 wt-% Pu-240
+basic
+  neutron delayedn urrpt
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=4  -17 -17 20  -17 17 20  17 -17 20  17 17 20
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 7a, 7b and 8        
+  mat=1 bunches   pu239 9.5363-5 pu240 2.4164-5 pu241 7.3225-6   pu242 1.4469-6 $ 51.0 gPu/L
+                  am241 6.1156-7     n 1.6830-3   o16 3.5898-2 (h.h2o) 6.2813-2 $ Solution
+                     fe 1.2185-5    cr 3.9184-6    ni 2.7772-6                  $ 
+  mat=2 bunches (h.h2o) 6.6722-2   o16 3.3361-2                                 $ Water
+  mat=3 bunches      fe 6.1335-2    cr 1.6469-2    ni 8.1060-3                  $ SST
+  mat=4 bunches      cd 4.6340-2                                                $ Cadmium
+  mat=5 bunches (h.ch2) 7.9911-2     c 3.8419-2                                 $ Paraffin
+  mat=6 bunches     o16 1.0784-5     n 4.3090-5                                 $ Air
+assign-mc
+  1 purple 2 blue 3 black 4 red 5 green 6 white
+geometry
+  sector 1 SOLN   1 -2  5 -6 
+  sector 2 WATER -2  7 -8
+  sector 3 SST    1  4 -5 -7
+  sector 3 SST   -1 -7
+  sector 3 SST    3  5 -6 -7  11 12 13 14 15 16 17 18
+  sector 3 SST    1  6 -7
+  sector 6 AIR    3  5 -6 -7 -11
+  sector 6 AIR    3  5 -6 -7 -12
+  sector 6 AIR    3  5 -6 -7 -13
+  sector 6 AIR    3  5 -6 -7 -14
+  sector 6 AIR    3  5 -6 -7 -15
+  sector 6 AIR    3  5 -6 -7 -16
+  sector 6 AIR    3  5 -6 -7 -17
+  sector 6 AIR    3  5 -6 -7 -18
+  sector 6 AIR    2 -3  5 -6                                              
+  sector 6 AIR    1 -4 -7
+  sector 6 AIR    2  7 -8
+  boundary vacuum 8
+picture cs material color
+  -55   0 120 -55   0 -30   55   0 -30 title="axial view"
+picture cs material color
+  -30  30 117 -30 -30 117   30 -30 117 title="plane view showing holes"
+volume
+  -25 -25  -1  25 -25  -1  -25  25  -1
+   50  50 110
+surfaces $ Dimensions from Figure 3
+  1 plane -25.0 0.0 -0.22  0.0 25.0 0.08  25.0 0.0 0.38 0.0 0.0 99.0 $ Tank/Sloped Bottom 
+  2 plane    z  41.08 $ = Hc per Table 1
+  3 plane    z 116.88  
+  4 cylinder z   9.7
+  5 cylinder z  10.0
+  6 cylinder z  25.0
+  7 cylinder z  25.3  -1.42 118.68 $ Tank/Outermost
+  8 cylinder z  50.3 -26.42 118.68 $ Reflector/Outer
+ 11 cylinder z   3.0 tr  17.5      0.0    0.0 $ Hole
+ 12 cylinder z   3.0 tr  12.3744  12.3744 0.0 $ Hole
+ 13 cylinder z   3.0 tr   0.0     17.5    0.0 $ Hole
+ 14 cylinder z   3.0 tr -12.3744  12.3744 0.0 $ Hole
+ 15 cylinder z   3.0 tr -17.5      0.0    0.0 $ Hole
+ 16 cylinder z   3.0 tr -12.3744 -12.3744 0.0 $ Hole
+ 17 cylinder z   3.0 tr   0.0    -17.5    0.0 $ Hole
+ 18 cylinder z   3.0 tr  12.3744 -12.3744 0.0 $ Hole
+end

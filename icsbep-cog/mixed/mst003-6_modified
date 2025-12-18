@@ -1,0 +1,38 @@
+MIX-SOL-THERM-003-6: AWRE SCAMP
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1
+  0 0 14.12
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu239 7.4700-5 pu240 4.5000-6 pu241 3.3000-7 u235 1.2000-6 u238 1.7910-4 $ Solution B
+              (h.h2o) 6.3300-2     n 1.2800-3   o16 3.6200-2   fe 7.0000-9               $  H/Pu=795
+  mat=2 bunches    fe 6.3287-2    cr 1.6534-2    ni 6.5093-3                             $ SS304L
+  mat=3 bunches (h.ch2) 7.9867-2   c 3.9933-2                                            $ Polyethylene
+  mat=4 bunches (h.h2o) 6.6729-2 o16 3.3366-2                                            $ Water
+assign-mc
+  1 red 2 black 3 sky 4 yellow
+geometry
+  sector  1 Soln    -1 -4     $ Solution
+  sector  2 SS304L   1 -2     $ Plate
+  sector  3 Poly     2 -3     $ Polyethylene
+  sector  2 SS304L   4 -5 -7  $ Vessel
+  sector  2 SS304L   5 -6     $ Flange
+  sector  4 Water    5  6 -7  $ Water
+  boundary  vacuum   7        $ BCD
+picture cs material color
+  -45   0 110 -45   0 -20  45   0 -20 title="axial x-z view"
+picture cs material color
+    0   0  45   0   0  10  25   0  10 title="axial x-z detail"
+volume material 
+  -42 -42 -16  42 -42 -16 -42  42 -16 
+   84  84 123
+surfaces
+  1 p z  28.24                   $ Hc
+  2 c z  18.795   28.24   28.557 $ Steel plate
+  3 c z  18.795   28.557  43.557 $ Polyethylene
+  4 c z  18.995    0.0   107.0   $ Vessel, inner
+  5 c z  19.245   -1.0   107.0   $ Vessel, outer
+  6 c z  24.245   -1.0     0.0   $ Vessel, flange
+  7 c z  42.0    -16.0   107.0   $ Water reflector
+end

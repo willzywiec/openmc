@@ -1,0 +1,39 @@
+LCT006-2: Tank-Type Critical Assembly (TCA) 20x20 rods with 1.849 cm pitch; Hc=73.73 cm
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4 
+  -0.9 -0.9 36.865
+  -0.9  0.9 36.865
+   0.9 -0.9 36.865
+   0.9  0.9 36.865
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 4.8872-6 u235 6.0830-4 u238 2.2531-2 o16 4.7214-2 $ U(2.596)O2
+  mat=2 bunches   al 5.5137-2                                          $ Aluminum clad
+  mat=3 bunches (h.h2o) 6.6735-2 o16 3.3368-2                          $ Water
+assign-mc
+  1 red 2 yellow 3 sky
+geometry
+   use unit 2 core    -4 -5
+   sector   3 refl -3  4 -5
+   boundary vacuum        5
+define unit 1 $ Unit cell with one fuel rod
+   sector 1 UO2 -1 -2
+   sector 2 Al   1 -2
+   sector 3 H2O  2 -3 -5
+define unit 2 $ Array of 20x20 fuel rods with 1.849 cm pitch
+   {x 101 21 [-18.49  18.49]
+    y 201 21 [-18.49  18.49]
+    z 301    -999.99 999.99 
+    fill 400*1}
+picture cs material color  -2  2    18  -2  -2    18   2  -2    18 title="plane detail of one pin"
+picture cs material color  -2  0.9   1  -2   0.9  -1   2   0.9  -1 title="axial detail of the bottom of one pin"
+picture cs material color -50 50    18 -50 -50    18  50 -50    18 title="plane view"
+picture cs material color -50  0.9 159 -50   0.9 -35  50   0.9 -35 title="axial view"
+surfaces 
+  1 c z  0.625                $ Fuel
+  2 c z  0.7085 0.0    144.15 $ Clad
+  3 p z 73.73                 $ Water critical height, Hc
+  4 box 36.98  36.98   174.15 tr 0 0 57.075 $ DX=DY=20*1.849        = 36.98 (core planar bdy)
+  5 box 96.98  96.98   174.15 tr 0 0 57.075 $ DX=DY=20*1.849 + 2*30 = 96.98 (refl planar bdy)
+end

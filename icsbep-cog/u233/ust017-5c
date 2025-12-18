@@ -1,0 +1,38 @@
+U233-SOL-THERM-017-5: 0.809 kg 233U @ H/X=272.2 and N/U=2.15 (Exp't No. 234d)
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0 0 12.724
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u233 2.3727-4 u234 2.5359-6 u235 6.2706-8 u236 2.4015-9 u238 3.3005-6 $ Sol'n No. 31
+             (h.h2o) 6.4584-2    n 5.2217-4  o16 3.4333-2   th 3.0538-6               $  Cases 4-5
+  mat=2 bunches   al 5.9881-2   si 5.8108-4                                           $ Aluminum-2S
+  mat=3 bunches            (h.h2o) 6.6658-2  o16 3.3329-2                             $ Water
+  mat=4 bunches   al 5.9930-2   si 2.2532-4   mn 1.2125-5   fe 1.1331-4   cu 2.6206-5 $ Aluminum-1100
+assign-mc                                                                             $
+  1 red 2 yellow 3 sky 4 lime
+geometry
+   sector 1 SOL -1 -2          $ Fill Pipe Solution
+   sector 2 ALP  1 -2          $ Fill Pipe Aluminum Wall
+   sector 1 SOL  1  2 -3 -4 -8 $ Tank Solution
+   sector 2 AlT  1  2  3 -4    $ Tank Aluminum Wall
+   sector 2 ALL  3  4 -5       $ Tank Aluminum Lid
+   sector 3 H2O  2  4 -6 -7 -9 $ Water
+   sector 4 TANK 2  6 -7       $ Al-1100 Tank
+picture cs material color  -50   0 190  -50    0  -30  50    0  -30 title="axial view"
+picture cs material color    0   0  15    0    0  -30  10    0  -30 title="axial detail"
+picture cs material color  -50  50   1  -50  -50    1  50  -50    1 title="plane view"
+picture cs material color  -35  25  -1  -35  -25   -1  15  -25   -1 title="plane detail"
+volume material -26 -26 0 26 -26 0 -26 26 0 52  52 14 
+surfaces                                                     $ The z-axis is in the "up" direction
+   1 cylinder z  2.62509 -25.87884  0.     tr   5.08    0 0  $ Al-2S/Fill-Pipe/Inner 
+   2 cylinder z  3.01625 -26.27     0.     tr   5.08    0 0  $ Al-2S/Fill-Pipe/Outer 
+   3 cylinder z 10.161     0.0    181.61   tr  -2.19175 0 0  $ Al-2S/Soln-Tank/Inner 
+   4 cylinder z 10.288    -1.27   181.61   tr  -2.19175 0 0  $ Al-2S/Soln-Tank/Outer
+   5 cylinder z 12.70    181.61   181.737  tr  -2.19175 0 0  $ Al-2S/Soln-Tank/Lid
+   6 cylinder z 45.72    -26.27   100.73                     $ Al-1100/Tank/Inner
+   7 cylinder z 46.0375  -27.54   100.73                     $ Al-1100/Tank/Outer
+   8 plane z 25.448                                          $ Solution/Hc
+   9 plane z 42.53                                           $ Water/Hr
+end

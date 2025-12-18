@@ -1,0 +1,136 @@
+MIX-COMP-THERM-003-1: 23x22 lattice of MOX pins with 1.3208 cm pitch; Hw=128.775
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=2
+  0 -0.6604 87.325
+  0  0.6604 87.325
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0     
+  mat=1 bunches   pu239 1.3526-3 pu240 1.2759-4 pu241 1.1407-5 pu242 6.0318-7 am241 1.7783-6 $ PuO2-UO2
+                   u234 1.1688-6  u235 1.5301-4  u238 2.1097-2   o16 4.5155-2                $   fuel
+  mat=2 bunches      sn 4.6590-4    fe 1.4148-4    cr 7.5977-5   o16 2.9630-4    zr 4.2517-2 $ Clad and plugs
+  mat=3 bunches (h.h2o) 6.6643-2   o16 3.3322-2                                              $ Water, case 1
+  mat=4 bunches      al 6.0039-2                                                             $ Grid and support plates, and slab
+assign-mc
+  1 red 2 gray 3 sky 4 yellow
+geometry
+  use unit 6 lttc -14       423
+  use unit 5 lttc -14  401 -423
+  use unit 4 lttc -14 -401
+  boundary vacuum  14 
+define unit 1 $ Fuel rod
+  sector 1 MOX     -1 -2
+  sector 0 Gap2     1 -2
+  sector 2 Clad     2 -99
+define unit 2 $ Empty unit cell
+  sector 4 Al      -4                     -99 $ Al slab
+  sector 4 Al      -5                     -99 $ Al plate
+  sector 4 Al       5  -6   9             -99 $ Al bottom grid plate with one fuel rod hole
+  sector 4 Al      -7   9  10  11  12  13 -99 $ Al middle grid plate with one fuel rod hole and four circulation holes
+  sector 4 Al      -8   9                 -99 $ Al top    grid plate with one fuel rod hole
+  sector 3 H2O     -6  -9                 -99 $ Water filled fuel  hole in bottom grid plate
+  sector 3 H2O     -7  -9                 -99 $ Water filled fuel  hole in middle grid plate
+  sector 3 H2O     -7 -10                 -99 $ Water filled circ. hole in middle grid plate
+  sector 3 H2O     -7 -11                 -99 $ Water filled circ. hole in middle grid plate
+  sector 3 H2O     -7 -12                 -99 $ Water filled circ. hole in middle grid plate
+  sector 3 H2O     -7 -13                 -99 $ Water filled circ. hole in middle grid plate
+  sector 3 H2O      4   5   6   7   8 -15 -99 $ Water elsehwere
+define unit 3 $ Unit cell with fuel rod
+  use unit 1 furod -3 -99                     $ MOX fuel rod 
+  use unit 2 norod  3 -99                     $ Everything else
+$ define unit 4 $ 77x78 lattice of empty and fueled positions
+$ {x  101 78 [-50.8508 50.8508]
+$  y  201 79 [-51.5112 51.5112]
+$  z  291    -999.9    999.9
+$  fill
+$  2156*2              $
+$  27*2 23*3 27*2      $ Note:
+$  27*2 23*3 27*2      $  This unit "should" work
+$  27*2 23*3 27*2      $  but it is apparently too
+$  27*2 23*3 27*2      $  big and causes problems
+$  27*2 23*3 27*2      $  with PGPLOT resulting in
+$  27*2 23*3 27*2      $  a hard crash.
+$  27*2 23*3 27*2      $
+$  27*2 23*3 27*2      $  The interim fixes are: 
+$  27*2 23*3 27*2      $   1. Break this big lattice
+$  27*2 23*3 27*2      $  up into 3 smaller units
+$  27*2 23*3 27*2      $  as provided below.
+$  27*2 23*3 27*2      $   2. Use the one big
+$  27*2 23*3 27*2      $  lattice but don't plot
+$  27*2 23*3 27*2      $  the entire geometry.  Just
+$  27*2 23*3 27*2      $  plot smaller pices of it.
+$  27*2 23*3 27*2      $
+$  27*2 23*3 27*2      
+$  27*2 23*3 27*2
+$  27*2 23*3 27*2
+$  27*2 23*3 27*2
+$  27*2 23*3 27*2
+$  27*2 23*3 27*2
+$  2156*2}
+define unit 4 $ 77x28 test lattice of empty positions
+  {x  101 78 [-50.8508  50.8508]
+   y  201 29 [-61.5112 -14.5288]
+   z  291    -999.9    999.9
+   fill
+   2156*2}
+define unit 5 $ 77x22 test lattice of empty and fueled positions
+  {x  301 78 [-50.8508 50.8508]
+   y  401 23 [-14.5288 14.5288]
+   z  491  -999.9    999.9
+   fill
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2
+   27*2 23*3 27*2}
+define unit 6 $ 77x28 test lattice of empty positions
+  {x  501 78 [-50.8508 50.8508]
+   y  601 29  [14.5288 51.5112]
+   z  691    -999.9   999.9
+   fill
+   2156*2}
+$ picture cs material color -55  0.66 148  -55   0.66  -5  55   0.66 -5 title="axial view of the array"
+$ picture cs material color -1.4 0.66  93  -1.4  0.66  90  1.4  0.66 90 title="axial detail of a few array cells"
+$ picture cs material color -2   2     92  -2   -2     92  2   -2    92 title="plane detail of the middle grid plate"
+$ picture cs material color -55 55    140  -55 -55    140  55 -55   140 title="plane view of the array in top    grid plate"
+$ picture cs material color -55 55     92  -55 -55     92  55 -55    92 title="plane view of the array in middle grid plate"
+$ picture cs material color -55 55     50  -55 -55     50  55 -55    50 title="plane view of the array in water"
+$ picture cs material color -55 55     44  -55 -55     44  55 -55    44 title="plane view of the array in bottom grid plate"
+surfaces
+$ --- Fuel rod and fuel rod hole
+  1 c z   0.428498                $ Fuel
+  2 c z   0.437515 45.875 138.389 $ Gap
+  3 c z   0.496570 43.97  143.159 $ Clad
+$ --- Slab, plate and grids
+  4 box 999.9 999.9 5.08  tr 0 0  32.54   $ Aluminum slab
+  5 box 999.9 999.9 2.54  tr 0 0  42.70   $ Aluminum plate
+  6 box 999.9 999.9 0.635 tr 0 0  44.2875 $ Aluminum bottom grid plate
+  7 box 999.9 999.9 0.635 tr 0 0  91.9125 $ Aluminum middle grid plate
+  8 box 999.9 999.9 1.27  tr 0 0 140.49   $ Aluminum top    grid plate
+  9 c z   0.504190                     $ Fuel rod hole in all grid plates
+ 10 c z   0.24511 tr -0.6604  0.6604 0 $ Circulation hole in middle grid plate
+ 11 c z   0.24511 tr -0.6604 -0.6604 0 $ Circulation hole in middle grid plate
+ 12 c z   0.24511 tr  0.6604  0.6604 0 $ Circulation hole in middle grid plate
+ 13 c z   0.24511 tr  0.6604 -0.6604 0 $ Circulation hole in middle grid plate
+$ --- Water and bcd
+ 14 c z  50.0 0.0 143.159 $ BCD 
+ 15 p z 128.775           $ Hw
+ 99 box 999.9 999.9 999.9 $ Dummy
+end

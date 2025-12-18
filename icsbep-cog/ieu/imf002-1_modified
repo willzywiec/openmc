@@ -1,0 +1,24 @@
+IEU-MET-FAST-002: U(16) [average of HEU and Nat-U] cylinder reflected by Nat-U
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 8.4430-5 u235 7.7777-3 u238 3.9671-2 $ U(16)
+  mat=2 bunches u234 2.6433-6 u235 3.4603-4 u238 4.7711-2 $ Nat-U
+assign-mc
+  1 red 2 brown
+geometry
+  sector 1 U16       -1
+  sector 2 Nat-U   1 -2
+  boundary vacuum  2
+picture cs material color
+  -27   0  24 -27   0 -24  27  0 -24
+volume material
+  -27 -27 -24  27 -27 -24 -27 27 -24
+   54  54  48
+surfaces
+  1 cylinder z 19.05   -15.9755  15.9755 $ U(16)
+  2 cylinder z 26.6446 -23.5955  23.4939 $ Nat-U
+end

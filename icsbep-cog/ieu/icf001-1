@@ -1,0 +1,56 @@
+IEU-COMP-FAST-001:  ZPR6-6A Loading 06 (Simplified Benchmark Model)       
+basic
+  neutrons delayedn CENTIMETERS
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1 0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Materials per Tables 25, 26 and 27
+  mat=1 bunches u234 1.12777-5 u235 1.15084-3 u236 5.40689-6 u238 5.79612-3  c 4.97945-5 $ IC1
+                  cl 3.92603-6   co 8.32631-7   cr 2.82309-3   cu 2.66986-5  f 1.07411-5
+                  fe 1.33669-2    h 2.07879-6   mn 2.34499-4   mo 1.42366-5 na 9.27752-3 
+                  ni 1.22558-3  o16 1.37526-2   si 1.56998-4   al 2.87511-6
+  mat=2 bunches u235 8.27435-5 u238 3.72332-2    c 3.67130-5   cl 3.03952-6 cr 1.45838-3 $ IAB1
+                  cu 1.84170-5    f 9.00934-6   fe 5.35598-3    h 1.78500-6 mn 1.27853-4 
+                  mo 9.33261-6   ni 5.97500-4   si 8.68258-5
+  mat=3 bunches u235 8.65264-5 u238 3.87479-2    c 1.87415-5   cr 1.18909-3 cu 1.72319-5 $ IAB2
+                  fe 4.27914-3   mn 1.05905-4   mo 8.25653-6   ni 4.80175-4 si 6.83105-5
+  mat=4 bunches u234 1.11611-5 u235 1.14390-3 u236 5.35052-6 u238 5.79503-3  c 4.73406-5 $ OC1
+                  cl 3.68590-6   co 2.58295-7   cr 2.82546-3   cu 2.68600-5  f 1.00311-5 
+                  fe 1.38058-2    h 1.92854-6   mn 2.33663-4   mo 1.50069-5 na 9.16324-3 
+                  ni 1.22087-3  o16 1.43094-2   si 1.50839-4   al 2.45958-6
+  mat=5 bunches u235 8.25608-5 u238 3.71671-2    c 3.73230-5   cl 3.33753-6 cr 1.46756-3 $ OAB1
+                  cu 1.84934-5    f 9.89177-6   fe 5.38691-3    h 1.95551-6 mn 1.28517-4 
+                  mo 9.39069-6   ni 6.01401-4   si 8.69821-5
+  mat=6 bunches u235 8.57702-5 u238 3.84184-2    c 1.92861-5   cl 1.62215-7 cr 1.20865-3 $ OAB2
+                  cu 1.73693-5    f 4.80817-7   fe 4.34188-3    h 9.52633-8 mn 1.07236-4 
+                  mo 8.40584-6   ni 4.87712-4   si 6.88811-5
+  mat=7 bunches u235 8.66555-5 u238 3.88076-2    c 1.85721-5   cr 1.17821-3 cu 1.70748-5 $ RR1/RR2
+                  fe 4.23998-3   mn 1.04936-4   mo 8.18136-6   ni 4.75780-4 si 6.76848-5
+  mat=8 bunches    c 1.86434-5   cr 1.18315-3   cu 1.71350-5   fe 4.25767-3 mn 1.05352-4 $ MAT
+                  mo 8.21868-6   ni 4.77814-4   si 6.79300-5
+assign-mc
+  1 orange 2 black 3 gray 4 red 5 green 6 lime 7 brown 8 yellow 
+geometry
+  sector 1 IC1   -1
+  sector 2 IAB1   1 -2
+  sector 3 IAB2   2 -3
+  sector 4 OC1    3 -4
+  sector 5 OAB1   3  4 -5
+  sector 6 OAB2   3  5 -6
+  sector 7 RR1    3  6 -7
+  sector 7 RR2    3  6  7 -8
+  sector 8 MAT    3  6  8 -9
+  boundary vacuum 9
+picture cs material color 
+  0 0 125 0 0 0  145 0 0 0 title="Axial View"
+surfaces $ Geometry per Figure 6 and Table 24
+  1 cylinder z  24.3435  -76.2813  76.2813 $ Inner Core (IC1)
+  2 cylinder z  24.3435 -101.7257 101.7257 $ Inner Axial Blanket (IAB1)
+  3 cylinder z  24.3435 -110.4544 110.4544 $ Inner Axial Blanket (IAB2)
+  4 cylinder z  91.2449  -76.2813  76.2813 $ Outer Core (OC1)
+  5 cylinder z  91.2449 -101.7257 101.7257 $ Outer Axial Blanket (OAB1)
+  6 cylinder z  91.2449 -110.4554 110.4544 $ Outer Axial Blanket (OAB2)
+  7 cylinder z 119.9487 -106.6800 106.6800 $ Radial Blanket (RR1)
+  8 cylinder z 119.9487 -110.4544 110.4544 $ Radial Blanket (RR2)
+  9 cylinder z 140.2589 -121.9200 121.9200 $ Empty Matrix (MAT)
+end

@@ -1,0 +1,25 @@
+PU-SOL-THERM-011 (Case 18-2) 1.140 kg Pu(95.80) @ H/X = 1151 in a bare 18" SS347 + 0.020" Cd sphere
+basic
+  neutron delayedn urrpt
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0. 0. 0.                        
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 6 and 7
+  mat=1 bunches pu239 5.6159-5 pu240 2.4518-6  n 9.4957-4 (h.h2o) 6.4659-2 o16 3.4820-2 fe 1.3587-6
+  mat=2 bunches    fe 6.0386-2    cr 1.6678-2 ni 9.8504-3
+  mat=3 bunches    cd 4.6340-2
+geometry                                              
+  sector 1 SOLN     -1
+  sector 2 SS347  1 -2
+  sector 3 CD     2 -3
+  boundary vacuum 3
+picture cs material
+  -21 0 21  -21 0 -21   21 0 -21
+volume
+  -20.3 -20.3 -20.3  20.3 -20.3 -20.3  -20.3 20.3 -20.3
+   40.6  40.6  40.6
+surfaces $ Dimensions per Table 5
+  1 sphere 22.6974
+  2 sphere 22.8244
+  3 sphere 22.8752
+end

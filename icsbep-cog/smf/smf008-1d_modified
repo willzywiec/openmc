@@ -1,0 +1,323 @@
+SMF008-1: Np-237 sphere surrounded by HEU shells (detailed model)
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 -0.3175
+assign-mc
+  1 purple 2 green 3 blue 4 sky 5 brown 6 black 7 orange 8 yellow
+ 21 red 22 red 23 red 24 red 25 red 26 red 27 red 28 red 29 red 30 red
+ 31 red 32 red 33 red 34 red 35 red 36 red 37 red 38 red 39 red 40 red
+ 41 red 42 red 43 red 44 red 45 red 46 red 47 red 48 red 49 red
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches np237 5.0926-2  u233 1.8577-6  u234 2.9633-7  u235 1.4074-5 $ Np sphere
+                  u236 7.8349-8  u238 1.5626-6 pu238 8.2340-7 pu239 1.6271-5
+                 pu240 1.1619-6 pu241 3.1166-8 pu242 1.6032-7 am241 3.3375-7
+                 am243 9.1575-5
+  mat=2  bunches  w 5.6697-2 ni 3.5079-3 fe 3.6864-3 $ Tungsten sheild
+  mat=3  bunches ni 9.0234-2                         $ Inner nickel cladding
+  mat=4  bunches ni 8.5030-2                         $ Outer nickel cladding
+  mat=5  bunches fe 6.0483-2 cr 1.6469-2 ni 6.4849-3 $ SS304
+  mat=6  bunches fe 6.2758-2 cr 1.4380-2 ni 4.7775-3 $ SS301
+  mat=7  bunches al 5.9238-2                         $ Aluminum spacer
+  mat=8  bunches al 6.0376-2                         $ Other aluminum parts
+  mat=21 bunches u234 4.8961-4 u235 4.4527-2 u236 2.2369-4 u238 2.5248-3 $ HEU shell #21
+  mat=22 bunches u234 4.8946-4 u235 4.4513-2 u236 2.2362-4 u238 2.5240-3 $ HEU shell #22
+  mat=23 bunches u234 4.8923-4 u235 4.4493-2 u236 2.2352-4 u238 2.5228-3 $ HEU shell #23
+  mat=24 bunches u234 4.9052-4 u235 4.4609-2 u236 2.2410-4 u238 2.5295-3 $ HEU shell #24
+  mat=25 bunches u234 4.8534-4 u235 4.4139-2 u236 2.2174-4 u238 2.5028-3 $ HEU shell #25
+  mat=26 bunches u234 4.8803-4 u235 4.4383-2 u236 2.2297-4 u238 2.5166-3 $ HEU shell #26
+  mat=27 bunches u234 4.8753-4 u235 4.4338-2 u236 2.2274-4 u238 2.5141-3 $ HEU shell #27
+  mat=28 bunches u234 4.8919-4 u235 4.4489-2 u236 2.2350-4 u238 2.5226-3 $ HEU shell #28
+  mat=29 bunches u234 4.8625-4 u235 4.4221-2 u236 2.2215-4 u238 2.5075-3 $ HEU shell #29
+  mat=30 bunches u234 4.8607-4 u235 4.4205-2 u236 2.2207-4 u238 2.5065-3 $ HEU shell #30
+  mat=31 bunches u234 4.8846-4 u235 4.4422-2 u236 2.2316-4 u238 2.5189-3 $ HEU shell #31
+  mat=32 bunches u234 4.8766-4 u235 4.4349-2 u236 2.2280-4 u238 2.5147-3 $ HEU shell #32
+  mat=33 bunches u234 4.8761-4 u235 4.4345-2 u236 2.2278-4 u238 2.5145-3 $ HEU shell #33
+  mat=34 bunches u234 4.8739-4 u235 4.4325-2 u236 2.2268-4 u238 2.5134-3 $ HEU shell #34
+  mat=35 bunches u234 4.8863-4 u235 4.4438-2 u236 2.2324-4 u238 2.5197-3 $ HEU shell #35
+  mat=36 bunches u234 4.8953-4 u235 4.4519-2 u236 2.2365-4 u238 2.5244-3 $ HEU shell #36
+  mat=37 bunches u234 4.9746-4 u235 4.5241-2 u236 2.2728-4 u238 2.5653-3 $ HEU shell #37
+  mat=38 bunches u234 4.7978-4 u235 4.3633-2 u236 2.1920-4 u238 2.4741-3 $ HEU shell #38
+  mat=39 bunches u234 4.8929-4 u235 4.4497-2 u236 2.2354-4 u238 2.5231-3 $ HEU shell #39
+  mat=40 bunches u234 4.8793-4 u235 4.4374-2 u236 2.2292-4 u238 2.5161-3 $ HEU shell #40
+  mat=41 bunches u234 4.8823-4 u235 4.4401-2 u236 2.2306-4 u238 2.5177-3 $ HEU shell #41
+  mat=42 bunches u234 4.8818-4 u235 4.4397-2 u236 2.2304-4 u238 2.5174-3 $ HEU shell #42
+  mat=43 bunches u234 4.8889-4 u235 4.4461-2 u236 2.2336-4 u238 2.5211-3 $ HEU shell #43
+  mat=44 bunches u234 4.8887-4 u235 4.4459-2 u236 2.2335-4 u238 2.5210-3 $ HEU shell #44
+  mat=45 bunches u234 4.8850-4 u235 4.4426-2 u236 2.2318-4 u238 2.5191-3 $ HEU shell #45
+  mat=46 bunches u234 4.8856-4 u235 4.4431-2 u236 2.2321-4 u238 2.5194-3 $ HEU shell #46
+  mat=47 bunches u234 4.8946-4 u235 4.4514-2 u236 2.2362-4 u238 2.5240-3 $ HEU shell #47
+  mat=48 bunches u234 4.9043-4 u235 4.4601-2 u236 2.2406-4 u238 2.5290-3 $ HEU shell #48
+  mat=49 bunches u234 4.8830-4 u235 4.4408-2 u236 2.2309-4 u238 2.5181-3 $ HEU shell #49
+geometry
+
+  sector  8 Al        -1     $ Al mounting plate   
+  sector  5 SS304   1 -2     $ SS304 lower base
+  sector  5 SS304   2 -3     $ SS304 middle base
+  sector  5 SS304   3 -4 15  $ SS304 table
+
+  sector  8 Al      5  6  7 -8  $ Al mounting tube: upper portion
+  sector  8 Al      7  8 -9     $ Al mounting tube: lower portion
+
+  sector  8 Al    -10  11 -12          $ Al shell
+  sector  8 Al     12 -13  14  14  15  $ Al stem
+  sector  5 SS304 -14                  $ SS304 alignment rod: upper
+  sector  5 SS304  14 -15              $ SS304 alignment rod: lower
+ 
+  sector  7 Al     10  17 -18 -19  $ Al spacer
+  sector  1 Np        -21          $ Np sphere  
+  sector  2 W      22 -23          $ W shield
+  sector  3 Ni     24 -25          $ Inner Ni cladding
+  sector  3 Ni     26 -27          $ Inner Ni cladding
+
+  sector  8 Al     31 -32      $ Al support plate
+  sector  8 Al     31  32 -33  $ Al support collar
+  sector  6 SS301  33  34 -35  $ SS301 membrane
+  sector  8 Al     31  35 -36  $ Al mounting flange
+
+  sector  8 Al     33 -41          $ Al vertical bracket: left
+  sector  8 Al     33 -42          $ Al vertical bracket: right
+  sector  8 Al     41  42 -43  55  $ Al horizontal bracket: top
+
+  sector  8 Al     45 -46      $ Al top plate
+
+  sector  8 Al     50  51 -52          $ Al shell
+  sector  8 Al     50  52 -53  54  55  $ Al stem
+  sector  5 SS304 -54                  $ SS304 mounting rod: lower
+  sector  5 SS304  54 -55              $ SS304 mounting rod: lower
+
+  sector 21 HEU   -10  200  211 -212  213  214  $ Lower HEU shell no. 21
+  sector 23 HEU   -10  200  231 -232  233  234  $ Lower HEU shell no. 23
+  sector 25 HEU   -10  200  251 -252  253  254  $ Lower HEU shell no. 25
+  sector 27 HEU   -10  200  271 -272  273  274  $ Lower HEU shell no. 27
+  sector 29 HEU   -10  200  291 -292  293  294  $ Lower HEU shell no. 29
+  sector 31 HEU   -10  200  311 -312  313  314  $ Lower HEU shell no. 31
+  sector 33 HEU   -10  200  331 -332  333  334  $ Lower HEU shell no. 33
+  sector 35 HEU   -10  200  351 -352  353  354  $ Lower HEU shell no. 35
+  sector 37 HEU   -10  200  371 -372  373  374  $ Lower HEU shell no. 37
+  sector 39 HEU   -10  200  391 -392  393  394  $ Lower HEU shell no. 39
+  sector 41 HEU   -10  200  411 -412  413  414  $ Lower HEU shell no. 41
+  sector 43 HEU   -10  200  431 -432  433  434  $ Lower HEU shell no. 43
+  sector 45 HEU   -10  200  451 -452  453  454  $ Lower HEU shell no. 45
+  sector 47 HEU   -10  200  471 -472  473  474  $ Lower HEU shell no. 47
+  sector 49 HEU   -10  200  491 -492  493  494  $ Lower HEU shell no. 49
+
+  sector 22 HEU    50  200  221 -222  223  224  $ Upper HEU shell no. 22
+  sector 24 HEU    50  200  241 -242  243  244  $ Upper HEU shell no. 24
+  sector 26 HEU    50  200  261 -262  263  264  $ Upper HEU shell no. 26
+  sector 28 HEU    50  200  281 -282  283  284  $ Upper HEU shell no. 28
+  sector 30 HEU    50  200  301 -302  303  304  $ Upper HEU shell no. 30
+  sector 32 HEU    50  200  321 -322  323  324  $ Upper HEU shell no. 32
+  sector 34 HEU    50  200  341 -342  343  344  $ Upper HEU shell no. 34
+  sector 36 HEU    50  200  361 -362  363  364  $ Upper HEU shell no. 36
+  sector 38 HEU    50  200  381 -382  383  384  $ Upper HEU shell no. 38
+  sector 40 HEU    50  200  401 -402  403  404  $ Upper HEU shell no. 40
+  sector 42 HEU    50  200  421 -422  423  424  $ Upper HEU shell no. 42
+  sector 44 HEU    50  200  441 -442  443  444  $ Upper HEU shell no. 44
+  sector 46 HEU    50  200  461 -462  463  464  $ Upper HEU shell no. 46
+  sector 48 HEU    50  200  481 -482  483  484  $ Upper HEU shell no. 48
+
+picture cs material color res=1500 -60 0 17 -60 0 -30  60 0 -30 title="axial view"
+picture cs material color res=1500 -11 0 11 -11 0 -11  11 0 -11 title="axial detail of the core"
+$ volume material -8 -8 -1  8 -8 -1 -8 8 -1 16 16 10
+surfaces $ All dimensions are in CENTIMETERS
+ 
+   1 rpp -15.24   15.24   -15.24  15.24  -28.2575 -27.6225 $ Al mounting plate
+   2 rpp -13.335  13.335   -7.62   7.62  -27.6225 -26.3525 $ SS304 lower base
+   3 rpp  -9.8425  9.8425  -8.255  8.255 -26.3525 -17.78   $ SS304 middle base
+   4 rpp -12.7    12.7     -7.62   7.62  -17.78   -15.24   $ SS304 table
+ 
+   5 s    10.0 tr 0 0 -0.3175        $ Al mounting tube: spherical contour
+   6 c z   5.08    -10.4775  -7.9375 $ Al mounting tube: large hole
+   7 c z   0.35179 -15.24   -10.4775 $ Al mounting tube: small hole
+   8 c z   7.62    -10.4775  -7.9375 $ Al mounting tube: upper portion
+   9 c z   7.62    -15.24   -10.4775 $ Al mounting tube: lower portion
+
+  10 p z  -0.3175                  $ Al shell: top; Al spacer: bottom
+  11 s     4.83108 tr 0 0  -0.3175 $ Al shell: inner  
+  12 s     4.99872 tr 0 0  -0.3175 $ Al shell: outer
+  13 c z   0.3302  -7.3025 -1.0    $ Al stem
+  14 c z   0.17526 -7.3025 -6.0325 $ SS304 alignment rod: upper
+  15 c z   0.3175 -15.24   -7.3025 $ SS304 alignment rod: lower
+ 
+  17 c z   4.81838 $ Al spacer: inner
+  18 c z  10.0     $ Al spacer: outer
+  19 p z   0.0     $ Al spacer: top
+
+  21 s     4.14909 tr 0 0 -0.3175  $ Np sphere
+  22 s     4.16814 tr 0 0 -0.3175  $ W shield: inner
+  23 s     4.42722 tr 0 0 -0.3175  $ W shield: outer
+  24 s     4.4323  tr 0 0 -0.3175  $ Inner Ni cladding: inner
+  25 s     4.6228  tr 0 0 -0.3175  $ Inner Ni cladding: outer
+  26 s     4.62788 tr 0 0 -0.3175  $ Outer Ni cladding: inner
+  27 s     4.81838 tr 0 0 -0.3175  $ Outer Ni cladding: outer
+
+  31 c z  10.4775                                      $ Hole in Al support plate, collar and mounting flange
+  32 rpp -31.75 31.75 -27.305 27.305 -2.54   -1.27     $ Al support plate
+  33 c z  16.51                      -1.27    0.0      $ Al support collar
+  34 c z   4.9149                                      $ Hole in SS301 membrane
+  35 c z  13.335                      0.0     0.08128  $ SS301 membrane
+  36 c z  13.335                      0.08128 1.35128  $ Al moutning flange
+
+  41 rpp -15.6591 -14.3891 -2.54  2.54   0.0  13.97  $ Al veritical bracket: left
+  42 rpp  14.3891  15.6591 -2.54  2.54   0.0  13.97  $ Al veritical bracket: right
+  43 rpp -15.6591  15.6591 -2.54  2.54  13.97 15.24  $ Al horizontal bracket: top
+
+  45 box  44.196   44.196  99.99                     $ Square hole in Al top plate
+  46 rpp -57.15    57.15  -57.15 57.15 -10.16 -7.62  $ Al top plate
+
+  50 p z   0.08128                    $ Al shell: bottom
+  51 s     4.83108  tr 0 0   0.08128  $ Al shell: inner  
+  52 s     4.99872  tr 0 0   0.08128  $ Al shell: outer
+  53 c z   0.3302   1.0      7.06628  $ Al stem
+  54 c z   0.17526  5.79628  7.06628  $ SS304 mounting rod: lower
+  55 c z   0.3175   7.06628 15.95628  $ SS304 mounting rod: upper
+
+ 200 c z   0.35687                 $ Central z-hole in all HEU shells
+
+ 211 s     5.017   tr 0 0 -0.3175  $ HEU shell no. 21: inner
+ 212 s     5.337   tr 0 0 -0.3175  $ HEU shell no. 21: outer
+ 213 c x   0.15875 tr 0 0 -2.0965  $ HEU shell no. 21: x-hole
+ 214 c y   0.15875 tr 0 0 -2.0965  $ HEU shell no. 21: y-hole
+
+ 231 s     5.346   tr 0 0 -0.3175  $ HEU shell no. 23: inner
+ 232 s     5.669   tr 0 0 -0.3175  $ HEU shell no. 23: outer
+ 233 c x   0.15875 tr 0 0 -2.2072  $ HEU shell no. 23: x-hole
+ 234 c y   0.15875 tr 0 0 -2.2072  $ HEU shell no. 23: y-hole
+
+ 251 s     5.679   tr 0 0 -0.3175  $ HEU shell no. 25: inner
+ 252 s     6.003   tr 0 0 -0.3175  $ HEU shell no. 25: outer
+ 253 c x   0.15875 tr 0 0 -2.3185  $ HEU shell no. 25: x-hole
+ 254 c y   0.15875 tr 0 0 -2.3185  $ HEU shell no. 25: y-hole
+
+ 271 s     6.011   tr 0 0 -0.3175  $ HEU shell no. 27: inner
+ 272 s     6.335   tr 0 0 -0.3175  $ HEU shell no. 27: outer
+ 273 c x   0.15875 tr 0 0 -2.4292  $ HEU shell no. 27: x-hole
+ 274 c y   0.15875 tr 0 0 -2.4292  $ HEU shell no. 27: y-hole
+
+ 291 s     6.345   tr 0 0 -0.3175  $ HEU shell no. 29: inner
+ 292 s     6.671   tr 0 0 -0.3175  $ HEU shell no. 29: outer
+ 293 c x   0.15875 tr 0 0 -2.5412  $ HEU shell no. 29: x-hole
+ 294 c y   0.15875 tr 0 0 -2.5412  $ HEU shell no. 29: y-hole
+
+ 311 s     6.678   tr 0 0 -0.3175  $ HEU shell no. 31: inner
+ 312 s     7.002   tr 0 0 -0.3175  $ HEU shell no. 31: outer
+ 313 c x   0.15875 tr 0 0 -2.6515  $ HEU shell no. 31: x-hole
+ 314 c y   0.15875 tr 0 0 -2.6515  $ HEU shell no. 31: y-hole
+
+ 331 s     7.006   tr 0 0 -0.3175  $ HEU shell no. 33: inner
+ 332 s     7.330   tr 0 0 -0.3175  $ HEU shell no. 33: outer
+ 333 c x   0.15875 tr 0 0 -2.7608  $ HEU shell no. 33: x-hole
+ 334 c y   0.15875 tr 0 0 -2.7608  $ HEU shell no. 33: y-hole
+
+ 351 s     7.342   tr 0 0 -0.3175  $ HEU shell no. 35: inner
+ 352 s     7.666   tr 0 0 -0.3175  $ HEU shell no. 35: outer
+ 353 c x   0.15875 tr 0 0 -2.8728  $ HEU shell no. 35: x-hole
+ 354 c y   0.15875 tr 0 0 -2.8728  $ HEU shell no. 35: y-hole
+
+ 371 s     7.682   tr 0 0 -0.3175  $ HEU shell no. 37: inner
+ 372 s     8.003   tr 0 0 -0.3175  $ HEU shell no. 37: outer
+ 373 c x   0.15875 tr 0 0 -2.9852  $ HEU shell no. 37: x-hole
+ 374 c y   0.15875 tr 0 0 -2.9852  $ HEU shell no. 37: y-hole
+
+ 391 s     8.013   tr 0 0 -0.3175  $ HEU shell no. 39: inner
+ 392 s     8.336   tr 0 0 -0.3175  $ HEU shell no. 39: outer
+ 393 c x   0.15875 tr 0 0 -3.0962  $ HEU shell no. 39: x-hole
+ 394 c y   0.15875 tr 0 0 -3.0962  $ HEU shell no. 39: y-hole
+
+ 411 s     8.346   tr 0 0 -0.3175  $ HEU shell no. 41: inner
+ 412 s     8.668   tr 0 0 -0.3175  $ HEU shell no. 41: outer
+ 413 c x   0.15875 tr 0 0 -3.2068  $ HEU shell no. 41: x-hole
+ 414 c y   0.15875 tr 0 0 -3.2068  $ HEU shell no. 41: y-hole
+
+ 431 s     8.678   tr 0 0 -0.3175  $ HEU shell no. 43: inner
+ 432 s     9.000   tr 0 0 -0.3175  $ HEU shell no. 43: outer
+ 433 c x   0.15875 tr 0 0 -3.3175  $ HEU shell no. 43: x-hole
+ 434 c y   0.15875 tr 0 0 -3.3175  $ HEU shell no. 43: y-hole
+
+ 451 s     9.009   tr 0 0 -0.3175  $ HEU shell no. 45: inner
+ 452 s     9.333   tr 0 0 -0.3175  $ HEU shell no. 45: outer
+ 453 c x   0.15875 tr 0 0 -3.4285  $ HEU shell no. 45: x-hole
+ 454 c y   0.15875 tr 0 0 -3.4285  $ HEU shell no. 45: y-hole
+
+ 471 s     9.342   tr 0 0 -0.3175  $ HEU shell no. 47: inner
+ 472 s     9.667   tr 0 0 -0.3175  $ HEU shell no. 47: outer
+ 473 c x   0.15875 tr 0 0 -3.5398  $ HEU shell no. 47: x-hole
+ 474 c y   0.15875 tr 0 0 -3.5398  $ HEU shell no. 47: y-hole
+
+ 491 s     9.677   tr 0 0 -0.3175  $ HEU shell no. 49: inner
+ 492 s    10.000   tr 0 0 -0.3175  $ HEU shell no. 49: outer
+ 493 c x   0.15875 tr 0 0 -3.6508  $ HEU shell no. 49: x-hole
+ 494 c y   0.15875 tr 0 0 -3.6508  $ HEU shell no. 49: y-hole
+
+ 221 s     5.013   tr 0 0  0.08128 $ HEU shell no. 22: inner
+ 222 s     5.336   tr 0 0  0.08128 $ HEU shell no. 22: outer
+ 223 c x   0.15875 tr 0 0  1.8600  $ HEU shell no. 22: x-hole
+ 224 c y   0.15875 tr 0 0  1.8600  $ HEU shell no. 22: y-hole
+
+ 241 s     5.346   tr 0 0  0.08128 $ HEU shell no. 24: inner
+ 242 s     5.669   tr 0 0  0.08128 $ HEU shell no. 24: outer
+ 243 c x   0.15875 tr 0 0  1.9710  $ HEU shell no. 24: x-hole
+ 244 c y   0.15875 tr 0 0  1.9710  $ HEU shell no. 24: y-hole
+
+ 261 s     5.679   tr 0 0  0.08128 $ HEU shell no. 26: inner
+ 262 s     6.001   tr 0 0  0.08128 $ HEU shell no. 26: outer
+ 263 c x   0.15875 tr 0 0  2.0816  $ HEU shell no. 26: x-hole
+ 264 c y   0.15875 tr 0 0  2.0816  $ HEU shell no. 26: y-hole
+
+ 281 s     6.012   tr 0 0  0.08128 $ HEU shell no. 28: inner
+ 282 s     6.334   tr 0 0  0.08128 $ HEU shell no. 28: outer
+ 283 c x   0.15875 tr 0 0  2.1926  $ HEU shell no. 28: x-hole
+ 284 c y   0.15875 tr 0 0  2.1926  $ HEU shell no. 28: y-hole
+
+ 301 s     6.344   tr 0 0  0.08128 $ HEU shell no. 30: inner
+ 302 s     6.670   tr 0 0  0.08128 $ HEU shell no. 30: outer
+ 303 c x   0.15875 tr 0 0  2.3046  $ HEU shell no. 30: x-hole
+ 304 c y   0.15875 tr 0 0  2.3046  $ HEU shell no. 30: y-hole
+
+ 321 s     6.679   tr 0 0  0.08128 $ HEU shell no. 32: inner
+ 322 s     7.003   tr 0 0  0.08128 $ HEU shell no. 32: outer
+ 323 c x   0.15875 tr 0 0  2.4156  $ HEU shell no. 32: x-hole
+ 324 c y   0.15875 tr 0 0  2.4156  $ HEU shell no. 32: y-hole
+
+ 341 s     7.010   tr 0 0  0.08128 $ HEU shell no. 34: inner
+ 342 s     7.334   tr 0 0  0.08128 $ HEU shell no. 34: outer
+ 343 c x   0.15875 tr 0 0  2.5260  $ HEU shell no. 34: x-hole
+ 344 c y   0.15875 tr 0 0  2.5260  $ HEU shell no. 34: y-hole
+
+ 361 s     7.343   tr 0 0  0.08128 $ HEU shell no. 36: inner
+ 362 s     7.666   tr 0 0  0.08128 $ HEU shell no. 36: outer
+ 363 c x   0.15875 tr 0 0  2.6366  $ HEU shell no. 36: x-hole
+ 364 c y   0.15875 tr 0 0  2.6366  $ HEU shell no. 36: y-hole
+
+ 381 s     7.671   tr 0 0  0.08128 $ HEU shell no. 38: inner
+ 382 s     8.003   tr 0 0  0.08128 $ HEU shell no. 38: outer
+ 383 c x   0.15875 tr 0 0  2.7490  $ HEU shell no. 38: x-hole
+ 384 c y   0.15875 tr 0 0  2.7490  $ HEU shell no. 38: y-hole
+
+ 401 s     8.007   tr 0 0  0.08128 $ HEU shell no. 40: inner
+ 402 s     8.329   tr 0 0  0.08128 $ HEU shell no. 40: outer
+ 403 c x   0.15875 tr 0 0  2.8576  $ HEU shell no. 40: x-hole
+ 404 c y   0.15875 tr 0 0  2.8576  $ HEU shell no. 40: y-hole
+
+ 421 s     8.344   tr 0 0  0.08128 $ HEU shell no. 42: inner
+ 422 s     8.668   tr 0 0  0.08128 $ HEU shell no. 42: outer
+ 423 c x   0.15875 tr 0 0  2.9706  $ HEU shell no. 42: x-hole
+ 424 c y   0.15875 tr 0 0  2.9706  $ HEU shell no. 42: y-hole
+
+ 441 s     8.676   tr 0 0  0.08128 $ HEU shell no. 44: inner
+ 442 s     8.999   tr 0 0  0.08128 $ HEU shell no. 44: outer
+ 443 c x   0.15875 tr 0 0  3.0810  $ HEU shell no. 44: x-hole
+ 444 c y   0.15875 tr 0 0  3.0810  $ HEU shell no. 44: y-hole
+
+ 461 s     9.010   tr 0 0  0.08128 $ HEU shell no. 46: inner
+ 462 s     9.333   tr 0 0  0.08128 $ HEU shell no. 46: outer
+ 463 c x   0.15875 tr 0 0  3.1923  $ HEU shell no. 46: x-hole
+ 464 c y   0.15875 tr 0 0  3.1923  $ HEU shell no. 46: y-hole
+
+ 481 s     9.343   tr 0 0  0.08128 $ HEU shell no. 48: inner
+ 482 s     9.668   tr 0 0  0.08128 $ HEU shell no. 48: outer
+ 483 c x   0.15875 tr 0 0  3.3040  $ HEU shell no. 48: x-hole
+ 484 c y   0.15875 tr 0 0  3.3040  $ HEU shell no. 48: y-hole
+
+end

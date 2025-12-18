@@ -1,0 +1,39 @@
+PU-SOL-THERM-015 (Case 12) Three cylinders with 10 cm s-to-s
+basic
+  neutron delayedn urrpt
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=3  0 0 16.6  40 0 16.6  0 -40 16.6
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 12, 13 and 14
+  mat=1 bunches   pu238 2.7777-8 pu239 3.6661-4   pu240 1.6176-5 pu241 1.2161-6 pu242 6.0704-8 
+                  am241 1.2648-7     n 2.9029-3 (h.h2o) 5.9636-2    fe 3.2134-6    cr 8.5358-7
+                     ni 6.8543-7    ca 1.8332-6     o16 3.7853-2
+  mat=2 bunches (h.h2o) 1.0350-2   b10 1.6020-6     o16 4.3470-2    al 1.5630-3    si 1.4170-2
+                     ca 6.4240-3    fe 7.6210-4
+  mat=3 bunches      fe 5.8686-2    cr 1.6469-2      ni 8.1061-3    mn 1.7319-3    si 1.6939-3
+                      c 1.5857-4     p 6.1439-5       s 4.4518-5
+geometry
+  unit   1 Tank   -3                                              
+  unit   1 Tank  -11 tr 40   0 0
+  unit   1 Tank  -12 tr  0 -40 0
+  sector 0 Void    3 -4 11 12
+  sector 2 Conc    4 -5
+  boundary vacuum  5
+define unit 1
+  sector 0 Void   1 -2
+  sector 1 Soln  -1 -2
+  sector 3 SST    2 -3
+$picture cs material
+$  -520  570  26 -520 -610  26 990 -610   26 title="planar view of the experimental cell - see Figure 5"
+$picture cs material
+$     0 -610 975    0 -610 -150  0  570 -150 title=" axial view of the experimental cell - see Figure 5"
+surfaces
+  1 plane    z 33.17                      $ Hc per Table 1
+  2 cylinder z 14.7    0.000 101.171      $ Tank/Inner per Figure 6
+  3 cylinder z 15.0   -1.329 102.371      $ Tank/Outer per Figure 6
+  4 box 1210  880 1000 tr 235 -20 394.671 $ Room/Inner per Figure 5
+  5 box 1500 1170 1110 tr 235 -20 409.671 $ Room/Outer per Figure 5
+11 cylinder z 15.0   -1.329 102.371 tr 40 0 0                    $ Array dimensions per
+ 12 cylinder z 15.0   -1.329 102.371 tr 0 -40 0                  $ Table 1 and Figure 7
+
+end

@@ -1,0 +1,26 @@
+ICT016-25: 17.78 x 17.78 x 20.1422 U(30.14)O2/wax parallelepiped with 20.32 cm Polythene on bottom & sides - 20.32 cm Paraffin Wax on top - batch 80
+basic 
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+assign-mc
+  1 sky 2 lime 3 yellow
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches (h.ch2) 6.8672-2   c 3.4015-2 o16 5.8418-3 al 6.8882-5 u234 1.0730-5 u235 8.4741-4 u236 1.9598-6 u238 1.9269-3 $ Batch 80
+  mat=2 bunches (h.ch2) 7.8911-2 o16 3.4955-2 $ Polythene
+  mat=3 bunches (h.ch2) 7.5098-2   c 3.6813-2 $ Paraffin Wax
+geometry
+  sector 1 UO2WAX   -1
+  sector 2 POLY      1 -2 -3
+  sector 3 PARAFFIN  1 -2  3
+  boundary vacuum    2
+picture cs material color
+  -30   0  31 -30   0 -31  30  0 -31 title="axial view"
+volume material
+  -30 -30 -31  30 -30 -31 -30 30 -31
+   60  60  62
+surfaces
+  1 box 17.78 17.78 20.1422
+  2 box 58.42 58.42 60.7822
+  3 p z 10.0711
+end

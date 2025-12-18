@@ -1,0 +1,116 @@
+LEU-COMP-THERM-101-1: MIRTE-2.2 Experiment 4A-PVC-010; 11x12; Hc=63.085cm
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=20
+   7.70  7.70 31.5425  6.10  6.10 31.5425  4.50  4.50 31.5425  2.90  2.90 31.5425  1.30  1.30 31.5425
+  -7.70  7.70 31.5425 -6.10  6.10 31.5425 -4.50  4.50 31.5425 -2.90  2.90 31.5425 -1.30  1.30 31.5425
+  -7.70 -7.70 31.5425 -6.10 -6.10 31.5425 -4.50 -4.50 31.5425 -2.90 -2.90 31.5425 -1.30 -1.30 31.5425
+   7.70 -7.70 31.5425  6.10 -6.10 31.5425  4.50 -4.50 31.5425  2.90 -2.90 31.5425  1.30 -1.30 31.5425
+assign-mc
+  1 red 2 black 3 lime 4 gray 5 sky 6 white 7 pink
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches    o16 4.6311-2   fe 9.5121-6   si 2.2475-5   al 4.1693-6  $ U(4.738)O2 
+                   u234 7.1087-6 u235 1.1104-3 u236 3.1792-5 u238 2.2006-2  $  fuel
+  mat=2  bunches      n 8.7300-6  o16 3.3727-4   sn 4.5389-4   fe 1.5680-4  $ Zr-4
+                     cr 8.9516-5    c 4.2233-5   si 1.3904-5   al 2.8361-6  $  clad &
+                     zr 4.2428-2   hf 1.2287-6    h 1.4480-5                $  end plugs
+  mat=3  bunches     si 2.2900-4   fe 1.1516-4   cu 2.5303-5   mn 1.4634-4  $ AG3
+                     mg 2.3816-3   cr 9.2771-5   zn 4.9179-5   ti 5.0373-5  $  grids &
+                     al 5.6226-2                                            $  wedges
+  mat=4 bunches      cr 1.6469-2   ni 8.1061-3   mn 8.6597-4   si 1.6939-3  $ Z2CN18-10
+                      p 6.1438-5    s 4.4504-5    c 1.1883-4   fe 5.9546-2  $  stainless steel
+  mat=5 bunches (h.h2o) 6.6722-2  o16 3.3361-2                              $ Water
+  mat=6 bunches       n 4.1985-5  o16 1.1263-5                              $ Air
+  mat=7 bunches (h.ch2) 4.2094-2    c 2.7923-2   o16 2.0310-3  cl 1.1621-2  $ PVC
+                     ca 4.1379-4   cr 2.1047-7    cu 1.4572-7  sn 3.2621-6  $  10 mm thick
+                     mg 4.8491-6   al 4.0560-6     k 4.7368-7  na 2.1604-5  $  (case 1)
+                      s 1.8378-5   ti 2.2863-5    si 3.2971-6  sr 9.6077-8  $
+                     fe 4.2208-7                                            $
+geometry
+    use unit 3 core    -8 -11 $ 15 x 15 x 1 array in quadrant I
+    use unit 4 core    -8 -12 $ 15 x 15 x 1 array in quadrant II
+    use unit 5 core    -8 -13 $ 15 x 15 x 1 array in quadrant III
+    use unit 6 core    -8 -14 $ 15 x 15 x 1 array in quadrant IV
+    sector   4 SST  -4 -8  11 12 13 14            $ Steel plate  
+    sector   7 PVC   4 -8  11 12 13 14 -21        $ Screen
+    sector   7 PVC   4 -8  11 12 13 14  21 -22    $ Screen
+    sector   5 H2O   4 -8  11 12 13 14  21  22 -9 $ Water
+    sector   6 Air   4 -8  11 12 13 14  21  22  9 $ Air
+    boundary   vacuum   8                 $ Boundary condition
+ define unit 1                            $ One fuel rod in the unit cell
+    sector   1 UO2     -1 -2              $ UO2
+    sector   6 Air      1 -2              $ Air
+    sector   2 Zr4      1  2 -3           $ Zr-4
+    sector   4 SST     -4       -8        $ Z3CN18-10
+    sector   5 H2O      3 -5 -6           $ Water in hole in lower grid
+    sector   3 AG3         5 -6 -8        $ Lower grid
+    sector   6 Air      3 -5 -7           $ Air   in hole in upper grid
+    sector   3 AG3         5 -7 -8        $ Upper grid
+    sector   5 H2O      3  4  6  7 -8 -9  $ Water
+    sector   6 Air      3  4  6  7 -8  9  $ Air
+ define unit 2                            $ One empty hole in the unit cell
+    sector   4 SST     -4       -8        $ Z3CN18-10
+    sector   5 H2O        -5 -6           $ Water in hole in lower grid
+    sector   3 AG3         5 -6 -8        $ Lower grid
+    sector   6 Air        -5 -7           $ Air   in hole in upper grid
+    sector   3 AG3         5 -7 -8        $ Upper grid
+    sector   5 H2O         4  6  7 -8 -9  $ Water
+    sector   6 Air         4  6  7 -8  9  $ Air
+ define unit 3                            $ 15 x 15 x 1 array with 1.6 cm pitch in Q1
+   {x 201 16 [0.49665 24.49665]
+    y 221 16 [0.49665 24.49665]
+    z 241    -999.9 999.9
+   fill 
+   15*2 15*2 15*2 
+   11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 
+   11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2}
+ define unit 4                            $ 15 x 15 x 1 array with 1.6 cm pitch in Q2
+   {x 301 16 [-24.49665 -0.49665]
+    y 321 16   [0.49665 24.49665]
+    z 341    -999.9    999.9
+   fill 
+   15*2 15*2 15*2 
+   4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 
+   4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1}
+ define unit 5                            $ 15 x 15 x 1 array with 1.6 cm pitch in Q3
+   {x 401 16 [-24.49665 -0.49665]
+    y 421 16 [-24.49665 -0.49665]
+    z 441    -999.9    999.9
+   fill 
+   4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1
+   4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1
+   15*2 15*2 15*2}
+ define unit 6                            $ 15 x 15 x 1 array with 1.6 cm pitch in Q4
+   {x 501 16   [0.49665 24.49665]
+    y 521 16 [-24.49665 -0.49665]
+    z 541    -999.9    999.9
+   fill
+   11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 
+   11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 11*1 4*2 
+   15*2 15*2 15*2}
+ picture cs material color  -2.10 2.10   1    -2.10 -2.10   1    2.10 -2.10  1  title="plane detail of unit cell"
+ picture cs material color  -2.10 1.05 105    -2.10  1.05  88    2.10  1.05  88 title="axial detail of upper rod"
+ picture cs material color  -2.10 1.05   3    -2.10  1.05 -12    2.10  1.05 -12 title="axial detail of lower rod"
+ picture cs material color -30   30     97.7 -30  -30     97.7 30  -30     97.7 title="plane detail of the upper grid and screen"
+ picture cs material color -30   30     40   -30  -30     40   30  -30     40   title="plane detail of the active fuel and screen"
+ picture cs material color -30   30     -0.2 -30  -30     -0.2 30  -30     -0.2 title="plane detail of the lower grid and screen"
+ picture cs material color -95   95      1   -95  -95      1   95  -95      1   title="plane view of entire geometry"
+ picture cs material color -95    1.05 105   -95    1.05 -33   95    1.05 -33   title="axial view of entire geometry"
+surface 
+   1 c z   0.3946   0.0     89.765              $ UO2
+   2 c z   0.4180   0.0     98.814              $ Air
+   3 c z   0.4745  -1.18   100.282              $ Zr-4
+   4 box 186.0    186.0      2.5   tr 0 0 -9.75 $ Steel plate 
+   5 c z   0.49                                 $ Hole in grid plates
+   6 c z 999.9     -0.4      0.0                $ Lower grid plate
+   7 c z 999.9     97.5     97.9                $ Upper grid plate
+   8 box 189.7    189.7    140.26  tr 0 0 31.38 $ Boundary condition
+   9 p z  63.085                                $ Critical water height
+  11 box  24.0     24.0    999.9 tr  12.49665  12.49665 0.0 $ Plane boundaries of the "core" in quadrant I
+  12 box  24.0     24.0    999.9 tr -12.49665  12.49665 0.0 $ Plane boundaries of the "core" in quadrant II
+  13 box  24.0     24.0    999.9 tr -12.49665 -12.49665 0.0 $ Plane boundaries of the "core" in quadrant III
+  14 box  24.0     24.0    999.9 tr  12.49665 -12.49665 0.0 $ Plane boundaries of the "core" in quadrant IV
+  21 box   0.9933  43.3950  99.9984 tr 0 0 48.1992 $ Screen
+  22 box  43.3950   0.9933  99.9984 tr 0 0 48.1992 $ Screen
+end

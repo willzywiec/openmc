@@ -1,0 +1,28 @@
+IEU-MET-FAST-015-1: ZPR-3/6F spherical (simplified) benchmark
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u235 6.67553-3 u238 7.52339-3 u234 6.50499-5 u236 3.11853-5 cr 1.80393-3 ni 7.88989-4 fe 7.67231-3 al 2.06054-2  $ Core
+                   c 3.31766-5   mo 5.77380-6   mn 9.45863-5   cu 6.98625-6  h 6.42896-6 si 9.32704-5 cl 1.10858-5  f 3.28265-5  $   
+  mat=2 bunches u235 8.08539-5 u238 3.98174-2   cr 1.11863-3   ni 4.58739-4 fe 4.57485-3 al 6.85173-4  c 1.03291-5 mo 6.45945-10 $ Reflector
+                  mn 4.46723-5   cu 1.64254-9    h 2.79562-6   si 6.09151-5 cl 4.83547-6  f 1.43186-5                            $ 
+  mat=3 bunches   cr 1.10960-3   ni 4.53554-4   fe 4.52968-3   mn 4.34957-5 si 6.07700-5                                         $ Matrix
+assign-mc
+  1 orange 2 sky 3 blue
+geometry
+  sector 1 U47 -1
+  sector 2 Refl 1 -2
+  sector 3 Mtrx 2 -3
+  boundary vacuum  3
+picture cs material color
+  -107    0  107 -107    0 -107  107   0 -107
+volume material
+  -107 -107 -107  107 -107 -107 -107 107 -107
+   214  214  214
+surfaces
+  1 sphere  22.9235
+  2 sphere  64.0363
+  3 sphere 106.1633
+end

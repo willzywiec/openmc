@@ -1,0 +1,41 @@
+IEU-MET-FAST-020-7s: Rev. 2: FR0 T6a-S; simplified homogeous cylindrical benchmark
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 8.5135-5 u235 8.4983-3 u238 3.3376-2  c 4.3545-5  f 8.7090-5 fe 3.9671-3 $ U20
+                  cr 1.0802-3   ni 5.0510-4   mn 5.6800-5 si 5.5553-5                         $
+  mat=2 bunches   cu 7.4505-2   ag 7.0367-5  o16 1.1860-4 fe 3.9671-3 cr 1.0802-3 ni 5.0510-4 $ CU
+                  mn 5.6800-5   si 5.5553-5                                                   $
+  mat=3 bunches   fe 3.9671-3   cr 1.0802-3   ni 5.0510-4 mn 5.6800-5 si 5.5553-5             $ IV
+  mat=4 bunches   fe 5.6554-2   cr 1.5400-2   ni 7.2006-3 mn 8.0972-4 si 7.9194-4             $ IEB
+  mat=5 bunches   fe 4.7610-2   cr 1.2964-2   ni 6.0618-3 mn 6.8166-4 si 6.6670-4             $ OEB
+  mat=6 bunches   fe 8.4109-2                                                                 $ FE
+assign-mc
+  1 purple 2 orange 3 lime 4 gray 5 black 6 red
+geometry
+  sector 1 U20    -1
+  sector 2 Cu      1 -2
+  sector 3 VR         2 -3
+  sector 4 IEB        2  3 -4
+  sector 5 OEB        2  3  4 -5
+  sector 6 FE                  5 -6 -7
+  sector 6 FE         2  3  4  5  6  7 -8
+  boundary vacuum                       8
+picture cs material color
+  -72   0  67 -72   0 -79  72  0 -79
+volume material
+  -70 -70 -78  70 -70 -78 -70 70 -78
+  140 140 143
+surfaces
+  1 c z  19.240 -15.0535 15.0535 $ (U20)
+  2 c z  24.328 -55.9035 55.9035 $ Copper (CU)
+  3 c z  24.328 -57.4535 58.2465 $ Void Region (VR)
+  4 c z  24.328 -59.7535 60.2465 $ Inside End Blocks (IEB)
+  5 c z  24.328 -61.5535 61.9465 $ Outside End Blocks (OEB)
+  6 c z  24.328  61.9465 64.7465 $ Locking rails
+  7 c z  68.4   -61.5535 64.7465 $ Iron reactor table and wall; inner
+  8 c z  70.0   -77.5535 64.7465 $ Iron reactor table and wall; outer
+end

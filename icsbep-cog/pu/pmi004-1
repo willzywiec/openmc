@@ -1,0 +1,46 @@
+PU-MET-INTER-004 (ZPR-3/59) Benchmark (R-Z) Model
+basic 
+  neutron delayedn CENTIMETERS
+criticality
+  npart=500 nbatch=505 sdt=0.00001 nfirst=6 norm=1. nsource=1 0 0 0
+assign-mc
+  1 orange 2 yellow 3 blue 4 sky 5 lime 6 gray
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu240 9.95365-5 pu241 5.72562-6 pu239 2.10081-3 pu238 3.73187-9 pu242 1.79101-7 am241 3.29312-6 $ Core
+                   cr 1.91426-3    ni 8.56174-4    fe 7.44997-3    al 2.20421-4   o16 8.96044-5     c 5.77309-2
+                   mo 4.34689-6    mn 1.13224-4    cu 5.70933-6    ti 4.47813-5    si 9.55959-5     f 1.43132-4
+  mat=2 bunches    cr 1.46684-3    ni 6.20786-4    fe 5.89311-3    mn 7.20937-5    pb 2.75143-2    si 7.46598-5 $ Axial reflector
+  mat=3 bunches    cr 1.11212-3    ni 4.55197-4    fe 4.53786-3    mn 4.39192-5    pb 2.76345-2    si 6.07818-5 $ Radial reflector - half 1
+  mat=4 bunches    cr 1.10431-3    ni 4.51668-4    fe 4.50718-3    mn 4.34331-5    pb 2.76393-2    si 6.04244-5 $ Radial reflector - half 2
+                    f 1.21690-5 
+  mat=5 bunches    cr 3.17537-3    ni 1.46192-3    fe 1.88265-2     c 2.94049-4    mn 2.11494-4    si 1.40104-4 $ Drawer gap
+  mat=6 bunches    cr 1.10960-3    ni 4.53554-4    fe 4.52968-3    mn 4.34957-5    si 6.07700-5                 $ Empty matrix
+                   mo 8.23697-6    si 6.81747-5
+geometry
+    sector 1 CoreH1   3 -4 -11
+    sector 1 CoreH2   4 -5 -10
+    sector 2 AxRef1   1 -3 -11
+    sector 2 AxRef2   5 -6 -10
+    sector 5 DwgGap   6 -7 -10
+    sector 2 AxRef3   7 -8 -10
+    sector 3 RdReH2   2 -4  11 -12
+    sector 4 RdReH1   4 -9  10 -12
+    fill   6 $ Matrix
+    boundary vacuum  13
+picture cs material color    0   0  86   0   0 -86   97   0 -86 title="half axial x-z view"
+volume material -97 -97 -86 97 -97 -86 -97  97 -86  194 194 172
+surfaces
+   1  p z -53.4248
+   2  p z -50.8106
+   3  p z -22.9448
+   4  p z   0.0
+   5  p z  28.0249
+   6  p z  38.1849
+   7  p z  38.8199
+   8  p z  59.1392
+   9  p z  60.8772
+  10  c z  23.7864
+  11  c z  23.8887
+  12  c z  58.3482
+  13  c z  96.8226 -85.09 85.09
+end

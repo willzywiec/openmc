@@ -1,0 +1,35 @@
+PU-SOL-THERM-023 (Case 1) 
+basic
+  neutron delayedn
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0. 0. 12.5
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 14, 15 and 16
+  mat=1 bunches   pu238 1.0229-7 pu239 1.1008-4   pu240 6.7779-5 pu241 1.5964-5 pu242 6.6048-6 $ Inner Sol'n
+                  am241 6.8724-7     n 3.0856-3 (h.h2o) 5.9080-2   o16 3.7659-2    fe 1.2509-6 $  33.89 wt-%
+                     cr 3.3587-7    ni 1.6531-7                                                $  Pu-240
+  mat=2 bunches   pu238 2.1588-8 pu239 2.8111-4   pu240 1.2403-5 pu241 8.5161-7 pu242 4.6533-8 $ Driver Sol'n
+                  am241 1.7534-7     n 2.4178-3 (h.h2o) 6.0737-2   o16 3.7011-2    fe 4.2055-6 $  4.23 wt-%
+                     cr 1.1292-6    ni 5.5580-7                                                $  Pu-240
+  mat=3 bunches      fe 5.8686-2    cr 1.6469-2      ni 8.1061-3    mn 1.7319-3    si 1.6939-3 $ SST Type
+                      c 1.5844-3     p 6.1439-5       s 4.4504-5                               $  Z3CN 18-10
+  mat=4 bunches (h.h2o) 6.6708-2   o16 3.3354-2                                                $ Water
+geometry                                              
+  sector 1 SOLNI -1
+  sector 3 SST    1 -2
+  sector 2 SOLND  2 -3 -4 -7
+  sector 3 SST    3 -4
+  sector 4 WATER  4 -5 -7
+  sector 3 SST    4  5 -6
+picture cs material
+  90 0 -60  -30 0 -60  -30 0 60
+surfaces $ Dimensions per Figure 7 and Table 1 
+  1 cylinder x  8.75  3.45 20.95 $ 1st Tank/Inner
+  2 cylinder x  8.90  3.30 21.10 $ 1st Tank/Outer
+  3 revolution 3
+    0.0 0.0  0.3 18.0 81.5 18.0  $ 2nd Tank/Inner
+  4 cylinder x 18.3  -0.30 81.5  $ 2nd Tank/Outer
+  5 cylinder x 54.6 -25.9  50.8  $ 3rd Tank/Inner
+  6 cylinder x 55.0 -26.2  51.2  $ 3rd Tank/Outer
+  7 plane    x 25.02             $ = Hc (Table 1)
+end

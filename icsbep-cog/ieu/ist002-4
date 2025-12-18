@@ -1,0 +1,28 @@
+IEU-SOL-THERM-002-4: Fully reflected 22-inch i.d. U(30.45) solution sphere
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0 0 0 
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u235 5.5314-5 u234 6.9324-7 u236 1.4471-7 u238 1.2392-4 (h.h2o) 6.6052-2  f 3.6014-4 o16 3.3386-2 $ Solution
+  mat=2 bunches   mg 2.3154-3   al 5.6165-2   si 2.8625-4   ti 6.7163-5      cr 7.7309-5 mn 1.4634-4  fe 1.4395-4 $ Aluminum
+                  cu 2.5303-5   zn 4.9178-5                                                                       $  BA.27
+  mat=3 bunches (h.h2o) 6.6785-2 o16 3.3393-2                                                                     $ Water
+assign-mc
+  1 red 2 yellow 3 sky
+geometry
+  sector 1 Soln     -1
+  sector 2 BA27   1 -2
+  sector 3 H2O    2 -3
+  boundary vacuum 3
+picture cs material color
+  -46   0  47 -46   0 -47  46  0 -47
+volume material
+  -46 -46 -47  46 -46 -47 -46 46 -47
+   92  92  94
+surfaces
+  1 sphere 27.9377 $ r=a
+  2 sphere 28.2628 $ r=b
+  3 c z    45.7200 -46.0428 46.0428 $ r=d/2; Z1=c; Z2=c+e
+end

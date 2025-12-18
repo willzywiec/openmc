@@ -1,0 +1,25 @@
+U233-SOL-THERM-001: 233U(97.7)O2(NO3)2 @ H/U233=1531; N/U=2.67
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0      $ Exp't No. 1 with
+  mat=1 bunches u233 4.3271-5 u234 7.1442-7 u235 1.7565-8 u238 2.7748-7 $  H/U-233 = 1531.5
+             (h.h2o) 6.6271-2    n 1.1819-4  o16 3.3564-2   th 1.9639-7 $  N/U = 2.669
+  mat=2 w-p 2.71 al 99.0 si 0.375 fe 0.375 cu 0.2 mn 0.05               $ Al-1100
+assign-mc
+  1 red 2 gray
+geometry
+  sector 1 Soln   -1
+  sector 2 Alum    1 -2
+  boundary vacuum     2
+picture cs material color
+ -35   0  35  -35   0 -35   35  0 -35
+volume material
+ -35 -35 -35   35 -35 -35  -35 35 -35
+  70  70  70
+surfaces
+   1 sphere 34.595
+   2 sphere 34.915
+end

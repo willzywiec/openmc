@@ -1,0 +1,50 @@
+LMT004-5: 32 U(4.948) Metal Rods in Water; Pitch=5.22cm; Hf=60cm; Hw=59.45cm
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 29.725
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 1.8465-5 u235 2.3941-3 u238 4.5391-2 $ LEU 
+  mat=2 bunches (h.h2o) 6.6658-2 o16 3.3329-2             $ H2O
+assign-mc
+  1 red 2 sky
+geometry
+  use unit 1 LINE -90  16     -21 tr  -2.61   13.561958 0  use unit 2 EMPTY -90  16      21
+  use unit 1 LINE -90  15 -16 -22 tr -10.44    9.041305 0  use unit 2 EMPTY -90  15 -16  22
+  use unit 1 LINE -90  14 -15     tr -13.05    4.520653 0
+  use unit 1 LINE -90  13 -14 -22 tr -10.44    0        0  use unit 2 EMPTY -90  13 -14  22
+  use unit 1 LINE -90  12 -13     tr -13.05   -4.520653 0 
+  use unit 1 LINE -90  11 -12 -22 tr -10.44   -9.041305 0  use unit 2 EMPTY -90  11 -12  22
+  use unit 1 LINE -90     -11 -21 tr  -7.83  -13.561958 0  use unit 2 EMPTY -90     -11  21
+  boundary vacuum  90
+define unit 1 $ Line of fuel
+  sector 1 LEU -1
+  sector 1 LEU -2
+  sector 1 LEU -3
+  sector 1 LEU -4
+  sector 1 LEU -5
+  sector 1 LEU -6
+  sector 0 AIR  91 -99 1 2 3 4 5 6
+  sector 2 H2O -91 -99 1 2 3 4 5 6
+define unit 2 $ Unfueled regions
+  sector 0 AIR  91 -99
+  sector 2 H2O -91 -99
+picture cs material color -60  0 70 -60   0 -20  60   0 -20  title="axial view"
+picture cs material color -60 60 30 -60 -60  30  60 -60  30 title="plane view"
+surfaces
+   1 c z   1.2475  0.0  60.0              $ U (fuel)
+   2 c z   1.2475  0.0  60.0 tr  5.22 0 0 
+   3 c z   1.2475  0.0  60.0 tr 10.44 0 0 
+   4 c z   1.2475  0.0  60.0 tr 15.66 0 0
+   5 c z   1.2475  0.0  60.0 tr 20.88 0 0
+   6 c z   1.2475  0.0  60.0 tr 26.10 0 0
+  11 p y -11.30163 21 p x  5.22
+  12 p y  -6.78098 22 p x 13.05
+  13 p y  -2.26033
+  14 p y   2.26033
+  15 p y   6.78098
+  16 p y  11.30163
+  90 c z  58.3   -16.51 60.0              $ Radial reflector/boundary
+  91 p z  59.45                           $ Water height 
+  99 box 999     999   999                $ Arbitrary
+end

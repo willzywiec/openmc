@@ -1,0 +1,18 @@
+MCT012-32: MOX/Polystyrene (H/SQRT(LxW)=1.04) with H/X=172, bare
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches   pu239 2.5732-4 pu240 2.2945-5 pu241 1.7199-6 pu242 1.0486-7 u235 1.0079-6 u238 6.5993-4 am241 3.1590-7
+                (h.ch2) 4.4660-2     c 4.5345-2   o16 1.9731-3
+assign-mc
+  1 purple
+geometry
+  sector 1 Core   -1
+  boundary vacuum  1
+picture cs material color -26 0  26  -26 0 -26   26 0 -26
+volume material -26 -26 -22  26 -26 -22 -26 26 -22 52 52 44
+surfaces 
+  1 box 40.72 40.72 42.24 $ Core
+end

@@ -1,0 +1,101 @@
+MIX-COMP-THERM-001-1: 605 MOX pins with 0.9525 cm pitch
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4
+  -0.5 -0.5 73.785 -0.5  0.5 73.785
+   0.5 -0.5 73.785  0.5  0.5 73.785
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0     
+  mat=1  bunches   pu238 7.3857-6 pu239 4.2019-3 pu240 5.6060-4 pu241 8.7523-5 pu242 1.6972-5 am241 3.4258-5 $ MOX
+                    u235 1.2223-4  u238 1.6876-2   o16 4.3713-2                                              $  fuel
+  mat=2  bunches    u234 1.3406-6  u235 1.7166-4  u238 2.3066-2   o16 4.6476-2                               $ Natural UO2 insulator
+  mat=3  bunches      ni 6.3070-2    cr 1.6578-2    fe 9.0795-3                                              $ Inconol 600 reflector
+  mat=4  bunches       c 1.3017-4    mn 1.7356-3    si 8.6781-4    cr 1.5621-2    ni 7.8103-3     p 3.9052-5 $ SS302 spring
+                       s 2.6034-5    fe 6.0552-2                                                             $  (homogenized)
+  mat=5  bunches       c 6.7738-5    mn 1.6935-5    si 8.4673-4    cr 1.4394-2    ni 1.0161-2     p 3.8103-5 $ SS316 plenum
+                       s 2.5402-5    mo 2.1168-3    fe 5.5330-2                                              $  and clad
+  mat=6  bunches (h.ch2) 5.6784-2     c 3.5489-2   o16 1.4195-2                                              $ Plexiglas base plate
+  mat=7  bunches      fe 6.3278-2    cr 1.6532-2    ni 6.5095-3                                              $ SS304L grid plates
+  mat=8  bunches (h.ch2) 7.7709-2     c 3.8854-2                                                             $ Polypropolyne grid plates
+  mat=9  bunches      fe 8.4058-2     c 3.9479-3                                                             $ Carbon steel tank
+  mat=10 bunches (h.h2o) 1.7271-2     k 4.3435-4    ca 2.6130-3    al 3.3568-3    fe 1.3431-3   o16 4.5377-2 $ Concrete
+                      si 1.2900-2    na 1.2312-4    mg 7.5695-4                                              $  floor
+  mat=11 bunches      al 5.7638-2    si 4.6144-4    fe 2.0305-4    mn 4.4230-5    mg 7.9981-4    cr 1.0904-4 $ Al-6061
+                      cu 1.0197-4                                                                            $  support channels
+  mat=12 bunches (h.h2o) 6.6733-2   o16 3.3368-2                                                             $ Water
+assign-mc
+  1 red 2 brown 3 purple 4 orange 5 gray 6 green 7 black 8 lime 9 purple 10 pink 11 yellow 12 sky
+geometry
+  use unit 4 lttc   -23  98 -99
+  use unit 2 stuff  -23  98  99
+  use unit 2 stuff  -23 -98
+  boundary vacuum    23
+define unit 1 $ Mox fuel pin
+  sector 3 Incnl  -1 -9            $ Inconel 600
+  sector 2 UO2     1 -2            $ Natural UO2 insulator
+  sector 1 MOX     2 -3            $ MOX fuel
+  sector 2 UO2     3 -4            $ Natural UO2 insulator
+  sector 3 Incnl   4 -5            $ Inconel 600
+  sector 4 SS302   5 -6 -9         $ Spring, homegenized
+  sector 5 SS316   6  7 -8 -9      $ SS316 plenum
+  sector 5 SS316   1  6  8  9 -10  $ SS316 clad
+define unit 2 $ Unit cell without a fuel rod
+  sector 12 H2O    -10 -12 -23         $ Water in the hole
+  sector  7 SS304L  10 -11             $ Upper  SS304L plate
+  sector  7 SS304L  10 -13             $ Middle SS304L plate
+  sector  8 Popro   10 -14             $ Polypropolyene spacer plate
+  sector  7 SS304L  10 -15             $ Bottom SS304L plate
+  sector  6 CH2     10 -16             $ Plexiglas base plate
+  sector 11 Al6061  16 -17  18  19  20 $ Al-6061 channel
+  sector 12 Water   16 -17 -18  19  20 $ Water inside the channel
+  sector 12 Water   16 -17  18 -19  20 $ Water inside the channel beam, lhs
+  sector 12 Water   16 -17  18  19 -20 $ Water inside the channel beam, rhs
+  sector  9 CSTL    17 -21  22 -23     $ Carbon steel tank floor
+  sector 10 Cncrt          -22 -23     $ Concrete
+  sector 12 Water   10  11 -12  13  14 $ Water
+                    15  16  17  21 -23 $  elsewhere
+define unit 3 $ Unit cell with a fuel rod
+  use unit 1 Frod  -10 -23
+  use unit 2 Stuff  10 -23
+define unit 4 $ 28x28 lattice
+  {x  101 29 [-13.335  13.335]
+   y  141 29 [-13.335  13.335]
+   z  191    -999.0   999.0
+   fill 67*2 605*3 112*2} 
+$ -- Development pictures of units 1, 2, and 3
+  picture cs material color -65  0.6 240 -65   0.6 -65  65   0.6 -65 title="axial view"
+  picture cs material color -14  0.6 240 -14   0.6 190  14   0.6 190 title="axial detail of the top of the model"
+  picture cs material color -14  0.6 190 -14   0.6 115  14   0.6 115 title="axial detail below upper SS304L plate"
+  picture cs material color -14  0.6 115 -14   0.6  55  14   0.6  55 title="axial detail of the active fuel region"
+  picture cs material color -14  0.6  22 -14   0.6 -25  14   0.6 -25 title="axial detail beneath the active fuel"
+  picture cs material color -14 14    -9 -14 -14    -9  14 -14    -9 title="plane detail through Al-6061 channel"
+  picture cs material color -14 14    57 -14 -14    57  14 -14    57 title="plane detail through polypropolyne spacer plate"
+surfaces
+$ --- Mox fuel rod
+  1 c z   0.240665   4.06    18.538 $ Inconel 600 reflector
+  2 c z   0.2413    18.538   20.570 $ Natural UO2 isolator
+  3 c z   0.24070   20.570  112.010 $ MOX fuel
+  4 c z   0.2413   112.010  114.042 $ Natural UO2 isolator
+  5 c z   0.240665 114.042  128.520 $ Inconel 600 reflector
+  6 c z   0.254    128.520  141.070 $ SS302 spring
+  7 c z   0.23114                   $ SS316 plenum, inner
+  8 c z   0.24511  141.070  227.284 $ SS316 plenum, outer
+  9 c z   0.254      4.06   227.284 $ SS316 clad, inner
+ 10 c z   0.2921     0.0    237.744 $ SS316 clad, outer (or hole)
+$ --- Everything else w/o lattice holes
+ 11 box  26.67      26.67     2.845 tr   0     0 184.3225 $ Upper  SS304L plate
+ 12 p z 127.0                                             $ Minimum water level
+ 13 box  26.67      26.67     2.845 tr   0     0 123.1825 $ Middle SS304L plate
+ 14 box  26.67      26.67     1.368 tr   0     0  57.0140 $ Polypropolyne spacer plate
+ 15 box  26.67      26.67     2.845 tr   0     0  11.2725 $ Bottom SS304L plate
+ 16 box  26.67      26.67     2.540 tr   0     0  -1.2700 $ Plexiglas base plate
+ 17 box  26.67      26.67    15.300 tr   0     0 -10.1900 $ Al-6061 channel, outer
+ 18 box  16.51     999.9    999.9                         $ Al-6061 channel, inner
+ 19 box   8.89     999.9     14.03  tr -13.335 0 -10.1900 $ Al-6061 channel, lhs
+ 20 box   8.89     999.9     14.03  tr  13.335 0 -10.1900 $ Al-6061 channel, rhs
+ 21 p z -17.84                                            $ Carbon steel tank floor
+ 22 p z -18.792                                           $ Top of concrete
+ 23 c z  60.0      -48.792  237.744                       $ BCD
+ 98 p z   0.0                                             $ Bottom of fuel
+ 99 box  26.67      26.67   999.9                         $ Lattice external boundary
+end

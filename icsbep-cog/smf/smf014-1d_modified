@@ -1,0 +1,142 @@
+SMF014-1: Np-237 sphere surrounded by HEU shells and low carbon steel (detailed model)
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 0
+assign-mc
+  1 purple 2 green 3 blue 4 sky 5 brown 6 black 7 orange 8 yellow 9 gray 10 gray 11 red
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches np237 5.0926-2  u233 1.8577-6  u234 2.9633-7  u235 1.4074-5 $ Np sphere
+                  u236 7.8349-8  u238 1.5626-6 pu238 8.2340-7 pu239 1.6271-5
+                 pu240 1.1619-6 pu241 3.1166-8 pu242 1.6032-7 am241 3.3375-7
+                 am243 9.1575-5
+  mat=2  bunches  w 5.6697-2 ni 3.5079-3 fe 3.6864-3 $ Tungsten sheild
+  mat=3  bunches ni 9.0234-2                         $ Inner nickel cladding
+  mat=4  bunches ni 8.5030-2                         $ Outer nickel cladding
+  mat=5  bunches fe 6.0483-2 cr 1.6469-2 ni 6.4849-3 $ SS304
+  mat=6  bunches fe 6.2758-2 cr 1.4380-2 ni 4.7775-3 $ SS301
+  mat=7  bunches al 5.8973-2                         $ Aluminum spacer
+  mat=8  bunches al 6.0376-2                         $ Other aluminum parts
+  mat=9  bunches fe 8.3020-2                         $ Bottom Fe reflector
+  mat=10 bunches fe 8.2935-2                         $ Top Fe reflector
+  mat=11 bunches u234 4.8766-4 u235 4.4349-2 u236 2.2280-4 u238 2.5147-3 $ HEU shells
+geometry
+
+  sector  8 Al        -1 $ Al mounting plate   
+  sector  5 SS304   1 -2 $ SS304 lower base
+  sector  5 SS304   2 -3 $ SS304 middle base
+  sector  5 SS304   3 -4 $ SS304 table
+
+  sector  8 Al  602 5  6  7 -8 $ Al mounting tube: upper portion
+  sector  8 Al      4  7  8 -9 $ Al mounting tube: lower portion
+
+  sector  8 Al    -10  11 -12     $ Al shell
+  sector  8 Al     12 -13         $ Al stem
+  sector  7 Al     10  17 -18 -19 $ Al spacer
+
+  sector  1 Np        -21 $ Np sphere  
+  sector  2 W      22 -23 $ W shield
+  sector  3 Ni     24 -25 $ Inner Ni cladding
+  sector  3 Ni     26 -27 $ Inner Ni cladding
+
+  sector  8 Al     31 -32      $ Top Al support plate
+  sector  8 Al     45 -46      $ Al top plate
+
+  sector  8 Al     10  51 -52  $ Al shell
+  sector  8 Al     10  52 -53  $ Al stem
+
+  sector 11 HEU   -10  200  211 -212  $ Lower HEU shell no. 21
+  sector 11 HEU   -10  200  231 -232  $ Lower HEU shell no. 23
+  sector 11 HEU   -10  200  251 -252  $ Lower HEU shell no. 25
+  sector 11 HEU   -10  200  271 -272  $ Lower HEU shell no. 27
+  sector 11 HEU   -10  200  291 -292  $ Lower HEU shell no. 29
+  sector 11 HEU   -10  200  311 -312  $ Lower HEU shell no. 31
+  sector 11 HEU   -10  200  331 -332  $ Lower HEU shell no. 33
+  sector 11 HEU   -10  200  351 -352  $ Lower HEU shell no. 35
+  sector 11 HEU   -10  200  371 -372  $ Lower HEU shell no. 37
+  sector 11 HEU   -10  200  391 -392  $ Lower HEU shell no. 39
+  sector  9 Fe 32 -10  601 -602  603  $ Bottom Fe reflector
+
+  sector 11 HEU    10  200  221 -222  $ Upper HEU shell no. 22
+  sector 11 HEU    10  200  241 -242  $ Upper HEU shell no. 24
+  sector 11 HEU    10  200  261 -262  $ Upper HEU shell no. 26
+  sector 11 HEU    10  200  281 -282  $ Upper HEU shell no. 28
+  sector 11 HEU    10  200  301 -302  $ Upper HEU shell no. 30
+  sector 11 HEU    10  200  321 -322  $ Upper HEU shell no. 32
+  sector 11 HEU    10  200  341 -342  $ Upper HEU shell no. 34
+  sector 11 HEU    10  200  361 -362  $ Upper HEU shell no. 36
+  sector 11 HEU    10  200  381 -382  $ Upper HEU shell no. 38
+  sector 11 HEU    10  200  401 -402  $ Upper HEU shell no. 40
+  sector 10 Fe     19  611 -612  603  $ Top Fe reflector
+
+picture cs material color res=1500 -60 0  23 -60 0 -43  60 0 -43 title="axial view"
+picture cs material color res=1500  -9 0   9  -9 0  -9   9 0  -9 title="axial detail of the core"
+picture cs material color res=1500   4 0 -16   4 0 -20  11 0 -20 title="axial detail of Al mounting tube"
+$ volume material -9 -9 -9  9 -9 -9 -9 9 -9 18 18 18
+surfaces $ All dimensions are in CENTIMETERS
+ 
+   1 rpp -15.24   15.24   -15.24  15.24  -41.9351 -41.3001 $ Al mounting plate
+   2 rpp -13.335  13.335   -7.62   7.62  -41.3001 -40.0301 $ SS304 lower base
+   3 rpp  -9.8425  9.8425  -8.255  8.255 -40.0301 -31.4576 $ SS304 middle base
+   4 rpp -12.7    12.7     -7.62   7.62  -31.4576 -28.9176 $ SS304 table
+ 
+   5 s    15.00124 tr 0 0 -6.0042    $ Al mounting tube: spherical contour
+   6 c z   5.08    -24.7774 -17.7924 $ Al mounting tube: large hole
+   7 c z   0.35179 -28.9176 -24.7774 $ Al mounting tube: small hole
+   8 c z  10.16    -24.7774 -17.7924 $ Al mounting tube: upper portion
+   9 c z  10.16    -28.9176 -24.7774 $ Al mounting tube: lower portion
+
+  10 p z   0.0                 $ Al bottom/top shell: top/bottom; Al spacer: bottom
+  11 s     4.83108             $ Al bottom shell: inner  
+  12 s     4.99872             $ Al bottom shell: outer
+  13 c z   0.3302  -6.985 -1.0 $ Al bottom shell: stem
+ 
+  17 c z   8.34644 $ Al spacer: inner
+  18 c z  20.066   $ Al spacer: outer
+  19 p z   2.54    $ Al spacer: top
+
+  21 s     4.14909  $ Np sphere
+  22 s     4.16814  $ W shield: inner
+  23 s     4.42722  $ W shield: outer
+  24 s     4.4323   $ Inner Ni cladding: inner
+  25 s     4.6228   $ Inner Ni cladding: outer
+  26 s     4.62788  $ Outer Ni cladding: inner
+  27 s     4.81838  $ Outer Ni cladding: outer
+
+  31 c z  20.32                                     $ Hole in top Al support plate
+  32 rpp -27.305 27.305 -27.305 27.305  1.27  2.54  $ Top Al support plate
+
+  45 box  44.196 44.196 99.99                       $ Square hole in Al top plate
+  46 rpp -57.15  57.15  -57.15  57.15  -1.27  1.27  $ Al top plate
+
+  51 s     4.83108            $ Al top shell: inner  
+  52 s     4.99872            $ Al top shell: outer
+  53 c z   0.3302  1.0 6.985  $ Al top shell: stem
+
+ 200 c z   0.35687            $ Central z-hole in all HEU shells
+
+ 211 s  5.017   212 s  5.337  $ Bottom HEU shell no. 21
+ 231 s  5.346   232 s  5.669  $ Bottom HEU shell no. 23
+ 251 s  5.679   252 s  6.003  $ Bottom HEU shell no. 25
+ 271 s  6.011   272 s  6.335  $ Bottom HEU shell no. 27
+ 291 s  6.345   292 s  6.671  $ Bottom HEU shell no. 29
+ 311 s  6.678   312 s  7.002  $ Bottom HEU shell no. 31
+ 331 s  7.006   332 s  7.330  $ Bottom HEU shell no. 33
+ 351 s  7.342   352 s  7.666  $ Bottom HEU shell no. 35
+ 371 s  7.682   372 s  8.003  $ Bottom HEU shell no. 37
+ 391 s  8.013   392 s  8.336  $ Bottom  HEU shell no. 39
+ 601 s  8.34644 602 s 20.066 603 c z 0.35179 $ Bottom Fe reflector
+
+ 221 s  5.013   222 s  5.336  $ Top HEU shell no. 22
+ 241 s  5.346   242 s  5.669  $ Top HEU shell no. 24
+ 261 s  5.679   262 s  6.001  $ Top HEU shell no. 26
+ 281 s  6.012   282 s  6.334  $ Top HEU shell no. 28
+ 301 s  6.344   302 s  6.670  $ Top HEU shell no. 30
+ 321 s  6.679   322 s  7.003  $ Top HEU shell no. 32
+ 341 s  7.010   342 s  7.334  $ Top HEU shell no. 34
+ 361 s  7.343   362 s  7.666  $ Top HEU shell no. 36
+ 381 s  7.671   382 s  8.003  $ Top HEU shell no. 38
+ 401 s  8.007   402 s  8.329  $ Top HEU shell no. 40
+ 611 s  8.34644 tr 0 0 0.635 612 s 21.59 tr 0 0 0.635 $ Top Fe reflector
+
+end

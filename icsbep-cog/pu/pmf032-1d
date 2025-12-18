@@ -1,0 +1,36 @@
+PMF032-1D: 0.700cm cavity; 7.9699 kg alpha-239Pu(88%); 4.49cm Steel reflected; simplified model
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6
+  -2  0  0  2 0 0
+   0 -2  0  0 2 0
+   0  0 -2  0 0 2
+assign-mc
+  1 purple 2 red 3 pink 4 orange 5 gray
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches 94239 4.1607-2 94240 4.8551-3 pu241 9.0948-4 fe 3.0510-4 c 1.9920-3 h 8.3342-4 n 8.9958-5 o16 1.3336-4 $ a-Pu
+  mat=2 bunches 94239 4.2276-2 94240 4.6060-3 pu241 6.7147-4 fe 2.6534-4 c 1.1053-3 h 2.0011-4 n 2.1600-5 o16 3.2020-5 $ a-Pu
+  mat=3 bunches 94239 4.1681-2 94240 4.7176-3 pu241 7.4079-4 fe 3.0356-4 c 1.1922-3 h 2.7505-4 n 2.9688-5 o16 4.4011-5 $ a-Pu
+  mat=4 bunches 94239 4.2431-2 94240 4.3997-3 pu241 5.9425-4 fe 2.8500-4 c 1.3956-3 h 4.3308-4 n 4.6746-5 o16 6.9297-5 $ a-Pu
+  mat=5 bunches    fe 7.9924-2     c 1.1341-3    si 1.6167-4 cr 2.6198-4 mn 3.3061-4 ni 2.3210-4 cu 2.1437-4              $ Steel
+geometry
+  sector 1 aPu   1 -2
+  sector 2 aPu   2 -3
+  sector 3 aPu   3 -4
+  sector 4 aPu   4 -5
+  sector 5 Steel 5 -6
+  boundary vacuum   6
+picture cs material color 
+  -10   0  10 -10   0 -10  10  0 -10 
+volume material 
+  -10 -10 -10  10 -10 -10 -10 10 -10
+   20  20  20
+surfaces $ All dimensions are in CENTIMETERS
+  1 sphere 0.700
+  2 sphere 1.400
+  3 sphere 3.150
+  4 sphere 4.020
+  5 sphere 4.660
+  6 sphere 9.150
+end

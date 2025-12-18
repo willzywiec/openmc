@@ -1,0 +1,70 @@
+MIX-COMP-FAST-006; ZPPR-2 Loading 90 31; Benchmark Model
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0. 0. 0.0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches pu240 1.11651-4 pu241 1.54662-5 u235 1.20849-5 u238 5.55591-3 pu239 8.43204-4 pu238 5.43568-7 pu242 1.82964-6 $ Inner Core 
+                 am241 1.84076-6    cr 2.29060-3   ni 1.04993-3   fe 1.11755-2    al 3.92893-6    na 8.78578-3   o16 1.31139-2
+                     c 3.17140-5    mo 2.28417-4   mn 1.88913-4   cu 1.84434-5     h 1.32254-6    si 1.10068-4    ca 2.01761-6 
+                    cl 2.51193-6    co 7.88786-7    f 6.60314-6
+  mat=2  bunches pu240 1.68676-4 pu241 2.32641-5 u235 1.14411-5 u238 5.19841-3 pu239 1.27397-3 pu238 8.24048-7 pu242 2.75347-6 $ Outer Core 
+                 am241 2.76259-6    cr 2.49517-3   ni 1.15526-3   fe 1.37046-2    al 4.93731-6    na 8.57653-3   o16 1.15392-2
+                     c 2.95719-5    mo 3.38298-4   mn 2.05959-4   cu 1.96872-5     h 6.61274-7    si 1.21066-4    ca 1.96954-6 
+                    cl 1.39152-6    co 9.33387-7    f 3.30159-5
+  mat=3  bunches  u235 1.53117-5  u238 7.05849-3   cr 2.44382-3   ni 1.11319-3    fe 9.39745-3    al 2.72600-6    na 8.76869-3 $ Inner Core Axial
+                   o16 1.38696-2     c 4.43226-5   mo 1.32022-5   mn 2.08366-4    cu 1.70945-5     h 3.05513-6    si 1.20968-4 $  Blanket (IC-AB)
+                    ca 2.01452-6    cl 5.50022-6   co 7.95577-7    f 1.54542-5
+  mat=4  bunches  u235 1.53115-5  u238 7.05847-3   cr 2.41212-3   ni 1.09947-3    fe 9.32583-3    al 2.73936-6    na 8.81167-3 $ Outer Core Axial
+                   o16 1.39226-2     c 4.38280-5   mo 1.31613-5   mn 2.06184-4    cu 1.70496-5     h 3.05531-6    si 1.19087-4 $  Blanket (OC-AB)
+                    ca 2.02441-6    cl 5.50184-6   co 7.99476-7    f 1.54549-5
+  mat=5  bunches  u235 2.41680-5  u238 1.10813-2   cr 1.96980-3   ni 8.90740-4    fe 6.85501-3    al 2.28161-6    na 6.40703-3 $ Inner Radial
+                   o16 2.01818-2     c 1.02744-3   mo 1.34961-5   mn 1.62541-4    cu 1.67744-5     h 1.31730-5    si 9.07751-5 $  Blanket (IRB)
+                    ca 1.01636-6    cl 9.87783-6   co 4.10504-7    f 2.10666-5
+  mat=6  bunches  u235 2.41680-5  u238 1.10813-2   cr 2.15744-3   ni 9.86910-4    fe 7.50665-3    al 3.14747-6    na 5.99435-3 $ Outer Radial
+                   o16 2.01824-2     c 1.02864-3   mo 1.36056-5   mn 1.76532-4    cu 1.78049-5     h 1.31730-5    si 1.02424-4 $  Blanket (ORB)
+                    ca 9.21123-7    cl 9.86438-6   co 6.89488-7    f 2.10666-5
+  mat=7  bunches    cr 5.33629-3    ni 2.28508-3   fe 3.54903-2   al 2.60435-6    na 8.93524-3   o16 6.47715-7     c 1.97633-4 $ Axial Reflector
+                    mo 5.39917-5    mn 5.46098-4   cu 4.59917-5   si 1.85151-4    ca 2.05002-6    cl 2.92303-7    co 7.84421-7 $  Half 1 (AR-H1)
+  mat=8  bunches    cr 1.55731-3    ni 6.70506-4   fe 7.23880-2    c 5.58825-4    mo 1.28497-5    mn 6.21176-4    cu 1.41464-5 $ Axial Reflector
+  mat=9  bunches    cr 1.19234-3    ni 5.07700-4   fe 7.15035-2    c 5.57012-4    mo 1.16343-5    mn 5.96698-4    cu 1.24814-5 $ Radial Reflector
+                    si 4.96852-5
+  mat=10 bunches    cr 4.78617-3    ni 1.62084-3   fe 2.32436-2   al 1.08937-6     c 3.17458-4    mo 2.44181-5    mn 2.99955-4 $ Drawer Gap
+                    cu 3.21059-5    si 1.83123-4
+  mat=11 bunches    cr 1.17288-3    ni 5.08780-4   fe 4.07396-3    c 1.89862-5    mo 1.16590-5    mn 1.05578-4    cu 1.25079-5 $ Matrix
+                    si 4.97910-5 
+assign-mc
+  1 orange 2 red 3 yellow 4 brown 5 lime 6 green 7 sky 8 pink 9 blue 10 black 11 gray
+geometry
+  sector  1 In-Core -1 -2
+  sector  2 Ou-Core  1 -2
+  sector  3 IC-AB   -1  2 -3  11  12
+  sector  4 OC-AB    1  2 -3  11  12
+  sector  5 IRB      3 -4 -5  11  12
+  sector  6 ORB      3  4 -5  11  12
+  sector  7 Ax-Refl  3  4  5 -6
+  sector  9 Rd-Refl  5  6 -7
+  sector 10 GAP     -5 -11
+  sector 10 GAP     -5 -12
+  sector 11 Matrix   6  7 -8
+  boundary  vacuum   8
+picture cs material color 
+    0   0   125    0   0     0  175   0    0 title="quarter core"
+picture cs material color 
+ -175   0   125 -175   0  -125  175   0 -125 title="full core"
+volume material
+ -173 -173 -122  173 -173 -122 -173 173 -122
+  346  346  244
+surfaces
+  1 cylinder z   64.6533                     $ Inner Core
+  2 cylinder z   91.4336  -45.8117  45.8117  $ Outer Core
+  3 cylinder z   94.4336  -87.0922  87.0922  $ Axial Blanket
+  4 cylinder z  110.3359  -87.0922  87.0922  $ IRB
+  5 cylinder z  129.4246  -87.0922  87.0922  $ ORB
+  6 cylinder z  129.4246  -99.7922 107.4122  $ Axial Reflector 
+  7 cylinder z  141.1520  -96.5200  96.5200  $ Radial Reflector
+  8 cylinder z  172.1826 -121.9200 121.9200  $ Matrix
+ 11 cylinder z  129.4246   58.5117  59.1522  $ Upper Drawer Gap
+ 12 cylinder z  129.4246  -59.1522 -58.5117  $ Lower Drawer Gap
+end

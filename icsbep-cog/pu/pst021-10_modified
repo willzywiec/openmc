@@ -1,0 +1,23 @@
+PU-SOL-THERM-021 (Case 10) 0.712 kg Pu(95.4) @ H/X = 1156 sphere in water
+basic
+  neutron delayedn urrpt
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 6b and 7
+  mat=1 bunches   pu238 3.5821-9   pu239 5.6499-5 pu240 2.7642-6 pu241 1.6685-7 pu242 5.2842-9
+                      n 5.3282-4 (h.h2o) 6.5482-2   o16 3.4192-2 
+  mat=2 bunches (h.h2o) 6.6655-2     o16 3.3327-2
+geometry                                              
+  sector 1 SOLN     -1
+  sector 2 H2O    1 -2
+  boundary vacuum 2
+picture cs material
+  -55   0  55 -55   0 -55   55  0 -55
+volume
+  -20 -20 -20  20 -20 -20  -20 20 -20
+   40  40  40
+surfaces $ Rc from Table 5b
+  1 sphere 19.3163
+  2 sphere 49.3163
+end

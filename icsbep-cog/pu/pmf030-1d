@@ -1,0 +1,35 @@
+PMF030-1S: 8.0372 kg alpha-239Pu(88%); 4.49cm Graphite reflected; detailed model
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+assign-mc
+  1 purple 2 blue 3 sky 4 pink 5 red 6 lime
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches 94239 4.2352-2 94240 4.9576-3 pu241 8.2363-4 fe 3.3071-4 c 1.4087-3 h 3.5660-4 n 3.8491-5 o16 5.7060-5 $ a-Pu
+  mat=2 bunches 94239 4.1848-2 94240 4.8831-3 pu241 9.1474-4 fe 3.0687-4 c 2.0035-3 h 8.3824-4 n 9.0478-5 o16 1.3413-4 $ a-Pu
+  mat=3 bunches 94239 4.2276-2 94240 4.6060-3 pu241 6.7147-4 fe 2.6534-4 c 1.1053-3 h 2.0011-4 n 2.1600-5 o16 3.2020-5 $ a-Pu
+  mat=4 bunches 94239 4.2079-2 94240 4.7626-3 pu241 7.4786-4 fe 3.0646-4 c 1.2035-3 h 2.7767-4 n 2.9971-5 o16 4.4431-5 $ a-Pu
+  mat=5 bunches 94239 4.2622-2 94240 4.4195-3 pu241 5.9692-4 fe 2.8628-4 c 1.4018-3 h 4.3503-4 n 4.6956-5 o16 6.9609-5 $ a-Pu
+  mat=6 bunches   (c) 7.7213-2                                                                                         $ Graphite
+geometry
+  sector 1 aPu  -1
+  sector 2 aPu   1 -2
+  sector 3 aPu   2 -3
+  sector 4 aPu   3 -4
+  sector 5 aPu   4 -5
+  sector 6 C     5 -6
+  boundary vacuum   6
+picture cs material color 
+  -10   0  10 -10   0 -10  10  0 -10 
+volume material 
+  -10 -10 -10  10 -10 -10 -10 10 -10
+   20  20  20
+surfaces $ All dimensions are in CENTIMETERS
+  1 sphere 1.000
+  2 sphere 1.400
+  3 sphere 3.150
+  4 sphere 4.020
+  5 sphere 4.660
+  6 sphere 9.150
+end

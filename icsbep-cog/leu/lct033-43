@@ -1,0 +1,20 @@
+LCT033-43: U(2)F4-5, Unreflected
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u235 8.6675-5 u238 4.1926-3 u234 8.7046-7 $ U(2)F4-5
+             (h.ch2) 5.3155-2    c 2.5555-2    f 1.7120-2 $  with polythene stops
+assign-mc
+  1 purple
+geometry
+  sector 1 UF4+   -1
+  boundary vacuum  1
+picture cs material color
+  -60   0  60 -60   0 -60  60   0 -60
+volume material
+  -60 -60 -25  60 -60 -25 -60  60 -25 120 120 50
+surfaces 
+  1 box 102.28 112.64 41.59
+end

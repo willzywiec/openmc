@@ -1,0 +1,27 @@
+PMF028-1S: 1.176cm void; 9.8375 kg delta-239Pu(89%); 19.65cm Steel reflector; simplified model
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6
+   -2  0  0  2 0 0
+    0 -2  0  0 2 0
+    0  0 -2  0 0 2
+assign-mc
+  1 purple 2 sky
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches 94239 3.3976-2 94240 3.5093-3 pu241 3.9139-4 ga 2.2391-3 fe 4.5538-4  c 9.1653-4 ni 1.4261-3 $ d-Pu
+  mat=2 bunches    fe 7.9499-2     c 1.1281-3    si 1.6081-4 cr 2.6059-4 mn 3.2885-4 ni 2.3087-4 cu 2.1323-4 $ Steel
+geometry
+  sector 1 dPu    1 -2
+  sector 2 Steel  2 -3
+  boundary vacuum 3
+picture cs material color 
+   -26   0  26 -26   0 -26  26  0 -26 
+volume material 
+   -26 -26 -26  26 -26 -26 -26 26 -26
+    52  52  52
+surfaces $ All dimensions are in CENTIMETERS
+  1 sphere  1.176
+  2 sphere  5.350
+  3 sphere 25.00
+end

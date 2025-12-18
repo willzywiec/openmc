@@ -1,0 +1,117 @@
+PMF037-13: Flooded 2x2x3 array of double-canned 3kg Pu parts in water; Hw=46.0; dx=dy=11.994; dz=11.815
+basic
+   neutron delayedn CM URRPT
+criticality
+   npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=12 
+    0       0     14.0285   0       0     25.8435   0       0     37.6585
+   11.994   0     14.0285  11.994   0     25.8435  11.994   0     37.6585
+    0     -11.994 14.0285   0     -11.994 25.8435   0     -11.994 37.6585
+   11.994 -11.994 14.0285  11.994 -11.994 25.8435  11.994 -11.994 37.6585
+assign-mc
+   1 purple 2 yellow 3 black 4 gray 5 lime 6 sky
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+   mat=1 bunches pu239 4.6007-2 pu240 2.9234-3 pu241 1.4199-4 pu242 4.8563-6 am241 8.2325-5                         $ Plutonium (cases 11-13)
+   mat=2 bunches    al 5.8311-2    cu 6.4442-5    fe 2.0531-4    mg 7.0764-4    mn 3.7270-4 si 1.7497-4 zn 6.2625-5 $ Al-3004
+   mat=3 bunches     c 3.1547-4    fe 8.4131-2    mn 3.1899-4     p 2.2937-5     s 3.6922-5 si 1.6864-5 sn 1.1970-4 $ Mild steel
+   mat=4 bunches     c 1.1833-4    cr 1.7384-2    fe 5.7902-2    mn 1.7319-3    ni 8.1061-3 si 1.6939-3             $ SS-304L
+   mat=5 bunches    al 5.8183-2    cr 6.2542-5    cu 6.3968-5    fe 2.0380-4    mg 6.6898-4 mn 4.4395-5 si 3.4736-4 $ Al-6061
+                    ti 5.0939-5    zn 6.2164-5                                                                      $  trays
+   mat=6 bunches (h.h2o) 6.6735-2 o16 3.3368-2                                                                      $ Water
+geometry
+$ --- Double-canned parts
+   use unit 1 CanPart -11              41 tr   0       0     10.715
+   use unit 1 CanPart  11 -12          41 tr  11.994   0     10.715
+   use unit 1 CanPart  11  12 -13      41 tr   0     -11.994 10.715
+   use unit 1 CanPart  11  12  13 -14  41 tr  11.994 -11.994 10.715
+   use unit 1 CanPart -21              51 tr   0       0     22.530
+   use unit 1 CanPart  21 -22          51 tr  11.994   0     22.530
+   use unit 1 CanPart  21  22 -23      51 tr   0     -11.994 22.530
+   use unit 1 CanPart  21  22  23 -24  51 tr  11.994 -11.994 22.530
+   use unit 1 CanPart -31              61 tr   0       0     34.345
+   use unit 1 CanPart  31 -32          61 tr  11.994   0     34.345
+   use unit 1 CanPart  31  32 -33      61 tr   0     -11.994 34.345
+   use unit 1 CanPart  31  32  33 -34  61 tr  11.994 -11.994 34.345
+ $ --- Trays
+   sector   5 Tray    -41
+   sector   5 Tray    -42  11 12 13 14 101 102 103 104 105
+   sector   5 Tray    -43
+   sector   5 Tray    -51
+   sector   5 Tray    -52  21 22 23 24 101 102 103 104 105
+   sector   5 Tray    -53
+   sector   5 Tray    -61
+   sector   5 Tray    -62  31 32 33 34 101 102 103 104 105
+   sector   5 Tray    -63
+$ --- Water, Al-6061 tank, and BCD
+   sector   6 Water   -42 -101
+   sector   6 Water   -42 -102
+   sector   6 Water   -42 -103
+   sector   6 Water   -42 -104
+   sector   6 Water   -42 -105
+   sector   6 Water   -52 -101
+   sector   6 Water   -52 -102
+   sector   6 Water   -52 -103
+   sector   6 Water   -52 -104
+   sector   6 Water   -52 -105
+   sector   6 Water   -62 -101
+   sector   6 Water   -62 -102
+   sector   6 Water   -62 -103
+   sector   6 Water   -62 -104
+   sector   6 Water   -62 -105
+   sector   6 Water    -6  -7 -8 11 12 13 14 21 22 23 24 31 32 33 34 41 42 43 51 52 53 61 62 63
+   sector   5 Tank      7  -8
+   boundary   vacuum    8
+define unit 1 $ One double-canned plutonium part
+   sector   1 Pu     -1
+   sector   2 Al3004  1 -2 -4
+   sector   3 Steel   1  2 -3
+   sector   0 Gap     1  2  3 -4
+   sector   4 SS304L  2  4 -5
+picture cs material color -36  0 126 -36   0 -1  36   0 -1 title="axial view of entire geometry"
+picture cs material color -20  0  43 -20   0 33  20   0 33 title="axial detail of the upper  parts in water"
+picture cs material color -20  0  31 -20   0 21  20   0 21 title="axial detail of the middle parts in water"
+picture cs material color -20  0  19 -20   0  9  20   0  9 title="axial detail of the lower  parts in water"
+picture cs material color -36 36  38 -36 -36 38  36 -36 38 title="plane view through upper  middle tray"
+picture cs material color -36 36  26 -36 -36 26  36 -36 26 title="plane view through middle middle tray"
+picture cs material color -36 36  14 -36 -36 14  36 -36 14 title="plane view through lower  middle tray"
+volume material  -10 -10 10.715 10 -10 10.715 -10 10 10.715 20 20 6.947
+surfaces $ All dimensions are in CENTIMETERS
+$ -- Double-canned plutonium part
+  1 c z  3.2625  0.997   5.630 $ Pu
+  2 c z  3.2995  0.910   5.630 $ Al-3004
+  3 c z  3.2995  5.630   5.651 $ Mild steel
+  4 c z  3.4700  0.910   6.277 $ Gap
+  5 c z  3.8100  0.000   6.947 $ SS-304L
+$ --- Water reflector/boundary condition
+  6 p z 46.0                   $ Water height
+  7 c z 34.9250  0.000 125.000 $ Inner tank
+  8 c z 35.5600 -0.635 125.000 $ Outer tank
+$ --- Double-canned plutonium parts
+ 11 c z  3.8100  0.000   6.947 tr  0       0      10.715
+ 12 c z  3.8100  0.000   6.947 tr 11.994   0      10.715
+ 13 c z  3.8100  0.000   6.947 tr  0     -11.994  10.715
+ 14 c z  3.8100  0.000   6.947 tr 11.994 -11.994  10.715
+ 21 c z  3.8100  0.000   6.947 tr  0       0      22.530
+ 22 c z  3.8100  0.000   6.947 tr 11.994   0      22.530
+ 23 c z  3.8100  0.000   6.947 tr  0     -11.994  22.530
+ 24 c z  3.8100  0.000   6.947 tr 11.994 -11.994  22.530
+ 31 c z  3.8100  0.000   6.947 tr  0       0      34.345
+ 32 c z  3.8100  0.000   6.947 tr 11.994   0      34.345
+ 33 c z  3.8100  0.000   6.947 tr  0     -11.994  34.345
+ 34 c z  3.8100  0.000   6.947 tr 11.994 -11.994  34.345
+$ --- Aluminum trays
+ 41 box 45.70   45.70    0.635 tr 0 0 10.3975 $ Lower  bottom tray
+ 42 box 45.70   45.70    0.635 tr 0 0 14.0925 $ Lower  middle tray
+ 43 box 45.70   45.70    0.635 tr 0 0 18.0175 $ Lower  upper  tray
+ 51 box 45.70   45.70    0.635 tr 0 0 22.2125 $ Middle bottom tray
+ 52 box 45.70   45.70    0.635 tr 0 0 25.9075 $ Middle middle tray
+ 53 box 45.70   45.70    0.635 tr 0 0 29.8325 $ Middle upper  tray
+ 61 box 45.70   45.70    0.635 tr 0 0 34.0275 $ Upper  bottom tray
+ 62 box 45.70   45.70    0.635 tr 0 0 37.7225 $ Upper  middle tray
+ 63 box 45.70   45.70    0.635 tr 0 0 41.6475 $ Upper  upper  tray
+$ --- Holes in the middle aluminum trays
+101 c z  3.8100 tr -11.994  11.994 0
+102 c z  3.8100 tr   0      11.994 0
+103 c z  3.8100 tr  11.994  11.994 0
+104 c z  3.8100 tr -11.994   0     0
+105 c z  3.8100 tr -11.994 -11.994 0
+end

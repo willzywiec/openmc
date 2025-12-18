@@ -1,0 +1,101 @@
+LEU-COMP-THERM-008-11: 4,808 U(2.459)O2 rods in water with 9 water holes and 144 Al2O3 rods with 1384 ppm boron
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1  0 0 0
+assign-mc
+  1 red 2 yellow 3 sky 4 lime 5 orange
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches    u234 4.5689-6 u235 5.6868-4 u238 2.2268-2  o16 4.5683-2 b10 2.6055-7             $ U(2.459)O2 fuel
+  mat=2  bunches      mg 6.2072-4   al 5.3985-2   si 3.2230-4   ti 4.7263-5  cr 5.8029-5             $ Homogenized gap
+                      mn 4.1191-5   fe 1.8910-4   cu 5.9353-5   zn 5.7679-5                          $   and Al-6061 clad
+  mat=3  bunches (h.h2o) 6.6737-2  o16 3.3369-2  b10 1.5359-5  b11 6.1824-5                          $ Water with 1384 ppm Boron
+  mat=4  bunches      al 1.5357-2  o16 2.3036-2                                                      $ Al2O3
+  mat=5  bunches      mg 6.6898-4   al 5.8183-2   si 3.4736-4   ti 5.0939-5  cr 6.2542-5             $ Cladding for
+                      mn 4.4395-5   fe 2.0380-4   cu 6.3968-5   zn 6.2164-5                          $   Al2O3 rod
+geometry
+$ --- Inner nine 15x15 fuel assemblies
+   use unit 5 assy    -6 -7  -10 -11          14 tr -24.5364  24.5364 0
+   use unit 5 assy    -6 -7  -10  11 -12      14 tr   0       24.5364 0
+   use unit 5 assy    -6 -7  -10      12      14 tr  24.5364  24.5364 0
+   use unit 5 assy    -6 -7  -10 -11      13 -14 tr -24.5364   0      0
+   use unit 5 assy    -6 -7  -10  11 -12  13 -14
+   use unit 5 assy    -6 -7  -10      12  13 -14 tr  24.5364   0      0
+   use unit 5 assy    -6 -7  -10 -11     -13     tr -24.5364 -24.5364 0
+   use unit 5 assy    -6 -7  -10  11 -12 -13     tr   0      -24.5364 0
+   use unit 5 assy    -6 -7  -10      12 -13     tr  24.5364 -24.5364 0
+$ --- Outer portion of the lattice and reflector
+   use unit 4 lttc    -6 -7   10     $ Lattice with 81 x 81 unit cells
+   sector   3 H2O-B    6 -7          $ Reflector
+   boundary   vacuum      7          $ Boundary condition
+ define unit 1 $ Fuel rod in an arbitrary larger unit cell
+   sector   1 UO2     -1      -3     $ UO2 fuel
+   sector   2 Clad     1 -2   -3     $ Gap & clad
+   sector   3 H2O-B       2   -3     $ Borated water
+ define unit 2 $ Empty location
+   sector   3 H2O-B           -3     $ Borated water
+ define unit 3 $ Clad Al2O3 rod location
+   sector   4 Al2O3   -4      -3     $ Al2O3
+   sector   5 Clad     4 -5   -3     $ Clad
+   sector   3 H2O-B    4  5   -3     $ Borated water
+ define unit 4 $ 81 x 81 array of fuel pins
+   {x 1501 82 [-66.24828 66.24828]
+    y 1601 82 [-66.24828 66.24828]
+    z 1701     -81.66200 81.66200 
+    fill 
+    30*2 21*1 30*2 30*2 21*1 30*2 30*2 21*1 30*2 30*2 21*1 30*2 30*2 21*1 30*2
+    20*2 41*1 20*2 20*2 41*1 20*2 20*2 41*1 20*2 20*2 41*1 20*2 20*2 41*1 20*2 
+    10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2
+    10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2
+     5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2
+     5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2
+       1701*1 
+     5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2
+     5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2  5*2 71*1  5*2
+    10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2
+    10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 10*2 61*1 10*2 
+    20*2 41*1 20*2 20*2 41*1 20*2 20*2 41*1 20*2 20*2 41*1 20*2 20*2 41*1 20*2
+    30*2 21*1 30*2 30*2 21*1 30*2 30*2 21*1 30*2 30*2 21*1 30*2 30*2 21*1 30*2}
+  define unit 5 $ 15x15 central fuel assembly
+   {x 1801 16 [-12.26820 12.26820]
+    y 1901 16 [-12.26820 12.26820]
+    z 2001     -81.66200 81.66200
+    fill
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 3 1 1 1 3 1 1 1 1 1
+    1 1 1 3 1 1 1 1 1 1 1 3 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 3 1 1 3 1 1 1 3 1 1 3 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 2 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 3 1 1 3 1 1 1 3 1 1 3 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 3 1 1 1 1 1 1 1 3 1 1 1
+    1 1 1 1 1 3 1 1 1 3 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}
+ picture cs material color   0.8 2.5 0   0.8  0.8 0   2.5  0.8 0 title="plane view of unit cell"
+ picture cs material color -70  70   0 -70  -70   0  70  -70   0 title="plane view of entire geometry"
+ picture cs material color   0.8 0   1   0.8  0  -1   2.5  0  -1 title="axial view of unit cell portion"
+ picture cs material color -70   0  85 -70    0 -85  70    0 -85 title="axial view of entire geometry"
+surfaces
+$ --- Fuel rod in borated water
+   1 c z   0.514858                  $ Fuel
+   2 c z   0.602996                  $ Homogenized gap and clad
+   3 box 900.0 900.0 900.0           $ Borated water, arbitrary dimensions
+$ --- Al2O3 rod and cladding
+   4 c z   0.46650                   $ Al2O3
+   5 c z   0.55550                   $ Cladding for Al2O3 rod
+$ --- 81x81 lattice boundary
+   6 box 132.49656 132.49656 163.324 $ Actual dimensions
+$ --- Reflector
+   7 c z  76.2     -81.662    81.662 $ Radial reflector boundary
+$ --- Nine 15x15 central region
+  10 box  73.6092   73.6092  900.0   $ Actual planar dimensions
+  11 p x -12.2682                
+  12 p x  12.2682
+  13 p y -12.2682
+  14 p y  12.2682
+end

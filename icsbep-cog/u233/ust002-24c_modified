@@ -1,0 +1,32 @@
+U233-SOL-THERM-002 (Exp't 24 in 8"-Diam. Vessel) 1829 g U-233 @ H/X = 57
+basic
+  neutron delayedn urrpt CENTIMETERS
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1 0. 0. 7.26
+$ Number densities per Tables 14, 15 and 16
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0      
+  mat=1 bunches u233 9.8361-4 u234 4.5664-6 u238 8.5886-6 $ 233U(98.7)O2(NO3)2
+             (h.h2o) 5.6207-2  o16 3.7707-2    n 2.6454-3 $  @ H/X=57.1; N/U=2.65
+  mat=2 bunches   al 5.9881-2   si 5.8108-4               $ Al-2S
+  mat=3 bunches (h.ch2) 7.9911-2 o16 3.8419-2             $ Paraffin
+assign-mc
+  1 red 2 yellow 3 blue
+geometry
+  sector 0 Void  -1  4
+  sector 1 Soln  -1 -4 
+  sector 2 Al2S   1 -2
+  sector 3 Prffn  2 -3
+  boundary vacuum    3 
+picture cs material color
+  -30   0  40  -30   0 -20   30   0 -20
+volume material
+  -26 -26 -16  +26 -26 -16  -26 +26 -16
+   52  52  53
+surfaces
+$ Geometry per Figure 4 and Tables 11 and 13
+  1 cylinder z 10.2645   0.0000 20.6485 $ Vessel/Inner
+  2 cylinder z 10.3936  -0.1291 20.7776 $ Vessel/Outer
+  3 cylinder z 25.6336 -15.3691 36.0176 $ Paraffin/Outer
+  4 analytic 1. z -14.5195 constant     $ Hc
+end

@@ -1,0 +1,38 @@
+PU-SOL-THERM-016 (Case 2) 300 and 256 mm cylinders with 152.5 gPu/L at 10 cm s-to-s
+basic
+  neutron delayedn urrpt
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=2  0 0 19.9  37.79 0 19.9
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 
+  mat=1 bunches   pu238 2.7777-8 pu239 3.6662-4   pu240 1.6176-5 pu241 1.2068-6 pu242 6.0704-8 $ 152.5 gPu/L Sol'n 
+                  am241 1.3563-7     n 2.9030-3 (h.h2o) 5.9636-2    fe 3.2134-6    cr 8.5358-7 $  per Table 13
+                     ni 6.8543-7    ca 1.8332-6     o16 3.7852-2                               $ 
+  mat=2 bunches   pu238 2.0965-8 pu239 2.7671-4   pu240 1.2209-5 pu241 9.1082-7 pu242 4.5817-8 $ 115.1 gPu/L Sol'n
+                  am241 1.0237-7     n 2.3837-3 (h.h2o) 6.0931-2    fe 2.5125-6    cr 6.6711-7 $  per Table 14
+                     ni 5.3151-7    ca 1.3839-6     o16 3.7011-2                               $
+  mat=3 bunches (h.h2o) 6.3781-2     n 1.2044-3     o16 3.4902-2                               $ Nitric Acid
+$                                                                                              $  per Table 15
+  mat=4 bunches      fe 5.8686-2    cr 1.6469-2      ni 8.1061-3    mn 1.7319-3    si 1.6939-3 $ Z3 CN 18-10 SST  
+                      c 1.5857-4     p 6.1439-5       s 4.4518-5                               $  per Table 16
+geometry 
+$ ---  256-mm Tank ---
+  sector 0 Void   1 -2
+  sector 1 Soln  -1 -2
+  sector 4 SST    2 -3
+$ ---  300-mm Tank ---
+  sector 0 Void   4 -5
+  sector 1 Soln  -4 -5
+  sector 4 SST    5 -6
+picture cs material
+  -20  20  30 -20 -20 30 100 -20 30 title="planar view of the tanks"
+picture cs material
+  -20   0 110 -20   0 -5 100   0 -5 title=" axial view of the tanks - see Figure 5"
+surfaces
+  1 plane    z 39.824                             $ 256-mm Tank/Hc'   per Table 12
+  2 cylinder z 12.49   0.000 101.145              $ 256-mm Tank/Inner per Section 3.1
+  3 cylinder z 12.8   -1.355 102.345              $ 256-mm Tank/Outer per Section 3.1
+  4 plane    z 39.824                             $ 300-mm Tank/Hc-0.325 per Table 12
+  5 cylinder z 14.7   -0.326 100.845 tr 37.79 0 0 $ 300-mm Tank/Inner per Figure 5
+  6 cylinder z 15.0   -1.655 102.045 tr 37.79 0 0 $ 300-mm Tank/Outer per Figure 5
+end

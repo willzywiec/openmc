@@ -1,0 +1,31 @@
+MST006-6: 3-D Model of Exp't No. 2256 with H/X=317 and 0.700 gGd/L
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=100 nbatch=520 sdt=0.0001 nfirst=21 norm=1. nsource=1 0 0 48.925
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu238 5.2311-7 pu239 1.7310-4 pu240 4.6705-5 pu241 6.6110-6 pu242 2.4547-6 am241 1.4570-6 $ Solution
+                 u234 6.5056-8  u235 2.6673-6  u236 2.5480-7  u238 5.3915-4     n 3.8176-3   o16 3.9085-2
+              (h.h2o) 5.4814-2    fe 1.8331-5    cr 5.2118-6    ni 2.5652-6    ca 1.0518-6    co 8.6858-7
+                   cu 3.3169-7    mn 3.8366-7    zn 3.6838-7    cd 2.6786-8    mg 6.1943-7     b 5.5703-7
+                   gd 2.6731-6
+  mat=2 bunches   o16 1.1263-5     n 4.1985-5                                                             $ Air
+  mat=3 bunches    fe 5.8694-2    cr 1.6469-2    ni 8.1061-3    mn 1.7319-3    si 1.6939-3     c 1.1882-4 $ Stainless
+                    p 6.1439-5     s 4.4640-5                                                             $  Steel
+  mat=4 bunches (h.h2o) 6.6699-2 o16 3.3349-2                                                             $ Water
+assign-mc
+  1 red 2 yellow 3 black 4 sky
+geometry
+  sector 1 Soln   -1 -4
+  sector 2 Air    -1  4
+  sector 3 SST     1 -2
+  sector 4 H2O     2 -3 -4
+  sector 2 Air     2 -3  4
+  boundary vacuum  3
+picture cs material color -70 0 110 -70 0 -35  70 0 -35
+surfaces 
+  1 rev 3 0.0 0.0 1.2 35.03 103.8 35.03 tr 0 0 0 0 0 1 0 1 0 $ Tank, inner
+  2 c z  35.33  -0.5 105.0 $ Tank, outer
+  3 c z  65.33 -30.5 105.0 $ Reflector, outer
+  4 p z  97.85             $ Critical height
+end

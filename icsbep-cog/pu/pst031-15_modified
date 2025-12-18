@@ -1,0 +1,88 @@
+PU-SOL-THERM-031-15: H/X=1018 with no Hafnium
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1
+  0 0 16.73
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u238 7.5893-8 pu239 5.6637-5 pu240 1.4198-5 pu241 3.7943-6 pu242 8.4367-7 am241 8.5051-7 $ Plutonium
+                (h.h2o) 6.1522-2   o16 3.6346-2     n 2.1636-3    fe 1.0460-5    cr 3.1618-6    ni 2.3395-6 $  nitrate
+                     mn 2.7952-7                                                                            $  solution
+  mat=2 bunches      fe 6.0014-2    cr 1.6469-2    ni 8.1061-3    mn 8.6597-4    si 8.4696-4     c 5.9414-5 $ Stainless
+                      s 2.2252-5     p 3.0719-5                                                             $  steel
+  mat=3 bunches (h.h2o) 6.6707-2   o16 3.3353-2                                                             $ Water
+  mat=4 bunches       n 4.1985-5   o16 1.1263-5                                                             $ Air
+  mat=5 bunches   hf174 0.0070-2 hf176 0.2260-2 hf177 0.8076-2 hf178 1.1848-2 hf179 0.5916-2 hf180 1.5235-2 $ Hafnium
+                     zr 2.8075-3
+assign-mc
+  1 yellow 2 black 3 sky 4 pink 5 gray
+geometry
+  use unit 5 TANK-AIR  1 -5
+  use unit 4 TANK-H2O -1 -5
+  boundary vacuum 5
+define unit 5 $ Tank in air
+  use unit 3 Tank  -3 21 22 23 24
+  fill 4 $ Infinite air
+define unit 4 $ Tank in water
+  use unit 3 Tank  -3 21 22 23 24
+  fill 3 $  Infinite water
+define unit 3 $ Tank and grid plate
+  use unit  2 Grid  -2 -4 -35 tr 0.5 0         0 $ Grid, inner region
+  use unit 20 Grid  -2 -4  35 tr 0   0.8660254 0 $ Grid, outer region
+  sector    4 Air    1 -2 -5
+  sector    1 Soln  -1 -2  4 -5 11 12 13 14
+  fill 2 $   Infinite SST
+define unit 20 $ Grid plate with edge holes
+   {x 161    -999.99 999.99
+    y 261 31 [-25.98076212 25.98076212]
+    z 361    -999.99 999.99
+    fill 30*10}
+define unit 2 $ Grid plate with an array of holes
+   {x 101 53 [-26.0   26.0]
+    y 201 31 [-25.98076212 25.98076212]
+    z 301    -999.99 999.99
+    fill 1560*1}
+define unit 10 $ Grid plate square (outer) unit cell
+   sector 2 SST -5 41 42
+   fill 1 $ Solution
+define unit 1  $ Grid plate triangular (inner) unit cell
+   sector 2 SST -5 30 31 32 33 34
+   fill 1 $ Solution
+picture cs material color res=1500
+  -60   0  85 -60   0 -35  60   0 -35 title="x-z axial view"
+picture cs material color res=1500
+    0 -60  85   0 -60 -35   0  60 -35 title="y-z axial view"
+picture cs material color res=1500
+   24   0   3  24   0   1  26   0   1 title="x-z axial detail"
+picture cs material color 
+  -26  26   5 -26 -26   5  26 -26   5 title="plane detail of the solution"
+picture cs material color 
+  -26  26 2.2 -26 -26 2.2  26 -26 2.2 title="plane detail of grid plate with solution in holes"
+picture cs material color 
+  -26  26   1 -26 -26   1  26 -26   1 title="plane detail of pyramid shaped tank bottom"
+volume material
+  -26 -26  -1  26 -26  -1 -26  26  -1
+   52  52  81
+surfaces
+   1 p z  33.46                          $ Critical height
+   2 box  50.0  50.0 999.9               $ SST tank, inner
+   3 box  50.6  50.6 999.9               $ SST tank, outer
+   4 box  50.0  50.0   0.2 tr 0 0  2.218 $ Grid plate, outer
+   5 box 110.6 110.6 110.0 tr 0 0 25.0   $ Reflector and BCD
+  11 p 0 0  0         25     0   2.118     25    25   2.118    0 0 99 $ Upper
+  12 p 0 0  0        -25     0   2.118    -25    25   2.118    0 0 99 $  planes
+  13 p 0 0  0          0    25   2.118     25    25   2.118    0 0 99 $  of the
+  14 p 0 0  0          0   -25   2.118     25   -25   2.118    0 0 99 $  pyramid
+  21 p 0 0 -0.301075  25.3   0   1.842341  25.3  25.3 1.842341 0 0 99 $ Lower
+  22 p 0 0 -0.301075 -25.3   0   1.842341 -25.3  25.3 1.842341 0 0 99 $  planes
+  23 p 0 0 -0.301075   0    25.3 1.842341  25.3  25.3 1.842341 0 0 99 $  of the
+  24 p 0 0 -0.301075   0   -25.3 1.842341  25.3 -25.3 1.842341 0 0 99 $  pyramid
+  30 c z 0.3
+  31 c z 0.3  tr  0.5  0.8660254 0 $ Holes
+  32 c z 0.3  tr -0.5  0.8660254 0 $  in the
+  33 c z 0.3  tr  0.5 -0.8660254 0 $  grid plate
+  34 c z 0.3  tr -0.5 -0.8660254 0 $  unit cell
+  35 box 49.0 49.63 0.2 tr 0 0 2.218 $ Grid plate, region with full holes
+  41 c z 0.3  tr -24.5 0 0
+  42 c z 0.3  tr  24.5 0 0
+end

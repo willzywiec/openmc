@@ -1,0 +1,59 @@
+LMT004-8: 73 U(4.948) Metal Rods in Water; Pitch=6.02cm; Hf=30cm; Hw=37.05cm
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 15
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 1.8465-5 u235 2.3941-3 u238 4.5391-2 $ LEU 
+  mat=2 bunches (h.h2o) 6.6658-2 o16 3.3329-2             $ H2O
+assign-mc
+  1 red 2 sky
+geometry
+  use unit 1 LINE -90  19     -20 tr  -3.01  26.067365 0  sector 2 H2O -90  19      20
+  use unit 1 LINE -90  18 -19 -21 tr -12.04  20.853892 0  sector 2 H2O -90  18 -19  21
+  use unit 1 LINE -90  17 -18 -22 tr -21.07  15.640419 0  sector 2 H2O -90  17 -18  22
+  use unit 1 LINE -90  16 -17     tr -24.08  10.426946 0 
+  use unit 1 LINE -90  15 -16 -22 tr -21.07   5.213473 0  sector 2 H2O -90  15 -16  22
+  use unit 1 LINE -90  14 -15     tr -24.08   0        0
+  use unit 1 LINE -90  13 -14 -22 tr -21.07  -5.213473 0  sector 2 H2O -90  13 -14  22
+  use unit 1 LINE -90  12 -13     tr -24.08 -10.426946 0
+  use unit 1 LINE -90  11 -12 -22 tr -21.07 -15.640419 0  sector 2 H2O -90  11 -12  22
+  use unit 1 LINE -90  10 -11 -21 tr -12.04 -20.853892 0  sector 2 H2O -90  10 -11  21
+  use unit 1 LINE -90     -10 -20 tr  -3.01 -26.067365 0  sector 2 H2O -90     -10  20
+  boundary vacuum  90
+define unit 1 $ Line of fuel
+  sector 1 LEU -1
+  sector 1 LEU -2
+  sector 1 LEU -3
+  sector 1 LEU -4
+  sector 1 LEU -5
+  sector 1 LEU -6
+  sector 1 LEU -7
+  sector 1 LEU -8
+  sector 1 LEU -9
+  sector 2 H2O -99 1 2 3 4 5 6 7 8 9
+picture cs material color -60  0 45 -60   0 -20  60   0 -20  title="axial view"
+picture cs material color -60 60 15 -60 -60  15  60 -60  15 title="plane view"
+surfaces
+   1 c z   1.2475   0.0   30.0              $ U (fuel)
+   2 c z   1.2475   0.0   30.0 tr  6.02 0 0 
+   3 c z   1.2475   0.0   30.0 tr 12.04 0 0 
+   4 c z   1.2475   0.0   30.0 tr 18.06 0 0
+   5 c z   1.2475   0.0   30.0 tr 24.08 0 0
+   6 c z   1.2475   0.0   30.0 tr 30.10 0 0
+   7 c z   1.2475   0.0   30.0 tr 36.12 0 0
+   8 c z   1.2475   0.0   30.0 tr 42.14 0 0
+   9 c z   1.2475   0.0   30.0 tr 48.16 0 0
+  10 p y -23.4606  20 p x  6.02
+  11 p y -18.2472  21 p x 15.05
+  12 p y -13.0337  22 p x 24.08
+  13 p y  -7.8202  
+  14 p y  -2.6067 
+  15 p y   2.6067 
+  16 p y   7.8202 
+  17 p y  13.0337
+  18 p y  18.2472
+  19 p y  23.4606
+  90 c z  58.3    -16.51  37.05             $ Water/boundary
+  99 box 999      999    999                $ Arbitrary
+end

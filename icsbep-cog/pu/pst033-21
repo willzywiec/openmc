@@ -1,0 +1,142 @@
+PU-SOL-THERM-033-21: 99.05 gPu(3.13)/L at H/X=250.4 with 19 (3x60) pyrex tubes at 3.23cm pitch
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6
+  0.00  1.86 16.87
+ -1.61  0.93 16.87
+  1.61  0.93 16.87
+ -1.61 -0.93 16.87
+  1.61 -0.93 16.87
+  0.00 -1.86 16.87
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u235 7.2834-11 u238 1.0201-8 pu239 2.4137-4 pu240 7.7889-6 pu241 2.9694-7 pu242 2.9571-8 am241 3.4643-8 $ Plutonium
+                (h.h2o) 6.0521-2   o16 3.7062-2     n 2.5191-3    fe 1.4665-6    cr 1.7208-7    ni 2.0327-7    mn 6.5145-8 $  nitrate
+                     ca 8.9299-7    cu 1.2203-7    mg 4.9084-7    zn 1.3683-7    na 6.4863-7                               $  solution
+  mat=2 bunches      fe 5.9546-2    si 1.6469-3    ni 8.1061-3    mn 8.6597-4    si 1.6939-3     s 4.4504-5     p 6.1439-5 $ Stainless
+                      c 1.1883-4                                                                                           $  steel
+  mat=3 bunches (h.h2o) 6.6706-2   o16 3.3353-2                                                                            $ Water
+  mat=4 bunches       n 4.1985-5   o16 1.1263-5                                                                            $ Air
+  mat=5 bunches (h.ch2) 8.3104-2     c 4.1552-2                                                                            $ Polyethylene
+  mat=6 bunches     b10 1.0396-3   b11 4.1844-3    al 5.3346-4    fe 3.7056-6    na 1.4827-3     k 3.0610-4    si 1.7892-2 $ Borated
+                    o16 4.5323-2                                                                                           $  pyrex
+assign-mc
+  1 red 2 gray 3 sky 4 yellow 5 blue 6 lime
+geometry
+use unit 4 inside     -10
+use unit 1 outside -6  10
+  boundary vacuum   6
+define unit 4 $ Inside basket
+  sector 2 SST   -10 -11  16  17  18           $ Bottom plate
+  sector 5 CH2   -10 -21  16  17  18 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 $ Lower grid plate, outer region
+use unit 2 TRod  -10 -16 tr   0       -16.9  0 $ Tie rod #1
+use unit 2 TRod  -10 -17 tr -14.63583   8.45 0 $ Tie rod #2
+use unit 2 TRod  -10 -18 tr  14.63583   8.45 0 $ Tie rod #3
+use unit 3 Pyrex -10 -101                                         tr -3.23  5.600284 0 $ Pyrex tube cell #1
+use unit 3 Pyrex -10  101 -102                                    tr  0     5.600284 0 $ Pyrex tube cell #2
+use unit 3 Pyrex -10  101  102 -103                               tr  3.23  5.600284 0 $ Pyrex tube cell #3
+use unit 3 Pyrex -10  101  102  103 -104                          tr -4.84  2.800142 0 $ Pyrex tube cell #4
+use unit 3 Pyrex -10  101  102  103  104 -105                     tr -1.61  2.800142 0 $ Pyrex tube cell #5
+use unit 3 Pyrex -10  101  102  103  104  105 -106                tr  1.61  2.800142 0 $ Pyrex tube cell #6
+use unit 3 Pyrex -10  101  102  103  104  105  106 -107           tr  4.84  2.800142 0 $ Pyrex tube cell #7
+use unit 3 Pyrex -10  104  105  106  107 -108                     tr -6.46  0        0 $ Pyrex tube cell #8
+use unit 3 Pyrex -10  104  105  106  107  108 -109                tr -3.23  0        0 $ Pyrex tube cell #9
+use unit 3 Pyrex -10  104  105  106  107  108  109 -110           tr  0     0        0 $ Pyrex tube cell #10
+use unit 3 Pyrex -10  104  105  106  107  108  109  110 -111      tr  3.23  0        0 $ Pyrex tube cell #11
+use unit 3 Pyrex -10  104  105  106  107  108  109  110  111 -112 tr  6.46  0        0 $ Pyrex tube cell #12
+use unit 3 Pyrex -10  108  109  110  111  112 -113                tr -4.84 -2.800142 0 $ Pyrex tube cell #13
+use unit 3 Pyrex -10  108  109  110  111  112  113 -114           tr -1.61 -2.800142 0 $ Pyrex tube cell #14
+use unit 3 Pyrex -10  108  109  110  111  112  113  114 -115      tr  1.61 -2.800142 0 $ Pyrex tube cell #15
+use unit 3 Pyrex -10  108  109  110  111  112  113  114  115 -116 tr  4.84 -2.800142 0 $ Pyrex tube cell #16
+use unit 3 Pyrex -10  113  114  115  116 -117                     tr -3.23 -5.600284 0 $ Pyrex tube cell #17
+use unit 3 Pyrex -10  113  114  115  116  117 -118                tr  0    -5.600284 0 $ Pyrex tube cell #18
+use unit 3 Pyrex -10  113  114  115  116  117  118 -119           tr  3.23 -5.600284 0 $ Pyrex tube cell #19
+
+  sector 5 CH2   -10 -22  16  17  18 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 $ Upper grid plate, outer region
+  sector 2 SST   -10  12 -13  16  17  18       $ Annular top plate
+  sector 1 Soln  -10  11  16  17  18  21  22   $ Solution
+                  -1                 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 $  outside pyrex tube cells
+  fill 4 $ Air                                 $ Air
+define unit 3 $ Pyrex tube and unit cell
+  sector 1 Soln -1 -23 -24         -110 $ Solution inside pyrex tube
+  sector 6 Pyrex    23 -24         -110 $ Pyrex tube wall
+  sector 1 Soln -1      24  19  20 -110 $ Solution outside pyrex tube
+  sector 5 CH2          24 -19     -110 $ Lower grid plate, inner region
+  sector 5 CH2          24 -20     -110 $ Upper grid plate, inner region
+  fill 4 $ Air 
+define unit 2 $ Tie rod
+  sector 1 Soln -1 -14 -15
+  sector 4 Air   1 -14 -15
+define unit 1 $ Outside basket
+  sector 1 Soln  -1 -2 -3
+  sector 4 Air    1 -2 -3
+  sector 2 SST       2 -3
+  sector 3 H2O   -1  2  3 -4
+  sector 4 Air    1  2  3 -4
+  sector 2 SST       2  3  4 -5 -6
+  sector 4 Air       2  3  4  5 -6
+picture cs material color res=1500
+  -60   0  90 -60   0 -30  60   0 -30  title="axial x-z view"
+picture cs material color res=1500
+  -20   0  30 -20   0 -10  20   0 -10  title="axial x-z detail of vessel bottom"
+picture cs material color res=1500
+    0 -60  90   0 -60 -30   0  60 -30  title="axial y-z view"
+picture cs material color res=1500
+  -60  60   5 -60 -60   5  60 -60   5  title="plane view at z=5"
+picture cs material color res=1500
+   -9   9   5  -9  -9   5   9  -9   5  title="plane detail at z=5"
+picture cs material color res=1500
+   -9   9 2.53 -9  -9 2.53  9  -9 2.53 title="plane detail at z=2.53 in lower polyethylene grid"
+volume material $ Solution region volume
+  -18 -18   0  18 -18   0 -18  18   0
+   36  36  20
+surfaces
+$ --- Outside the basket
+   1 p z 33.74                          $ Critical solution height, Hc 
+   2 rev 3 0.0 0.0 0.6 17.98 80.7 17.98 $ SST solution tank, inner
+    tr 0 0 0 0 0 1 0 1 0                $  with X -> Z 
+   3 c z  18.28 -0.3   80.7             $ SST solution  tank, outer
+   4 c z  54.6 -25.9   62.8             $ SST reflector tank, inner
+   5 p z  63.2                          $ SST refelctor tank, top
+   6 c z  55.0 -26.3   85.7             $ SST reflector tank, outer, and BCD
+$ --- Inside the basket
+  10 c z  17.8   1.2   82.2             $ Basket outer boundary
+  11 c z  17.5   1.2    1.38            $ SST bottom plate
+  12 c z  13.75                         $ SST annular top plate, inner
+  13 c z  17.8  81.8   82.2             $ SST annular top plate, outer
+  14 c z   0.3                          $ Tie rod, inner
+  15 c z   0.4   1.38  81.8             $ Tie rod, outer
+  16 c z   0.4   1.38  81.8 tr   0      -16.9  0 $ Tie rod #1
+  17 c z   0.4   1.38  81.8 tr -14.63583  8.45 0 $ Tie rod #2
+  18 c z   0.4   1.38  81.8 tr  14.63583  8.45 0 $ Tie rod #3
+  19 c z  17.5   2.5    2.7             $ Lower polyethylene grid plate, inner region
+  20 c z  17.5  59.314 59.514           $ Upper polyethylene grid plate, inner region
+  21 c z  17.5   2.5    2.565           $ Lower polyethylene grid plate, outer region
+  22 c z  17.5  59.449 59.514           $ Upper polyethylene grid plate, outer region
+$ --- Pyrex tube and unit cell
+  23 c z   1.3                          $ 3x60 pyrex tube, inner
+  24 c z   1.5   1.5   61.514           $ 3x60 pyrex tube, outer
+ 101 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr -3.23  5.600284 0  -3.23  5.600284 1  -3.23 9 0 $ Unit cell #1
+ 102 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  0     5.600284 0   0     5.600284 1   0    9 0 $ Unit cell #2
+ 103 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  3.23  5.600284 0   3.23  5.600284 1   3.23 9 0 $ Unit cell #3
+ 
+ 104 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr -4.84  2.800142 0  -4.84  2.800142 1  -4.84 9 0 $ Unit cell #4
+ 105 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr -1.61  2.800142 0  -1.61  2.800142 1  -1.61 9 0 $ Unit cell #5
+ 106 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  1.61  2.800142 0   1.61  2.800142 1   1.61 9 0 $ Unit cell #6
+ 107 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  4.84  2.800142 0   4.84  2.800142 1   4.84 9 0 $ Unit cell #7
+ 
+ 108 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr -6.46  0        0  -6.46  0        1  -6.46 1 0 $ Unit cell #8
+ 109 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr -3.23  0        0  -3.23  0        1  -3.23 1 0 $ Unit cell #9
+ 110 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  0     0        0   0     0        1   0    1 0 $ Unit cell #10
+ 111 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  3.23  0        0   3.23  0        1   3.23 1 0 $ Unit cell #11
+ 112 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  6.46  0        0   6.46  0        1   6.46 1 0 $ Unit cell #12
+ 
+ 113 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr -4.84 -2.800142 0  -4.84 -2.800142 1  -4.84 9 0 $ Unit cell #13
+ 114 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr -1.61 -2.800142 0  -1.61 -2.800142 1  -1.61 9 0 $ Unit cell #14
+ 115 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  1.61 -2.800142 0   1.61 -2.800142 1   1.61 9 0 $ Unit cell #15
+ 116 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  4.84 -2.800142 0   4.84 -2.800142 1   4.84 9 0 $ Unit cell #16
+
+ 117 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr -3.23 -5.600284 0  -3.23 -5.600284 1  -3.23 9 0 $ Unit cell #17
+ 118 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  0    -5.600284 0   0    -5.600284 1   0    9 0 $ Unit cell #18
+ 119 prism 6 1.859068 0 0.929534 1.61 -0.929534 1.61 -1.859068 0 -0.929534 -1.61 0.929534 -1.61 1.5 61.514 tr  3.23 -5.600284 0   3.23 -5.600284 1   3.23 9 0 $ Unit cell #19
+end

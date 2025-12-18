@@ -1,0 +1,39 @@
+MMI003-1: ZPR-3/54 Loading 11 Benchmark Model (Simplified)
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu240 1.06599-4 pu241 8.39340-6 u235 6.02648-6 u238 2.60167-3 pu239 1.65483-3 pu242 3.42253-7 $ Core
+                am241 2.89303-6    cr 1.84689-3   ni 7.93454-4   fe 7.30229-3    al 1.10407-4     c 5.55813-2 $  
+                   mo 2.09471-4    mn 9.88154-5   cu 2.79160-6   si 9.26716-5                                 $
+  mat=2 bunches    cr 1.47370-3    ni 6.20140-4   fe 7.55810-2    c 5.59045-4    mo 3.72611-9    mn 5.69058-4 $ Axial
+                   cu 2.76510-7     h 1.43085-6   si 7.53289-5   cl 2.48136-6     f 7.34804-6                 $  blanket
+  mat=3 bunches    cr 1.14149-3    ni 4.58365-4   fe 7.47132-2    c 5.59848-4    mo 9.55414-9    mn 5.54695-4 $ Radial
+                   cu 2.96626-8     h 9.58946-8   si 6.12392-5   cl 1.66299-7     f 4.92460-7                 $  blanket
+  mat=4 bunches    cr 3.46003-3    ni 1.60102-3   fe 1.92576-2    c 2.64209-4    mn 2.34720-4    si 1.51007-4 $ Drawer gap
+  mat=5 bunches    cr 1.10960-3    ni 4.53554-4   fe 4.52968-3   mn 4.34957-5    si 6.07700-5                 $ Matrix
+assign-mc
+  1 yellow 2 lime 3 green 4 pink 5 gray
+geometry
+  sector 1 Core   -1 -2 -3 -4 
+  sector 2 Ax      1 -2 -3 -4
+  sector 4 Gap     1  2 -3 -4
+  sector 2 Ax      1  2  3 -4
+  sector 3 Rd      4 -5
+  sector 5 Mx      4  5 -6
+  boundary vacuum  6
+picture cs material color
+   0   0  90   0   0   0  99   0   0 title="axial 1/4 detail"
+picture cs material color
+ -99   0  90 -99   0 -90  99   0 -90 title="axial view"
+volume material
+ -97 -97 -86  97 -97 -86 -97  97 -86 194 194 172
+surfaces 
+  1 c z 32.0805 -30.5634  30.5634 $ Core
+  2 c z 32.0805 -53.4234  53.4234 $ Axial blanket
+  3 c z 32.0805 -54.0584  54.0584 $ Drawer gap
+  4 c z 32.0805 -61.6784  61.6784 $ Axial blanket
+  5 c z 64.6910 -60.9600  60.9600 $ Radial blanket
+  6 c z 96.8226 -85.0900  85.0900 $ Matrix
+end

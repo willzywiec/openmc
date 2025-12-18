@@ -1,0 +1,163 @@
+IEU-MET-FAST-022-5: FR0 experiment 8-D (case 5 detailed model
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=25
+   9.14  9.14 0.0 4.57  9.14 0.0 0.00  9.14 0.0 -4.57  9.14 0.0 -9.14  9.14 0.0
+   9.14  4.57 0.0 4.57  4.57 0.0 0.00  4.57 0.0 -4.57  4.57 0.0 -9.14  4.57 0.0
+   9.14  0.00 0.0 4.57  0.00 0.0 0.00  0.00 0.0 -4.57  0.00 0.0 -9.14  0.00 0.0
+   9.14 -4.57 0.0 4.57 -4.57 0.0 0.00 -4.57 0.0 -4.57 -4.57 0.0 -9.14 -4.57 0.0
+   9.14 -9.14 0.0 4.57 -9.14 0.0 0.00 -9.14 0.0 -4.57 -9.14 0.0 -9.14 -9.14 0.0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0                          $
+  mat=1 bunches u234 9.6287-5 u235 9.6116-3 u238 3.7748-2  c 5.1781-5  f 1.0356-4  $ Fuel and teflon
+  mat=2 bunches   cu 8.4174-2   ag 7.9500-5  o16 1.3400-4                          $ Copper blocks
+  mat=3 bunches   cu 8.3512-2   ag 7.88740-5 o16 1.3294-4                          $ Copper plates
+  mat=4 bunches   fe 5.8345-2   cr 1.5887-2   ni 7.4286-3 mn 8.3536-4 si 8.1703-4  $ SST frames & inner part end blocks
+  mat=5 bunches   fe 5.4794-2   cr 1.4920-2   ni 6.9764-3 mn 7.8451-4 si 7.6729-4  $ SST outer part end blocks
+  mat=6 bunches (c30p) 8.3029-2                                                    $ Graphite
+  mat=7 bunches (h.ch2) 8.1205-2 c 4.0602-2                                        $ Polyethylene 
+  mat=9 bunches   al 5.6538-2                                                      $ Aluminum
+assign-mc 1 purple 2 yellow 3 orange 4 gray 5 black 6 green 7 yellow 9 sky         $
+geometry
+  use unit 9 FuArry -10
+  boundary vacuum    10
+define unit 1 $ Copper reflector element
+  sector 2 CuBlk  -1
+  sector 4 Frame   2 -3
+  sector 5 EndBlk  4 -5
+define unit 2 $ $ Odd Module
+  sector 9 Alum  -30     -31
+  sector 6 Grpht -30  31 -32
+  sector 1 Fuel  -30  32 -33
+  sector 6 Grpht -30  33 -34
+  sector 1 Fuel  -30  34 -35
+  sector 6 Grpht -30  35 -36
+  sector 9 Alum  -30  36 -37
+  sector 1 Fuel  -30  37 -38
+  sector 6 Grpht -30  38 -39
+  sector 7 Poly  -30  39 -40
+  sector 1 Fuel  -30  40 -41
+  sector 0 Void  -30  41
+define unit 3 $ $ Even Module
+  sector 1 Fuel  -30     -42
+  sector 6 Grpht -30  42 -43
+  sector 1 Fuel  -30  43 -44
+  sector 6 Grpht -30  44 -45
+  sector 9 Alum  -30  45 -46
+  sector 1 Fuel  -30  46 -47
+  sector 6 Grpht -30  47 -48
+  sector 7 Poly  -30  48 -49
+  sector 1 Fuel  -30  49 -50
+  sector 9 Alum  -30  50 -51
+  sector 6 Grpht -30  51 -52
+  sector 0 Void  -30  52
+define unit 32
+  sector    2 CuBlk  -1     -20
+  use unit  2 Odd    -1  20 -21 tr 0 0 -17.2
+  use unit  3 Even   -1  21 -22 tr 0 0 -12.9
+  use unit  2 Odd    -1  22 -23 tr 0 0  -8.6
+  use unit  3 Even   -1  23 -24 tr 0 0  -4.3
+  use unit  2 Odd    -1  24 -25 tr 0 0   0.0
+  use unit  3 Even   -1  25 -26 tr 0 0   4.3
+  use unit  2 Odd    -1  26 -27 tr 0 0   8.6
+  use unit  3 Even   -1  27 -28 tr 0 0  12.9
+  use unit  2 Odd    -1  28 -29 tr 0 0  17.2
+  sector    2 CuBlk  -1  29
+  sector    4 Frame   2  -3
+  sector    5 EndBlk  4  -5
+define unit 117
+  use unit   32 R+90 -5 tr 0 0 0  0 -1 0  1 0 0
+define unit 9 $ 23x23 array of fuel plates and reflectors
+   {x 101 24 [-52.555 52.555]
+    y 131 24 [-52.555 52.555]
+    z 161    -999.99 999.99
+    fill
+     - - - - - - -   -   -   1   1   1   1   1   -   - - - - - - - -
+     - - - - - - -   1   1   1   1   1   1   1   1   1 - - - - - - -
+     - - - - - 1 1   1   1   1   1   1   1   1   1   1 1 1 - - - - -
+     - - - - 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 - - - -
+     - - - 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 - - -
+     - - 1 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 1 - -
+     - 1 1 1 1 1 1   1   1   1   1 117   1   1   1   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1   1 117  32  32 117  32   1   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1 117  32 117 117  32 117  32   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1 117  32 117  32  32 117  32 117  32 1 1 1 1 1 1 -
+     1 1 1 1 1 1 1  32 117  32 117 117  32 117  32 117 1 1 1 1 1 1 1
+     1 1 1 1 1 1 1 117  32 117  32  32 117  32 117  32 1 1 1 1 1 1 1
+     1 1 1 1 1 1 1  32 117  32 117 117  32 117  32 117 1 1 1 1 1 1 1
+     - 1 1 1 1 1 1 117  32 117  32  32 117  32 117  32 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1 117  32 117 117  32 117  32   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1   1 117  32  32 117  32   1   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1   1   1   1 117   1   1   1   1 1 1 1 1 1 1 -
+     - - 1 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 1 - -
+     - - - 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 - - -
+     - - - - 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 - - - -
+     - - - - - 1 1   1   1   1   1   1   1   1   1   1 1 1 - - - - -
+     - - - - - - -   1   1   1   1   1   1   1   1   1 - - - - - - -
+     - - - - - - -   -   -   1   1   1   1   1   -   - - - - - - - - }
+  picture cs material color res=1500  -77   77   0  -77  -77   0  77  -77   0 title="plane view"
+  picture cs material color res=1500   16  6.9  17   16 -2.3  17 20.6 -2.3 17 title="plane detail of odd units"
+  picture cs material color res=1500   16  6.9  13   16 -2.3  13 20.6 -2.3 13 title="plane detail of even units"
+  picture cs material color res=1500  -25   25  17  -25  -25  17  25  -25  17 title="plane view of the array at z=17"
+  picture cs material color res=1500  -25   25  13  -25  -25  13  25  -25  13 title="plane view of the array at z=13"
+  picture cs material color res=1500  -25   25   8  -25  -25   8  25  -25   8 title="plane view of the array at z=8"
+  picture cs material color res=1500  -25   25   4  -25  -25   4  25  -25   4 title="plane view of the array at z=4"
+  picture cs material color res=1500  -25   25   0  -25  -25   0  25  -25   0 title="plane view of the array at z=0"
+  picture cs material color res=1500  -25   25  -4  -25  -25  -4  25  -25  -4 title="plane view of the array at z=-4"
+  picture cs material color res=1500  -25   25  -8  -25  -25  -8  25  -25  -8 title="plane view of the array at z=-8"
+  picture cs material color res=1500  -25   25 -13  -25  -25 -13  25  -25 -13 title="plane view of the array at z=-13"
+  picture cs material color res=1500  -25   25 -17  -25  -25 -17  25  -25 -17 title="plane view of the array at z=-17"
+  picture cs material color res=1500  -77 -0.1  65  -77 -0.1 -65  77 -0.1 -65 title="axial x/z view"
+  picture cs material color res=1500  -25 -0.1  21  -25 -0.1 -21  25 -0.1 -21 title="axial x/z view of the array"
+  picture cs material color res=1500  0.1  -77  65  0.1  -77 -65 0.1   77 -65 title="axial y/z view"
+  picture cs material color res=1500  0.1  -25  21  0.1  -25 -21 0.1   25 -21 title="axial y/z view of the array"
+surfaces
+   1  rpp  -2.15    2.15   -2.15    2.15  -55.9  55.9   $ Fuel or Copper plates
+   2  rpp  -2.17    2.17   -2.17    2.17  -58.05 58.05  $ Inner void
+   3  rpp  -2.25    2.25   -2.25    2.25  -60.0  60.0   $ Frame and inner end block
+   4  rpp  -2.285   2.285  -2.285   2.285 -60.0  60.0   $ Outer void
+   5  rpp  -2.285   2.285  -2.285   2.285 -61.75 61.75  $ SST outside end block
+
+  10  rpp -52.555  52.555 -52.555  52.555 -61.75 61.75  $ Array boundary
+  11  rpp  -2.148   2.148  -2.150   2.150 -19.35 19.35  $ Core region boundary
+
+  20  p z -19.35                                        $ Axial boundaries
+  21  p z -15.05                                        $  for the core region
+  22  p z -10.75
+  23  p z  -6.45
+  24  p z  -2.15
+  25  p z   2.15
+  26  p z   6.45
+  27  p z  10.75
+  28  p z  15.05
+  29  p z  19.35
+
+  30  rpp  -2.150   2.150  -2.148   2.148 -19.35 19.35  $ Core region boundary
+
+  31  p y  -2.0413                                      $ Odd module
+  32  p y  -1.6833                                      $  y boundaries
+  33  p y  -1.3253
+  34  p y  -0.9673
+  35  p y  -0.2513
+  36  p y   0.1067
+  37  p y   0.2667
+  38  p y   0.9827
+  39  p y   1.3407
+  40  p y   1.4302
+  41  p y   2.1462
+
+  42  p y  -1.790                                       $ Even module
+  43  p y  -1.432                                       $  y boundaries
+  44  p y  -0.716
+  45  p y  -0.358
+  46  p y  -0.198
+  47  p y   0.518
+  48  p y   0.876
+  49  p y   0.9655
+  50  p y   1.6815
+  51  p y   1.7882
+  52  p y   2.1462
+
+  99  p y   0.0
+
+end

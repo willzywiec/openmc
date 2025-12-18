@@ -1,0 +1,27 @@
+PU-COMP-MIXED-001 (Case 5) 33.555 kg Pu @ H/X = 61.89 with 18.50 wt-% Pu-240
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+nsource=1 241.42 228.28 -198.96
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Compositions per Table 17 and 18
+mat=1 bunches pu238 2.1595-6 pu239 6.9963-4 pu240 1.6998-4 pu241 3.9365-5 pu242 1.0445-5
+am241 7.2717-6 c 4.5024-2 (h.ch2) 4.5736-2 o16 2.0948-3
+mat=2 w-p 2.33 o16 51.91 si 23.1 ca 12.00 al 4.79 na 1.43 fe 3.37 (h.h2o) 1.05
+mg 0.92 k 0.72 s 0.38 ti 0.33
+geometry
+sector 1 FUEL -1
+sector 0 VOID 1 -2
+sector 2 CONC 2 -3
+boundary vacuum 3
+picture cs material color
+-700 228 400 -700 228 -400 700 228 -400 tit1e="x-z view"
+picture cs material color
+241 -700 400 241 -700 -400 241 700 -400 tit1e="y-z view"
+picture cs material color
+-700 700 -199 -700 -700 -199 700 -700 -199 title="x-y view"
+surfaces $ Room per Table 15 and Fuel per Table 16
+1 box 40.71 45.81 49.12 tr 241.42 228.28 -198.96 $ Fuel/Outer (Zo = Hc/2 - 223.52)
+2 box 1066.8 1066.8 609.6 $ Room/Inner
+3 box 1371.6 1310.64 731.52 tr 0. 30.48 0. $ Room/Outer
+end

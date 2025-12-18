@@ -1,0 +1,69 @@
+PMF016-3: Flooded 3x3x3 arrays of 3kg Pu metal cylinders; Hw=60.60; dx=dy=12.90; dz=12.75
+basic
+   neutron delayedn CM URRPT
+criticality
+   npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=5 -12.9 0 41.2  0 0 41.2  12.9 0 41.2  0 -12.9 41.2  0 12.9 41.2 
+assign-mc
+   1 purple 2 yellow 3 black 4 gray 5 lime 6 sky
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+   mat=1 bunches pu239 4.6054-2 pu240 2.9264-3 pu241 9.9882-5 pu242 4.8613-6 am241 1.2467-4                         $ Plutonium
+   mat=2 bunches    al 5.8311-2    cu 6.4442-5    fe 2.0531-4    mg 7.0764-4    mn 3.7270-4 si 1.7497-4 zn 6.2625-5 $ Al-3004
+   mat=3 bunches     c 3.1547-4    fe 8.4131-2    mn 3.1899-4     p 2.2937-5     s 3.6922-5 si 1.6864-5 sn 1.1970-4 $ Mild steel
+   mat=4 bunches     c 1.1833-4    cr 1.7384-2    fe 5.7902-2    mn 1.7319-3    ni 8.1061-3 si 1.6939-3             $ SS-304L
+   mat=5 bunches    al 3.5358-2    cu 3.0891-5    fe 1.2302-4    mn 2.1438-4    si 2.0968-4 zn 1.5048-5             $ Al-3003
+               (h.h2o) 2.6894-2   o16 1.3447-2                                                                      $  and water
+   mat=6 bunches (h.h2o) 6.6735-2 o16 3.3368-2                                                                      $ Water
+geometry
+   use unit 2 Sleeve -11 -20
+   use unit 2 Sleeve -12 -20 tr -12.9 -12.9 0
+   use unit 2 Sleeve -13 -20 tr   0   -12.9 0
+   use unit 2 Sleeve -14 -20 tr  12.9 -12.9 0
+   use unit 2 Sleeve -15 -20 tr -12.9   0   0
+   use unit 2 Sleeve -16 -20 tr  12.9   0   0
+   use unit 2 Sleeve -17 -20 tr -12.9  12.9 0
+   use unit 2 Sleeve -18 -20 tr   0    12.9 0
+   use unit 2 Sleeve -19 -20 tr  12.9  12.9 0
+   sector   6 Water   -9 -20 11 12 13 14 15 16 17 18 19
+   boundary   vacuum      20    
+define unit 1 $ One double-canned plutonium part
+   sector   1 Pu     -1
+   sector   2 Al3004  1 -2
+   sector   3 Steel   1  2 -3
+   sector   0 Gap     1  2  3 -4
+   sector   4 SS304L  4 -5
+define unit 2 $ Three parts in a water-filled sleeve
+   use unit 1 Part   -6 -10  tr 0 0 25.10
+   use unit 1 Part   -7 -10  tr 0 0 37.85
+   use unit 1 Part   -8 -10  tr 0 0 50.60
+   sector   6 Water   6 7 8 -9 -10
+   sector   5 Al3003  6 7 8 10 -11
+picture cs material color -36  0 92 -36   0 -1  36   0 -1 title="axial view"
+picture cs material color  -4  0 46  -4   0 36   4   0 36 title="axial detail of a part"
+picture cs material color -36 36 42 -36 -36 42  36 -36 42 title="plane view"
+volume material  -7 -7 -7  7 -7 -7  -7 7 -7  14 14 14 
+surfaces $ All dimensions are in CENTIMETERS
+$ -- Double-canned plutonium part
+  1 c z  3.2625 0.997  5.630 $ Pu
+  2 c z  3.2995 0.910  5.630 $ Al-3004
+  3 c z  3.2995 5.630  5.651 $ Mild steel
+  4 c z  3.4700 0.910  6.277 $ Gap
+  5 c z  3.8100 0.000  6.947 $ SS-304L
+$ --- Three parts in a water-filled sleeve
+  6 c z  3.810  0.000  6.947 tr 0 0 25.10
+  7 c z  3.810  0.000  6.947 tr 0 0 37.85
+  8 c z  3.810  0.000  6.947 tr 0 0 50.60
+  9 p z 60.600               $ Water height
+ 10 c z  3.810  0.000 91.400 $ Sleeve inner
+ 11 c z  3.970  0.000 91.400 $ Sleeve outer
+$ ---- Eight other sleeves
+ 12 c z  3.970  0.000 91.400 tr -12.9 -12.9 0
+ 13 c z  3.970  0.000 91.400 tr   0   -12.9 0
+ 14 c z  3.970  0.000 91.400 tr  12.9 -12.9 0
+ 15 c z  3.970  0.000 91.400 tr -12.9   0   0
+ 16 c z  3.970  0.000 91.400 tr  12.9   0   0
+ 17 c z  3.970  0.000 91.400 tr -12.9  12.9 0
+ 18 c z  3.970  0.000 91.400 tr   0    12.9 0
+ 19 c z  3.970  0.000 91.400 tr  12.9  12.9 0
+$ --- Water reflector/boundary condition
+ 20 box 71.100 71.000 91.400 tr 0 0 45.7
+end

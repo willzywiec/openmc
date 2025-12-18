@@ -1,0 +1,40 @@
+PMF038-1S: Simplified model of the BeRP ball reflected by 8.5cm of beryllium
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 0
+assign-mc
+  1 purple 2 gray 3 pink 4 red 
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu238 9.8709-6 pu239 4.6068-2 pu240 2.9121-3 $ Alpha
+                pu241 9.7793-5 pu242 1.3590-5 am241 5.5350-5 $   Plutonium
+  mat=2 bunches    cr 1.7038-2    fe 5.8587-2    ni 7.3487-3 $ SS-304 Cladding
+  mat=3 bunches  (be) 1.2397-1                               $ Beryllium, Inner Hemispheres
+  mat=4 bunches  (be) 1.2465-1                               $ Beryllium, Outer Hemispheres
+geometry
+   sector 1 Pu    -1         $ Plutonium  
+   sector 2 SS304  2  -3     $ SS-304 Cladding
+   sector 2 SS304  3  -4     $ SS-304 Flange
+   sector 3 Be     5   6  -7 $ Inner Beryllium
+   sector 4 Be    -8   9 -10 $ Outer Bottom Beryllium
+   sector 4 Be    11  12 -13 -14     $ Outer Upper  Beryllium 
+   sector 4 Be    11  12 -13  14  15 $ Outer Upper  Beryllium with gap for membrane
+picture cs material color -13   0  13 -13   0 -13  13  0 -13 title="axial view of the simplified model"
+volume     material       -13 -13 -13  13 -13 -13 -13 13 -13 26 26 26
+surfaces $ All dimensions are in CENTIMETERS
+  1 sphere      3.7938   $ Pu,    OR
+  2 sphere      3.82778  $ SS304, IR
+  3 sphere      3.85826  $ SS304, OR
+  4 cylinder z  4.37642 -0.04572 0.04572 $ SS304, Flange
+  5 cylinder z  4.38658 -0.0635  0.0635  $ Gap in inner Be around Flange
+  6 sphere      3.8735   $ Inner Be, IR
+  7 sphere      5.0673   $ Inner Be, OR
+  8 plane z     0.0      $ Top of the outer bottom Be
+  9 sphere      5.08     $ Outer Bottom Be, IR
+ 10 sphere     12.37996  $ Outer Bottom Be, OR
+ 11 plane z     0.102362 $ Bottom of the outer top Be
+ 12 sphere      5.08          tr 0 0 0.102362 $ Outer upper Be, IR
+ 13 sphere     12.37996       tr 0 0 0.102362 $ Outer upper Be, OR
+ 14 cylinder z 10.16508 
+ 15 cylinder z 12.4 0 0.05715 tr 0 0 0.102362
+end

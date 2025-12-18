@@ -1,0 +1,64 @@
+MIX-SOL-THERM-001-1: Exp. No. 087
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  -19.7 0 46.28  -19.7 0 46.28
+   19.7 0 46.28   19.7 0 46.28
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches (h.h2o) 5.4910-2     n 3.3723-3   o16 3.9191-2 pu238 7.4970-8 pu239 2.3457-4 pu240 2.1303-5 $ Solution
+                  pu241 1.1488-6 pu242 2.3644-7  u234 6.5779-8  u235 6.5872-6  u236 4.9381-7  u238 9.1681-4 $  for exp't
+                  am241 1.3446-6   b10 5.5838-8    cd 3.1205-8    fe 3.2342-6    gd 4.3048-9   li6 1.9948-9 $    087
+  mat=2 bunches      fe 5.9355-2    cr 1.7428-2    ni 7.7203-3    mn 1.7363-3                               $ SS304L
+  mat=3 bunches (h.h2o) 6.6708-2   o16 3.3354-2                                                             $ Water (087)
+  mat=4 bunches (h.h2o) 1.1384-2     c 4.7215-4   o16 3.8693-2    al 2.3560-3   b10 3.8097-4   b11 1.5220-3 $ Concrete (087)
+                     ba 6.7225-6    ca 4.5740-3    cu 2.0754-6    fe 1.0273-3     k 5.1272-4    li 3.8000-5 $  with
+                     mg 6.2401-4    mn 1.6804-5    na 8.4902-4    si 1.0378-2    sr 4.5155-6    ti 1.5976-4 $   2%
+                     zr 1.4457-5                                                                            $    B4C
+  mat=5 bunches      fe 8.3665-2    mn 3.2574-4     s 2.7904-5     p 4.5612-6    si 3.1859-4     c 7.4495-4 $ Carbon steel 
+assign-mc
+  1 purple 2 gray 3 sky 4 lime 5 black
+geometry
+
+  sector  2 SS304L   1  -2  -5     $ Central tank
+  sector  1 Soln     2  -3  -6     $ Solution
+  sector  2 SS304L   2   3  -4     $ Annular tank
+  sector  3 Water    2   4  -5  -7 $ Water reflector
+
+  sector  5 CStl   -11                         $ Insert carbon steel disc
+  sector  4 Conc    11  12 -13  14  15  16  17 $ Insert 2% B4C concrete
+  sector  5 CStl    11  12 -13 -14             $ Insert carbon steel bar
+  sector  5 CStl    11  12 -13 -15             $  ditto
+  sector  5 CStl    11  12 -13 -16             $  ditto
+  sector  5 CStl    11  12 -13 -17             $  ditto
+  
+  boundary  vacuum   5             $ Boundary condition
+
+picture cs material color
+  -52   0 140 -52   0 -10  52   0 -10 title="axial x-z view"
+picture cs material color
+    7   0  12   7   0  -1  13   0  -1 title="axial x-z detail showing bottom of insert"
+picture cs material color
+  -52  52  46 -52 -52  46  52 -52  46 title="plane x-y view"
+picture cs material color
+    0  27  46   0   0  46  27   0  46 title="plane x-y detail of 1/4 of annular tank"
+volume material 
+  -51 -51   0  51 -51   0 -51  51   0 
+  102 102 140
+surfaces
+   1 c z  12.7     1.27   128.53   $ Central cavity
+   2 c z  12.774   0.0    128.53   $ SS304L central tank
+   3 c z  26.596  22.005  127.577  $ Sol'n or void in annular tank
+   4 c z  26.67   21.37   128.53   $ SS304L annular tank
+   5 rpp -49.38 49.38 -50.655 50.655 0.0 137.0 $ Boundary condition
+   6 p z  48.55 tr 0 0 22.005      $ Critical solution height (case 087)
+   7 p z 104.43                    $ Water reflector height (cases 087-099)
+$ --- Insert (case 087)
+  11 c z  12.541   1.27     2.54   $ Carbon steel disc
+  12 c z   7.5465                  $ Cavity
+  13 c z  12.541   2.54   128.27   $ 2% B4C concrete insert
+  14 c z   0.635 tr -4 -10 0       $ Carbon steel rebar
+  15 c z   0.635 tr  4 -10 0       $ Carbon steel rebar
+  16 c z   0.635 tr -4  10 0       $ Carbon steel rebar
+  17 c z   0.635 tr  4  10 0       $ Carbon steel rebar
+end

@@ -1,0 +1,69 @@
+LCT029-1: 22x22 array of 484 U(4.738)O2 fuel rods with 1.60 cm square pitch with two, 0.0978cm thick, Hf plates
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  -0.8 -0.8 18.15
+  -0.8  0.8 18.15
+   0.8 -0.8 18.15
+   0.8  0.8 18.15
+assign-mc
+  1 red 2 yellow 3 gray 4 black 5 pink 6 sky
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u234 7.1087-6  u235 1.1104-3  u236 3.1792-5  u238 2.2006-2   o16 4.6311-2 $ U(4.738)O2
+                     al 4.1701-6    fe 9.5140-6    si 2.2479-5   b10 6.9037-8   b11 2.7788-7 $  fuel
+  mat=2 bunches      al 5.9569-2    mg 3.1442-4    si 2.4894-4    fe 6.4052-5    zn 7.4597-6 $ AGS clad, plugs
+  mat=3 bunches      fe 6.0014-2    cr 1.6469-2    ni 8.1061-3    mn 8.6597-4    si 8.4696-4 $ Stainless steel
+                      c 5.9414-5     s 2.2252-5     p 3.0719-5                               $  grid, pedestal plate
+  mat=4 bunches      zr 2.8075-3 hf174 7.0316-5 hf176 2.2597-3 hf177 8.0759-3 hf178 1.1848-2 $ Hafnium
+                  hf179 5.9157-3 hf180 1.5235-2                                              $  plates
+  mat=5 bunches       n 4.1985-5   o16 1.1263-5                                              $ Air
+  mat=6 bunches (h.h2o) 6.6762-2   o16 3.3381-2                                              $ Water, cases 1 & 9
+geometry
+    use unit 3 Core    -1 -6
+    sector   4 Hf      -1  6 -7
+    sector   4 Hf      -1  6 -8
+    use unit 1 Refl    -1  6  7  8
+    boundary   vacuum   1
+define unit  1 $ Reflector
+   sector    6 Water   -1  2  3  4 -5
+   sector    3 Support -1 -2
+   sector    3 Grid    -3
+   sector    3 Grid    -4
+define  unit 2 $ One fuel rod in a hole with reflector 
+    sector   1 UO2    -11 -12         $  UO2 fuel
+    sector   0 Void    11 -12         $  Air gap
+    sector   2 AGS     11  12 -13 -14 $  AGS clad
+    sector   6 Water   -5  13 -14     $  Water
+    use unit 1 Refl    -1  14         $  Reflector
+define unit 3 $ 22x22 array with 1.60 cm square pitch
+   {x 101 23 [-17.6   17.6]
+    y 201 23 [-17.6   17.6]
+    z 301    -999.99 999.99
+    fill
+    484*2}
+  picture cs material color -45  45 95.1  -45 -45  95.1   45 -45  95.1 title="plane view through upper grid plate"
+  picture cs material color -45  45 18    -45 -45  18     45 -45  18   title="plane view of fuel in solution"
+  picture cs material color -45  45 -0.1  -45 -45  -0.1   45 -45  -0.1 title="plane view through lower grid plate"
+  picture cs material color 0.8 -45 99    0.8 -45 -25    0.8  45 -25   title="axial y-z view of entire geometry"
+  picture cs material color -45 0.8 99    -45 0.8 -25     45 0.8 -25   title="axial x-z view of entire geometry"
+  picture cs material color   0 0.8 99      0 0.8  87    1.6 0.8  87   title="axial x-z detail of the upper part of the fuel rod"
+  picture cs material color   0 0.8  1      0 0.8  -3    1.6 0.8  -3   title="axial x-z detail of the lower part of the fuel rod"
+surfaces
+$ --- Entire problem
+   1 box   90.0    90.0   121.0  tr 0 0 37.9   $ Entire problem (BCD)
+   2 box   99.9    99.9     0.8  tr 0 0 -2.2   $ Support plate
+   3 box   60.0    60.0     0.25 tr 0 0 -0.125 $ Lower grid plate
+   4 box   60.0    60.0     0.25 tr 0 0 95.125 $ Upper grid plate
+   5 p z   36.30                               $ Water critical height
+   6 box   35.2    35.2   999.9                $ Lattice core boundary
+$ --- Hafnium plates
+   7 box   49.5     0.0978 50.0 tr 0  17.6489 25.0 $ Hafnium plate
+   8 box   49.5     0.0978 50.0 tr 0 -17.6489 25.0 $ Hafnium plate
+$ --- Unit with one fuel rod in one hole
+  11 c z    0.3946  0.0   89.7          $ UO2
+  12 c z    0.41    0.0   96.9          $ Gap
+  13 rev 3 -1.8 0.0 -1.0 0.47 98.2 0.47 $ AGS
+     tr 0 0 0 0 0 1 0 1 0               $  clad
+  14 c z    0.505  -1.8   98.2          $ Hole
+end

@@ -1,0 +1,124 @@
+LEU-COMP-THERM-074-15: MIRTE-1 Experiment R2A-Air-200(fe); 8x55; Hc=77.050cm
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=32
+  -0.8  22.0 38.525  0.8  22.0 38.525
+  -0.8  20.4 38.525  0.8  20.4 38.525
+  -0.8  18.8 38.525  0.8  18.8 38.525
+  -0.8  17.2 38.525  0.8  17.2 38.525
+  -0.8  15.6 38.525  0.8  15.6 38.525
+  -0.8  14.0 38.525  0.8  14.0 38.525
+  -0.8  12.4 38.525  0.8  12.4 38.525
+  -0.8  10.8 38.525  0.8  10.8 38.525
+  -0.8 -10.8 38.525  0.8 -10.8 38.525
+  -0.8 -12.4 38.525  0.8 -12.4 38.525
+  -0.8 -14.0 38.525  0.8 -14.0 38.525
+  -0.8 -15.6 38.525  0.8 -15.6 38.525
+  -0.8 -17.2 38.525  0.8 -17.2 38.525
+  -0.8 -18.8 38.525  0.8 -18.8 38.525
+  -0.8 -20.4 38.525  0.8 -20.4 38.525
+  -0.8 -22.0 38.525  0.8 -22.0 38.525
+assign-mc
+  1 red 2 black 3 lime 4 gray 5 yellow 6 sky 7 white 8 pink
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches    o16 4.6311-2   fe 9.5121-6   si 2.2475-5   al 4.1693-6  $ U(4.738)O2 
+                   u234 7.1087-6 u235 1.1104-3 u236 3.1792-5 u238 2.2006-2  $  fuel
+  mat=2  bunches      n 8.7300-6  o16 3.3727-4   sn 4.5389-4   fe 1.5680-4  $ Zr-4
+                     cr 8.9516-5    c 4.2233-5   si 1.3904-5   al 2.8361-6  $  clad &
+                     zr 4.2428-2   hf 1.2287-6    h 1.4480-5                $  end plugs
+  mat=3  bunches     si 2.2900-4   fe 1.1516-4   cu 2.5303-5   mn 1.4634-4  $ AG3
+                     mg 2.3816-3   cr 9.2771-5   zn 4.9179-5   ti 5.0373-5  $  grids &
+                     al 5.6226-2                                            $  wedges
+  mat=4 bunches      cr 1.6469-2   ni 8.1061-3   mn 8.6597-4   si 1.6939-3  $ Z3CN18-10
+                      p 6.1438-5    s 4.4504-5    c 1.1883-4   fe 5.9546-2  $  stainless steel
+  mat=5 bunches      al 6.02377-2                                           $ Aluminum
+  mat=6 bunches (h.h2o) 6.6722-2  o16 3.3361-2                              $ Water
+  mat=7 bunches       n 4.1985-5  o16 1.1263-5                              $ Air
+  mat=8 bunches      pb 3.8786-7   be 2.3185-6   si 3.1476-5   ti 4.6997-6  $ Al box
+                     zn 2.7038-6   zr 3.8762-7   cr 5.5642-6   cu 3.2882-6  $  200 mm air
+                     fe 6.6195-5   mg 1.9641-3   mn 8.1918-5   ni 2.4648-6  $  (cases 15 & 16)
+                      c 5.3528-6  o16 2.0092-6   al 5.7417-2                $
+geometry
+    use unit 3 core    -8 -10                $ 62 x 10 x 1 array
+    use unit 4 core    -8 -11                $ 62 x 10 x 1 array
+    sector   4 SST     -8  10  11 -4         $ Steel plate  
+    sector   8 Al      -8  10  11  4  12 -13 $ Screen, Al
+    sector   7 Air     -8  10  11  4 -12 -13 $ Screen, Air
+    sector   7 Air     -8  10  11  4  13  9  $ Air above Hc
+    sector   6 H2O     -8  10  11  4  13 -9  $ H2O below Hc
+    boundary   vacuum   8                 $ Boundary condition
+ define unit 1                            $ One fuel rod in the unit cell
+    sector   1 UO2     -1 -2              $ UO2
+    sector   7 Air      1 -2              $ Air
+    sector   2 Zr4      1  2 -3           $ Zr-4
+    sector   4 SST     -4       -8        $ Z3CN18-10
+    sector   6 H2O      3 -5 -6           $ Water in hole in lower grid
+    sector   3 AG3         5 -6 -8        $ Lower grid
+    sector   7 Air      3 -5 -7           $ Air   in hole in upper grid
+    sector   3 AG3         5 -7 -8        $ Upper grid
+    sector   6 H2O      3  4  6  7 -8 -9  $ Water
+    sector   7 Air      3  4  6  7 -8  9  $ Air
+ define unit 2                            $ One empty hole in the unit cell
+    sector   4 SST     -4       -8        $ Z3CN18-10
+    sector   6 H2O        -5 -6           $ Water in hole in lower grid
+    sector   3 AG3         5 -6 -8        $ Lower grid
+    sector   7 Air        -5 -7           $ Air   in hole in upper grid
+    sector   3 AG3         5 -7 -8        $ Upper grid
+    sector   6 H2O         4  6  7 -8 -9  $ Water
+    sector   7 Air         4  6  7 -8  9  $ Air
+ define unit 3                            $ A 62 x 10 x 1 array with 1.6 cm pitch
+   {x 101 63 [-49.6     49.6]
+    y 171 11 [ 10.0037  26.0037]
+    z 191    -999.9    999.9
+   fill
+    62*2 62*2 
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2}
+ define unit 4                             $ A 62 x 10 x 1 array with 1.6 cm pitch
+   {x 201 63 [-49.6     49.6]
+    y 271 11 [-26.0037 -10.0037]
+    z 291    -999.9    999.9
+   fill 
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    4*2 55*1 3*2
+    62*2 62*2}
+ picture cs material color  -1.6  11.6   6    -1.6  10.0   6    1.6 10.0   6   title="plane detail of unit cell"
+ picture cs material color  -1.6  10.8 101    -1.6  10.8  87    1.6 10.8  87   title="axial detail of upper rod"
+ picture cs material color  -1.6  10.8   1    -1.6  10.8 -12    1.6 10.8 -12   title="axial detail of lower rod" 
+ picture cs material color -50    50    97.7 -50   -50    97.7 50  -50    97.7 title="plane detail of the upper grid" 
+ picture cs material color -50    50    40   -50   -50    40   50  -50    40   title="plane detail of the active fuel" 
+ picture cs material color -50    50    -0.2 -50   -50    -0.2 50  -50    -0.2 title="plane detail of the lower grid"
+ picture cs material color -95    95    -5   -95   -95    -5   95  -95    -5   title="plane view of AG3 wedges" 
+ picture cs material color -95    95    -9   -95   -95    -9   95  -95    -9   title="plane view of steel plate" 
+ picture cs material color -95    10.8 101   -95    10.8 -39   95   10.8 -39   title="axial (x-z) view of entire geometry thru fuel"
+ picture cs material color -95     0   101   -95     0   -39   95    0   -39   title="axial (x-z) view of entire geometry thru pedestal"
+ picture cs material color   8.8 -95   101     8.8 -95   -39    8.8 95   -39   title="axial (y-z) view of entire geometry thru pedestal"
+surface 
+$ --- Fuel rod in unit cell
+   1 c z   0.3946   0.0     89.765 $ UO2
+   2 c z   0.4180   0.0     98.814 $ Air
+   3 c z   0.4745  -1.18   100.282 $ Zr-4
+   4 c z 999.9    -11.00    -8.50  $ Steel plate
+   5 c z   0.49                    $ Hole in grid plates
+   6 c z 999.9     -0.4      0.0   $ Lower grid plate
+   7 c z 999.9     97.5     97.9   $ Upper grid plate
+   8 box 189.7    189.7    140.25 tr 0 0 31.375 $ Boundary condition
+   9 p z  77.050                   $ Critical water height
+  10 box  99.2     16.0    999.9    tr   0.0  18.0037  0.0     $ Plane boundaries of the "core"
+  11 box  99.2     16.0    999.9    tr   0.0 -18.0037  0.0     $ Plane boundaries of the "core"
+  12 box  86.0204  18.0074 200.0000 tr   0.0   0.0    92.5     $ R2A-Air-200(fe) screen, inner (case 15)
+  13 box  88.0204  20.0074 100.0433 tr   0.0   0.0    41.52165 $ R2A-Air-200(fe) screen, outer (case 15)
+end

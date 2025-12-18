@@ -1,0 +1,21 @@
+PMF023-1S: 2.35cm graphite reflected spherical assembly of 13.484 kg delta-239Pu(98%): simplified model
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6 -2 0 0 2 0 0 0 -2 0 0 2 0 0 0 -2 0 0 2
+assign-mc
+  1 purple 2 lime 
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu239 3.6603-2 pu240 6.6913-4 ga 2.1956-3 fe 1.4086-4 c 2.8927-4 ni 1.9484-3
+  mat=2 bunches   (c) 9.1842-2
+geometry
+  sector 1 dPu 1 -2
+  sector 2 C   2 -3
+  boundary vacuum 3
+picture cs material color -9  0  9  -9 0 -9   9  0 -9 
+volume material  -9 -9 -9  9 -9 -9  -9 9 -9  18 18 18 
+surfaces $ All dimensions are in CENTIMETERS
+  1 sphere 1.715
+  2 sphere 6.000
+  3 sphere 8.350
+end

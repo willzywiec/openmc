@@ -1,0 +1,25 @@
+PU-SOL-THERM-006 (Case 1) 0.717 kg Pu(96.88) @ H/X = 1061 in a water reflected 15" SS-347 sphere
+basic
+  neutron delayedn
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 5 and 6
+  mat=1 bunches   pu239 6.0526-5 pu240 1.9411-6  n 1.1266-3 (h.h2o) 6.4226-2 o16 3.5054-2 fe 9.4892-7
+  mat=2 bunches      fe 6.0386-2    cr 1.6678-2 ni 9.8504-3
+  mat=3 bunches (h.h2o) 6.6622-2   o16 3.3311-2
+geometry                                              
+  sector 1 SOLN     -1
+  sector 2 SS347  1 -2
+  sector 3 WATER  2 -3
+  boundary vacuum 3
+picture cs material
+  -25   0  25 -25   0 -25   25  0 -25
+volume
+  -20 -20 -20  20 -20 -20  -20 20 -20
+   40  40  40
+surfaces $ Dimensions from Table 4
+  1 sphere  19.0416
+  2 sphere  19.1686
+  3 sphere  49.1686
+end

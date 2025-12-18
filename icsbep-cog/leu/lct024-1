@@ -1,0 +1,73 @@
+LCT024-2: Uniform 57x46 + 3 lattice of 2,625 fuel rods with 0.62 cm pitch
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4 
+  -0.62 -0.62 42.8
+  -0.62  0.62 42.8
+   0.62 -0.62 42.8
+   0.62  0.62 42.8
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 1.7636-5 u235 2.1577-3 u236 1.5300-5 u238 1.9510-2 o16 4.4661-2 $ U(10)O2
+  mat=2 bunches   fe 5.8894-2   cr 1.6469-2   ni 8.1061-3   si 1.3551-3  mn 1.2990-3 $ SST
+                   c 2.3766-4   ti 4.4713-4                                          $  OX18H9T
+  mat=3 bunches   fe 1.4989-4   si 2.9804-4   cu 1.1460-3   al 5.7115-2  mg 1.0332-3 $ Al-alloy
+                  mn 1.8284-4   ti 3.4965-5   zn 7.6807-5   ni 2.8525-5              $  D16 
+  mat=4 bunches (h.h2o) 6.6736-2 o16 3.3368-2                                        $ Water 
+assign-mc
+  1 red 2 gray 3 yellow 4 sky
+geometry
+ $ --- Core, reflector, and boundary condition
+  use unit 3 core   -99  1001 -1058  2001 -2048
+  sector   4 h2o    -99 -1001
+  sector   4 h2o    -99  1001 -1058 -2001
+  sector   4 h2o    -99  1001 -1058        2048
+  sector   4 h2o    -99        1058
+  boundary   vacuum  99
+define unit 1 $ Unit cell with fuel rod
+  sector 0 Void -1 -2
+  sector 0 Void -1 -3
+  sector 2 SST   1 -2
+  sector 2 SST   1  2 -3
+  sector 1 UO2   1  2  3 -4
+  sector 0 Void  1  2  3  4 -5
+  sector 0 Void  5 -6
+  sector 2 SST   1  2  3  4  5  6 -7
+  sector 2 SST   7 -8 
+  sector 3 D16   2 -10 -99 $ Support plate
+  sector 3 D16  11 -12 -99 $ Lower lattice plate 
+  sector 3 D16  11 -13 -99 $ Upper lattice plate 
+  fill   4                 $ Water
+define unit 2 $ Empty unit cell
+  sector 3 D16     -10 -99 $ Support plate
+  sector 3 D16  11 -12 -99 $ Lower lattice plate 
+  sector 3 D16  11 -13 -99 $ Upper lattice plate 
+  fill   4                 $ Water
+define unit 3 $ 57 x 47 array of unit cells
+   {x 1001 58 [-17.67  17.67]
+    y 2001 48 [-14.57  14.57]
+    z 3001    -999.99 999.99
+    fill 
+    54*2 2625*1}
+picture cs material color -20  20   0.5 -20   -20   0.5  20 -20   0.5 title="plane view at Z=0.5"
+picture cs material color   0   4   0.5   0    -4   0.5   8  -4   0.5 title="plane detail at Z=0.5"
+picture cs material color -20   0 106   -20     0 -21    20   0 -21   title="axial view at X=0"
+picture cs material color   0   0   1     0     0  -1     2   0  -1   title="lower axial detail"
+picture cs material color   0   0  93     0     0  84     2   0  84   title="upper axial detail"
+surfaces 
+$ -- Fuel rod
+  1 c z  0.1   -0.8   0.0          $ Void
+  2 c z  0.2   -1.1  -0.1          $ Clad - lower
+  3 c z  0.255 -0.1   0.0          $ Clad - lower
+  4 c z  0.208  0.0  85.6          $ Fuel
+  5 c z  0.215  0.0  85.9          $ Void
+  6 c z  0.1   85.9  86.7          $ Void
+  7 c z  0.255  0.0  87.3          $ Clad - middle
+  8 c z  0.187 87.3  92.5          $ Clad - top
+$ --- Support and lattice plates
+ 10 c z 99.9   -2.3  -1.1          $ Support plate
+ 11 c z  0.26                      $ Lattice plate - hole
+ 12 c z 99.9    0.4   0.7          $ Lattice plate - lower
+ 13 c z 99.9   81.8  82.1          $ Lattice plate - upper
+ 99 c z 50.0  -20.0 105.6          $ Boundary condition
+end

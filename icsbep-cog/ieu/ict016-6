@@ -1,0 +1,26 @@
+ICT016-6: 22.86 x 22.86 x 19.8626 U(30.14)O2/wax parallelepiped with 20.32 cm Polythene on bottom & sides - 20.32 cm water on top - batch 16
+basic 
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+assign-mc
+  1 sky 2 lime 3 yellow
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches (h.ch2) 4.6773-2 c 2.3170-2 o16 1.9626-2 al 5.7738-5 u234 3.6522-5 u235 2.8844-3 u236 6.6707-6 u238 6.5587-3 $ Batch 16
+  mat=2 bunches (h.ch2) 7.8911-2 o16 3.4955-2 $ Polythene
+  mat=3 bunches (h.h2o) 6.6785-2 o16 3.3393-2 $ Water
+geometry
+  sector 1 UO2WAX -1
+  sector 2 POLY    1 -2 -3
+  sector 3 WATER   1 -2  3
+  boundary vacuum  2
+picture cs material color
+  -32   0  30 -32   0 -30  32  0 -30 title="axial view"
+volume material
+  -32 -32 -30  32 -32 -30 -32 32 -30
+   64  64  60
+surfaces
+  1 box 22.86 22.86 19.8626
+  2 box 63.50 63.50 60.5026
+  3 p z  9.9313
+end

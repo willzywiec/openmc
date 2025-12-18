@@ -1,0 +1,35 @@
+PU-SOL-THERM-008 (Case 25) 1.575 kg Pu(95.43) @ H/X = 361 in 14" SS304L sphere in 4" air + 6" concrete
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 7a and 8
+mat=1 bunches pu238 1.0306-8 pu239 1.6252-4 pu240 7.9513-6 pu241 5.2076-7 pu242 1.5203-8
+n 3.2675-3 (h.h2o) 5.8833-2 o16 3.7927-2
+mat=2 bunches fe 5.9355-2 cr 1.7428-2 ni 7.7203-3 mn 1.7363-3
+mat=3 bunches (h.h2o) 1.7376-2 o16 4.5294-2 mg 7.6195-4 al 3.3533-3 ca 2.6095-3
+fe 1.3417-3 na 1.1416-4 k 4.3569-4 mn 2.7673-5 si 1.2931-2
+geometry
+sector 1 SOLN -1 -2 $ Sphere
+sector 1 SOLN -1 2 -6 $ Tube/Inner
+sector 2 SST 2 -3 6 $ SST/Shell
+sector 2 SST 3 -5 6 -7 $ Tube/Support
+sector 2 SST 3 -5 8 -9 $ Tube/Inlet
+sector 3 CONCRETE 4 -5 7 9 $ Concrete
+picture cs material
+-45 0 45 -45 0 -45 45 0 -45
+volume
+-18 -18 -18 18 -18 -18 -18 18 -18
+36 36 36
+surfaces $ Dimensions
+1 plane z 17.0923 $ = Hc ------------ Table 5a
+2 sphere 17.6955 $ Sphere/Inner ---- Table 6a
+3 sphere 17.8073 $ Sphere/Outer ---- Table 6a
+4 sphere 27.9673 $ Air/Outer ------- Table 6a
+5 sphere 43.2073 $ Concrete/Outer -- Table 6a
+6 cylinder z 2.695 0 99 tr -3.811 0 0 $ Support Tube/Inner -- Figure 7
+7 cylinder z 2.860 0 99 tr -3.811 0 0 $ Support Tube/Outer -- Figure 7
+8 cylinder z 2.555 -99 0 $ Inlet Tube/Inner -- Figure 7
+9 cylinder z 2.860 -99 0 $ Inlet Tube/Outer -- Figure 7
+end

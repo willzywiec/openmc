@@ -1,0 +1,35 @@
+PU-SOL-THERM-010 (Case 11-3) 0.784 kg Pu(97.15) @ H/X = 558 in a water reflected 11" diameter SS-347 cylinder
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+nsource=1 0. 0. 13.5
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Table 5 and Table 6 (Parts A and B)
+mat=1 bunches pu239 1.1554-4 pu240 3.3753-6 n 1.1363-3 (h.h2o) 6.4482-2 o16 3.5320-2 fe 2.9654-6
+mat=2 bunches fe 6.0386-2 cr 1.6678-2 ni 9.8504-3
+mat=3 bunches (h.h2o) 6.6623-2 o16 3.3312-2
+geometry
+sector 0 VOID -1 -4
+sector 2 SS347 1 -2 -4
+sector 3 WATER 2 -3 -4
+sector 2 SS347 2 3 -4
+sector 0 VOID 4 5 -6
+sector 1 SOLN 4 -5 -6
+sector 2 SS347 6 -7
+sector 3 WATER 7 -8
+boundary vacuum 8
+picture cs material
+0 0 100 0 0 -35 50 0 -35
+volume
+-14 -14 0 14 -14 0 -14 14 0
+28 28 28
+surfaces $ Dimensions from Figure 1 and Table 4
+1 cylinder z 1.0465 $ Pipe/Inner
+2 cylinder z 1.3335 $ Pipe/Outer
+3 cylinder z 13.6839 27.2339 57.7139 $ Piston/Inner; Z1 = Hc + 0.1575; Z2 = Z1 + 30.48
+4 cylinder z 13.8414 27.0764 57.8714 $ Piston/Outer; Z1 = Hc; Z2 = Z1 + 30.7950
+5 plane z 27.0764 $ = Hc
+6 cylinder Z 13.9684 0.0000 97.9488 $ Cylinder/Inner
+7 cylinder z 14.1259 -0.1575 97.9488 $ Cylinder/Outer
+8 cylinder z 45.7200 -30.1575 97.9488 $ Reflector/Inner
+end

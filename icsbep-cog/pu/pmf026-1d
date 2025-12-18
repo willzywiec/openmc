@@ -1,0 +1,36 @@
+PMF026-1D: 11.9cm steel reflected spherical assembly of 9.7602 kg delta-239Pu(98%): detailed model
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6 -1 0 0 1 0 0 0 -1 0 0 1 0 0 0 -1 0 0 1
+assign-mc
+  1 purple 2 red 3 orange 4 pink 5 blue 6 gray 7 brown
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu239 3.5272-2 pu240 6.4479-4 ga 2.0946-3 fe 1.5659-4  c 2.9123-4 ni 4.1459-3
+  mat=2 bunches pu239 3.6826-2 pu240 6.7320-4 ga 2.2000-3 fe 1.4714-4  c 3.0406-4 ni 1.5722-3
+  mat=3 bunches pu239 3.6579-2 pu240 6.6875-4 ga 2.2114-3 fe 1.2992-4  c 3.0205-4 ni 1.9330-3
+  mat=4 bunches pu239 3.6512-2 pu240 6.6739-4 ga 2.1940-3 fe 1.2966-4  c 2.2608-4 ni 2.3056-3
+  mat=5 bunches pu239 3.6576-2 pu240 6.6878-4 ga 2.2115-3 fe 1.4617-4  c 3.0206-4 ni 1.8631-3
+  mat=6 bunches    fe 7.9416-2     c 1.1269-3 si 1.6065-4 cr 2.6032-4 mn 3.2850-4 ni 2.3063-4 cu 2.1300-4
+  mat=7 bunches    fe 7.8919-2     c 1.1199-3 si 1.5964-4 cr 2.5869-4 mn 3.2645-4 ni 2.2918-4 cu 2.1167-4
+geometry
+  sector 1 dPu1    1 -2
+  sector 2 dPu2    2 -3
+  sector 3 dPu3    3 -4
+  sector 4 dPu4    4 -5
+  sector 5 dPu5    5 -6
+  sector 6 Steel1  6 -7
+  sector 7 Steel2  7 -8
+  boundary vacuum  8
+picture cs material color   -18   0  18  -18  0 -18  18  0 -18 
+volume material -18 -18 -18  18 -18 -18  -18 18 -18  36 36  36 
+surfaces $ All dimensions are in CENTIMETERS
+  1 sphere  0.770
+  2 sphere  1.400
+  3 sphere  3.150
+  4 sphere  4.020
+  5 sphere  4.660
+  6 sphere  5.350
+  7 sphere 11.000
+  8 sphere 17.250
+end

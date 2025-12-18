@@ -1,0 +1,29 @@
+MIX-MET-FAST-002-1: Composite core of Ni-clad a-Pu(2.34) and HEU reflected by Nat-U
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches pu239 4.7871-2 pu240 1.1482-3 pu241 4.9068-5 $ a-Pu(2.34)
+  mat=2  bunches    ni 9.1342-2                               $ Ni
+  mat=3  bunches  u235 4.4892-2  u238 3.2340-3                $ HEU
+  mat=4  bunches  u234 2.6438-6  u235 3.4610-4  u238 4.7721-2 $ Nat-U
+assign-mc
+  1 purple 2 yellow 3 red 4 brown
+geometry
+  sector  1 aPu      -1
+  sector  2 Ni     1 -2 
+  sector  0 Gap    2 -3
+  sector  3 HEU    3 -4
+  sector  4 NatU   4 -5
+  boundary  vacuum 5
+picture cs material color   -25   0  25 -25   0 -25  25   0 -25
+volume material -25 -25 -25  25 -25 -25 -25  25 -25  50  50  50
+surfaces
+  1 sphere  2.7051
+  2 sphere  2.7305
+  3 sphere  2.7356
+  4 sphere  5.2096
+  5 sphere 24.1326
+end

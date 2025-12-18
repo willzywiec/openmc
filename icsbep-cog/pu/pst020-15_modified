@@ -1,0 +1,29 @@
+PU-SOL-THERM-020 (Case 15) 1.572 kg Pu(95.43) @ H/X = 358 in a 14" SS304L sphere + 0.030" Cd in water
+basic
+  neutron delayedn urrpt
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 6 and 7
+  mat=1 bunches   pu238 1.0473-8   pu239 1.6514-4 pu240 8.0784-6 pu241 5.3609-7 pu242 1.5450-8
+                      n 3.0437-3 (h.h2o) 5.9288-2   o16 3.7601-2   
+  mat=2 bunches      fe 5.9355-2      cr 1.7428-2    ni 7.7203-3    mn 1.7363-3
+  mat=3 bunches      cd 4.6330-2
+  mat=4 bunches (h.h2o) 6.6655-2     o16 3.3327-2
+geometry
+  sector 1 SOLN     -1
+  sector 2 SST    1 -2
+  sector 3 CD     2 -3
+  sector 4 H2O    3 -4
+  boundary vacuum 4
+picture cs material
+  -20   0  20 -20   0 -20   20  0 -20
+volume
+  -18 -18 -18  18 -18 -18  -18 18 -18
+   36  36  36
+surfaces  $ Dimensions from Section 3.2
+  1 sphere  17.5872 $ SST/Inner/Table 5
+  2 sphere  17.6990 $ SST/Outer/Table 5
+  3 sphere  17.7752 $  Cd/Outer/Table 5
+  4 sphere  47.7752 $ H2O/Outer/Table 5
+end

@@ -1,0 +1,147 @@
+LCT034-17: Four 18x18 arrays of U(4.738)O2 rods, 1.60 cm pitch, 0.33cm steel and Cd, 0.0cm water gap, Hc=33.89cm
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=72
+    -1.13  -1.13 16.945   1.13  -1.13 16.945  -1.13  1.13 16.945   1.13  1.13 16.945
+    -2.73  -2.73 16.945   2.73  -2.73 16.945  -2.73  2.73 16.945   2.73  2.73 16.945
+    -4.33  -4.33 16.945   4.33  -4.33 16.945  -4.33  4.33 16.945   4.33  4.33 16.945
+    -5.93  -5.93 16.945   5.93  -5.93 16.945  -5.93  5.93 16.945   5.93  5.93 16.945
+    -7.53  -7.53 16.945   7.53  -7.53 16.945  -7.53  7.53 16.945   7.53  7.53 16.945
+    -9.13  -9.13 16.945   9.13  -9.13 16.945  -9.13  9.13 16.945   9.13  9.13 16.945
+   -10.73 -10.73 16.945  10.73 -10.73 16.945 -10.73 10.73 16.945  10.73 10.73 16.945
+   -12.33 -12.33 16.945  12.33 -12.33 16.945 -12.33 12.33 16.945  12.33 12.33 16.945
+   -13.93 -13.93 16.945  13.93 -13.93 16.945 -13.93 13.93 16.945  13.93 13.93 16.945
+   -15.53 -15.53 16.945  15.53 -15.53 16.945 -15.53 15.53 16.945  15.53 15.53 16.945
+   -17.13 -17.13 16.945  17.13 -17.13 16.945 -17.13 17.13 16.945  17.13 17.13 16.945
+   -18.73 -18.73 16.945  18.73 -18.73 16.945 -18.73 18.73 16.945  18.73 18.73 16.945
+   -20.33 -20.33 16.945  20.33 -20.33 16.945 -20.33 20.33 16.945  20.33 20.33 16.945
+   -21.93 -21.93 16.945  21.93 -21.93 16.945 -21.93 21.93 16.945  21.93 21.93 16.945
+   -23.53 -23.53 16.945  23.53 -23.53 16.945 -23.53 23.53 16.945  23.53 23.53 16.945
+   -25.13 -25.13 16.945  25.13 -25.13 16.945 -25.13 25.13 16.945  25.13 25.13 16.945
+   -26.73 -26.73 16.945  26.73 -26.73 16.945 -26.73 26.73 16.945  26.73 26.73 16.945
+   -28.33 -28.33 16.945  28.33 -28.33 16.945 -28.33 28.33 16.945  28.33 28.33 16.945
+assign-mc
+  1 red 2 yellow 3 gray 4 sky 5 lime
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u234 7.1318-6  u235 1.1104-3  u236 3.1838-5  u238 2.2006-2   o16 4.6391-2 $ U(4.738)O2
+                    b10 5.7531-8   b11 2.3157-7                                              $  fuel
+  mat=2 bunches      al 5.9569-2    mg 3.1442-4    si 2.4894-4    fe 6.4052-5    zn 7.4597-6 $ AGS clad, plugs
+  mat=3 bunches      fe 5.8694-2    cr 1.6469-2    ni 8.1061-3    mn 1.7319-3    si 1.6939-3 $ Stainless steel
+                      p 6.1438-5     s 4.4504-5     c 1.1883-4                               $   Z2 CN18/10
+  mat=4 bunches (h.h2o) 6.6707-2   o16 3.3354-2                                              $ Water
+  mat=5 bunches      cd 4.6340-2                                                             $ Cadmium
+ geometry
+$ --- Four baskets with absorber plates
+   use unit 2 Assy   18 -10  21  22  23  tr -14.730  14.730 0 $ 18x18 array: Xo=Yo=0.0+0.33+9(1.60)=14.730
+     sector 3 SST    18 -10  20 -21 or -10 -22 or -10 -23     $ Instrument thimble and tie rods
+     sector 3 Abstl  18  10 -101 -102 -103                    $ Absorber plate steel
+     sector 5 Abcad  18  10  101 -102 -103                    $ Absorber plate cadmium
+     sector 3 Abstl  18  10  101  102 -103                    $ Absorber plate cadmium
+     sector 3 Abstl  18  10 -111 -112 -113  103               $ Absorber plate steel
+     sector 5 Abcad  18  10  111 -112 -113  103               $ Absorber plate cadmium
+     sector 3 Abstl  18  10  111  112 -113  103               $ Absorber plate cadmium
+   use unit 2 Assy   18 -12  26  27  28  tr  14.730  14.730 0
+     sector 3 SST    18 -12  25 -26 or -12 -27 or -12 -28
+     sector 3 Abstl  18  12 -121 -122 -123       103  113
+     sector 5 Abcad  18  12  121 -122 -123       103  113
+     sector 3 Abstl  18  12  121  122 -123       103  113
+     sector 3 Abstl  18  12 -131 -132 -133  123  103  113
+     sector 5 Abcad  18  12  131 -132 -133  123  103  113
+     sector 3 Abstl  18  12  131  132 -133  123  103  113
+   use unit 2 Assy   18 -14  31  32  33  tr -14.730 -14.730 0
+     sector 3 SST    18 -14  30 -31 or -14 -32 or -14 -33
+     sector 3 Abstl  18  14 -141 -142 -143       103  113  123  133
+     sector 5 Abcad  18  14  141 -142 -143       103  113  123  133
+     sector 3 Abstl  18  14  141  142 -143       103  113  123  133
+     sector 3 Abstl  18  14 -151 -152 -153  143  103  113  123  133
+     sector 5 Abcad  18  14  151 -152 -153  143  103  113  123  133
+     sector 3 Abstl  18  14  151  152 -153  143  103  113  123  133
+   use unit 2 Assy   18 -16  36  37  38  tr  14.730 -14.730 0
+     sector 3 SST    18 -16  35 -36 or -16 -37 or -16 -38
+     sector 3 Abstl  18  16 -161 -162 -163       103  113  123  133  143  153
+     sector 5 Abcad  18  16  161 -162 -163       103  113  123  133  143  153
+     sector 3 Abstl  18  16  161  162 -163       103  113  123  133  143  153
+     sector 3 Abstl  18  16 -171 -172 -173  163  103  113  123  133  143  153
+     sector 5 Abcad  18  16  171 -172 -173  163  103  113  123  133  143  153
+     sector 3 Abstl  18  16  171  172 -173  163  103  113  123  133  143  153
+$ --- Pedestal support plate and water
+     sector 3 SST   -18                                                   $ Pedestal support plate
+     sector 4 Water -19 -5 10 103 113 12 123 133 14 143 153 16 163 173 18 $ Water within the tank
+     boundary vacuum 19
+define unit 1 $ Unit cell with one fuel rod, grid plates, water, etc.
+   sector   1 UO2     -1 -2    $ UO2 fuel
+   sector   2 AGS      1  2 -3 $ AGS clad
+   sector   4 Water    3 -4 -5 $ Water in hole
+   sector   3 Steel    4 -6    $ Upper grid plate
+   sector   3 Steel    4 -7    $ Lower grid plate
+   sector   3 Basket   8 -9    $ Basket
+   sector   4 Water    4 -5  6  7 -8 -9 $ Water
+define unit 2 $ 18x18 array with 1.60 cm square pitch
+   {x 901 19 [-14.4  14.4]
+    y 921 19 [-14.4  14.4]
+    z 941    -999.9 999.9
+    fill 324*1}
+picture cs material color res=1500 -60 60   96.7  -60 -60   96.7  60 -60   96.7 title="plane view through upper grid plate"
+picture cs material color res=1500 -60 60     30  -60 -60     30  60 -60     30 title="plane view through the water"
+picture cs material color res=1500 -60 60   -0.2  -60 -60   -0.2  60 -60   -0.2 title="plane view through lower grid plate"
+picture cs material color res=1500  -6  6   -0.2   -6  -6   -0.2   6  -6   -0.2 title="plane detail of lower grid plate center"
+picture cs material color res=1500  -6  6     30   -6  -6     30   6  -6     30 title="plane detail of absorber in water"
+picture cs material color res=1500  25 30   -0.2   25  25   -0.2  30  25   -0.2 title="plane detail of instrument thimble in grid plate"
+picture cs material color res=1500  25 30     30   25  25     30  30  25     30 title="plane detail of instrument thimble in the water"
+picture cs material color res=1500 -60 28.33 105  -60  28.33 -25  60  28.33 -25 title="axial x-z view of entire geometry"
+picture cs material color res=1500  20 28.33 105   20  28.33  85  35  28.33  85 title="axial x-z detail near top of the absorber plate"
+surfaces
+$ --- Unit with one fuel rod in one hole with grid plates in water
+   1 c z   0.395  0.0   90.0 $ UO2
+   2 c z   0.41   0.0   96.9 $ Gap
+   3 c z   0.47  -1.27  98.2 $ AGS
+   4 c z   0.50  -1.27  98.2 $ Hole
+   5 p z  33.89              $ Critical water height
+   6 box  28.8   28.8    0.2 tr 0 0 -0.2 $ Lower grid plate
+   7 box  28.8   28.8    0.2 tr 0 0 96.7 $ Upper grid plate
+   8 box  28.8   28.8  105.2 tr 0 0 50.8 $ Basket, inner
+   9 box  28.8   28.8  106.0 tr 0 0 50.8 $ Basket, outer
+$ --- Four baskets with borated steel plates with 0.6 cm water gap
+  10 box  28.8   28.8  106.0 tr -14.730  14.730 50.8 $ Basket
+ 101 box  28.8   29.2  106.0 tr -14.730  14.730 50.8 $ Steel,   28.8  x 0.2  x 106
+ 102 box  28.8   29.3  106.0 tr -14.730  14.730 50.8 $ Cadmium, 28.8  x 0.05 x 106
+ 103 box  28.8   29.46 106.0 tr -14.730  14.730 50.8 $ Steel,   28.8  x 0.08 x 106
+ 111 box  29.2   28.8  106.0 tr -14.730  14.730 50.8 $ Steel,    0.2  x 28.8 x 106
+ 112 box  29.3   28.8  106.0 tr -14.730  14.730 50.8 $ Cadmium,  0.05 x 28.8 x 106
+ 113 box  29.46  28.8  106.0 tr -14.730  14.730 50.8 $ Steel,    0.08 x 28.8 x 106
+  12 box  28.8   28.8  106.0 tr  14.730  14.730 50.8 $ Basket
+ 121 box  28.8   29.2  106.0 tr  14.730  14.730 50.8 $ Steel,   28.8  x 0.2  x 106
+ 122 box  28.8   29.3  106.0 tr  14.730  14.730 50.8 $ Cadmium, 28.8  x 0.05 x 106
+ 123 box  28.8   29.46 106.0 tr  14.730  14.730 50.8 $ Steel,   28.8  x 0.08 x 106
+ 131 box  29.2   28.8  106.0 tr  14.730  14.730 50.8 $ Steel,    0.2  x 28.8 x 106
+ 132 box  29.3   28.8  106.0 tr  14.730  14.730 50.8 $ Cadmium,  0.05 x 28.8 x 106
+ 133 box  29.46  28.8  106.0 tr  14.730  14.730 50.8 $ Steel,    0.08 x 28.8 x 106
+  14 box  28.8   28.8  106.0 tr -14.730 -14.730 50.8 $ Basket
+ 141 box  28.8   29.2  106.0 tr -14.730 -14.730 50.8 $ Steel,   28.8  x 0.2  x 106
+ 142 box  28.8   29.3  106.0 tr -14.730 -14.730 50.8 $ Cadmium, 28.8  x 0.05 x 106
+ 143 box  28.8   29.46 106.0 tr -14.730 -14.730 50.8 $ Steel,   28.8  x 0.08 x 106
+ 151 box  29.2   28.8  106.0 tr -14.730 -14.730 50.8 $ Steel,    0.2  x 28.8 x 106
+ 152 box  29.3   28.8  106.0 tr -14.730 -14.730 50.8 $ Cadmium,  0.05 x 28.8 x 106
+ 153 box  29.46  28.8  106.0 tr -14.730 -14.730 50.8 $ Steel,    0.08 x 28.8 x 106
+  16 box  28.8   28.8  106.0 tr  14.730 -14.730 50.8 $ Basket
+ 161 box  28.8   29.2  106.0 tr  14.730 -14.730 50.8 $ Steel,   28.8  x 0.2  x 106
+ 162 box  28.8   29.3  106.0 tr  14.730 -14.730 50.8 $ Cadmium, 28.8  x 0.05 x 106
+ 163 box  28.8   29.46 106.0 tr  14.730 -14.730 50.8 $ Steel,   28.8  x 0.08 x 106
+ 171 box  29.2   28.8  106.0 tr  14.730 -14.730 50.8 $ Steel,    0.2  x 28.8 x 106
+ 172 box  29.3   28.8  106.0 tr  14.730 -14.730 50.8 $ Cadmium,  0.05 x 28.8 x 106
+ 173 box  29.46  28.8  106.0 tr  14.730 -14.730 50.8 $ Steel,    0.08 x 28.8 x 106
+$ --- Pedestal plate and tank                                      $ Note: 28.1975 = 0.0+0.33+18(1.60)-(1.865/2)
+  18 box  95.0   95.0    0.8 tr 0 0 -2.6 $ Pedestal support plate  $ Note: 28.330  = 0.0+0.33+17.5(1.60)
+  19 box 120.0 120.0   126.0 tr 0 0 40.8 $ Tank & BCD              $ Note:  1.130  = 0.0+0.33+0.80
+$ --- Instrument thimble and tie rods for 1st and 3rd assembly
+  20 c z   0.7975             tr -28.1975 28.1975 0   30 c z   0.7975             tr -28.1975 -28.1975 0
+  21 c z   0.9325 -1.8  103.8 tr -28.1975 28.1975 0   31 c z   0.9325 -1.8  103.8 tr -28.1975 -28.1975 0
+  22 c z   0.5    -1.8  103.8 tr  -1.130  28.330  0   32 c z   0.5    -1.8  103.8 tr  -1.130  -28.330  0
+  23 c z   0.5    -1.8  103.8 tr -28.330   1.130  0   33 c z   0.5    -1.8  103.8 tr -28.330   -1.130  0
+$ --- Instrument thimble and tie rods for 2nd and 4th assembly
+  25 c z   0.7975             tr  28.1975 28.1975 0   35 c z   0.7975             tr  28.1975 -28.1975 0
+  26 c z   0.9325 -1.8  103.8 tr  28.1975 28.1975 0   36 c z   0.9325 -1.8  103.8 tr  28.1975 -28.1975 0
+  27 c z   0.5    -1.8  103.8 tr   1.130  28.330  0   37 c z   0.5    -1.8  103.8 tr   1.130  -28.330  0
+  28 c z   0.5    -1.8  103.8 tr  28.330   1.130  0   38 c z   0.5    -1.8  103.8 tr  28.330   -1.130  0
+end

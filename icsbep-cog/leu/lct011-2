@@ -1,0 +1,69 @@
+LCT011-2: B&W CX-10 Core II
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  -0.818 -0.818 72.145 -0.818  0.818 72.145
+   0.818 -0.818 72.145  0.818  0.818 72.145
+assign-mc
+  1 red 2 yellow 3 sky 4 gray
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u234 4.8687-6 u235 5.6757-4 u236 2.1930-6 u238 2.2222-2 o16 4.5596-2 $ U(2.459)O2
+  mat=2 bunches      si 3.4736-4   mn 2.9596-5   zn 3.7299-5   fe 1.0190-4  mg 6.6898-4 $ Al-6061-T6
+                     ti 3.3959-5   cu 5.1174-5   cr 6.2542-5   al 5.8065-2              $  clad, grids, etc.
+  mat=3 bunches (h.h2o) 6.6696-2  o16 3.3435-2  b10 1.1509-5  b11 4.6324-5              $ Water with 1037 ppm B, Core II
+  mat=4 bunches (h.h2o) 6.6667-6  o16 3.3333-6                                          $ "Air"
+geometry
+    use unit 2 CORE       -2 -3  101 -143  201 -243  
+    sector   3 Water   -1 -2 -3 -101
+    sector   3 Water   -1 -2 -3  101 -143 -201
+    sector   3 Water   -1 -2 -3  101 -143       243
+    sector   3 Water   -1 -2 -3       143
+    sector   4 Air      1 -2 -3 -101
+    sector   4 Air      1 -2 -3  101 -143 -201
+    sector   4 Air      1 -2 -3  101 -143       243
+    sector   4 Air      1 -2 -3       143
+    sector   2 Tank        2 -3
+    boundary   vacuum         3
+ define unit 1                                    $ UNIT CELL WITH FUEL
+    sector   1 UO2            -10 -11 -12  16     $   UO2
+    sector   0 Gap             10 -11 -12  16     $   Gap
+    sector   2 Al6061          10  11 -12  16     $   Clad
+    sector   3 Water   -2      10  11  12  15 -16 $   Water
+    sector   2 Al6061  -2      14 -15             $   Base plate
+    sector   3 Water   -2     -14                 $   Water
+    sector   2 Al6061  -2      13  16 -17         $   Lower grid plate
+    sector   2 Al6061  -2      13  18 -19         $   Upper grid plate
+    sector   3 Water   -1 -2   12 -13  16 -17     $   Water between clad and lower grid plate
+    sector   3 Water   -1 -2   12  17             $   Water above lower grid plate
+    fill     4                                    $   Air
+ define unit 2                                    $ 42x42 array
+   {x 101 43 [-34.356 34.356]
+    y 201 43 [-34.356 34.356]
+    z 301    -999.99 999.99
+    fill 1764*1}
+  picture cs material color -78    0.8 181 -78     0.8  -9  78     0.8  -9 title="axial view of the entire geometry"
+  picture cs material color  -1.6  0.8   9  -1.6   0.8  -9   0.0   0.8  -9 title="axial view of one fuel rod - lower"
+  picture cs material color  -1.6  0.8 157  -1.6   0.8 149   0.0   0.8 149 title="axial view of one fuel rod - upper"
+  picture cs material color -78   78     2 -78   -78     2  78   -78     2 title="plane view through lower grid plate"
+  picture cs material color -35   35     2 -35   -35     2  35   -35     2 title="plane view of the core"
+  picture cs material color  -1.6  1.6   2  -1.6  -1.6   2   1.6  -1.6   2 title="plane detail thru  lower grid plate"
+  picture cs material color -78   78   151 -78   -78   151  78   -78   151 title="plane view through upper grid plate"
+  picture cs material color  -1.6  1.6 151  -1.6  -1.6 151   1.6  -1.6 151 title="plane detail thru  upper grid plate"
+surfaces
+$ --- Tank
+   1 p z 144.29                $ Water height above base plate
+   2 c z  76.20 -7.62  180.04  $ Tank inner
+   3 c z  77.47 -8.89  180.04  $ Tank outer
+$ --- Unit Cell with Fuel
+  10 c z   0.515 0.30  153.66  $ U(2.459)O2
+  11 c z   0.522 0.30  156.16  $ Gap
+  12 c z   0.603 0.30  156.478 $ Al-6061-T6 clad
+  13 box   1.230 1.230 999.999 $ Grid inner
+  14 p z  -5.08                $ Base plate bottom
+  15 p z   0.00                $ Base plate top
+  16 p z   0.30                $ Lower grid bottom      
+  17 p z   2.84                $ Lower grid top
+  18 p z 150.00                $ Upper grid bottom
+  19 p z 152.54                $ Upper grid bottom
+end

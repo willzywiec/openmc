@@ -1,0 +1,82 @@
+MIX-SOL-THERM-004-9: Exp. No. 083 with 173.22 gPu/l and 262.88 gU/L with 1.22M
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 15.30
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu238 1.2708-7 pu239 3.9761-4 pu240 3.6111-5 pu241 1.9473-6 pu242 4.0078-7 $ Solution
+                 u234 4.7349-8  u235 3.7987-6  u236 1.5425-7  u238 6.6107-4 am241 2.2756-6 $  for
+              (h.h2o) 5.4058-2     n 3.8628-3   o16 3.9584-2   b10 9.4083-8    cd 5.2894-8 $   exp.
+                   fe 5.4822-6    gd 7.2969-9   li6 3.3814-9                               $    083
+  mat=2 bunches    fe 6.1376-2    cr 1.7648-2    ni 8.2292-3     c 1.2063-4                $ SS304L
+  mat=3 bunches    fe 8.3665-2     p 4.5612-6     s 2.7904-5    mn 3.2574-4    si 3.1859-4 $ Carbon
+                    c 7.4495-4                                                             $  steel
+  mat=4 bunches   o16 4.5525-2    si 1.1541-2    ca 4.2012-3    al 2.4910-3    fe 8.4670-4 $ Concrete
+              (h.h2o) 1.4617-2    na 8.7278-4    mg 5.3112-4     k 2.5839-4     s 1.6628-4 $
+                   ti 9.6702-5                                                             $
+assign-mc
+  1 purple 2 gray 3 brown 4 lime
+geometry
+  sector  2 SS304L   1  -2 -10     $ Dump line
+  sector  1 Soln    -3  -5         $ Solution
+  sector  2 SS304L   2   3  -4 -10 $ Solution tank
+  sector  2 SS304L   6  -7 -10     $ Empty dump line
+  sector  2 SS304L   7   8  -9 -10 $ Empty central tank
+  sector  2 SS304L   9  91 -92     $ Empty annular tank
+  sector  3 CSTEEL  10 -11         $ Reflector tank
+  sector  4 Cncrt   12 -13         $ Concrete floor, ceiling and walls
+  sector  4 Cncrt  -10  21 -22  26         $ Concrete reflector, upper
+  sector  4 Cncrt  -10  21 -22 -23  25 -26 $ Concrete reflector, upper
+  sector  4 Cncrt  -10  21 -22  24  25 -26 $ Concrete reflector, upper
+  sector  4 Cncrt  -10  31 -32  33 -34  35 -36 $ Concrete reflector, lower
+  sector  4 Cncrt  -10  31 -32 -35 -36         $ Concrete reflector, lower
+  boundary  vacuum  13                         $ BCD
+picture cs material color
+-1020    0 560 -1020    0 -210 360    0 -210 title="axial x-z view"
+picture cs material color
+  -50    0  95   -50    0  -20  50    0  -20 title="axial x-z detail"
+picture cs material color
+    0 -610 560     0 -610 -210   0  720 -210 title="axial y-z view"
+picture cs material color
+    0  -50  95     0  -50  -20   0   50  -20 title="axial y-z detail"
+picture cs material color
+-1020  720  15 -1020 -610   15 360 -610   15 title="plane x-y view"
+picture cs material color res=1500
+  -50   50  15   -50  -50   15  50  -50   15 title="plane x-y detail"
+volume material $ volume of solution 
+  -18 -18   0   18 -18   0 -18  18   0 
+   36  36  31
+surfaces
+  1 c z   2.625                 $ Dump line, inner
+  2 c z   3.016 -16.953  -0.953 $ Dump line, outer
+  3 c z  17.695   0.0    90.6   $ Solution tank, inner
+  4 c z  17.774  -0.953  91.553 $ Solution tank, outer
+  5 p z  30.60                  $ Sol'n height
+ 
+  6 c z   2.625                 tr 0 80.01 0 $ Dump line, inner
+  7 c z   3.016 -16.953   1.777 tr 0 80.01 0 $ Dump line, outer
+  8 c z  12.7     3.047 130.307 tr 0 80.01 0 $ Empty central tank, inner
+  9 c z  12.774   1.777 130.307 tr 0 80.01 0 $ Empty central tank, outer
+ 91 c z  26.596  23.782 129.354 tr 0 80.01 0 $ Empty annular tank, inner
+ 92 c z  26.67   23.147 130.307 tr 0 80.01 0 $ Empty annular tank, outer
+
+ 10 rpp -48.745 48.745 -46.845 130.665 -16.953 139.107 $ Reflector tank, inner
+ 11 rpp -48.895 48.895 -46.995 130.815 -17.588 139.257 $ Reflector tank, outer
+
+ 12 rpp  -866.105 200.895 -509.190 557.810 -144.528 495.442 $ Concrete tank, inner
+ 13 rpp -1018.105 352.895 -600.190 709.810 -205.528 556.442 $ Concrete tank, outer
+
+ 21 c z  18.415                 tr 0 0.1 0 $ Concrete, inner, upper
+ 22 c z  43.615 -16.953 115.127 tr 0 0.1 0 $ Concrete, outer, upper
+ 23 p x -30.5                   tr 0 0.1 0 $ Concrete, larger
+ 24 p x  30.5                   tr 0 0.1 0 $  female
+ 25 p y  -7.62                  tr 0 0.1 0 $   nesting
+ 26 p y   0.0                   tr 0 0.1 0 $    feature
+
+ 31 c z  18.415                 tr -0.3 -1.3 0 $ Concrete, inner, lower
+ 32 c z  43.615 -16.953 115.127 tr -0.3 -1.3 0 $ Concrete, outer, lower
+ 33 p x -29.5                   tr -0.3 -1.3 0 $ Concrete, smaller
+ 34 p x  29.5                   tr -0.3 -1.3 0 $  male
+ 35 p y  -7.62                  tr -0.3 -1.3 0 $   nesting
+ 36 p y   0.0                   tr -0.3 -1.3 0 $    feature
+end

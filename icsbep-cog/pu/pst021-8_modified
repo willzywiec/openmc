@@ -1,0 +1,20 @@
+PU-SOL-THERM-021 (Case 8) 5.357 kg Pu(95.4) @ H/X = 131 bare sphere
+basic
+  neutron delayedn urrpt
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Table 6b
+  mat=1 bunches pu238 2.6153-8   pu239 4.1249-4 pu240 2.0181-5 pu241 1.2181-6 pu242 3.8579-8
+                    n 4.7228-3 (h.h2o) 5.4160-2   o16 3.9755-2 
+geometry                                              
+  sector 1 SOLN  -1
+  boundary vacuum 1
+picture cs material
+  -25   0  25 -25   0 -25   25  0 -25
+volume
+  -20 -20 -20  20 -20 -20  -20 20 -20
+   40  40  40
+surfaces $ Rc from Table 5b
+  1 sphere 19.5064 
+end

@@ -1,0 +1,48 @@
+MIX-COMP-FAST-005; ZPR-9 Assembly 31; Benchmark Model
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0. 0. 0.0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches pu240 1.75952-4 pu241 1.78198-5 u235 2.13111-5 u238 9.78867-3 pu239 1.32815-3 pu238 7.13234-7 pu242 2.66245-6 $ Core 
+                 am241 8.54320-6    cr 2.89513-3   ni 1.30422-3   fe 1.02512-2    al 5.13564-6    na 8.91185-3   o16 4.94265-6
+                     c 1.08010-2    mo 3.53915-4   mn 2.45519-4   cu 3.45731-5     h 1.11998-5    si 1.71420-4    ca 2.04632-6 
+                    cl 4.90052-6    co 4.61645-6    f 1.36553-5
+  mat=2  bunches  u235 2.57503-5  u238 1.20669-2   cr 2.39422-3   ni 1.05040-3    fe 8.52895-3    al 2.81691-6    na 9.14804-3 $ Axial Blanket
+                   o16 5.68334-6     c 1.26102-2   mo 1.48356-5   mn 2.03881-4    cu 3.17428-5     h 1.56225-5    si 1.45760-4
+                    ca 2.10033-6    cl 9.80718-6   co 4.39305-6    f 2.81853-5
+  mat=3  bunches  u235 2.58519-5  u238 1.20835-2   cr 2.38545-3   ni 1.03999-3    fe 8.47394-3    al 2.29940-6    na 9.12969-3 $ Radial Blanket
+                   o16 5.77809-6     c 1.28451-2   mo 1.59369-5   mn 2.02087-4    cu 3.21491-5     h 1.55992-5    si 1.37736-4
+                    ca 2.09601-6    cl 9.64182-6   co 3.73707-6    f 2.76780-5
+  mat=4  bunches    cr 1.56855-2    ni 6.76619-3   fe 5.53962-2    c 2.38491-4    mo 6.18619-5    mn 1.35597-3    cu 5.49915-5 $ Radial Reflector
+                    si 8.41917-4    co 3.80598-6
+  mat=5  bunches    cr 1.52941-2    ni 6.72354-3   fe 5.39273-2    c 2.53374-4    mo 1.55892-5    mn 1.46892-3    cu 3.04999-5 $ Axial Reflector
+                    si 1.01099-3    co 4.08025-6
+  mat=6  bunches    cr 1.17957-3    ni 4.76330-4   fe 4.24488-3    c 1.85933-5    mo 8.19076-6    mn 1.05057-4    cu 1.70944-5 $ Matrix
+                    si 6.77630-5 
+assign-mc
+  1 yellow 2 lime 3 green 4 sky 5 blue 6 gray
+geometry
+  sector  1 Core    -1 -2 -3
+  sector  2 AxBlnkt  1 -2 -3
+  sector  3 RdBlnkt  1  2 -3
+  sector  4 AxRflct  3 -4 -5
+  sector  5 RdRflct  3  4 -5
+  sector  6 Matrix   5 -6
+  boundary  vacuum   6
+picture cs material color 
+    0   0   125    0   0     0  145   0    0 title="quarter core"
+picture cs material color 
+ -145   0   125 -145   0  -125  145   0 -125 title="full core"
+volume material
+ -141 -141 -122  141 -141 -122 -141 141 -122
+  282  282   244
+surfaces
+  1 cylinder z   59.0562  -45.7993  45.7993
+  2 cylinder z   59.0562  -76.2970  76.2970
+  3 cylinder z   89.3018  -76.2970  76.2970
+  4 cylinder z   89.3018  -92.0801  92.0801
+  5 cylinder z  105.4629  -92.0801  92.0801
+  6 cylinder z  140.2589 -121.9200 121.9200
+end

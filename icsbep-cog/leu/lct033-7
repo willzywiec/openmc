@@ -1,0 +1,26 @@
+LCT033-7: U(2)F4-2, Paraffin reflected on top and sides; Plexiglas on bottom
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u235 1.3300-4 u238 6.4332-3 u234 1.3357-6 $ U(2)F4-2
+             (h.ch2) 3.9150-2    c 1.8822-2    f 2.6270-2 $  with polythene stops
+  mat=2 bunches (h.ch2) 5.2126-2 c 3.2579-2  o16 1.3032-2 $ Plexiglas
+  mat=3 bunches (h.ch2) 8.2575-2 c 3.9699-2               $ Paraffin
+assign-mc
+  1 purple 2 blue 3 sky
+geometry
+  sector 1 UF4+   -1
+  sector 2 Plex    1 -2 -3
+  sector 3 Prffn   1 -2  3
+  boundary vacuum  2
+picture cs material color
+  -92   0  72 -92   0 -72  92   0 -72
+volume material
+  -92 -92 -55  92 -92 -55 -92  92 -55 184 184 110
+surfaces 
+  1 box  71.55  71.55  40.70
+  2 box 101.95 101.95  71.10
+  3 p z -20.35
+end

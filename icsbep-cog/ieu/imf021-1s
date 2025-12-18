@@ -1,0 +1,47 @@
+IEU-MET-FAST-021-1s: Rev. 1: FR0 4-S; simplified homogeous cylindrical benchmark
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 8.5135-5 u235 8.4983-3 u238 3.3376-2  c 4.3545-5  f 8.7090-5 fe 3.9671-3 $ ID=1
+                  cr 1.0802-3   ni 5.0510-4   mn 5.6800-5 si 5.5553-5                         $  (U20)
+  mat=2 bunches u234 2.3236-6 u235 3.0406-4 u238 4.1924-2 fe 3.9671-3 cr 1.0802-3 ni 5.0510-4 $ ID=2
+                  mn 5.6800-5   si 5.5553-5                                                   $  (Nat-U)
+  mat=3 bunches u234 2.3797-6 u235 3.1140-4 u238 4.2937-2                                     $ ID=3 (Nat-U)
+  mat=4 bunches   al 1.0713-2   fe 3.9671-3   cr 1.0802-3 ni 5.0510-4 mn 5.6800-5 si 5.5553-5 $ ID=4 (Al)
+  mat=5 bunches   fe 3.9671-3   cr 1.0802-3   ni 5.0510-4 mn 5.6800-5 si 5.5553-5             $ ID=5 (SST)
+  mat=6 bunches   fe 5.6554-2   cr 1.5400-2   ni 7.2006-3 mn 8.0972-4 si 7.9194-4             $ ID=6 (IEB)
+  mat=7 bunches   fe 4.7610-2   cr 1.2964-2   ni 6.0618-3 mn 6.8166-4 si 6.6670-4             $ ID=7 (OEB)
+  mat=8 bunches   fe 8.4109-2                                                                 $ ID=8 (FE)
+assign-mc
+  1 purple 2 blue 3 sky 4 green 5 yellow 6 black 7 gray 8 red
+geometry
+  sector 1 ID1    -1
+  sector 2 ID2     1 -2 -3
+  sector 3 ID3     1  2 -3
+  sector 4 ID4     1  2  3 -4
+  sector 5 ID5     1  2  3 -5
+  sector 6 ID6     1  2  3  4  5 -6
+  sector 7 ID7     1  2  3  4  5  6 -7
+  sector 8 ID8                       7 -8 -9 -10
+  sector 8 ID8     1  2  3  4  5  6  7  8  9 -10  
+  boundary vacuum                             10
+picture cs material color
+  -72   0  67 -72   0 -80  72  0 -80
+volume material
+  -70 -70 -78  70 -70 -78 -70 70 -78
+  140 140 143
+surfaces
+  1 c z  16.745 -17.204  17.204  $ ID1
+  2 c z  19.635 -30.104  30.104  $ ID2
+  3 c z  27.077 -30.104  30.104  $ ID3
+  4 c z  27.077 -57.650 -30.104  $ ID4
+  5 c z  27.077  30.104  58.050  $ ID5
+  6 c z  27.077 -59.950  60.050  $ ID6
+  7 c z  27.077 -61.750  61.750  $ ID7
+  8 c z  27.077  61.750  64.550  $ ID8; top
+  9 c z  68.4   -61.5535 64.7465 $ ID8; inner
+ 10 c z  70.0   -77.5535 64.7465 $ ID8; outer
+end

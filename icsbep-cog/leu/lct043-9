@@ -1,0 +1,124 @@
+LCT043-9: Array of U(4.3486)O2 fuel rods with 1.5 cm square pitch in water next to 0.301 cm SST plate
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  0.0  0.75 27.42  -1.5  0.75 27.42 
+  0.0 -0.75 27.42  -1.5 -0.75 27.42
+assign-mc
+  1 red 2 yellow 3 pink 4 lime 5 purple 6 black 7 gray 8 brown 9 green 10 sky 11 green
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches    u234 7.8456-6 u235 9.9916-4 u238 2.1692-2 o16 4.5468-2 o17 1.7284-5  $ UO2
+  mat=2  bunches      fe 5.9002-2   ni 8.1625-3   cr 1.6824-2  mn 1.4645-3  si 6.7934-4  $ Cladding and
+                       p 4.0040-5    c 1.1239-4    s 1.5617-5  co 1.7402-4  mo 8.4520-5  $  bottom plugs
+  mat=3  bunches      al 4.4744-2  o16 6.7091-2  o17 2.5504-5                            $ Alumina
+  mat=4  bunches      mn 1.1581-3   si 1.1155-3   ni 6.5702-3  cr 1.6779-2  fe 6.1892-2  $ Spacer
+                       c 2.4078-4    p 3.1124-5   co 1.1450-4                            $  tube
+  mat=5  bunches      ag 4.4325-2   in 7.8517-3   cd 2.5894-3   c 1.5052-3   s 1.8791-4  $ Control rod
+                     o16 1.7696-3  o17 6.7271-7                                          $  absorber
+  mat=6  bunches      fe 5.6943-2    c 8.8968-5   cr 1.6298-2  ni 9.1037-3  mn 1.1501-3  $ Guide
+                       p 4.5000-6   si 6.6170-4                                          $  tubes
+  mat=7  bunches      gd 6.8756-3  o16 1.0309-2  o17 3.9189-6                            $ Gadolinia
+  mat=8  bunches       c 7.9426-5   mn 1.2503-3    p 5.5440-5   s 4.4620-6  si 8.6616-4  $ Grid
+                      ni 7.6641-3   cr 1.6705-2   mo 2.9831-5  fe 6.0036-2               $  plate
+  mat=9  bunches       c 1.8090-4   mn 1.0392-3    s 1.0816-5  si 6.9644-4  ni 6.5670-3  $ SST
+                      cr 1.7595-2   mo 2.1091-5   fe 6.0036-2  cu 1.6679-5  ti 2.4098-6  $  plates
+  mat=10 bunches (h.h2o) 6.6736-2  o16 3.3355-2  o17 1.2680-5                            $ Water
+  mat=11 bunches      si 6.5467-4   mn 1.3475-3    p 1.1716-5  cr 1.7904-2  ni 7.1702-3  $ SST
+                       c 1.2891-4    s 3.9228-5   fe 6.0724-2                            $  rod
+geometry
+    use unit 7 Core   -1
+    sector   8 Grid      -2
+    sector   9 SST     1  2 -3
+    sector  10 Water   1  2  3 -4
+    boundary   vacuum           4
+ define unit 1 $ ................... Fuel rod
+    sector   3 Al2O3   -11         $ Alumina
+    sector   1 UO2      11 -12     $ UO2
+    sector   3 Al2O3    12 -13     $ Alumina
+    sector   4 Spacer   13  14 -15 $ Spacer tube
+    sector   2 Clad     16 -17     $ Clad
+    sector  10 Water   -4   17     $ Water
+ define unit 2 $ ................... Control rod
+    sector   5 AgInCd  -21         $ Ag-In-Cd absorber
+    sector   2 Clad     21  22 -23 $ Clad
+    sector  10 Water    23 -24 -25 $ Water
+    sector   6 Guide    24 -25     $ Guide tube
+    sector  10 Water   -4   25     $ Water
+ define unit 3 $ ................... Safety rod
+    sector  10 Water   -24 -25     $ Water
+    sector   6 Guide    24 -25     $ Guide tube
+    sector  10 Water   -4   25     $ Water
+ define unit 4 $ ................... Gd2O3 rod
+    sector   7 Gd2O3   -16 -17     $ Gd2O3
+    sector   6 Guide    16 -17     $ Clad
+    sector  10 Water   -4   17     $ Water
+ define unit 5 $ ................... Empty position
+    sector  10 Water   -4          $ Water
+ define unit 6 $ ................... SST rod
+    sector  11 SST    -31          $ SST
+    sector  10 Water   -4   31     $ Water
+ define unit 7 $ ................... 29x30 array
+   {x 101 30 [-21.75  21.75]
+    y 141 31 [-22.50  22.50]
+    z 181    -999.99 999.99
+    fill
+    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 3 1 1 1 3 1 1 1 1 1 1 1 1 2 1 1 1 2 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 3 1 1 1 3 1 1 1 3 1 1 1 1 2 1 1 1 2 1 1 1 2 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 3 1 1 1 3 1 1 4 1 1 1 1 1 2 1 1 1 2 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 3 1 1 1 3 1 1 1 3 1 1 1 1 2 1 1 1 2 1 1 1 2 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 3 1 1 1 3 1 1 1 1 1 4 1 1 2 1 1 1 2 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 2 1 1 1 2 1 1 1 1 1 4 1 1 3 1 1 1 3 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 2 1 1 1 2 1 1 1 2 1 1 1 1 3 1 1 1 3 1 1 1 3 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 2 1 1 1 2 1 1 4 1 1 1 1 1 3 1 1 1 3 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 2 1 1 1 2 1 1 1 2 1 1 1 1 3 1 1 1 3 1 1 1 3 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 2 1 1 1 2 1 1 1 1 1 1 1 1 3 1 1 1 3 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5
+    1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 6 5
+    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5}
+  picture cs material color -33  33  63 -33  -33  63 33  -33  63 title="plane view through Ag-In-Cd"
+  picture cs material color -33  33  27 -33  -33  27 33  -33  27 title="plane view through fuel"
+  picture cs material color -33  33 -10 -33  -33 -10 33  -33 -10 title="plane view through grid"
+  picture cs material color -33 3.75 72 -33 3.75 -20 33 3.75 -20 title="axial x-z view"
+  picture cs material color   0 3.75 72   0 3.75  54 11 3.75  54 title="axial x-z detail of upper rods"
+  picture cs material color   0 3.75  1   0 3.75 -12 11 3.75 -12 title="axial x-z detail of upper rods"
+surfaces
+$ --- Entire Problem
+   1 box  43.5     45.0  80.3  tr   0       0  31.05 $ Array boundary
+   2 box  58.8     58.8   2.2  tr   0       0 -10.20 $ Bottom grid plate
+   3 box   0.301   50.8  71.50 tr -22.19087 0  30.80 $ SST plates
+   4 c z 100.0    -41.3  71.2                        $ Boundary condition
+$ --- Fuel rod
+  11 c z  0.4235   -9.1   0.0  $ Al2O3
+  12 c z  0.42447   0.0  58.84 $ UO2
+  13 c z  0.4235   54.84 60.24 $ Al2O3
+  14 c z  0.365                $ Spacer tube, inner
+  15 c z  0.425    60.24 71.2  $ Spacer tube, outer
+  16 c z  0.42873              $ Clad, inner
+  17 c z  0.49037  -9.1  71.2  $ Clad, outer
+$ --- Control rod
+  21 c z  0.416    54.84 71.2  $ Ag-In-Cd
+  22 c z  0.42873  54.84 71.2  $ Clad, inner
+  23 c z  0.49037  53.17 71.2  $ Clad, outer
+  24 c z  0.565                $ Guide tube, inner
+  25 c z  0.600    -9.1  71.2  $ Guide tube, outer
+$ --- Stainless steel rod
+  31 c z  0.475    -9.1  71.2  $ Stainless steel rod
+end

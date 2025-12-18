@@ -1,0 +1,23 @@
+ICT015-8: 15.24 x 15.24 x 40.6654 cc U(30.14)O2/wax parallelepiped reflected by 20.32 cm thick CH2 - batch 40
+basic 
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+assign-mc
+  1 red 2 sky
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches (h.ch2) 6.0979-2 c 3.0205-2 o16 1.0657-2 al 6.4833-5 u234 1.9740-5 u235 1.5590-3 u236 3.6054-6 u238 3.5449-3 $ Batch 40
+  mat=2 bunches (h.ch2) 7.8911-2 c 3.9455-2 $ Polythene
+geometry
+  sector 1 UO2WAX    -1
+  sector 2 POLY    1 -2
+  boundary vacuum  2
+picture cs material color
+  -28   0  41 -28   0 -41  28  0 -41 title="axial view"
+volume material
+  -28 -28 -41  28 -28 -41 -28 28 -41
+   56  56  82
+surfaces
+  1 box 15.24 15.24 40.6654
+  2 box 55.88 55.88 81.3054
+end

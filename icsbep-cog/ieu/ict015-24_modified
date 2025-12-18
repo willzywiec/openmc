@@ -1,0 +1,23 @@
+ICT015-24: 27.94 x 27.94 x 24.9428 cc U(30.14)O2/wax parallelepiped reflected by 20.32 cm thick PERSPEX - batch 16L
+basic 
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 0
+assign-mc
+  1 red 2 blue
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches (h.ch2) 3.5003-2 c 1.7342-2 o16 1.4687-2 al 5.1665-5 u234 2.7307-5 u235 2.1566-3 u236 4.9875-6 u238 4.9038-3 $ Batch 16L
+  mat=2 bunches (h.ch2) 5.7408-2 c 3.5880-2 o16 1.4352-2 $ Perspex
+geometry
+  sector 1 UO2WAX    -1
+  sector 2 PERSPEX 1 -2
+  boundary vacuum  2
+picture cs material color
+  -35   0  33 -35   0 -33  35  0 -33 title="axial view"
+volume material
+  -35 -35 -33  35 -35 -33 -35 35 -33
+   70  70  66
+surfaces
+  1 box 27.94 27.94 24.9428
+  2 box 68.58 68.58 65.5828
+end

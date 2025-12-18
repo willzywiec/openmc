@@ -1,0 +1,461 @@
+U233-COMP-THERM-001-7: SB-6
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1 0 0 0 
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches (h.h2o) 6.6735-2  o16 3.3368-2                                         $ Water at 20C
+  mat=2 bunches      fe 5.9259-2   cr 1.7428-2   mn 8.6816-4  ni 7.5171-3 b10 3.7488-3 $ Borated SST
+  mat=3 bunches    u233 3.9891-3 u234 6.3690-5 u238 4.5759-5 o16 5.3932-2  zr 2.2867-2 $ 233UO2-ZrO2 Seed
+  mat=4 bunches      zr 4.2537-2   sn 4.9918-4                                         $ Zircalloy-2
+  mat=5 bunches      th 2.1641-2  o16 4.3282-2   gd 9.2607-8                           $ ThO2 Blanket with Gd
+  mat=6 bunches (h.ch2) 7.8854-2    c 3.9427-2                                         $ Polyethylene
+assign-mc
+  1 sky 2 black 3 red 4 gray 5 lime 6 blue
+geometry
+  sector 2 Cntrl   -1 -100 -2  
+  sector 2 Cntrl   -1 -100 -3
+  sector 2 Cntrl   -1 -100 -4
+  sector 2 Cntrl   -1 -100 -5
+  unit   3 Inner   -1 -100  2  3  4  5
+  unit   5 Outer   -1  100  399 
+  unit   5 Outer   -1  100 -399 tr 0 0 0 -1 0 0 0 -1 0 
+  boundary vacuum   1
+$ -------------------------------------------------------------------------------------------------------------------------
+  define unit 5 $ Outer (Reflector) Region of Blanket Rods 
+$ -------------------------------------------------------------------------------------------------------------------------
+  unit   4 OuterRg -9  400      -401                           unit   4 OuterRg -9 -400      -401 tr -29.00680   0       0
+  unit   4 OuterRg -9  400  401 -402 tr  -0.72517   1.25603 0  unit   4 OuterRg -9 -400  401 -402 tr -28.28163   1.25603 0  
+  unit   4 OuterRg -9  400  402 -403 tr  -1.45034   2.51206 0  unit   4 OuterRg -9 -400  402 -403 tr -27.55646   2.51206 0  
+  unit   4 OuterRg -9  400  403 -404 tr  -2.17551   3.76809 0  unit   4 OuterRg -9 -400  403 -404 tr -26.83129   3.76809 0  
+  unit   4 OuterRg -9  400  404 -405 tr  -2.90068   5.02413 0  unit   4 OuterRg -9 -400  404 -405 tr -26.10612   5.02413 0  
+  unit   4 OuterRg -9  400  405 -406 tr  -3.62585   6.28016 0  unit   4 OuterRg -9 -400  405 -406 tr -25.38095   6.28016 0  
+  unit   4 OuterRg -9  400  406 -407 tr  -4.35102   7.53619 0  unit   4 OuterRg -9 -400  406 -407 tr -24.65578   7.53619 0  
+  unit   4 OuterRg -9  400  407 -408 tr  -5.07619   8.79222 0  unit   4 OuterRg -9 -400  407 -408 tr -23.93061   8.79222 0  
+  unit   4 OuterRg -9  400  408 -409 tr  -5.80136  10.04825 0  unit   4 OuterRg -9 -400  408 -409 tr -23.20544  10.04825 0  
+  unit   4 OuterRg -9  400  409 -410 tr  -6.52653  11.30428 0  unit   4 OuterRg -9 -400  409 -410 tr -22.48027  11.30428 0  
+  unit   4 OuterRg -9  400  410 -411 tr  -7.25170  12.56031 0  unit   4 OuterRg -9 -400  410 -411 tr -21.75510  12.56031 0  
+  unit   4 OuterRg -9  400  411 -412 tr  -7.97687  13.81634 0  unit   4 OuterRg -9 -400  411 -412 tr -21.02993  13.81634 0  
+  unit   4 OuterRg -9  400  412 -413 tr  -8.70204  15.07238 0  unit   4 OuterRg -9 -400  412 -413 tr -20.30476  15.07238 0  
+  unit   4 OuterRg -9  400  413 -414 tr  -9.42721  16.32841 0  unit   4 OuterRg -9 -400  413 -414 tr -19.57959  16.32841 0  
+  unit   4 OuterRg -9  400  414 -415 tr -10.15238  17.58444 0  unit   4 OuterRg -9 -400  414 -415 tr -18.85442  17.58444 0  
+  unit   4 OuterRg -9  400  415 -416 tr -10.87755  18.84047 0  unit   4 OuterRg -9 -400  415 -416 tr -18.12925  18.84047 0  
+  unit   4 OuterRg -9  400  416 -417 tr -11.60272  20.09650 0  unit   4 OuterRg -9 -400  416 -417 tr -17.40408  20.09650 0  
+  unit   4 OuterRg -9  400  417 -418 tr -12.32789  21.35253 0  unit   4 OuterRg -9 -400  417 -418 tr -16.67891  21.35253 0  
+  unit   4 OuterRg -9  400  418 -419 tr -13.05306  22.60856 0  unit   4 OuterRg -9 -400  418 -419 tr -15.95374  22.60856 0  
+  unit   4 OuterRg -9  400  419      tr -13.77823  23.86459 0  unit   4 OuterRg -9 -400  419      tr -15.22857  23.86459 0  
+$ -------------------------------------------------------------------------------------------------------------------------
+  define unit 4 $ Two Lines of Outer (Reflector) Region of Blanket Rods 
+$ -------------------------------------------------------------------------------------------------------------------------
+$ --- Row 20
+  unit   2 BlktRod -9  -193 tr   0.72517   1.25603 0  unit   2 BlktRod -9  -194 tr   2.17551   1.25603 0  
+  unit   2 BlktRod -9  -195 tr   3.62585   1.25603 0  unit   2 BlktRod -9  -196 tr   5.07619   1.25603 0  
+  unit   2 BlktRod -9  -197 tr   6.52653   1.25603 0  unit   2 BlktRod -9  -198 tr   7.97687   1.25603 0  
+  unit   2 BlktRod -9  -199 tr   9.42721   1.25603 0  unit   2 BlktRod -9  -200 tr  10.87755   1.25603 0  
+  unit   2 BlktRod -9 -1201 tr  12.32789   1.25603 0  unit   2 BlktRod -9 -1202 tr  13.77823   1.25603 0
+  unit   2 BlktRod -9 -1203 tr  15.22857   1.25603 0  unit   2 BlktRod -9 -1204 tr  16.67891   1.25603 0
+  unit   2 BlktRod -9 -1205 tr  18.12925   1.25603 0  unit   2 BlktRod -9 -1206 tr  19.57959   1.25603 0
+  unit   2 BlktRod -9 -1207 tr  21.02993   1.25603 0  unit   2 BlktRod -9 -1208 tr  22.48027   1.25603 0
+  unit   2 BlktRod -9 -1209 tr  23.93061   1.25603 0  unit   2 BlktRod -9 -1210 tr  25.38095   1.25603 0
+  unit   2 BlktRod -9 -1211 tr  26.83129   1.25603 0  unit   2 BlktRod -9 -1212 tr  28.28163   1.25603 0
+$ --- Row 21 (Centerline)
+  unit   2 BlktRod -9  -209                           unit   2 BlktRod -9  -210 tr   1.45034   0       0  
+  unit   2 BlktRod -9  -211 tr   2.90068   0       0  unit   2 BlktRod -9  -212 tr   4.35102   0       0  
+  unit   2 BlktRod -9  -213 tr   5.80136   0       0  unit   2 BlktRod -9  -214 tr   7.25170   0       0  
+  unit   2 BlktRod -9  -215 tr   8.70204   0       0  unit   2 BlktRod -9  -216 tr  10.15238   0       0  
+  unit   2 BlktRod -9  -217 tr  11.60272   0       0  unit   2 BlktRod -9 -1218 tr  13.05306   0       0  
+  unit   2 BlktRod -9 -1219 tr  14.50340   0       0  unit   2 BlktRod -9 -1220 tr  15.95374   0       0  
+  unit   2 BlktRod -9 -1221 tr  17.40408   0       0  unit   2 BlktRod -9 -1222 tr  18.85442   0       0  
+  unit   2 BlktRod -9 -1223 tr  20.30476   0       0  unit   2 BlktRod -9 -1224 tr  21.75510   0       0  
+  unit   2 BlktRod -9 -1225 tr  23.20544   0       0  unit   2 BlktRod -9 -1226 tr  24.65578   0       0  
+  unit   2 BlktRod -9 -1227 tr  26.10612   0       0  unit   2 BlktRod -9 -1228 tr  27.55646   0       0  
+  unit   2 BlktRod -9 -1229 tr  29.00680   0       0
+  sector 1 Water   -9
+     193  194  195  196  197  198  199  200 1201 1202 1203 1204 1205 1206 1207 1208 1209 1210 1211 1212 
+     209  210  211  212  213  214  215  216  217 1218 1219 1220 1221 1222 1223 1224 1225 1226 1227 1228 1229 
+$ -------------------------------------------------------------------------------------------------------------------------
+  define unit 3 $ Inner (Core) Region of Seed (and Blanket) Rods 
+$ -------------------------------------------------------------------------------------------------------------------------
+$ --- Row 13
+  unit   2 BlktRod -1  -101 tr  -5.80136  10.04825 0  unit   2 BlktRod -1  -102 tr  -4.35102  10.04825 0 
+  unit   2 BlktRod -1  -103 tr  -2.90068  10.04825 0  unit   2 BlktRod -1  -104 tr  -1.45034  10.04825 0 
+  unit   2 BlktRod -1  -105 tr   0        10.04825 0  unit   2 BlktRod -1  -106 tr   1.45034  10.04825 0 
+  unit   2 BlktRod -1  -107 tr   2.90068  10.04825 0  unit   2 BlktRod -1  -108 tr   4.35102  10.04825 0 
+  unit   2 BlktRod -1  -109 tr   5.80136  10.04825 0  
+$ --- Row 14
+  unit   2 BlktRod -1  -110 tr  -6.52653   8.79222 0  unit   2 BlktRod -1  -111 tr  -5.07619   8.79222 0 
+  unit   2 BlktRod -1  -112 tr  -3.62585   8.79222 0  unit   2 BlktRod -1  -113 tr  -2.17551   8.79222 0 
+  unit   2 BlktRod -1  -114 tr  -0.72517   8.79222 0  unit   1 SeedRod -1  -115 tr   0.72517   8.79222 0 
+  unit   1 SeedRod -1  -116 tr   2.17551   8.79222 0  unit   1 SeedRod -1  -117 tr   3.62585   8.79222 0 
+  unit   1 SeedRod -1  -118 tr   5.07619   8.79222 0  unit   2 BlktRod -1  -119 tr   6.52653   8.79222 0 
+$ --- Row 15
+  unit   2 BlktRod -1  -120 tr  -7.25170   7.53619 0  unit   2 BlktRod -1  -121 tr  -5.80136   7.53619 0 
+  unit   1 SeedRod -1  -122 tr  -4.35102   7.53619 0  unit   1 SeedRod -1  -123 tr  -2.90068   7.53619 0 
+  unit   1 SeedRod -1  -124 tr  -1.45034   7.53619 0  unit   1 SeedRod -1  -125 tr   0         7.53619 0
+  unit   1 SeedRod -1  -126 tr   1.45034   7.53619 0  unit   1 SeedRod -1  -127 tr   2.90068   7.53619 0 
+  unit   1 SeedRod -1  -128 tr   4.35102   7.53619 0  unit   1 SeedRod -1  -129 tr   5.80136   7.53619 0 
+  unit   2 BlktRod -1  -130 tr   7.25170   7.53619 0 
+$ --- Row 16
+  unit   2 BlktRod -1  -131 tr  -7.97687   6.28016 0  unit   2 BlktRod -1  -132 tr  -6.52653   6.28016 0  
+  unit   1 SeedRod -1  -133 tr  -5.07619   6.28016 0  unit   1 SeedRod -1  -134 tr  -3.62585   6.28016 0 
+  unit   1 SeedRod -1  -135 tr  -2.17551   6.28016 0  unit   1 SeedRod -1  -136 tr  -0.72517   6.28016 0 
+  unit   1 SeedRod -1  -137 tr   0.72517   6.28016 0  unit   1 SeedRod -1  -138 tr   2.17551   6.28016 0  
+  unit   1 SeedRod -1  -139 tr   3.62585   6.28016 0  unit   1 SeedRod -1  -140 tr   5.07619   6.28016 0  
+  unit   1 SeedRod -1  -141 tr   6.52653   6.28016 0  unit   2 BlktRod -1  -142 tr   7.97687   6.28016 0  
+$ --- Row 17
+  unit   2 BlktRod -1  -143 tr  -8.70204   5.02413 0  unit   2 BlktRod -1  -144 tr  -7.25170   5.02413 0  
+  unit   1 SeedRod -1  -145 tr  -5.80136   5.02413 0  unit   1 SeedRod -1  -146 tr  -4.35102   5.02413 0  
+  unit   1 SeedRod -1  -147 tr  -2.90068   5.02413 0  unit   1 SeedRod -1  -148 tr  -1.45034   5.02413 0  
+  unit   1 SeedRod -1  -149 tr   0         5.02413 0  unit   1 SeedRod -1  -150 tr   1.45034   5.02413 0  
+  unit   1 SeedRod -1  -151 tr   2.90068   5.02413 0  unit   1 SeedRod -1  -152 tr   4.35102   5.02413 0  
+  unit   1 SeedRod -1  -153 tr   5.80136   5.02413 0  unit   1 SeedRod -1  -154 tr   7.25170   5.02413 0 
+  unit   2 BlktRod -1  -155 tr   8.70204   5.02413 0  
+$ --- Row 18
+  unit   2 BlktRod -1  -156 tr  -9.42721   3.76809 0  unit   1 SeedRod -1  -157 tr  -7.97687   3.76809 0  
+  unit   1 SeedRod -1  -158 tr  -6.52653   3.76809 0  unit   1 SeedRod -1  -159 tr  -5.07619   3.76809 0  
+  unit   1 SeedRod -1  -160 tr  -3.62585   3.76809 0  unit   1 SeedRod -1  -161 tr  -2.17551   3.76809 0  
+  unit   1 SeedRod -1  -162 tr  -0.72517   3.76809 0  unit   1 SeedRod -1  -163 tr   0.72517   3.76809 0  
+  unit   1 SeedRod -1  -164 tr   2.17551   3.76809 0  unit   1 SeedRod -1  -165 tr   3.62585   3.76809 0  
+  unit   1 SeedRod -1  -166 tr   5.07619   3.76809 0  unit   1 SeedRod -1  -167 tr   6.52653   3.76809 0  
+  unit   2 BlktRod -1  -168 tr   7.97687   3.76809 0  unit   2 BlktRod -1  -169 tr   9.42721   3.76809 0  
+$ --- Row 19
+  unit   2 BlktRod -1  -170 tr -10.15238   2.51206 0  unit   1 SeedRod -1  -171 tr  -8.70204   2.51206 0  
+  unit   1 SeedRod -1  -172 tr  -7.25170   2.51206 0  unit   1 SeedRod -1  -173 tr  -5.80136   2.51206 0  
+  unit   1 SeedRod -1  -174 tr  -4.35102   2.51206 0  unit   1 SeedRod -1  -175 tr  -2.90068   2.51206 0  
+  unit   1 SeedRod -1  -176 tr  -1.45034   2.51206 0  unit   1 SeedRod -1  -177 tr   0         2.51206 0  
+  unit   1 SeedRod -1  -178 tr   1.45034   2.51206 0  unit   1 SeedRod -1  -179 tr   2.90068   2.51206 0  
+  unit   1 SeedRod -1  -180 tr   4.35102   2.51206 0  unit   1 SeedRod -1  -181 tr   5.80136   2.51206 0  
+  unit   1 SeedRod -1  -182 tr   7.25170   2.51206 0  unit   2 BlktRod -1  -183 tr   8.70204   2.51206 0  
+  unit   2 BlktRod -1  -184 tr  10.15238   2.51206 0  
+$ --- Row 20
+  unit   2 BlktRod -1  -185 tr -10.87755   1.25603 0  unit   1 SeedRod -1  -186 tr  -9.42721   1.25603 0  
+  unit   1 SeedRod -1  -187 tr  -7.97687   1.25603 0  unit   1 SeedRod -1  -188 tr  -6.52653   1.25603 0  
+  unit   1 SeedRod -1  -189 tr  -5.07619   1.25603 0  unit   1 SeedRod -1  -190 tr  -3.62585   1.25603 0  
+  unit   1 SeedRod -1  -191 tr  -2.17551   1.25603 0  unit   1 SeedRod -1  -192 tr  -0.72517   1.25603 0  
+  unit   1 SeedRod -1  -193 tr   0.72517   1.25603 0  unit   1 SeedRod -1  -194 tr   2.17551   1.25603 0  
+  unit   1 SeedRod -1  -195 tr   3.62585   1.25603 0  unit   1 SeedRod -1  -196 tr   5.07619   1.25603 0  
+  unit   1 SeedRod -1  -197 tr   6.52653   1.25603 0  unit   1 SeedRod -1  -198 tr   7.97687   1.25603 0  
+  unit   2 BlktRod -1  -199 tr   9.42721   1.25603 0  unit   2 BlktRod -1  -200 tr  10.87755   1.25603 0  
+$ --- Row 21 (Centerline)
+  unit   2 BlktRod -1  -201 tr -11.60272   0       0  unit   1 SeedRod -1  -202 tr -10.15238   0       0  
+  unit   1 SeedRod -1  -203 tr  -8.70204   0       0  unit   1 SeedRod -1  -204 tr  -7.25170   0       0  
+  unit   1 SeedRod -1  -205 tr  -5.80136   0       0  unit   1 SeedRod -1  -206 tr  -4.35102   0       0  
+  unit   1 SeedRod -1  -207 tr  -2.90068   0       0  unit   1 SeedRod -1  -208 tr  -1.45034   0       0  
+  unit   1 SeedRod -1  -209                           unit   1 SeedRod -1  -210 tr   1.45034   0       0  
+  unit   1 SeedRod -1  -211 tr   2.90068   0       0  unit   1 SeedRod -1  -212 tr   4.35102   0       0  
+  unit   1 SeedRod -1  -213 tr   5.80136   0       0  unit   1 SeedRod -1  -214 tr   7.25170   0       0  
+  unit   1 SeedRod -1  -215 tr   8.70204   0       0  unit   2 BlktRod -1  -216 tr  10.15238   0       0  
+  unit   2 BlktRod -1  -217 tr  11.60272   0       0  
+$ --- Row 22 (like Row 20)
+  unit   2 BlktRod -1  -218 tr -10.87755  -1.25603 0  unit   1 SeedRod -1  -219 tr  -9.42721  -1.25603 0  
+  unit   1 SeedRod -1  -220 tr  -7.97687  -1.25603 0  unit   1 SeedRod -1  -221 tr  -6.52653  -1.25603 0  
+  unit   1 SeedRod -1  -222 tr  -5.07619  -1.25603 0  unit   1 SeedRod -1  -223 tr  -3.62585  -1.25603 0  
+  unit   1 SeedRod -1  -224 tr  -2.17551  -1.25603 0  unit   1 SeedRod -1  -225 tr  -0.72517  -1.25603 0  
+  unit   1 SeedRod -1  -226 tr   0.72517  -1.25603 0  unit   1 SeedRod -1  -227 tr   2.17551  -1.25603 0  
+  unit   1 SeedRod -1  -228 tr   3.62585  -1.25603 0  unit   1 SeedRod -1  -229 tr   5.07619  -1.25603 0  
+  unit   1 SeedRod -1  -230 tr   6.52653  -1.25603 0  unit   1 SeedRod -1  -231 tr   7.97687  -1.25603 0  
+  unit   2 BlktRod -1  -232 tr   9.42721  -1.25603 0  unit   2 BlktRod -1  -233 tr  10.87755  -1.25603 0  
+$ --- Row 23 (like Row 19)
+  unit   2 BlktRod -1  -234 tr -10.15238  -2.51206 0  unit   1 SeedRod -1  -235 tr  -8.70204  -2.51206 0  
+  unit   1 SeedRod -1  -236 tr  -7.25170  -2.51206 0  unit   1 SeedRod -1  -237 tr  -5.80136  -2.51206 0  
+  unit   1 SeedRod -1  -238 tr  -4.35102  -2.51206 0  unit   1 SeedRod -1  -239 tr  -2.90068  -2.51206 0  
+  unit   1 SeedRod -1  -240 tr  -1.45034  -2.51206 0  unit   1 SeedRod -1  -241 tr   0        -2.51206 0  
+  unit   1 SeedRod -1  -242 tr   1.45034  -2.51206 0  unit   1 SeedRod -1  -243 tr   2.90068  -2.51206 0  
+  unit   1 SeedRod -1  -244 tr   4.35102  -2.51206 0  unit   1 SeedRod -1  -245 tr   5.80136  -2.51206 0  
+  unit   1 SeedRod -1  -246 tr   7.25170  -2.51206 0  unit   2 BlktRod -1  -247 tr   8.70204  -2.51206 0  
+  unit   2 BlktRod -1  -248 tr  10.15238  -2.51206 0  
+$ --- Row 24 (like Row 18)
+  unit   2 BlktRod -1  -249 tr  -9.42721  -3.76809 0  unit   1 SeedRod -1  -250 tr  -7.97687  -3.76809 0  
+  unit   1 SeedRod -1  -251 tr  -6.52653  -3.76809 0  unit   1 SeedRod -1  -252 tr  -5.07619  -3.76809 0  
+  unit   1 SeedRod -1  -253 tr  -3.62585  -3.76809 0  unit   1 SeedRod -1  -254 tr  -2.17551  -3.76809 0  
+  unit   1 SeedRod -1  -255 tr  -0.72517  -3.76809 0  unit   1 SeedRod -1  -256 tr   0.72517  -3.76809 0  
+  unit   1 SeedRod -1  -257 tr   2.17551  -3.76809 0  unit   1 SeedRod -1  -258 tr   3.62585  -3.76809 0  
+  unit   1 SeedRod -1  -259 tr   5.07619  -3.76809 0  unit   1 SeedRod -1  -260 tr   6.52653  -3.76809 0  
+  unit   2 BlktRod -1  -261 tr   7.97687  -3.76809 0  unit   2 BlktRod -1  -262 tr   9.42721  -3.76809 0  
+$ --- Row 25 (like Row 17)
+  unit   2 BlktRod -1  -263 tr  -8.70204  -5.02413 0  unit   2 BlktRod -1  -264 tr  -7.25170  -5.02413 0  
+  unit   1 SeedRod -1  -265 tr  -5.80136  -5.02413 0  unit   1 SeedRod -1  -266 tr  -4.35102  -5.02413 0  
+  unit   1 SeedRod -1  -267 tr  -2.90068  -5.02413 0  unit   1 SeedRod -1  -268 tr  -1.45034  -5.02413 0  
+  unit   1 SeedRod -1  -269 tr   0        -5.02413 0  unit   1 SeedRod -1  -270 tr   1.45034  -5.02413 0  
+  unit   1 SeedRod -1  -271 tr   2.90068  -5.02413 0  unit   1 SeedRod -1  -272 tr   4.35102  -5.02413 0  
+  unit   1 SeedRod -1  -273 tr   5.80136  -5.02413 0  unit   1 SeedRod -1  -274 tr   7.25170  -5.02413 0 
+  unit   2 BlktRod -1  -275 tr   8.70204  -5.02413 0  
+$ --- Row 26 (like Row 16)
+  unit   2 BlktRod -1  -276 tr  -7.97687  -6.28016 0  unit   2 BlktRod -1  -277 tr  -6.52653  -6.28016 0  
+  unit   1 SeedRod -1  -278 tr  -5.07619  -6.28016 0  unit   1 SeedRod -1  -279 tr  -3.62585  -6.28016 0 
+  unit   1 SeedRod -1  -280 tr  -2.17551  -6.28016 0  unit   1 SeedRod -1  -281 tr  -0.72517  -6.28016 0 
+  unit   1 SeedRod -1  -282 tr   0.72517  -6.28016 0  unit   1 SeedRod -1  -283 tr   2.17551  -6.28016 0  
+  unit   1 SeedRod -1  -284 tr   3.62585  -6.28016 0  unit   1 SeedRod -1  -285 tr   5.07619  -6.28016 0  
+  unit   1 SeedRod -1  -286 tr   6.52653  -6.28016 0  unit   2 BlktRod -1  -287 tr   7.97687  -6.28016 0  
+$ --- Row 15
+  unit   2 BlktRod -1  -288 tr  -7.25170  -7.53619 0  unit   2 BlktRod -1  -289 tr  -5.80136  -7.53619 0 
+  unit   1 SeedRod -1  -290 tr  -4.35102  -7.53619 0  unit   1 SeedRod -1  -291 tr  -2.90068  -7.53619 0 
+  unit   1 SeedRod -1  -292 tr  -1.45034  -7.53619 0  unit   1 SeedRod -1  -293 tr   0        -7.53619 0
+  unit   1 SeedRod -1  -294 tr   1.45034  -7.53619 0  unit   1 SeedRod -1  -295 tr   2.90068  -7.53619 0 
+  unit   1 SeedRod -1  -296 tr   4.35102  -7.53619 0  unit   1 SeedRod -1  -297 tr   5.80136  -7.53619 0 
+  unit   2 BlktRod -1  -298 tr   7.25170  -7.53619 0 
+$ --- Row 14
+  unit   2 BlktRod -1  -299 tr  -6.52653  -8.79222 0  unit   2 BlktRod -1  -300 tr  -5.07619  -8.79222 0 
+  unit   2 BlktRod -1  -301 tr  -3.62585  -8.79222 0  unit   2 BlktRod -1  -302 tr  -2.17551  -8.79222 0 
+  unit   2 BlktRod -1  -303 tr  -0.72517  -8.79222 0  unit   1 SeedRod -1  -304 tr   0.72517  -8.79222 0 
+  unit   1 SeedRod -1  -305 tr   2.17551  -8.79222 0  unit   1 SeedRod -1  -306 tr   3.62585  -8.79222 0 
+  unit   1 SeedRod -1  -307 tr   5.07619  -8.79222 0  unit   2 BlktRod -1  -308 tr   6.52653  -8.79222 0 
+$ --- Row 13
+  unit   2 BlktRod -1  -309 tr  -5.80136 -10.04825 0  unit   2 BlktRod -1  -310 tr  -4.35102 -10.04825 0 
+  unit   2 BlktRod -1  -311 tr  -2.90068 -10.04825 0  unit   2 BlktRod -1  -312 tr  -1.45034 -10.04825 0 
+  unit   2 BlktRod -1  -313 tr   0       -10.04825 0  unit   2 BlktRod -1  -314 tr   1.45034 -10.04825 0 
+  unit   2 BlktRod -1  -315 tr   2.90068 -10.04825 0  unit   2 BlktRod -1  -316 tr   4.35102 -10.04825 0 
+  unit   2 BlktRod -1  -317 tr   5.80136 -10.04825 0  
+  sector 1 Water   -1
+     101  102  103  104  105  106  107  108  109  110  111  112  113  114  115  116  117  118  119  120  
+     121  122  123  124  125  126  127  128  129  130  131  132  133  134  135  136  137  138  139  140  
+     141  142  143  144  145  146  147  148  149  150  151  152  153  154  155  156  157  158  159  160  
+     161  162  163  164  165  166  167  168  169  170  171  172  173  174  175  176  177  178  179  180  
+     181  182  183  184  185  186  187  188  189  190  191  192  193  194  195  196  197  198  199  200  
+     201  202  203  204  205  206  207  208  209  210  211  212  213  214  215  216  217  218  219  220
+     221  222  223  224  225  226  227  228  229  230  231  232  233  234  235  236  237  238  239  240
+     241  242  243  244  245  246  247  248  249  250  251  252  253  254  255  256  257  258  259  260
+     261  262  263  264  265  266  267  268  269  270  271  272  273  274  275  276  277  278  279  280  
+     281  282  283  284  285  286  287  288  289  290  291  292  293  294  295  296  297  298  299  300  
+     301  302  303  304  305  306  307  308  309  310  311  312  313  314  315  316  317
+$ -------------------------------------------------------------------------------------------------------------------------
+  define unit 2 $ ThO2 Blanket Rod 
+$ -------------------------------------------------------------------------------------------------------------------------
+  sector 5 Fuel -21     -23  13 -14 $ ThO2
+  sector 4 Zr2  -21     -23 -13     $ Zr-2 End Plug
+  sector 4 Zr2  -21     -23  14     $ Zr-2 End Plug
+  sector 0 Void  21 -22 -23         $ Gap
+  sector 4 Zr2       22 -23         $ Zr-2 Clad
+  sector 1 H2O           23 -17     $ Water
+$ -------------------------------------------------------------------------------------------------------------------------
+  define unit 1 $ 233UO2-ZrO2 Seed Rod 
+$ -------------------------------------------------------------------------------------------------------------------------
+  sector 3 Fuel -10  13 -14 -17 $ 233UO2-ZrO2
+  sector 4 Zr2  -10 -13     -17 $ Zr-2 End Plug
+  sector 4 Zr2  -10      14 -17 $ Zr-2 End Plug
+  sector 0 Void  10 -11     -17 $ Gap
+  sector 4 Zr2   11 -12     -17 $ Zr-2 Clad
+  sector 6 Poly  12  15 -16 -17 $ Poly
+  sector 1 H2O   12 -15     -17 $ Water
+  sector 1 H2O   12      16 -17 $ Water
+picture cs material color
+   -100 100  0 -100 -100   0 100 -100   0 title="lower plane view"
+picture cs material color
+   -100   0 57 -100    0 -57 100    0 -57 title="horiz view"
+picture cs material color
+    -33  27 17  -33  -27  17  33  -27  17 title="plane detail of the whole core at Z=17"
+picture cs material color
+    -11  11 17  -11  -11  17  11  -11  17 title="plane detail of the inner core at Z=17"
+picture cs material color
+    -11 1.8 57  -11  1.8  15  11  1.8  15 title="horiz detail of the core showing control blades"
+picture cs material color
+    -11   9  0  -11  -11   0  11  -11   0 title="plane detail of the core at Z=0"
+picture cs material color
+    -11   0 26  -11    0 -26  11    0 -26 title="horiz detail of the core"
+picture cs material color
+      0 7.3 17    0    1  17   1    1  17 title="plane detail of a few pins"
+picture cs material color
+      0   0 20    0    0  18   1    0  18 title="horiz detail of the active fuel"
+picture cs material color
+     30   0 20   30    0  18  32    0  18 title="horiz detail of the blanket rod"
+surfaces
+$ -------------------------------------------------------------------------------------------------------------------------
+$ Water (Tank) and Borated Stainless Steel Control Blades (Bottom at Z = 15.765 cm)
+$ -------------------------------------------------------------------------------------------------------------------------
+   1 cylinder z 91.44 -56.2991 56.2991         $ Water/OR
+   2 box 7.62 0.1778 200 tr 0 -5.51688 115.765 $ Z-Lo = -200/2 + 115.765 = 15.765 cm
+   3 box 7.62 0.1778 200 tr 0 -1.83896 115.765 $ 
+   4 box 7.62 0.1778 200 tr 0  1.83896 115.765 $
+   5 box 7.62 0.1778 200 tr 0  5.51688 115.765 $
+   9 box 1000. 1000. 1000.                     $ Really big (dummy) box
+$ -------------------------------------------------------------------------------------------------------------------------
+$ 233UO2-ZrO2 Seed Rod
+$ -------------------------------------------------------------------------------------------------------------------------
+  10 cylinder z 0.26797                            $ Fuel/OR
+  11 cylinder z 0.27940                            $ Clad/IR
+  12 cylinder z 0.32385                            $ Clad/OR
+  13 plane z  -19.05                               $ Fuel/Lower
+  14 plane z   19.05                               $ Fuel/Upper
+  15 plane z   -0.3175                             $ Poly/Lower
+  16 plane z    0.3175                             $ Poly/Upper
+  17 cylinder z 0.72517 -25.8191 25.8191 tr 0 0 0  $ Poly/OR
+$ -------------------------------------------------------------------------------------------------------------------------
+$ ThO2 Blanket Rod
+$ -------------------------------------------------------------------------------------------------------------------------
+  21 cylinder z 0.62103                  $ Fuel/OR
+  22 cylinder z 0.63373                  $ Clad/IR
+  23 cylinder z 0.72390 -25.8191 25.8191 $ Clad/OR
+$ -------------------------------------------------------------------------------------------------------------------------
+$ Inner (Core) Region of 233UO2-ZrO2 Seed Rods (and ThO2 Blanket Rods) with 0.91948 cm Square Pitch
+$ -------------------------------------------------------------------------------------------------------------------------
+  100 prism   6  -11.60272 0 -5.80136 -10.04825  5.80136 -10.04825
+                  11.60272 0  5.80136  10.04825 -5.80136  10.04825 tr 0 0 0 0 0 1 1 0 0
+$ --- Row 13
+  101 sameas 17 tr  -5.80136  10.04825 0  102 sameas 17 tr  -4.35102  10.04825 0 
+  103 sameas 17 tr  -2.90068  10.04825 0  104 sameas 17 tr  -1.45034  10.04825 0 
+  105 sameas 17 tr   0        10.04825 0  106 sameas 17 tr   1.45034  10.04825 0 
+  107 sameas 17 tr   2.90068  10.04825 0  108 sameas 17 tr   4.35102  10.04825 0 
+  109 sameas 17 tr   5.80136  10.04825 0  
+$ --- Row 14
+  110 sameas 17 tr  -6.52653   8.79222 0  111 sameas 17 tr  -5.07619   8.79222 0 
+  112 sameas 17 tr  -3.62585   8.79222 0  113 sameas 17 tr  -2.17551   8.79222 0 
+  114 sameas 17 tr  -0.72517   8.79222 0  115 sameas 17 tr   0.72517   8.79222 0 
+  116 sameas 17 tr   2.17551   8.79222 0  117 sameas 17 tr   3.62585   8.79222 0 
+  118 sameas 17 tr   5.07619   8.79222 0  119 sameas 17 tr   6.52653   8.79222 0 
+$ --- Row 15
+  120 sameas 17 tr  -7.25170   7.53619 0  121 sameas 17 tr  -5.80136   7.53619 0 
+  122 sameas 17 tr  -4.35102   7.53619 0  123 sameas 17 tr  -2.90068   7.53619 0 
+  124 sameas 17 tr  -1.45034   7.53619 0  125 sameas 17 tr   0         7.53619 0
+  126 sameas 17 tr   1.45034   7.53619 0  127 sameas 17 tr   2.90068   7.53619 0 
+  128 sameas 17 tr   4.35102   7.53619 0  129 sameas 17 tr   5.80136   7.53619 0 
+  130 sameas 17 tr   7.25170   7.53619 0 
+$ --- Row 16
+  131 sameas 17 tr  -7.97687   6.28016 0  132 sameas 17 tr  -6.52653   6.28016 0 
+  133 sameas 17 tr  -5.07619   6.28016 0  134 sameas 17 tr  -3.62585   6.28016 0 
+  135 sameas 17 tr  -2.17551   6.28016 0  136 sameas 17 tr  -0.72517   6.28016 0 
+  137 sameas 17 tr   0.72517   6.28016 0  138 sameas 17 tr   2.17551   6.28016 0 
+  139 sameas 17 tr   3.62585   6.28016 0  140 sameas 17 tr   5.07619   6.28016 0 
+  141 sameas 17 tr   6.52653   6.28016 0  142 sameas 17 tr   7.97687   6.28016 0 
+$ --- Row 17
+  143 sameas 17 tr  -8.70204   5.02413 0  144 sameas 17 tr  -7.25170   5.02413 0  
+  145 sameas 17 tr  -5.80136   5.02413 0  146 sameas 17 tr  -4.35102   5.02413 0 
+  147 sameas 17 tr  -2.90068   5.02413 0  148 sameas 17 tr  -1.45034   5.02413 0 
+  149 sameas 17 tr   0         5.02413 0  150 sameas 17 tr   1.45034   5.02413 0 
+  151 sameas 17 tr   2.90068   5.02413 0  152 sameas 17 tr   4.35102   5.02413 0 
+  153 sameas 17 tr   5.80136   5.02413 0  154 sameas 17 tr   7.25170   5.02413 0  
+  155 sameas 17 tr   8.70204   5.02413 0  
+$ --- Row 18
+  156 sameas 17 tr  -9.42721   3.76809 0  157 sameas 17 tr  -7.97687   3.76809 0 
+  158 sameas 17 tr  -6.52653   3.76809 0  159 sameas 17 tr  -5.07619   3.76809 0 
+  160 sameas 17 tr  -3.62585   3.76809 0  161 sameas 17 tr  -2.17551   3.76809 0 
+  162 sameas 17 tr  -0.72517   3.76809 0  163 sameas 17 tr   0.72517   3.76809 0 
+  164 sameas 17 tr   2.17551   3.76809 0  165 sameas 17 tr   3.62585   3.76809 0 
+  166 sameas 17 tr   5.07619   3.76809 0  167 sameas 17 tr   6.52653   3.76809 0 
+  168 sameas 17 tr   7.97687   3.76809 0  169 sameas 17 tr   9.42721   3.76809 0  
+$ --- Row 19
+  170 sameas 17 tr -10.15238   2.51206 0  171 sameas 17 tr  -8.70204   2.51206 0 
+  172 sameas 17 tr  -7.25170   2.51206 0  173 sameas 17 tr  -5.80136   2.51206 0 
+  174 sameas 17 tr  -4.35102   2.51206 0  175 sameas 17 tr  -2.90068   2.51206 0 
+  176 sameas 17 tr  -1.45034   2.51206 0  177 sameas 17 tr   0         2.51206 0
+  178 sameas 17 tr   1.45034   2.51206 0  179 sameas 17 tr   2.90068   2.51206 0 
+  180 sameas 17 tr   4.35102   2.51206 0  181 sameas 17 tr   5.80136   2.51206 0 
+  182 sameas 17 tr   7.25170   2.51206 0  183 sameas 17 tr   8.70204   2.51206 0 
+  184 sameas 17 tr  10.15238   2.51206 0 
+$ --- Row 20
+  185 sameas 17 tr -10.87755   1.25603 0  186 sameas 17 tr  -9.42721   1.25603 0  
+  187 sameas 17 tr  -7.97687   1.25603 0  188 sameas 17 tr  -6.52653   1.25603 0 
+  189 sameas 17 tr  -5.07619   1.25603 0  190 sameas 17 tr  -3.62585   1.25603 0 
+  191 sameas 17 tr  -2.17551   1.25603 0  192 sameas 17 tr  -0.72517   1.25603 0 
+  193 sameas 17 tr   0.72517   1.25603 0  194 sameas 17 tr   2.17551   1.25603 0 
+  195 sameas 17 tr   3.62585   1.25603 0  196 sameas 17 tr   5.07619   1.25603 0 
+  197 sameas 17 tr   6.52653   1.25603 0  198 sameas 17 tr   7.97687   1.25603 0 
+  199 sameas 17 tr   9.42721   1.25603 0  200 sameas 17 tr  10.87755   1.25603 0 
+ 1201 sameas 17 tr  12.32789   1.25603 0 1202 sameas 17 tr  13.77823   1.25603 0
+ 1203 sameas 17 tr  15.22857   1.25603 0 1204 sameas 17 tr  16.67891   1.25603 0
+ 1205 sameas 17 tr  18.12925   1.25603 0 1206 sameas 17 tr  19.57959   1.25603 0
+ 1207 sameas 17 tr  21.02993   1.25603 0 1208 sameas 17 tr  22.48027   1.25603 0
+ 1209 sameas 17 tr  23.93061   1.25603 0 1210 sameas 17 tr  25.38095   1.25603 0
+ 1211 sameas 17 tr  26.83129   1.25603 0 1212 sameas 17 tr  28.28163   1.25603 0
+$ --- Row 21 (Centerline)
+  201 sameas 17 tr -11.60272   0       0  202 sameas 17 tr -10.15238   0       0   
+  203 sameas 17 tr  -8.70204   0       0  204 sameas 17 tr  -7.25170   0       0   
+  205 sameas 17 tr  -5.80136   0       0  206 sameas 17 tr  -4.35102   0       0   
+  207 sameas 17 tr  -2.90068   0       0  208 sameas 17 tr  -1.45034   0       0   
+  209 sameas 17 tr   0         0       0  210 sameas 17 tr   1.45034   0       0   
+  211 sameas 17 tr   2.90068   0       0  212 sameas 17 tr   4.35102   0       0   
+  213 sameas 17 tr   5.80136   0       0  214 sameas 17 tr   7.25170   0       0   
+  215 sameas 17 tr   8.70204   0       0  216 sameas 17 tr  10.15238   0       0   
+  217 sameas 17 tr  11.60272   0       0 1218 sameas 17 tr  13.05306   0       0
+ 1219 sameas 17 tr  14.50340   0       0 1220 sameas 17 tr  15.95374   0       0
+ 1221 sameas 17 tr  17.40408   0       0 1222 sameas 17 tr  18.85442   0       0
+ 1223 sameas 17 tr  20.30476   0       0 1224 sameas 17 tr  21.75510   0       0
+ 1225 sameas 17 tr  23.20544   0       0 1226 sameas 17 tr  24.65578   0       0
+ 1227 sameas 17 tr  26.10612   0       0 1228 sameas 17 tr  27.55646   0       0
+ 1229 sameas 17 tr  29.00680   0       0  
+$ --- Row 22 (like Row 20)
+  218 sameas 17 tr -10.87755  -1.25603 0  219 sameas 17 tr  -9.42721  -1.25603 0  
+  220 sameas 17 tr  -7.97687  -1.25603 0  221 sameas 17 tr  -6.52653  -1.25603 0  
+  222 sameas 17 tr  -5.07619  -1.25603 0  223 sameas 17 tr  -3.62585  -1.25603 0  
+  224 sameas 17 tr  -2.17551  -1.25603 0  225 sameas 17 tr  -0.72517  -1.25603 0  
+  226 sameas 17 tr   0.72517  -1.25603 0  227 sameas 17 tr   2.17551  -1.25603 0  
+  228 sameas 17 tr   3.62585  -1.25603 0  229 sameas 17 tr   5.07619  -1.25603 0  
+  230 sameas 17 tr   6.52653  -1.25603 0  231 sameas 17 tr   7.97687  -1.25603 0  
+  232 sameas 17 tr   9.42721  -1.25603 0  233 sameas 17 tr  10.87755  -1.25603 0  
+$ --- Row 23 (like Row 19)
+  234 sameas 17 tr -10.15238  -2.51206 0  235 sameas 17 tr  -8.70204  -2.51206 0 
+  236 sameas 17 tr  -7.25170  -2.51206 0  237 sameas 17 tr  -5.80136  -2.51206 0 
+  238 sameas 17 tr  -4.35102  -2.51206 0  239 sameas 17 tr  -2.90068  -2.51206 0 
+  240 sameas 17 tr  -1.45034  -2.51206 0  241 sameas 17 tr   0        -2.51206 0
+  242 sameas 17 tr   1.45034  -2.51206 0  243 sameas 17 tr   2.90068  -2.51206 0 
+  244 sameas 17 tr   4.35102  -2.51206 0  245 sameas 17 tr   5.80136  -2.51206 0 
+  246 sameas 17 tr   7.25170  -2.51206 0  247 sameas 17 tr   8.70204  -2.51206 0 
+  248 sameas 17 tr  10.15238  -2.51206 0 
+$ --- Row 24 (like Row 18)
+  249 sameas 17 tr  -9.42721  -3.76809 0  250 sameas 17 tr  -7.97687  -3.76809 0 
+  251 sameas 17 tr  -6.52653  -3.76809 0  252 sameas 17 tr  -5.07619  -3.76809 0 
+  253 sameas 17 tr  -3.62585  -3.76809 0  254 sameas 17 tr  -2.17551  -3.76809 0 
+  255 sameas 17 tr  -0.72517  -3.76809 0  256 sameas 17 tr   0.72517  -3.76809 0 
+  257 sameas 17 tr   2.17551  -3.76809 0  258 sameas 17 tr   3.62585  -3.76809 0 
+  259 sameas 17 tr   5.07619  -3.76809 0  260 sameas 17 tr   6.52653  -3.76809 0 
+  261 sameas 17 tr   7.97687  -3.76809 0  262 sameas 17 tr   9.42721  -3.76809 0  
+$ --- Row 23 (like Row 17)
+  263 sameas 17 tr  -8.70204  -5.02413 0  264 sameas 17 tr  -7.25170  -5.02413 0  
+  265 sameas 17 tr  -5.80136  -5.02413 0  266 sameas 17 tr  -4.35102  -5.02413 0 
+  267 sameas 17 tr  -2.90068  -5.02413 0  268 sameas 17 tr  -1.45034  -5.02413 0 
+  269 sameas 17 tr   0        -5.02413 0  270 sameas 17 tr   1.45034  -5.02413 0 
+  271 sameas 17 tr   2.90068  -5.02413 0  272 sameas 17 tr   4.35102  -5.02413 0 
+  273 sameas 17 tr   5.80136  -5.02413 0  274 sameas 17 tr   7.25170  -5.02413 0  
+  275 sameas 17 tr   8.70204  -5.02413 0  
+$ --- Row 24 (like Row 16)
+  276 sameas 17 tr  -7.97687  -6.28016 0  277 sameas 17 tr  -6.52653  -6.28016 0 
+  278 sameas 17 tr  -5.07619  -6.28016 0  279 sameas 17 tr  -3.62585  -6.28016 0 
+  280 sameas 17 tr  -2.17551  -6.28016 0  281 sameas 17 tr  -0.72517  -6.28016 0 
+  282 sameas 17 tr   0.72517  -6.28016 0  283 sameas 17 tr   2.17551  -6.28016 0 
+  284 sameas 17 tr   3.62585  -6.28016 0  285 sameas 17 tr   5.07619  -6.28016 0 
+  286 sameas 17 tr   6.52653  -6.28016 0  287 sameas 17 tr   7.97687  -6.28016 0 
+$ --- Row 25 (like Row 15)
+  288 sameas 17 tr  -7.25170  -7.53619 0  289 sameas 17 tr  -5.80136  -7.53619 0 
+  290 sameas 17 tr  -4.35102  -7.53619 0  291 sameas 17 tr  -2.90068  -7.53619 0 
+  292 sameas 17 tr  -1.45034  -7.53619 0  293 sameas 17 tr   0        -7.53619 0
+  294 sameas 17 tr   1.45034  -7.53619 0  295 sameas 17 tr   2.90068  -7.53619 0 
+  296 sameas 17 tr   4.35102  -7.53619 0  297 sameas 17 tr   5.80136  -7.53619 0 
+  298 sameas 17 tr   7.25170  -7.53619 0 
+$ --- Row 26 (like Row 14)
+  299 sameas 17 tr  -6.52653  -8.79222 0  300 sameas 17 tr  -5.07619  -8.79222 0 
+  301 sameas 17 tr  -3.62585  -8.79222 0  302 sameas 17 tr  -2.17551  -8.79222 0 
+  303 sameas 17 tr  -0.72517  -8.79222 0  304 sameas 17 tr   0.72517  -8.79222 0 
+  305 sameas 17 tr   2.17551  -8.79222 0  306 sameas 17 tr   3.62585  -8.79222 0 
+  307 sameas 17 tr   5.07619  -8.79222 0  308 sameas 17 tr   6.52653  -8.79222 0 
+$ --- Row 27 (like Row 13)
+  309 sameas 17 tr  -5.80136 -10.04825 0  310 sameas 17 tr  -4.35102 -10.04825 0 
+  311 sameas 17 tr  -2.90068 -10.04825 0  312 sameas 17 tr  -1.45034 -10.04825 0 
+  313 sameas 17 tr   0       -10.04825 0  314 sameas 17 tr   1.45034 -10.04825 0 
+  315 sameas 17 tr   2.90068 -10.04825 0  316 sameas 17 tr   4.35102 -10.04825 0 
+  317 sameas 17 tr   5.80136 -10.04825 0  
+$ -------------------------------------------------------------------------------------------------------------------------
+$ Outer (Reflector) Region of 233UO2-ZrO2 Seed Rods (Boundaries) 
+$ -------------------------------------------------------------------------------------------------------------------------
+  399 plane y  0.0
+  400 plane x  0.0
+  401 plane y  1.25603
+  402 plane y  2.51206
+  403 plane y  3.76809
+  404 plane y  5.02413
+  405 plane y  6.28016
+  406 plane y  7.53619
+  407 plane y  8.79222
+  408 plane y 10.04825
+  409 plane y 11.30428
+  410 plane y 12.56031
+  411 plane y 13.81634
+  412 plane y 15.07238
+  413 plane y 16.32841
+  414 plane y 17.58444
+  415 plane y 18.84047
+  416 plane y 20.09650
+  417 plane y 21.35253
+  418 plane y 22.60856
+  419 plane y 23.86459
+  420 plane y 25.12063
+end

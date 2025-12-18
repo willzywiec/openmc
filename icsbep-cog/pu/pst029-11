@@ -1,0 +1,54 @@
+PU-SOL-THERM-029 (Case 14; No. 187) Hc=100.00cm; D=15.0cm; 40.6 gPu/l; H/X=632; 2.98 wt-% Pu-240; Air/Cd; Air/Cd; Water
+basic
+  neutron delayedn
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=2  -12.5 0 50  +12.5 0 50 $ Xo = 5 + D/2; Zo = Hc/2 
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0                                     $ 
+  mat=1 bunches   pu239 9.92290-5 pu240 3.03516-6 (h.h2o) 6.26922-2 $ Solution
+                    o16 3.59778-2     n 1.76772-3      fe 3.55846-6 $     per Table 14
+  mat=2 bunches      fe 5.95460-2    si 1.69392-3       c 1.18828-4 $
+                     cr 1.64694-2    mn 8.65969-4      ni 8.10608-3 $ SST per Table 15
+                      p 6.14386-5     s 4.46401-5                   $  
+  mat=3 bunches     o16 1.26330-5     n 4.18050-5                   $ Air per Table 15
+  mat=4 bunches (h.h2o) 6.67220-2   o16 3.33610-2                   $ H2O per Table 15  
+  mat=5 bunches      cd 4.63402-2                                   $ Cd  per Table 15  
+assign-mc                                                           $
+  1 purple 2 black 3 yellow 4 sky 5 red
+geometry
+  unit   1 Tank -11 -12 tr -32.5 0 0                    $ 
+  unit   1 Tank  11 -12 tr  32.5 0 0 -99 0 0 32.5 -99 0 $ Xo = D/2 + 25.0
+define unit 1 $ One Annular Tank                        $
+  sector 1 SOLN   1  -2   8  -9 $ Solution
+  sector 2 SST   -1 -10         $ Bottom
+  sector 2 SST    1   7  -8 -10 $ Inner
+  sector 2 SST    3   8  -9 -10 $ Top w/o holes
+  sector 2 SST    1   9 -10     $ Outer 
+  sector 2 SST    1  -3   5  -6 -10 $ SST/Liner
+  sector 3 Air    1  -4 -10         $ Air w/in center
+  sector 3 Air    1  -3   6  -7 -10 $ Air gap
+  sector 3 Air    2  -3   8 -9      $ Air w/in annulus
+  sector 3 Air    2  10 -12         $ Air external
+  sector 3 Air    1   3   4  -7 -10 $ Air above insert
+  sector 4 WATER -2  10 -12         $ H2O external
+  sector 5 Cd     1  -3   4  -5 -10 $ Cd
+picture cs material color
+  -99 0 120 -99 0 -33  99 0 -33 title="axial view"
+picture cs material color
+  -14.5 0 7 -14.5 0 5 -14.4 0 5 title="axial detail"
+picture cs material color
+  -99 56 21 -99 -56 21  99 -56 21 title="plane view"
+surfaces 
+  1 plane -25.0 0.0 0.3  0.0 25.0 0.0  25.0 0.0 -0.3 0.0 0.0 99.0 $ Tank/Sloped Bottom 
+  2 plane    z 100.00 $ = Hc per Table 1
+  3 plane    z 117.2
+  4 cylinder z  14.43 $ Cd/Inner
+  5 cylinder z  14.5  $ Cd/Outer
+  6 cylinder z  14.6  $ SST/Inner
+  7 cylinder z  14.7
+  8 cylinder z  15.0
+  9 cylinder z  25.0
+ 10 cylinder z  25.3  -1.5 119.0 $ Tank/Outermost
+ 11 plane    x   0.0                   $ dX = L = 160.6 + D 
+ 12 box  175.6 111.0 151.8 tr 0 0 43.1 $ dY = 111.0 (fixed)
+end                                    $ dZ = 151.8 = 119.0 (top) + 32.8 (bottom)

@@ -1,0 +1,58 @@
+MIX-MET-FAST-005: Pu sphere surrounded by HEU reflected by Al
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  0 0  2.4   2.0 0 -0.4  0  2.0 -0.4
+  0 0 -2.0  -2.0 0 -0.4  0 -2.0 -0.4
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu239 3.3930-2 pu240 3.5043-3 pu241 3.9189-4   ga 2.2105-3 $ Pu
+                    c 3.0246-4    fe 3.2525-4     w 7.4100-5   ni 1.4187-3 $ 
+  mat=2 bunches  u234 5.2321-4  u235 4.0993-2  u236 9.2356-5 u238 4.0854-3 $ HEU
+                    c 3.8590-4    fe 1.4418-4     w 1.2307-5   cu 7.6164-4 $
+                   ni 3.5343-4                                             $
+  mat=3 bunches    al 5.8829-2 $ Al
+  mat=4 bunches    fe 8.1174-2 $ Fe
+  mat=5 bunches    cu 8.2365-2 $ Cu
+assign-mc
+  1 purple 2 orange 3 yellow 4 black 5 pink
+geometry
+$ --- Upper portion of the assembly
+  sector  4 Steel    1 -2 -3    $ Steel (Fe)
+  sector  1 Pu       3  4 -5    $ Pu
+  sector  2 HEU      3  5 -6  8 $ HEU
+  sector  3 Al       3  6 -7    $ Al
+$ --- Lower portion of the assembly
+  sector  1 Pu      11 -12         $ Pu, full shell
+  sector  1 Pu     -10  12 -13     $ Pu, half shell
+  sector  2 HEU    -10  13 -14  20 $ HEU
+  sector  3 Al     -10  14 -15     $ Al
+  sector  5 Cu     -10  15 -16 -21 $ Cu
+  sector  4 Steel  -10  16 -17     $ Steel (Fe)
+picture cs material color
+   -14   0  11 -14   0 -16   0   0 -16 title="axial x-z half view"
+volume material 
+   -14 -14 -16  14 -14 -16 -14  14 -16 
+    28  28  27
+surfaces
+$ --- Upper portion of the assembly
+  1 c z  4.8           $ Steel (Fe) diaphragm, inner
+  2 c z 13.9  -0.2 0.0 $ Steel (Fe) diaphragm, outer
+  3 p z  0.0           $ interface
+  4 s    4.66          $ Pu, inner
+  5 s    5.35          $ Pu, outer; HEU, inner
+  6 s    6.75          $ HEU, outer; Al, inner
+  7 s   10.00          $ Al, outer
+  8 c x  0.6           $ Hole in upper HEU
+$ --- Lower portion of the assembly
+ 10 p z -0.4              $ top
+ 11 s    1.40 tr 0 0 -0.4 $ Cavity
+ 12 s    4.66 tr 0 0 -0.4 $ Pu, 1st shell
+ 13 s    5.35 tr 0 0 -0.4 $ Pu, 2nd shell
+ 14 s    6.75 tr 0 0 -0.4 $ HEU
+ 15 s   10.00 tr 0 0 -0.4 $ Al
+ 16 s   10.15 tr 0 0 -0.4 $ Cu
+ 17 c z  2.5 -14.55 -1.0  $ Steel (Fe)
+ 20 c x  0.6  tr 0 0 -0.4 $ Hole in lower HEU
+ 21 c z  8.7              $ Extent of Cu 
+end 

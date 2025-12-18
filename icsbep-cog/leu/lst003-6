@@ -1,0 +1,23 @@
+LST003-6: Full sphere of 10% enriched uranyl nitrate solution at H/X=1213
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1  0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 4.4911-7 u235 5.0849-5 u238 4.4771-4  n 1.5340-3 o16 3.6175-2 (h.h2o) 6.1685-2 $ Solution
+  mat=2 bunches   fe 5.9088-2   cr 1.6532-2   ni 8.1369-3 mn 1.3039-3  si 1.3603-3      ti 5.9844-4 $ Stainless Steel
+assign-mc
+  1 orange 2 gray
+geometry
+  sector 1 Soln   -1
+  sector 2 SST     1 -2
+  boundary vacuum  2
+picture cs material color
+  -44   0  44 -44   0 -44  44   0 -44
+volume material
+  -44 -44 -44  44 -44 -44 -44  44 -44 
+   88  88  88
+surfaces 
+  1 sphere 43.6303
+  2 sphere 43.8203
+end

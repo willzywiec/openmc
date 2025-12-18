@@ -1,0 +1,116 @@
+PMF003-4: LLNL Pu Array - 3x3x3 with polyethylene reflection on one side - case 104 
+basic 
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=27 
+  -10.15  10.15 32.8  0  10.15 32.8  10.15  10.15 32.8  
+  -10.15   0    32.8  0   0    32.8  10.15   0    32.8
+  -10.15 -10.15 32.8  0 -10.15 32.8  10.15 -10.15 32.8
+  -10.15  10.15 25.7  0  10.15 25.7  10.15  10.15 25.7
+  -10.15   0    25.7  0   0    25.7  10.15   0    25.7
+  -10.15 -10.15 25.7  0 -10.15 25.7  10.15 -10.15 25.7
+  -10.15  10.15 17.5  0  10.15 17.5  10.15  10.15 17.5  
+  -10.15   0    17.5  0   0    17.5  10.15   0    17.5
+  -10.15 -10.15 17.5  0 -10.15 17.5  10.15 -10.15 17.5
+assign-mc
+  1 purple 2 yellow 3 orange 4 red 5 pink 6 black 7 gray 8 brown 9 sky
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu239 4.6010-2 pu240 2.9236-3 pu241 2.2433-4 pu242 4.8566-6 $ Plutonium billet
+  mat=2 bunches    al 6.0263-2                                              $ Aluminum tube, spacer, and can walls and bottoms 
+  mat=3 bunches    al 5.3031-2                                              $ Aluminum table top 
+  mat=4 bunches    al 3.6742-2                                              $ Aluminum "top" heat sinks
+  mat=5 bunches    al 3.0139-2                                              $ Aluminum "bottom" heat sinks
+  mat=6 bunches    fe 8.4122-2                                              $ Iron (steel) lid
+  mat=7 bunches    fe 5.8885-3                                              $ Iron (steel) table support
+  mat=8 bunches    al 2.9260-2    fe 7.7911-3                               $ Homogenized "shoe"
+  mat=9 bunches (h.ch2) 7.8996-2 c 3.9498-2                                 $ Polyethylene (CH2) reflector
+geometry
+  sector    7 Spprt  -1  -2     $ Table support
+  sector    3 Table  -1   2  -3 $ Table top
+  use unit  1 Stack1 -1   3 -41 tr -10.15  10.15 0 
+  use unit  1 Stack2 -1   3 -42 tr -10.15   0    0 
+  use unit  1 Stack3 -1   3 -43 tr -10.15 -10.15 0 
+  use unit  1 Stack4 -1   3 -44 tr   0     10.15 0 
+  use unit  1 Stack5 -1   3 -45 tr   0      0    0    
+  use unit  1 Stack6 -1   3 -46 tr   0    -10.15 0 
+  use unit  1 Stack7 -1   3 -47 tr  10.15  10.15 0 
+  use unit  1 Stack8 -1   3 -48 tr  10.15   0    0
+  use unit  1 Stack9 -1   3 -49 tr  10.15 -10.15 0
+  sector    9 Poly    3 -51
+define unit 1 $ Shoe and tube with billets in cans with heat sinks and spacers
+  sector    8 Shoe   -4      -6 $ Shoe
+  sector    2 Tube    4   5  -6 $ Tube
+$ --- 1st layer
+  sector    2 Spacer -6  10 -11 $ Spacer
+  sector    5 BHS    11 -12     $ Bottom heat sink
+  sector    6 Lid    12 -13     $ Lid
+  sector    1 Pu     13 -14 -15 $ Pu
+  sector    2 Wall   13  14 -15 $ Can wall
+  sector    2 Bttm   15 -16     $ Can bottom
+  sector    4 THS    16 -17     $ Top heat sink
+$ --- 2nd layer
+  sector    2 Spacer 10  17 -21 $ Spacer
+  sector    5 BHS    21 -22     $ Bottom heat sink
+  sector    6 Lid    22 -23     $ Lid
+  sector    1 Pu     23 -14 -25 $ Pu
+  sector    2 Wall   23  24 -25 $ Can wall
+  sector    2 Bttm   25 -26     $ Can bottom
+  sector    4 THS    26 -27     $ Top heat sink
+$ --- 3rd layer
+  sector    2 Spacer 10  27 -31 $ Spacer
+  sector    5 BHS    31 -32     $ Bottom heat sink
+  sector    6 Lid    32 -33     $ Lid
+  sector    1 Pu     33 -34 -35 $ Pu
+  sector    2 Wall   33  34 -35 $ Can wall
+  sector    2 Bttm   35 -36     $ Can bottom
+  sector    4 THS    36 -37     $ Top heat sink
+picture cs material color -70  0 50  -70   0 -40  70   0 -40  title="x-z axial view"
+picture cs material color -17  0 38  -17   0  -1  15   0  -1  title="x-z axial detail"
+picture cs material color -15 15 25  -15 -15  25  15 -15  25  title="x-y plane detail"
+volume 
+  material -4 -4 0  4 -4 0  -4 4 0  8 8 46 $ Volume calculation for the central column
+surfaces $ All dimensions are in CENTIMETERS
+  1 box 132.0  46.0  78.273 tr 0 0 6.5965   $ Boundary condition
+  2 p z  -2.54                              $ Table/botom
+  3 p z   0.0                               $ Table/top
+  4 c z   3.425  0.0    8.3                 $ Shoe
+  5 c z   3.425                             $ Tube/inner
+  6 c z   3.609  0.0   45.734               $ Tube/outer
+$ ---- 1st layer
+ 10 c z 3.104                               $ Spacer/inner
+ 11 c z 3.326    0.0    6.229 tr 0 0  8.3   $ Spacer/outer
+ 12 c z 3.2995   0.0    0.635 tr 0 0 14.529 $ Bottom heat sink
+ 13 c z 3.2995   0.0    0.021 tr 0 0 15.164 $ Lid
+ 14 c z 3.2625                              $ Pu/outer & Can wall/inner
+ 15 c z 3.2995   0.0    4.633 tr 0 0 15.185 $ Can wall/outer
+ 16 c z 3.2995   0.0    0.087 tr 0 0 19.818 $ Can bottom
+ 17 c z 3.2995   0.0    0.479 tr 0 0 19.905 $ Top heat sink
+$ ---- 2nd layer
+ 21 c z 3.326    0.0    2.385 tr 0 0 20.384 $ Spacer/outer
+ 22 c z 3.2995   0.0    0.635 tr 0 0 22.769 $ Bottom heat sink
+ 23 c z 3.2995   0.0    0.021 tr 0 0 23.404 $ Lid
+ 24 c z 3.2625                              $ Pu/outer & Can wall/inner
+ 25 c z 3.2995   0.0    4.633 tr 0 0 23.425 $ Can wall/outer
+ 26 c z 3.2995   0.0    0.087 tr 0 0 28.058 $ Can bottom
+ 27 c z 3.2995   0.0    0.479 tr 0 0 28.145 $ Top heat sink
+$ ---- 3rd layer
+ 31 c z 3.326    0.0    2.385 tr 0 0 28.624 $ Spacer/outer
+ 32 c z 3.2995   0.0    0.635 tr 0 0 31.009 $ Bottom heat sink
+ 33 c z 3.2995   0.0    0.021 tr 0 0 31.644 $ Lid
+ 34 c z 3.2625                              $ Pu/outer & Can wall/inner
+ 35 c z 3.2995   0.0    4.633 tr 0 0 31.665 $ Can wall/outer
+ 36 c z 3.2995   0.0    0.087 tr 0 0 36.298 $ Can bottom
+ 37 c z 3.2995   0.0    0.479 tr 0 0 36.385 $ Top heat sink
+$ --- 3x3 array of shoes and tubes
+ 41 c z   3.609  0.0   45.733 tr -10.15  10.15 0 $ 1st
+ 42 c z   3.609  0.0   45.733 tr -10.15   0    0 $ 2nd
+ 43 c z   3.609  0.0   45.733 tr -10.15 -10.15 0 $ 3rd
+ 44 c z   3.609  0.0   45.733 tr   0     10.15 0 $ 4th
+ 45 c z   3.609  0.0   45.733 tr   0      0    0 $ 5th
+ 46 c z   3.609  0.0   45.733 tr   0    -10.15 0 $ 6th
+ 47 c z   3.609  0.0   45.733 tr  10.15  10.15 0 $ 7th 
+ 48 c z   3.609  0.0   45.733 tr  10.15   0    0 $ 8th
+ 49 c z   3.609  0.0   45.733 tr  10.15 -10.15 0 $ 9th
+$ --- Polyethylene reflector
+ 51 box  20.64  35.03  45.08  tr -24.1625 0   22.54  
+end

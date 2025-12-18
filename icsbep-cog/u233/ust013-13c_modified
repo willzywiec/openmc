@@ -1,0 +1,34 @@
+U233-SOL-THERM-013: Case No. 13 (Experment No. 132)
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1 0. 0. 0.
+$ Number densities per Tables 14 (Solution), 15 (Al-1100) and 16 (Heresite)
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u232 2.2505-9 u233 3.3781-4 u234 3.6107-6 u235 8.9279-8  $ 233U(97.5)O2(NO3)2
+                u236 3.4192-9 u238 4.6992-6   th 4.3436-6                $  + HNO3 + H2O
+             (h.h2o) 6.3404-2    n 8.0097-4  o16 3.4751-2                $  @ H/X = 187.7
+  mat=2 bunches (h.ch2) 4.0575-2 c 4.0575-2  o16 7.4387-3   fe 6.7624-4  $ Heresite
+  mat=3 bunches   al 5.9746-2   si 2.7539-4   mn 1.4820-5   fe 1.3850-4  $ Al-1100
+                  cu 3.2030-5   zn 2.4902-5                              $
+assign-mc
+  1 orange 2 blue 3 yellow
+geometry
+  sector 0 Air   -1  4          
+  sector 1 Soln  -1 -4              
+  sector 2 Hrst   1 -2
+  sector 3 Alum   2 -3 
+  boundary vacuum 3  
+picture cs material color
+  -15   0  15  -15   0 -15   15   0 -15
+volume material
+  -15 -15 -15  +15 -15 -15  -15 +15 -15
+   30  30  30
+surfaces
+$ Geometry per Figure 3 and Table 13
+  1 sphere 14.6232 $ Solution
+  2 sphere 14.6992 $ Heresite
+  3 sphere 14.8262 $ Al-1100
+  4 plane z 26.954 tr 0. 0. -14.6232
+end

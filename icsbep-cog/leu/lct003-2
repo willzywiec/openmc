@@ -1,0 +1,60 @@
+LCT003-2: 21x25 + 4 array of U(2.35)O2 fuel rods with 1.684 cm square pitch in water (SSC-2.35-000-094)
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=2
+   0  0.842 45.72
+   0 -0.842 45.72
+assign-mc
+  1 red 2 green 3 lime 4 yellow 5 sky 6 blue
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u234 2.8563-6 u235 4.8785-4 u236 3.5348-6 u238 2.0009-2 o16 4.1202-2 $ U(2.35)O2
+  mat=2 bunches      al 5.9660-2   cu 3.0705-5   mn 7.3991-6   zn 1.2433-5  si 2.3302-4 $ Al-1100
+                     fe 1.1719-4                                                        $  top end plug
+  mat=3 bunches      al 5.8028-2   cr 7.7888-5   cu 1.2746-5   mg 1.6663-3  mn 1.4743-5 $ Al-5052
+                     zn 1.2387-5   si 1.2978-4   fe 6.5265-5                            $  lower end plug
+  mat=4 bunches      al 5.8433-2   cr 6.2310-5   cu 6.3731-5   mg 6.6651-4  mn 2.2115-5 $ Al-6061
+                     ti 2.5375-5   zn 3.0967-5   si 3.4607-4   fe 1.0152-4              $  clad
+  mat=5 bunches (h.h2o) 6.6706-2  o16 3.3353-2   gd 3.9828-8                            $ Water (Gd in cases 1-21)
+  mat=6 bunches (h.ch2) 5.6642-2    c 3.5648-2  o16 1.4273-2                            $ Acrylic
+geometry
+    use unit 3 CORE     -1  -2
+    sector   5 H2O       1  -2  
+    boundary   vacuum        2
+ define unit 1                                     $ UNIT CELL WITH FUEL
+    sector   3 Al5052      -11         -14  17     $   Lower plug
+    sector   1 UO2          11 -12     -14  17     $   UO2
+    sector   2 Al1100       12 -13     -14  17     $   Upper plug
+    sector   4 Al6061       11  12  13 -14  17     $   Clad
+    sector   2 Al1100       13  14 -15      17     $   Upper plug
+    sector   6 Acrylic  -2  16 -17                 $   Acrylic base plate
+    sector   5 Water    -2 -16                     $   Water beneath base plate
+    sector   5 Water    -2  17  14  15             $   Water above base plate
+ define unit 2                                     $ EMPTY UNIT CELL
+    sector   5 Water    -2  17                     $   Water above base plate
+    sector   6 Acrylic  -2  16 -17                 $   Acrylic base plate
+    sector   5 Water    -2 -16                     $   Water beneath base plate
+ define unit 3                                     $ 21x26 array
+   {x 101 22 [-17.682 17.682]
+    y 201 27 [-21.892 21.892]
+    z 301    -999.99 999.99
+    fill
+    4*1 17*2 525*1}
+  picture cs material color -50  55   46 -50  -55  46  50  -55  46 title="plane view of entire geometry"
+  picture cs material color   0 -55  108   0  -55 -20   0   55 -20 title="axial y-z view of entire geometry"
+  picture cs material color -50 0.8  108 -50  0.8 -20  50  0.8 -20 title="axial x-z view of entire geometry"
+  picture cs material color  -1 0.8   98  -1  0.8  90   1  0.8  90 title="axial y-z detail of clad and upper plug"
+  picture cs material color  -1 0.8    2  -1  0.8  -5   1  0.8  -5 title="axial y-z detail of clad and lower plug"
+surfaces
+$ --- Entire Problem
+   1 box 35.364  43.784 999.99               $ Array Boundary
+   2 box 95.364 103.784 125.55 tr 0 0 43.665 $ Entire Problem (BCD)
+$ --- Unit Cell with Fuel
+  11 c z  0.5588 -1.27  0.0  $ Al-5052 lower plug
+  12 c z  0.5588  0.0  91.44 $ U(2.35)O2 fuel
+  13 c z  0.5588 91.44 91.92 $ Al-1100 upper plug
+  14 c z  0.6350 -1.27 91.92 $ Al-6061 clad/outer
+  15 c z  0.6350 91.92 96.52 $ Al-1100 upper plug 
+  16 p z -3.81   $ Acrylic bottom
+  17 p z -1.27   $ Acrylic top
+end

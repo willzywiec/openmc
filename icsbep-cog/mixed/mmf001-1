@@ -1,0 +1,21 @@
+MIX-MET-FAST-001: 8.471 kg d-Pu-1Ga sphere in 1.6337 cm of U(93.2)
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0 0 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches pu239 3.7291-2 pu240 1.9277-3 pu241 1.2196-4 ga 1.3628-3 $ d-Pu-1Ga
+  mat=2  bunches  u235 4.4892-2  u238 3.2340-3                            $ HEU
+assign-mc
+  1 purple 2 orange
+geometry
+  sector  1 dPu1Ga  -1
+  sector  2 HEU      1 -2 
+  boundary  vacuum      2
+picture cs material color -7  0  7 -7  0 -7  7  0 -7
+volume material  -7 -7 -7  7 -7 -7 -7  7 -7 14 14 14
+surfaces
+  1 sphere 5.0419
+  2 sphere 6.7056
+end

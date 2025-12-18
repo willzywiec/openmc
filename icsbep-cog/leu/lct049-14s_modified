@@ -1,0 +1,124 @@
+LCT049-14S: Simplified model of R3-3R(4,4) with H/U=2 & 3 (concentric) and d=4.33cm
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=8
+  -12.425 -10.26  10  12.425 -10.26  10
+  -12.425  10.26  10  12.425  10.26  10
+  -12.425 -10.26 -10  12.425 -10.26 -10
+  -12.425  10.26 -10  12.425  10.26 -10
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 3.4097-6 u235 3.6865-4 u236 2.8024-6 u238 6.9422-3 o16 2.6441-2 $ U(5)O2+H2O
+             (h.h2o) 2.2000-2                                                        $ H/U=3.0073
+  mat=2 bunches   al 5.8086-2   mg 1.9719-3   cu 1.0261-5   fe 1.0508-4  cr 6.2704-6 $ AG3
+                  mn 1.0089-4   si 6.9652-5   ti 6.8094-6   zn 4.9860-6              $  alloy
+  mat=3 bunches    c 5.4065-2  o16 9.4815-4    n 2.9332-4 (h.ch2) 8.8660-2           $ Rubber
+  mat=4 bunches    c 4.1215-2 (h.ch2) 8.2431-2                                       $ Polythene
+  mat=5 bunches    n 4.1985-5  o16 1.1263-5                                          $ Air
+  mat=6 bunches u234 3.4097-6 u235 3.6865-4 u236 2.8024-6 u238 6.9422-3 o16 2.2801-2 $ U(5)O2+H2O
+             (h.h2o) 1.4725-2                                                        $ H/U=2.0124
+assign-mc
+  1 purple 2 yellow 3 black 4 sky 5 lime 6 red
+geometry
+  use unit 5 lttc  11 -20  21 -27  31 -37
+  boundary vacuum -11      21 -27  31 -37
+  boundary vacuum      20  21 -27  31 -37
+  boundary vacuum  11 -20 -21      31 -37
+  boundary vacuum  11 -20      27  31 -37
+  boundary vacuum  11 -20  21 -27 -31
+  boundary vacuum  11 -20  21 -27      37
+define unit 1 $ Reflector box 
+  sector 4 Poly        -8
+  sector 5 Air   -6     8
+  sector 2 AG3    6 -7  8 
+  fill 5 $ Air 
+define unit 2 $ Core box with H/U=2
+  sector 6 UO2    -1 -2
+  sector 2 AG3     1 -2
+  sector 5 Air        2 -3 -4
+  sector 3 Rubber     2  3 -4
+  sector 2 AG3           3  4 -5
+  sector 5 Air        2     4  5 -6
+  sector 2 AG3                    6 -7
+  fill 5 $ Air
+define unit 3 $ Core box with H/U=3
+  sector 1 UO2    -1 -2
+  sector 2 AG3     1 -2
+  sector 5 Air        2 -3 -4
+  sector 3 Rubber     2  3 -4
+  sector 2 AG3           3  4 -5
+  sector 5 Air        2     4  5 -6
+  sector 2 AG3                    6 -7
+  fill 5 $ Air              $ Size of the R3-3R(4,4) array
+define unit 4 $ Air         $ (1+3)(20.52)+(4.33)+(3+1)(20.52) = 168.49 (x)
+  sector 5 Air   -9         $ (1+4+1)(20.52) = 123.12 (y)
+define unit 5 $ Array       $ (1+4+1)(20.00) = 120.00 (z)
+   {x 11  -84.245 -63.725 -43.205 -22.685 -2.165   2.165  22.685  43.205  63.725  84.245
+    y 21  -61.56  -41.04  -20.52    0.0   20.52   41.04   61.56
+    z 31  -60.00  -40.00  -20.00    0.0   20.00   40.00   60.00
+    fill
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+
+    1 1 1 1 4 1 1 1 1
+    1 2 2 2 4 2 2 2 1
+    1 2 2 2 4 2 2 2 1
+    1 2 2 2 4 2 2 2 1
+    1 2 2 2 4 2 2 2 1
+    1 1 1 1 4 1 1 1 1
+
+    1 1 1 1 4 1 1 1 1
+    1 2 2 2 4 2 2 2 1
+    1 2 3 3 4 3 3 2 1
+    1 2 3 3 4 3 3 2 1
+    1 2 2 2 4 2 2 2 1
+    1 1 1 1 4 1 1 1 1
+
+    1 1 1 1 4 1 1 1 1
+    1 2 2 2 4 2 2 2 1
+    1 2 3 3 4 3 3 2 1
+    1 2 3 3 4 3 3 2 1
+    1 2 2 2 4 2 2 2 1
+    1 1 1 1 4 1 1 1 1
+
+    1 1 1 1 4 1 1 1 1
+    1 2 2 2 4 2 2 2 1
+    1 2 2 2 4 2 2 2 1
+    1 2 2 2 4 2 2 2 1
+    1 2 2 2 4 2 2 2 1
+    1 1 1 1 4 1 1 1 1
+  
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1
+    1 1 1 1 4 1 1 1 1}
+picture cs material color   1  10  21   1  10  -1  24  10  -1 title="axial x-z detail of one fuel box"
+picture cs material color   1  21  10   1  -1  10  24  -1  10 title="plane x-y detail of one fuel box"
+picture cs material color -74 -65  65 -74 -65 -65 -74  65 -65 title="axial y-z view at x=-74, layer 1"
+picture cs material color -53 -65  65 -53 -65 -65 -53  65 -65 title="axial y-z view at x=-53, layer 2"
+picture cs material color -33 -65  65 -33 -65 -65 -33  65 -65 title="axial y-z view at x=-33, layer 3"
+picture cs material color -12 -65  65 -12 -65 -65 -12  65 -65 title="axial y-z view at x=-12, layer 4"
+picture cs material color   0 -65  65   0 -65 -65   0  65 -65 title="axial y-z view at x=+00, air gap"
+picture cs material color  12 -65  65  12 -65 -65  12  65 -65 title="axial y-z view at x=+12, layer 5"
+picture cs material color  33 -65  65  33 -65 -65  33  65 -65 title="axial y-z view at x=+33, layer 6"
+picture cs material color  53 -65  65  53 -65 -65  53  65 -65 title="axial y-z view at x=+53, layer 7"
+picture cs material color  74 -65  65  74 -65 -65  74  65 -65 title="axial y-z view at x=+74, layer 8"
+surfaces 
+$ --- Core box
+  1 box 19.6  19.6  18.91 tr 0 0  0.145 $ UO2
+  2 box 19.9  19.9  19.16 tr 0 0  0.020 $ AG3 box
+  3 box 17.54 17.54  0.10 tr 0 0  9.650 $ Air
+  4 box 19.9  19.9   0.10 tr 0 0  9.650 $ Rubber
+  5 box 19.9  19.9   0.30 tr 0 0  9.850 $ AG3 lid
+  6 box 20.3  20.3  20.0                $ Air
+  7 box 20.5  20.5  20.0                $ AG3 tube
+$ --- Reflector
+  8 box 20.1  20.1  20.0                $ Polythene
+  9 box 9999. 9999. 9999.               $ Dummy
+end

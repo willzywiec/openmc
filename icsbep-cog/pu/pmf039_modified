@@ -1,0 +1,42 @@
+PU-MET-FAST-039; 17.718 kg d-Pu(98) in 4.25 Duralumin
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+nsource=1 0. 0. 0.0001
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom Densities per Table 5
+mat=1 bunches pu239 3.6581-2 pu240 6.6880-4 ga 2.3152-3 c 3.0207-4 ni 1.9212-3
+mat=2 bunches pu239 3.6512-2 pu240 6.6739-4 ga 2.2978-3 c 2.2608-4 ni 2.3056-3
+mat=3 bunches pu239 3.6576-2 pu240 6.6878-4 ga 2.3286-3 c 3.0206-4 ni 1.8631-3
+mat=4 bunches pu239 3.6471-2 pu240 6.6665-4 ga 2.2823-3 c 3.0110-4 ni 1.9715-3
+mat=5 bunches pu239 3.6707-2 pu240 6.7110-4 ga 2.3236-3 c 3.0311-4 ni 1.6483-3
+mat=6 bunches al 5.5645-2 fe 1.0183-3 cu 1.0484-3
+mat=7 bunches al 5.3497-2 fe 9.7902-4 cu 1.0079-3
+mat=8 bunches al 5.1557-2 fe 9.4353-4 cu 9.7136-4
+geometry
+sector 0 VOID -1
+sector 1 LAYER1 1 -2
+sector 2 LAYER2 2 -3
+sector 3 LAYER3 3 -4
+sector 4 LAYER4 4 -5
+sector 5 LAYER5 5 -6
+sector 6 ALUM1 6 -7
+sector 7 ALUM2 7 -8
+sector 8 ALUM3 8 -9
+boundary vacuum 9
+picture cs material color
+-12 0 12 -12 0 -12 12 0 -12
+volume material
+-11 -11 -11 11 -11 -11 -11 11 -11
+22 22 22
+surfaces $ PER TABLE 4
+1 sphere 3.112
+2 sphere 4.020
+3 sphere 4.660
+4 sphere 5.350
+5 sphere 6.000
+6 sphere 6.750
+7 sphere 8.350
+8 sphere 9.150
+9 sphere 11.000
+end

@@ -1,0 +1,150 @@
+LCT038-8: Two pairs of (18x13-2) arrays of U(4.738)O2 rods, 1.60 cm pitch, between 10.0cm concrete isolator, Hc=50.5cm
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=52
+    -5.85  0.8 25.25  -5.85 -0.8 25.25  5.85  0.8 25.25  5.85 -0.8 25.25 
+    -7.45  0.8 25.25  -7.45 -0.8 25.25  7.45  0.8 25.25  7.45 -0.8 25.25 
+    -9.05  0.8 25.25  -9.05 -0.8 25.25  9.05  0.8 25.25  9.05 -0.8 25.25 
+   -10.65  0.8 25.25 -10.65 -0.8 25.25 10.65  0.8 25.25 10.65 -0.8 25.25 
+   -12.25  0.8 25.25 -12.25 -0.8 25.25 12.25  0.8 25.25 12.25 -0.8 25.25 
+   -13.85  0.8 25.25 -13.85 -0.8 25.25 13.85  0.8 25.25 13.85 -0.8 25.25 
+   -15.45  0.8 25.25 -15.45 -0.8 25.25 15.45  0.8 25.25 15.45 -0.8 25.25 
+   -17.05  0.8 25.25 -17.05 -0.8 25.25 17.05  0.8 25.25 17.05 -0.8 25.25 
+   -18.65  0.8 25.25 -18.65 -0.8 25.25 18.65  0.8 25.25 18.65 -0.8 25.25 
+   -20.25  0.8 25.25 -20.25 -0.8 25.25 20.25  0.8 25.25 20.25 -0.8 25.25 
+   -21.85  0.8 25.25 -21.85 -0.8 25.25 21.85  0.8 25.25 21.85 -0.8 25.25 
+   -23.45  0.8 25.25 -10.65 -0.8 25.25 10.65  0.8 25.25 10.65 -0.8 25.25 
+   -25.05  0.8 25.25 -25.05 -0.8 25.25 25.05  0.8 25.25 25.05 -0.8 25.25 
+assign-mc
+  1 red 2 yellow 3 gray 4 white 5 sky 6 brown 7 pink 8 black
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u234 7.1318-6  u235 1.1104-3  u236 3.1838-5  u238 2.2006-2   o16 4.6392-2 $ U(4.738)O2
+                    b10 5.7531-8   b11 2.3157-7                                              $  fuel
+  mat=2 bunches      al 5.9569-2    mg 3.1442-4    si 2.4894-4    fe 6.4052-5    zn 7.4597-6 $ AGS clad, plugs
+  mat=3 bunches       c 1.1883-4    cr 1.6469-2    fe 5.8694-2    mn 1.7319-3    ni 8.1061-3 $ Stainless steel
+                     si 1.6939-3     p 6.1438-5     s 4.4504-5                               $   Z2 CN18/10
+  mat=4 bunches       n 4.1985-5   o16 1.1263-5                                              $ Air
+  mat=5 bunches (h.h2o) 6.6689-2   o16 3.3344-2                                              $ Water, cases 2, 3 & 8
+  mat=6 bunches (h.h2o) 3.3338-2    al 1.9119-3    si 1.8717-4   b10 2.2563-3   b11 9.0820-3 $ Borated 
+                     ca 5.4953-3    fe 5.1474-4    ti 6.2574-5   o16 4.3241-2                $  concrete
+  mat=7 bunches (h.ch2) 4.0469-2     c 2.6980-2    cl 1.3490-2                               $ Polyvinyl bags & paint
+  mat=8 bunches      fe 8.4489-2     c 2.3766-4    mn 3.4639-4    si 5.0818-4     p 5.3759-5 $ XC 10F steel
+                      s 4.4504-5                                                             $  screen frame
+geometry
+   use unit 3 Assy  -10      21  22  32  43 tr -19.45  14.4 0 $ Basket assembly
+   use unit 3 Assy   10 -11  23  24  34  43 tr -19.45 -14.4 0 $ Basket assembly
+   use unit 4 Assy  -12      25  26  36  43 tr  19.45  14.4 0 $ Basket assembly
+   use unit 4 Assy   12 -13  27  28  38  43 tr  19.45 -14.4 0 $ Basket assembly
+     sector 3 SST   -10     -21  $ Tie rod
+     sector 3 SST   -10     -22  $ Tie rod
+     sector 3 SST    10 -11 -23  $ Tie rod
+     sector 3 SST    10 -11 -24  $ Tie rod
+     sector 3 SST   -12     -25  $ Tie rod
+     sector 3 SST   -12     -26  $ Tie rod
+     sector 3 SST    12 -13 -27  $ Tie rod
+     sector 3 SST    12 -13 -28  $ Tie rod
+     sector 4 Air   -10     -31 -32 $ Instrument thimble, air
+     sector 3 SST   -10      31 -32 $ Instrument thimble, steel
+     sector 4 Air    10 -11 -33 -34 $ Instrument thimble, air
+     sector 3 SST    10 -11  33 -34 $ Instrument thimble, steel
+     sector 4 Air   -12     -35 -36 $ Instrument thimble, air
+     sector 3 SST   -12      35 -36 $ Instrument thimble, steel
+     sector 4 Air    12 -13 -37 -38 $ Instrument thimble, air
+     sector 3 SST    12 -13  37 -38 $ Instrument thimble, steel
+$ --- Concrete isolator
+     sector 6 Cncrt -40
+     sector 6 Cncrt  40 -41
+     sector 8 XC10F  40  41 -42
+     sector 7 PVC    40  41  42 -43  10  11  12  13  14
+$ --- Pedestal support plate and water
+     sector 3 SST        10  11  12  13 -14 -15  43 $ Pedestal support plate
+     sector 4 Air     5  10  11  12  13  14 -15  43 $ Air   within the tank
+     sector 5 Water  -5  10  11  12  13  14 -15  43 $ Water within the tank
+     boundary vacuum 15
+define unit 1 $ Unit cell with one fuel rod, grid plates, water, etc.
+   sector   1 UO2     -1 -2    $ UO2 fuel
+   sector   4 Air      1 -2    $ Air in gap
+   sector   2 AGS      1  2 -3 $ AGS clad
+   sector   4 Air      3 -4  5 $ Air in hole
+   sector   5 Water    3 -4 -5 $ Water in hole
+   sector   3 Steel    4 -6    $ Upper grid plate
+   sector   3 Steel    4 -7    $ Lower grid plate
+   sector   3 Basket   8 -9    $ Basket
+   sector   4 Air      4  5  6  7 -8 -9 $ Air
+   sector   5 Water    4 -5  6  7 -8 -9 $ Water
+define unit 2 $ Unit cell with no fuel rod, grid plates, water, etc.
+   sector   4 Air     -4  5 $ Air in hole
+   sector   5 Water   -4 -5 $ Water in hole
+   sector   3 Steel    4 -6 $ Upper grid plate
+   sector   3 Steel    4 -7 $ Lower grid plate
+   sector   3 Basket   8 -9 $ Basket
+   sector   4 Air      4  5  6  7 -8 -9 $ Air
+   sector   5 Water    4 -5  6  7 -8 -9 $ Water
+define unit 3 $ 18x18 array with 1.60 cm square pitch
+   {x 101 19 [-14.4  14.4]
+    y 121 19 [-14.4  14.4]
+    z 141    -999.9 999.9
+    fill 
+    5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1
+    5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 
+    5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1}
+define unit 4 $ 18x18 array with 1.60 cm square pitch
+   {x 201 19 [-14.4  14.4]
+    y 221 19 [-14.4  14.4]
+    z 241    -999.9 999.9
+    fill 
+    13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2
+    13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 
+    13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2 13*1 5*2}
+picture cs material color res=1500 -37  37    96.7 -37 -37    96.7  37 -37    96.7 title="plane view through upper grid plate"
+picture cs material color res=1500 -37  37    30   -37 -37    30    37 -37    30   title="plane view through the water"
+picture cs material color res=1500 -37  37    -0.2 -37 -37    -0.2  37 -37    -0.2 title="plane view through lower grid plate"
+picture cs material color res=1500 -60  60    -3   -60 -60    -3    60 -60    -3   title="plane view through pedestal support plate"
+picture cs material color res=1500 -10  10    -0.2 -10 -10    -0.2  10 -10    -0.2 title="plane detail of lower grid plate"
+picture cs material color res=1500 -37   0.8 105   -37   0.8 -25    37   0.8 -25   title="axial x-z view of entire geometry"
+picture cs material color res=1500   0 -28   105     0 -28    90    10 -28    90   title="axial x-z detail of the upper baskets"
+picture cs material color res=1500   0 -28     5     0 -28   -10    10 -28   -10   title="axial x-z detail of the lower baskets"
+surfaces
+$ --- Unit with one fuel rod in one hole with grid plates in water
+   1 c z   0.395  0.0   90.0 $ UO2
+   2 c z   0.410  0.0   96.9 $ Gap
+   3 rev 3 -1.8   0.0   -1.0   0.470   98.2   0.470 tr 0 0 0 0 0 1 0 1 0 $ AGS
+   4 c z   0.50  -1.8   98.2 $ Hole
+   5 p z  50.5               $ Critical water height
+   6 box  28.8   28.8    0.2 tr 0 0 -0.2 $ Lower grid plate
+   7 box  28.8   28.8    0.2 tr 0 0 96.7 $ Upper grid plate
+   8 box  28.8   28.8  105.2 tr 0 0 50.8 $ Basket, inner
+   9 box  28.8   28.8  106.8 tr 0 0 50.8 $ Basket, outer
+$ --- Four baskets with borated steel plates with 0.6 cm water gap
+  10 box  28.8   28.8  106.8 tr -19.45  14.4 50.8 $ Basket  Note: Xo = (10.1/2) + 14.4 = 19.45
+  11 box  28.8   28.8  106.8 tr -19.45 -14.4 50.8 $ Basket
+  12 box  28.8   28.8  106.8 tr  19.45  14.4 50.8 $ Basket
+  13 box  28.8   28.8  106.8 tr  19.45 -14.4 50.8 $ Basket
+$ --- Pedestal plate and tank                                      
+  14 box  95.0   95.0    0.8 tr 0 0 -3.0  $ Pedestal support plate
+  15 box 120.3  120.0  140.1 tr 0 0 47.45 $ Water in tank & BCD
+$ --- Tie rods
+  21 c z   0.5   -1.8  104.2 tr  -5.85  28.0 0 $ Xo = (10.1/2) + 0.8 = 5.85
+  22 c z   0.5   -1.8  104.2 tr -33.05   0.8 0 $ Xo = 17.5(1.6) + (10.1/2) = 33.05
+  23 c z   0.5   -1.8  104.2 tr -33.05  -0.8 0
+  24 c z   0.5   -1.8  104.2 tr  -5.85 -28.0 0
+  25 c z   0.5   -1.8  104.2 tr   5.85  28.0 0
+  26 c z   0.5   -1.8  104.2 tr  33.05   0.8 0
+  27 c z   0.5   -1.8  104.2 tr  33.05  -0.8 0
+  28 c z   0.5   -1.8  104.2 tr   5.85 -28.0 0
+$ --- Instrument thimbles.  Note: Xo = (10.1/2) + 28.8 - (1.865/2) = 32.9175
+  31 c z   0.7975            tr -32.9175  27.8675 0 $ Inner 
+  32 c z   0.9325 -1.8 104.2 tr -32.9175  27.8675 0 $ Outer
+  33 c z   0.7975            tr -32.9175 -27.8675 0 $ Inner
+  34 c z   0.9325 -1.8 104.2 tr -32.9175 -27.8675 0 $ Outer
+  35 c z   0.7975            tr  32.9175  27.8675 0 $ Inner
+  36 c z   0.9325 -1.8 104.2 tr  32.9175  27.8675 0 $ Outer
+  37 c z   0.7975            tr  32.9175 -27.8675 0 $ Inner
+  38 c z   0.9325 -1.8 104.2 tr  32.9175 -27.8675 0 $ Outer
+$ --- Concrete isolator
+  40 box   9.2  69.0  99.0 tr 0 0 47.45 $ Concrete
+  41 box  10.0  69.0  90.0 tr 0 0 47.45 $ Concrete
+  42 box  10.0  70.0 100.0 tr 0 0 47.45 $ Frame
+  43 box  10.1  70.1 100.1 tr 0 0 47.45 $ PVC & paint
+end

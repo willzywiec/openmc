@@ -1,0 +1,37 @@
+U233-SOL-THERM-003 (Exp't 41 in 5.5"-Diam. Vessel) 2359 g U-233 @ H/X = 74
+basic
+  neutron delayedn CENTIMETERS
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1 0. 0. 24.
+$ Number densities per Tables 14, 15 and 16
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0      
+  mat=1 bunches u233 8.5797-4 u234 4.0002-6 u238 7.6526-6 $ 233U(98.7)O2F2
+             (h.h2o) 6.3280-2  o16 3.3379-2    f 1.8082-3 $  @ H/X=73.8
+                  al 1.4338-5   cr 1.6076-7   fe 9.0301-7 $
+                  mg 1.5632-8   mo 1.4401-8   na 2.3467-5 $
+                  ni 2.9424-8   sn 1.3093-8               $
+  mat=2 bunches (h.ch2) 5.2843-2 c 3.3195-2  o16 3.9521-3 cl 5.5079-3 $ Unichrome
+  mat=3 bunches   al 5.9881-2   si 5.8108-4                           $ Al-2S
+  mat=4 bunches (h.ch2) 7.9911-2 o16 3.8419-2                         $ Paraffin
+assign-mc
+  1 red 2 black 3 yellow 4 blue
+geometry
+  sector 0 Void   -1  5
+  sector 1 Soln   -1 -5
+  sector 2 UNCHRM  1 -2
+  sector 3 Al2S    2 -3
+  sector 4 Prffn   3 -4
+  boundary vacuum     4
+picture cs material color
+  -25   0  95  -25   0 -20   25   0 -20
+volume material
+  -23 -23 -16  +23 -23 -16  -23 +23 -16
+   46  46 108
+surfaces $ per Table 13
+  1 cylinder z  6.8265   0.0000 91.2811 $ Unichrome/Inner
+  2 cylinder z  7.0045  -0.1780 91.4591 $ Unichrome/Outer=Vessel/Inner
+  3 cylinder z  7.1336  -0.3071 91.5882 $ Vessel/Outer
+  4 cylinder z 22.3736 -15.5471 91.5882 $ Paraffin/Outer
+  5 analytic 1. z -48.5411 constant     $ Hc
+end

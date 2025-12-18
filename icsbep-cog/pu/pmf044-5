@@ -1,0 +1,41 @@
+PU-MET-FAST-044: Case 5 THOR Pu sphere with C + Poly Reflector
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom Densities per Table 33, 34, and 35
+$ -------------------------------------------------------------
+mat=1 bunches ga 1.2880-3
+pu239 3.7028-2
+pu240 1.9931-3
+pu241 1.3594-4
+$ -------------------------------------------------------------
+mat=2 bunches ni 1.2962-1
+$ -------------------------------------------------------------
+mat=3 bunches (c) 8.6272-2
+$ -------------------------------------------------------------
+mat=4 bunches c 3.9756-2
+(h.ch2) 7.9512-2
+$ -------------------------------------------------------------
+assign-mc
+1 purple 2 gray 3 black 4 yellow
+geometry
+sector 1 core -1
+sector 2 clad -2 1
+sector 3 refl -4 3
+sector 4 poly -6 5
+boundary vacuum 6
+picture cs material color
+-10 0 10 -10 0 -10 10 0 -10
+volume
+-10 -10 -10 10 -10 -10 -10 10 -10
+20 20 20
+surfaces $ Radii per Table 32
+1 sphere 5.295
+2 sphere 5.308
+3 sphere 5.335
+4 sphere 6.335
+5 sphere 6.342
+6 sphere 9.1274
+end

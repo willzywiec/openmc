@@ -1,0 +1,51 @@
+LMT004-2: 50 U(4.948) Metal Rods in Water; Pitch=4.27cm; Hf=30cm; Hw=36.5cm
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 15
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 1.8465-5 u235 2.3941-3 u238 4.5391-2 $ LEU 
+  mat=2 bunches (h.h2o) 6.6658-2 o16 3.3329-2             $ H2O
+assign-mc
+  1 red 2 sky
+geometry
+  use unit 1 LINE -90  17     -20 tr  -4.270  14.791714 0  sector 2 H2O -90  17      20
+  use unit 1 LINE -90  16 -17 -23 tr  -6.405  11.093785 0  sector 2 H2O -90  16 -17  23
+  use unit 1 LINE -90  15 -16 -24 tr -12.810   7.395857 0  sector 2 H2O -90  15 -16  24
+  use unit 1 LINE -90  14 -15     tr -14.945   3.697928 0
+  use unit 1 LINE -90  13 -14     tr -12.810   0        0
+  use unit 1 LINE -90  12 -13     tr -10.675  -3.697928 0 
+  use unit 1 LINE -90  11 -12     tr -12.810  -7.395857 0
+  use unit 1 LINE -90  10 -11 -22 tr -10.675 -11.093785 0  sector 2 H2O -90  10 -11  22
+  use unit 1 LINE -90     -10 -21 tr  -4.270 -14.791714 0  sector 2 H2O -90     -10  21
+  boundary vacuum  90
+define unit 1 $ Line of fuel
+  sector 1 LEU -1
+  sector 1 LEU -2
+  sector 1 LEU -3
+  sector 1 LEU -4
+  sector 1 LEU -5
+  sector 1 LEU -6
+  sector 1 LEU -7
+  sector 2 H2O -99 1 2 3 4 5 6 7
+picture cs material color -60  0 70 -60   0 -20  60   0 -20 title="axial view"
+picture cs material color -60 60 15 -60 -60  15  60 -60  15 title="plane view"
+surfaces
+   1 c z   1.2475   0.0   30.0              $ U (fuel)
+   2 c z   1.2475   0.0   30.0 tr  4.27 0 0 
+   3 c z   1.2475   0.0   30.0 tr  8.54 0 0 
+   4 c z   1.2475   0.0   30.0 tr 12.81 0 0
+   5 c z   1.2475   0.0   30.0 tr 17.08 0 0
+   6 c z   1.2475   0.0   30.0 tr 21.35 0 0
+   7 c z   1.2475   0.0   30.0 tr 25.62 0 0
+  10 p y -12.9427  20 p x  2.135
+  11 p y  -9.2448  21 p x  6.405
+  12 p y  -5.5469  22 p x  8.540
+  13 p y  -1.8490  23 p x 12.81
+  14 p y   1.8490  24 p x 14.945
+  15 p y   5.5469  
+  16 p y   9.2448  
+  17 p y  12.9427  
+  90 c z  58.3    -16.51  36.5              $ Water reflector
+  99 box 999      999    999                $ Arbitrary
+end

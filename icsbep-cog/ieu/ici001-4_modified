@@ -1,0 +1,47 @@
+IEU-COMP-THERM-001-4: KBR-21
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100  norm=1.0
+  nsource=1  0 0 1.7765
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches      fe 6.1216-2   cr 1.6579-2  ni 8.5122-3 mn 1.0698-3 ti 6.1377-4 si 8.7196-4 c 4.0778-4 $ SST Tube
+  mat=2  bunches (h.ch2) 7.2588-2    c 3.6294-2                                                             $ CH2
+  mat=10 bunches    u235 5.3898-3 u238 9.5349-3 o16 3.0000-2                                                $ U(36)O2
+  mat=11 bunches      fe 5.9839-2   cr 1.6206-2  ni 8.3207-3 mn 1.0458-3 ti 5.9996-4 si 8.5234-4 c 3.9861-4 $ Can-U(36)O2
+  mat=20 bunches   th232 2.8818-2   fe 9.5864-5                                                             $ Th
+  mat=21 bunches      al 6.3525-2                                                                           $ Can-Th
+assign-mc
+  1 black 2 sky 10 orange 11 gray 20 lime 21 green
+geometry
+  use  unit 1 KBR21    3  -4  -5
+  boundary reflecting  3  -4   5
+  boundary 3 periodic  4
+  boundary 4 periodic -3
+define unit 1
+  sector 10 U36O2        -10
+  sector 11 Can-U         10 -11
+  sector  2 CH2       -7  11  21    
+  sector 20 Th           -20
+  sector 21 Can-Th        20 -21
+  sector  2 CH2       -6  21
+  sector  1 SST-Tube   1  -2   3 -4
+$picture cs material color -3 0 2   -3  0 -1   3  0 -1   title="axial view"
+$picture cs material color -3 3 1.3 -3 -3  1.3 3 -3  1.3 title="plane view"
+$volume material
+$  -2.55 -2.55 0  2.55 -2.55 0  -2.55 2.55 0
+$   5.10  5.10 1.863
+surfaces
+  1 c z 2.4   $ SST tube/inner
+  2 c z 2.5   $ SST tube/outer
+  3 p z 0.0   $ BCD/lower
+  4 p z 1.863 $ BCD/upper
+  5 prism 6 0.0 -2.9444864  2.55 -1.4722432  2.55  1.4722432 $ BCD/planar
+            0.0  2.9444864 -2.55  1.4722432 -2.55 -1.4722432 tr 0 0 0 0 0 1 0 1 0
+  6 c z 2.35 0.000 0.345 $ CH2/lower
+  7 c z 2.35 1.345 1.690 $ CH2/upper
+ 10 c z 2.32 1.710 1.843 $ U(36)O2
+ 11 c z 2.34 1.690 1.863 $ Can-U(36)O2
+ 20 c z 2.30 0.375 1.315 $ Th
+ 21 c z 2.33 0.345 1.345 $ Can-Th
+end

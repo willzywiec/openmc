@@ -1,0 +1,41 @@
+LST018-1: Concrete reflected 28-cm-thick slab tank with 10% enriched uranyl nitrate solution @ H/X=751 (Run 133)
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1  0 0 33.955
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 6.3422-7 u235 7.8702-5  u236 7.8604-8 u238 7.0101-4 (h.h2o) 5.9135-2  n 2.0426-3 o16 3.7015-2             $ Solution: Run 133
+  mat=2 bunches    c 7.1567-5   si 7.1415-4    mn 9.9095-4    p 5.0879-5       s 1.0424-5 ni 8.5600-3  cr 1.6725-2 fe 5.9560-2 $ Stainless Steel Tank
+  mat=3 bunches    c 2.0675-4   si 6.6314-4    mn 1.0083-3    p 4.9337-5       s 1.6380-5 ni 6.6885-3  cr 1.6798-2 fe 6.1435-2 $ Stainless Steel Frame Plates
+  mat=4 bunches   al 5.9559-2   si 8.0751-5    fe 1.7114-4   cu 1.7845-5                                                       $ Aluminum Alloy 
+  mat=5 bunches (h.h2o) 1.4528-2 o16 7.2639-3 o16 3.7326-2   na 1.0533-3      mg 1.9573-4 al 1.5533-3  si 1.4749-2  s 1.0906-4 $ Concrete 
+                  cl 9.0027-7    k 1.9179-4    ca 3.9337-3   fe 2.7830-4                                                       $
+  mat=6 bunches    n 3.9014-5  o16 1.0410-5                                                                                    $ Air
+assign-mc
+  1 orange 2 gray 3 black 4 red 5 brown 6 yellow
+geometry
+  sector 1 Soln   -1 -3        $ Solution
+  sector 2 Tank    1 -2        $ Tank
+  sector 5 Cncrt -11 -12 -13   $ Reflector
+  sector 3 Frame  11 -12 -13   $  C150
+  sector 4 Alum   11  12 -13   $   LHS
+  sector 5 Cncrt -21 -22 -23   $ Reflector
+  sector 3 Frame  21 -22 -23   $  C150
+  sector 4 Alum   21  22 -23   $   RHS
+  fill   6                     $ Air 
+  boundary vacuum 99           $ Boundary Condition
+picture cs material color  -40    0 160  -40    0 -10  40    0 -10 title="x-z axial view"
+picture cs material color    0  -40 160    0  -40 -10   0   40 -10 title="y-z axial view"
+picture cs material color  -40   40  34  -40  -40  34  40  -40  34 title="x-y plane view through the fuel"
+surfaces 
+  1 box  28.08  69.03 149.75 tr   0    0  74.875 $ Slab tank/inner
+  2 box  33.14  74.09 154.67 tr   0    0  75.295 $ Slab tank/outer
+  3 p z  67.91                                   $ Hc
+ 11 box  15.0   71.4  150.6  tr -25.11 0  75.3   $ C150
+ 12 box  15.0   77.4  156.6  tr -25.11 0  75.3   $ Steel Frame
+ 13 box  16.62  77.4  156.6  tr -25.11 0  75.3   $ Aluminum
+ 21 box  15.0   71.4  150.6  tr  25.11 0  75.3   $ C150
+ 22 box  15.0   77.4  156.6  tr  25.11 0  75.3   $ Steel Frame
+ 23 box  16.62  77.4  156.6  tr  25.11 0  75.3   $ Aluminum
+ 99 box  67.0   78.0  160.0  tr   0.0  0  76.0   $ BCD
+end

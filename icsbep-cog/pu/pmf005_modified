@@ -1,0 +1,22 @@
+PU-MET-FAST-005: 8.471 kg Pu(4.90)-1.00Ga 0 15.778 g/cc in 4.699 cm W-(5.5)Ni-(2.5)Cu-(0.7)Zr Alloy @ 17.21 G/CC
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom Densities per Table 5 in Section 3.3
+mat=1 bunches pu239 3.7291-2 pu240 1.9277-3 pu241 1.2196-4 ga 1.3628-3
+mat=2 bunches w 5.1468-2 ni 9.7124-3 cu 4.0774-3 zr 7.9528-4
+geometry
+sector 1 pualloy -1
+sector 2 w-alloy 1 -2
+boundary vacuum 2
+picture cs material
+-10 0 10 -10 0 -10 10 0 -10
+volume
+-10 -10 -10 10 -10 -10 -10 10 -10
+20 20 20
+surfaces
+1 sphere 5.0419 $ per Section 3.2
+2 sphere 9.7409 $ THK = 4.699 cm
+end

@@ -1,0 +1,35 @@
+MIX-SOL-THERM-007-6: Exp. No. 134
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0 0 26.55951
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches   pu238 2.3466-8 pu239 1.8264-4 pu240 1.1181-5 pu241 7.1644-7 pu242 1.1923-7 $ Experiment 
+                   u234 2.7434-8  u235 3.0277-6  u236 5.4403-8  u238 4.4647-4 am241 4.4386-8 $  number
+                (h.h2o) 5.5536-2     n 3.6557-3   o16 3.8654-2 gd152 7.0694-9 gd154 7.7057-8 $  134
+                  gd155 5.2314-7 gd156 7.2355-7 gd157 5.5318-7 gd158 8.7802-7 gd160 7.7269-7 $  solution
+  mat=2 bunches      fe 5.7902-2    cr 1.7384-2    ni 8.1061-3    mn 1.7319-3    si 1.6939-3 $ Stainless 
+                      c 1.1883-4                                                             $  steel, SS304L
+  mat=3 bunches (h.h2o) 6.6658-2   o16 3.3329-2                                              $ Water at 25 C 
+  mat=4 bunches      fe 8.4058-2     c 3.9479-3                                              $ Carbon steel
+assign-mc
+  1 red 2 gray 3 sky 4 black
+geometry
+  sector  1 Soln   -1 -2
+  sector  2 SS3O4L  2 -3 -5
+  sector  3 Water   3 -4 -5
+  sector  4 CSteel  4 -5
+  boundary  vacuum  5
+picture cs material color 
+  -55   0 110 -55   0 -25  55   0 -25 title="x-z axial view"
+volume material
+  -51 -51 -22  51 -51 -22 -51  51 -22
+  102 102 130
+surfaces
+  1 p z 53.11902               $ Critical solution height
+  2 c z 30.515   0.0   107.0   $ Solution tank, inner
+  3 c z 30.594  -0.635 107.953 $ Solution tank, inner
+  4 c z 49.53  -20.635 107.953 $ Reflector tank, inner
+  5 c z 50.8   -21.905 107.953 $ Reflector tank, inner
+end

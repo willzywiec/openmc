@@ -1,0 +1,33 @@
+PMF022-1D: Bare spherical assembly of 18.792 kg delta-239Pu(98%): detailed model
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6 -2 0 0 2 0 0 0 -2 0 0 2 0 0 0 -2 0 0 2
+assign-mc
+  1 purple 2 red 3 orange 4 sky 5 blue 6 gray 
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu239 3.6826-2 pu240 6.7320-4 ga 2.2000-3 fe 1.4714-4 c 3.0406-4 ni 1.5722-3
+  mat=2 bunches pu239 3.6579-2 pu240 6.6875-4 ga 2.2114-3 fe 1.2992-4 c 3.0205-4 ni 1.9330-3
+  mat=3 bunches pu239 3.6512-2 pu240 6.6739-4 ga 2.1940-3 fe 1.2966-4 c 2.2608-4 ni 2.3056-3
+  mat=4 bunches pu239 3.6576-2 pu240 6.6878-4 ga 2.2115-3 fe 1.4617-4 c 3.0206-4 ni 1.8631-3
+  mat=5 bunches pu239 3.6471-2 pu240 6.6665-4 ga 2.1656-3 fe 1.4571-4 c 3.0110-4 ni 1.9715-3
+  mat=6 bunches pu239 3.6728-2 pu240 6.7147-4 ga 2.2074-3 fe 1.4676-4 c 3.0328-4 ni 1.6492-3
+geometry
+  sector 1 dPu1 1 -2
+  sector 2 dPu2 2 -3
+  sector 3 dPu3 3 -4
+  sector 4 dPu4 4 -5
+  sector 5 dPu5 5 -6
+  sector 6 dPu6 6 -7
+  boundary vacuum  7
+picture cs material color -7  0  7  -7 0 -7   7  0 -7 
+volume material  -7 -7 -7  7 -7 -7  -7 7 -7  14 14 14 
+surfaces $ All dimensions are in CENTIMETERS
+  1 sphere 1.400
+  2 sphere 3.150
+  3 sphere 4.020
+  4 sphere 4.660
+  5 sphere 5.350
+  6 sphere 6.000
+  7 sphere 6.670
+end

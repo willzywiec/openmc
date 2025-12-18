@@ -1,0 +1,30 @@
+LST012-1: TRACY R203-Hc1 (critical)
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 25.481
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 7.9910-7 u235 9.9262-5 u236 9.9039-8 u238 8.8316-4 $ Fuel
+             (h.h2o) 5.7674-2    n 2.3159-3  o16 3.7577-2               $   solution
+  mat=2 bunches    c 9.5125-6   si 6.0534-4   mn 8.2153-4    p 1.8160-5 $ Stainless
+                   s 1.7295-6   ni 8.7083-3   cr 1.5678-2   co 3.4591-5 $   steel
+                  fe 6.0600-2                                           $
+assign-mc
+  1 yellow 2 gray
+geometry
+  sector 2 SST  1 -2 -4
+  sector 1 SOLN 2 -3 -5
+  sector 2 SST  2  3 -4
+  boundary vacuum  5
+picture cs material color
+  -55   0 210 -55   0 -15  55   0 -15
+volume material
+  -51 -51  -9  51 -51  -9 -51  51  -9 
+  102 102 212
+surfaces 
+  1 c z  3.445
+  2 c z  3.810
+  3 c z 25.035  0.00 200.0
+  4 c z 26.085 -8.06 202.6
+  5 p z 50.962 $ critical 
+end

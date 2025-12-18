@@ -1,0 +1,148 @@
+PU-SOL-THERM-024 (Case 19) 5.742 kg Pu(80.45) at H/X = 457 with H/SQRT(A) = 0.306; 18.4 wt-% Pu-240
+basic
+  neutron delayedn
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  -284 149 -173
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 8, 9 and 10
+  mat=1 bunches  pu238 3.1964-7 pu239 1.2718-4 pu240 3.0696-5   pu241 7.5257-6 pu242 1.5883-6 $ 66.5 gPu/L
+                 am241 4.6517-7     n 2.0919-3   o16 3.6373-2 (h.h2o) 6.1615-2                $  @ H/X=457
+  mat=2 w-p 8.02  fe 69.448 cr 19.0  ni 10.0  mn 1.0   c 0.015 si 0.5        s 0.015 p 0.022  $ SS-304L
+  mat=3 w-p 2.33 o16 51.91  si 23.10 ca 12.00 al 4.79 fe 3.37  na 1.43 (h.h2o) 1.05 mg 0.92   $ Concrete per PUST026
+                   k  0.72   s  0.38 ti  0.33                                                 $  Table 20
+  mat=4 bunches (h.ch2) 5.6782-2 c 3.5489-2 o16 1.4196-2                                      $ Plexiglas
+assign-mc
+  1 purple 2 gray 3 yellow 4 green 
+geometry                                              
+  sector 1 Soln  -1 -2
+  sector 2 Tank   2 -3 -5
+  sector 2 Crate  3 -5  101 102 103 104 105 106 107 108 109 110 
+                        111 112 113 114 115 116 117 118 119 120
+                        121 122 123 124 125 126 127 128 129 130
+                        131 132 133 134 135 136 137 138 139 140
+                        141 142 143 144 145 146 147 148 149 150
+                        151 152 153 154 155 156 157 158 159 160
+                        161 162 163 164 165 166 167 168 169 170
+                        171 172 173 174 175 176 177 178 179 180
+                        181 182 183 184 185 186 187 188 189 190
+                        191 192 193 194 195 196 197 198 199 200
+  sector 4 Plex   3 -4 -101 sector 4 Plex   3 -4 -102 sector 4 Plex   3 -4 -103
+  sector 4 Plex   3 -4 -104 sector 4 Plex   3 -4 -105 sector 4 Plex   3 -4 -106
+  sector 4 Plex   3 -4 -107 sector 4 Plex   3 -4 -108 sector 4 Plex   3 -4 -109
+  sector 4 Plex   3 -4 -110 
+  sector 4 Plex   3 -4 -111 sector 4 Plex   3 -4 -112 sector 4 Plex   3 -4 -113
+  sector 4 Plex   3 -4 -114 sector 4 Plex   3 -4 -115 sector 4 Plex   3 -4 -116
+  sector 4 Plex   3 -4 -117 sector 4 Plex   3 -4 -118 sector 4 Plex   3 -4 -119
+  sector 4 Plex   3 -4 -120 
+  sector 4 Plex   3 -4 -121 sector 4 Plex   3 -4 -122 sector 4 Plex   3 -4 -123
+  sector 4 Plex   3 -4 -124 sector 4 Plex   3 -4 -125 sector 4 Plex   3 -4 -126
+  sector 4 Plex   3 -4 -127 sector 4 Plex   3 -4 -128 sector 4 Plex   3 -4 -129
+  sector 4 Plex   3 -4 -130 
+  sector 4 Plex   3 -4 -131 sector 4 Plex   3 -4 -132 sector 4 Plex   3 -4 -133
+  sector 4 Plex   3 -4 -134 sector 4 Plex   3 -4 -135 sector 4 Plex   3 -4 -136
+  sector 4 Plex   3 -4 -137 sector 4 Plex   3 -4 -138 sector 4 Plex   3 -4 -139
+  sector 4 Plex   3 -4 -140 
+  sector 4 Plex   3 -4 -141 sector 4 Plex   3 -4 -142 sector 4 Plex   3 -4 -143
+  sector 4 Plex   3 -4 -144 sector 4 Plex   3 -4 -145 sector 4 Plex   3 -4 -146
+  sector 4 Plex   3 -4 -147 sector 4 Plex   3 -4 -148 sector 4 Plex   3 -4 -149
+  sector 4 Plex   3 -4 -150 
+  sector 4 Plex   3 -4 -151 sector 4 Plex   3 -4 -152 sector 4 Plex   3 -4 -153
+  sector 4 Plex   3 -4 -154 sector 4 Plex   3 -4 -155 sector 4 Plex   3 -4 -156
+  sector 4 Plex   3 -4 -157 sector 4 Plex   3 -4 -158 sector 4 Plex   3 -4 -159
+  sector 4 Plex   3 -4 -160 
+  sector 4 Plex   3 -4 -161 sector 4 Plex   3 -4 -162 sector 4 Plex   3 -4 -163
+  sector 4 Plex   3 -4 -164 sector 4 Plex   3 -4 -165 sector 4 Plex   3 -4 -166
+  sector 4 Plex   3 -4 -167 sector 4 Plex   3 -4 -168 sector 4 Plex   3 -4 -169
+  sector 4 Plex   3 -4 -170 
+  sector 4 Plex   3 -4 -171 sector 4 Plex   3 -4 -172 sector 4 Plex   3 -4 -173
+  sector 4 Plex   3 -4 -174 sector 4 Plex   3 -4 -175 sector 4 Plex   3 -4 -176
+  sector 4 Plex   3 -4 -177 sector 4 Plex   3 -4 -178 sector 4 Plex   3 -4 -179
+  sector 4 Plex   3 -4 -180 
+  sector 4 Plex   3 -4 -181 sector 4 Plex   3 -4 -182 sector 4 Plex   3 -4 -183
+  sector 4 Plex   3 -4 -184 sector 4 Plex   3 -4 -185 sector 4 Plex   3 -4 -186
+  sector 4 Plex   3 -4 -187 sector 4 Plex   3 -4 -188 sector 4 Plex   3 -4 -189
+  sector 4 Plex   3 -4 -190 
+  sector 4 Plex   3 -4 -191 sector 4 Plex   3 -4 -192 sector 4 Plex   3 -4 -193
+  sector 4 Plex   3 -4 -194 sector 4 Plex   3 -4 -195 sector 4 Plex   3 -4 -196
+  sector 4 Plex   3 -4 -197 sector 4 Plex   3 -4 -198 sector 4 Plex   3 -4 -199
+  sector 4 Plex   3 -4 -200 
+  sector 2 Frame  6 -7
+  sector 2 Hood   8 -9
+  sector 3 Room  10 -11
+  boundary vacuum    11
+picture cs material color
+  -284  105  -60 -284  105 -215 -284  185 -215 title="Figure 7: y-z detail at X = -284"
+picture cs material color
+  -360  185 -122 -360  105 -122 -205  105 -122 title="Figure 8: x-y detail at Z = -122"
+picture cs material color
+  -284 -700  400 -284 -700 -400 -284  700 -400 title="Figure 9: y-z view thru tank c/l"
+picture cs material color
+  -700  700 -130 -700 -700 -130  700 -700 -130 title="Figure 10: x-y view thru tank"
+picture cs material color
+  -700  149  400 -700  149 -400  700  149 -400 title="x-z view thru tank c/l"
+picture cs material color
+  -700  135  400 -700  135 -400  700  135 -400 title="x-z view thru egg-crate"
+surfaces
+   1 plane z 40.3377                 tr    0.0     0.0  -192.929 $ Hc
+   2 box  106.68     20.066 106.68   tr -284.169 148.87 -139.589 $ Tank/Inner:  Width = Tc 
+   3 box  107.58     20.384 107.58   tr -284.169 148.87 -139.589 $ Tank/Outer:  Width = Tc +  0.318
+   4 box  107.58     25.464 107.58   tr -284.169 148.87 -139.589 $ Plex/Outer:  Width = Tc +  5.398
+   5 box  107.58     43.244 107.58   tr -284.169 148.87 -139.589 $ Frame/Outer: Width = Tc + 23.178
+   6 box  142.240    68.58  143.510  tr -284.169 146.16 -139.589 $ U-Frame/Inner 
+   7 box  143.192    68.58  143.986  tr -284.169 146.16 -139.827 $ U-Frame/Outer 
+   8 box  277.252   242.57  455.93   tr -241.739 198.12  -83.82  $ Hood/Inner
+   9 box  278.522   243.84  457.20   tr -241.739 198.12  -83.82  $ Hood/Outer 
+  10 box 1066.80   1066.80  624.84   tr    0.0   -30.48    0.0   $ Room/Inner 
+  11 box 1371.60   1310.64  746.76                               $ Room/Outer
+  12 box   10.2825 1000.0    10.2825                             $ Square Holes
+ 101 sameas 12 tr -331.869 0.0 -187.289 102 sameas 12 tr -321.269 0.0 -187.289 
+ 103 sameas 12 tr -310.669 0.0 -187.289 104 sameas 12 tr -300.069 0.0 -187.289 
+ 105 sameas 12 tr -289.469 0.0 -187.289 106 sameas 12 tr -278.869 0.0 -187.289  
+ 107 sameas 12 tr -268.269 0.0 -187.289 108 sameas 12 tr -257.669 0.0 -187.289  
+ 109 sameas 12 tr -247.069 0.0 -187.289 110 sameas 12 tr -236.469 0.0 -187.289  
+ 111 sameas 12 tr -331.869 0.0 -176.689 112 sameas 12 tr -321.269 0.0 -176.689  
+ 113 sameas 12 tr -310.669 0.0 -176.689 114 sameas 12 tr -300.069 0.0 -176.689  
+ 115 sameas 12 tr -289.469 0.0 -176.689 116 sameas 12 tr -278.869 0.0 -176.689  
+ 117 sameas 12 tr -268.269 0.0 -176.689 118 sameas 12 tr -257.669 0.0 -176.689  
+ 119 sameas 12 tr -247.069 0.0 -176.689 120 sameas 12 tr -236.469 0.0 -176.689  
+ 121 sameas 12 tr -331.869 0.0 -166.089 122 sameas 12 tr -321.269 0.0 -166.089  
+ 123 sameas 12 tr -310.669 0.0 -166.089 124 sameas 12 tr -300.069 0.0 -166.089  
+ 125 sameas 12 tr -289.469 0.0 -166.089 126 sameas 12 tr -278.869 0.0 -166.089  
+ 127 sameas 12 tr -268.269 0.0 -166.089 128 sameas 12 tr -257.669 0.0 -166.089  
+ 129 sameas 12 tr -247.069 0.0 -166.089 130 sameas 12 tr -236.469 0.0 -166.089  
+ 131 sameas 12 tr -331.869 0.0 -155.489 132 sameas 12 tr -321.269 0.0 -155.489  
+ 133 sameas 12 tr -310.669 0.0 -155.489 134 sameas 12 tr -300.069 0.0 -155.489  
+ 135 sameas 12 tr -289.469 0.0 -155.489 136 sameas 12 tr -278.869 0.0 -155.489  
+ 137 sameas 12 tr -268.269 0.0 -155.489 138 sameas 12 tr -257.669 0.0 -155.489  
+ 139 sameas 12 tr -247.069 0.0 -155.489 140 sameas 12 tr -236.469 0.0 -155.489  
+ 141 sameas 12 tr -331.869 0.0 -144.889 142 sameas 12 tr -321.269 0.0 -144.889  
+ 143 sameas 12 tr -310.669 0.0 -144.889 144 sameas 12 tr -300.069 0.0 -144.889  
+ 145 sameas 12 tr -289.469 0.0 -144.889 146 sameas 12 tr -278.869 0.0 -144.889  
+ 147 sameas 12 tr -268.269 0.0 -144.889 148 sameas 12 tr -257.669 0.0 -144.889  
+ 149 sameas 12 tr -247.069 0.0 -144.889 150 sameas 12 tr -236.469 0.0 -144.889  
+ 151 sameas 12 tr -331.869 0.0 -134.289 152 sameas 12 tr -321.269 0.0 -134.289 
+ 153 sameas 12 tr -310.669 0.0 -134.289 154 sameas 12 tr -300.069 0.0 -134.289  
+ 155 sameas 12 tr -289.469 0.0 -134.289 156 sameas 12 tr -278.869 0.0 -134.289  
+ 157 sameas 12 tr -268.269 0.0 -134.289 158 sameas 12 tr -257.669 0.0 -134.289  
+ 159 sameas 12 tr -247.069 0.0 -134.289 160 sameas 12 tr -236.469 0.0 -134.289  
+ 161 sameas 12 tr -331.869 0.0 -123.689 162 sameas 12 tr -321.269 0.0 -123.689  
+ 163 sameas 12 tr -310.669 0.0 -123.689 164 sameas 12 tr -300.069 0.0 -123.689  
+ 165 sameas 12 tr -289.469 0.0 -123.689 166 sameas 12 tr -278.869 0.0 -123.689  
+ 167 sameas 12 tr -268.269 0.0 -123.689 168 sameas 12 tr -257.669 0.0 -123.689  
+ 169 sameas 12 tr -247.069 0.0 -123.689 170 sameas 12 tr -236.469 0.0 -123.689  
+ 171 sameas 12 tr -331.869 0.0 -113.089 172 sameas 12 tr -321.269 0.0 -113.089  
+ 173 sameas 12 tr -310.669 0.0 -113.089 174 sameas 12 tr -300.069 0.0 -113.089  
+ 175 sameas 12 tr -289.469 0.0 -113.089 176 sameas 12 tr -278.869 0.0 -113.089  
+ 177 sameas 12 tr -268.269 0.0 -113.089 178 sameas 12 tr -257.669 0.0 -113.089  
+ 179 sameas 12 tr -247.069 0.0 -113.089 180 sameas 12 tr -236.469 0.0 -113.089  
+ 181 sameas 12 tr -331.869 0.0 -102.489 182 sameas 12 tr -321.269 0.0 -102.489  
+ 183 sameas 12 tr -310.669 0.0 -102.489 184 sameas 12 tr -300.069 0.0 -102.489  
+ 185 sameas 12 tr -289.469 0.0 -102.489 186 sameas 12 tr -278.869 0.0 -102.489  
+ 187 sameas 12 tr -268.269 0.0 -102.489 188 sameas 12 tr -257.669 0.0 -102.489  
+ 189 sameas 12 tr -247.069 0.0 -102.489 190 sameas 12 tr -236.469 0.0 -102.489  
+ 191 sameas 12 tr -331.869 0.0  -91.889 192 sameas 12 tr -321.269 0.0  -91.889  
+ 193 sameas 12 tr -310.669 0.0  -91.889 194 sameas 12 tr -300.069 0.0  -91.889  
+ 195 sameas 12 tr -289.469 0.0  -91.889 196 sameas 12 tr -278.869 0.0  -91.889  
+ 197 sameas 12 tr -268.269 0.0  -91.889 198 sameas 12 tr -257.669 0.0  -91.889  
+ 199 sameas 12 tr -247.069 0.0  -91.889 200 sameas 12 tr -236.469 0.0  -91.889  
+end

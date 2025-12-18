@@ -1,0 +1,70 @@
+MIX-COMP-FAST-002; ZPR-6 Assembly 7; High 240Pu Core; Benchmark Model
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0. 0. 0.0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches pu240 3.2178-4  pu241 5.3569-5   u235 1.1872-5  u238 5.5620-3  pu239 8.3844-4  pu238 1.1083-6  pu242 1.7447-5  $ IC1
+                 am241 1.4681-5     cr 2.6792-3     ni 1.1908-3    fe 1.2805-2     al 4.1057-6     na 9.1676-3    o16 1.3684-2
+                     c 3.6621-5     mo 2.3662-4     mn 2.2447-4    cu 2.4580-5     si 1.6182-4     ca 2.1044-6     cl 2.9484-7 
+                    co 8.2889-7
+  mat=2  bunches pu240 1.1749-4  pu241 1.4641-5   u235 1.2575-5  u238 5.7820-3  pu239 8.8583-4  pu238 4.6444-7  pu242 1.7620-6 $ OC1 
+                 am241 2.9643-6     cr 2.6792-3     ni 1.1885-3    fe 1.3230-2     al 1.8593-5     na 9.0718-3    o16 1.4192-2
+                     c 3.3605-5     mo 2.3875-4     mn 2.2395-4    cu 2.4882-5     si 1.5377-4     ca 2.0828-6     cl 2.9546-7
+                    co 5.4095-8
+  mat=9  bunches pu240 5.0694-5  pu241 2.8433-6   u235 1.2151-5  u238 5.7042-3  pu239 1.0697-3  pu238 1.6248-9  pu242 1.1005-7 $ PUAL
+                 am241 1.9758-6     cr 2.6230-3     ni 1.1648-3    fe 1.3160-2     al 1.1477-4     na 9.3420-3    o16 1.4386-2
+                     c 4.0021-5     mo 1.3306-5     mn 2.2020-4    cu 2.5731-5     si 1.5879-4     ca 2.1452-6     cl 3.0352-7 
+                    co 8.2412-7
+  mat=3  bunches  u235 8.1353-5   u238 3.7936-2     cr 1.6464-3    ni 6.8937-4     fe 6.0603-3      c 3.6728-5     mo 1.0620-5 $ IR1
+                    mn 1.4319-4     cu 1.9742-5     si 1.0623-4
+  mat=4  bunches  u235 8.5866-5   u238 4.0055-2     cr 1.4497-3    ni 6.0752-4     fe 5.2553-3      c 2.7168-5     mo 1.0042-5 $ IR2
+                    mn 1.2717-4     cu 1.9068-5     si 9.5203-5
+  mat=5  bunches  u235 8.1048-5   u238 3.7795-2     cr 1.6557-3    ni 6.9310-4     fe 6.0903-3      c 3.6634-5     mo 1.0678-5 $ OR1
+                    mn 1.4383-4     cu 1.9824-5     si 1.0608-4
+  mat=6  bunches  u235 8.4740-5   u238 3.9527-2     cr 1.4696-3    ni 6.1564-4     fe 5.3245-3      c 2.7315-5     mo 1.0217-5 $ OR2
+                    mn 1.2863-4     cu 1.9225-5     si 9.5483-5
+  mat=7  bunches  u235 8.5846-5   u238 4.0046-2     cr 1.1782-3    ni 4.7578-4     fe 4.2400-3      c 1.8572-5     mo 8.1814-6 $ RR1
+                    mn 1.0494-4     cu 1.7075-5     si 6.7685-5
+  mat=8  bunches    cr 1.1910-3     ni 4.8172-4     fe 4.3056-3     c 1.9752-5     mo 8.2719-6     mn 1.0599-4     cu 1.7186-5 $ RR2=MAT
+                    si 6.8789-5
+assign-mc
+  1 black 2 gray 3 red 4 pink 5 green 6 lime 7 blue 8 yellow 9 purple
+geometry
+  sector  1 IC1        -1   7 -8
+  sector  2 OC1      1 -20  7 -8
+  sector  9 PUAL    20 -2   7 -8
+  sector  3 IR1        -1   6 -7
+  sector  3 IR1        -1   8 -9
+  sector  4 IR2        -1  -3  9
+  sector  4 IR2        -1  -3 -6
+  sector  5 OR1      1 -2   6 -7
+  sector  5 OR1      1 -2   8 -9
+  sector  6 OR2      1 -2  -3 -6
+  sector  6 OR2      1 -2  -3  9
+  sector  7 RR1      2 -3   5 -10
+  sector  8 RR2      2 -3  -5
+  sector  8 RR2      2 -3   10
+  sector  8 MAT      3 -4
+  boundary  vacuum      4
+picture cs material color 
+    0   0   125    0   0     0  145   0    0 title="quarter core"
+picture cs material color 
+ -145   0   125 -145   0  -125  145   0 -125 title="full core"
+volume material
+ -141 -141 -122  141 -141 -122 -141 141 -122
+  282  282   244
+surfaces
+  1 cylinder z   24.3435
+ 20 cylinder z   75.0028
+  2 cylinder z   78.0496
+  3 cylinder z  111.5583 -110.5357 110.5357
+  4 cylinder z  140.2589 -121.9200 121.9200
+  5 plane    z -106.6800
+  6 plane    z -101.7257
+  7 plane    z  -76.2813
+  8 plane    z   76.2813
+  9 plane    z  101.7257
+ 10 plane    z  106.6800
+end

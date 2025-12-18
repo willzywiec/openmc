@@ -1,0 +1,51 @@
+PU-MET-FAST-045: LAMPRE Assembly I (Simplified Model)
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+nsource=1 0. 0. 6.73
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0  $ per Table 16
+mat=1 bunches pu239 2.76-2 ni 6.53-3 ta 3.85-3 al 4.40-3
+mat=2 bunches ni 8.8859-2
+mat=3 bunches ta 4.8690-2
+mat=4 bunches al 2.0087-2
+mat=5 bunches fe 8.4648-2
+mat=6 bunches (h.h2o) 6.6766-2 o16 3.3383-2
+mat=7 bunches (h.ch2) 7.8996-2 c 3.9498-2
+assign-mc
+1 red 2 green 3 blue 4 gray 5 black 6 sky 7 pink
+geometry
+$ --------------------------------------------
+$ Assembly I: Solid Nickel Reflector Assembly
+$ --------------------------------------------
+sector 1 Core -3
+sector 3 Ta 3 -4
+sector 4 Al 4 -5
+sector 0 Gap 5 -6
+sector 2 Ni 5 6 -7 13 -14
+sector 4 Al 5 6 -7 12 -13
+sector 7 CH2 5 6 -7 11 -12
+sector 0 Gap 7 -8 11 -14
+sector 0 Gap -8 -10 14
+sector 5 Fe 8 -9 -10
+sector 6 H2O 9 -10
+boundary vacuum 10
+picture cs material color
+0 0 45 0 0 -43 49 0 -43 title="LAMPRE assembly axial 1/2 view"
+volume material
+-50 -50 -43 +50 -50 -43 -50 +10 -43
+100 100 105
+surfaces $ per Figures 7 and 14
+3 cylinder z 5.7404 0.0000 13.3443
+4 cylinder z 5.8674 -0.2032 13.5475
+5 cylinder z 6.0706 -1.9558 15.3001
+6 cylinder z 6.1976 -1.9558 15.3001
+7 cylinder z 10.0076
+8 cylinder z 10.0584
+9 cylinder z 10.3632
+10 cylinder z 48.26 -42.0370 43.74780
+11 analytic 1. z 42.0370
+12 analytic 1. z 11.5570
+13 analytic 1. z 9.5758
+14 analytic 1. z -35.6201
+end

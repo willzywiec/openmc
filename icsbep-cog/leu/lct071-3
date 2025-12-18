@@ -1,0 +1,79 @@
+LCT712-3: 32x32=1024 U(4.738)O2 Zr-4 clad rods with 1.1cm pitch; Hc=86.929cm
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  -0.55 -0.55 43.4645   0.55 -0.55 43.4645
+  -0.55  0.55 43.4645   0.55  0.55 43.4645
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u234 7.1087-6 u235 1.1104-3 u236 3.1792-5 u238 2.2006-2 $ UO2
+                    o16 4.6311-2   fe 9.5140-6   si 2.2479-5   al 4.1701-6 $  fuel
+  mat=2 bunches       n 8.7300-6  o16 3.3727-4   sn 4.5389-4   fe 1.5680-4 $ Zr-4
+                     cr 8.9516-5    c 4.2233-5   si 1.3904-5   al 2.8361-6 $
+                     zr 4.2428-2   hf 1.2287-6    h 1.4480-5               $
+  mat=3 bunches      fe 1.0716-4   si 1.7615-4   cu 1.1301-5   mn 6.6811-5 $ AG3M
+                     mg 1.9173-3   cr 7.6730-6   zn 1.0982-5   ti 1.1666-5 $
+                     pb 7.7020-7   ni 2.7190-6   sn 1.5124-6   al 5.6769-2 $
+                     bi 1.9091-7                                           $
+  mat=4 bunches      cr 1.6469-2   ni 8.1056-3   mn 8.6597-4   si 1.6939-3 $ SST
+                      p 6.1439-5    s 4.4509-5    c 1.1883-4   fe 5.9546-2 $  Z2CN18-10
+  mat=5 bunches (h.h2o) 6.6736-2  o16 3.3368-2                             $ Water
+  mat=6 bunches       n 4.1985-5  o16 1.1263-5                             $ Air
+assign-mc
+  1 red 2 lime 3 black 4 gray 5 sky 6 pink
+geometry
+    use unit 4 Core   -2 -8
+    use unit 1 Rest    2 -8
+    boundary   vacuum     8
+ define unit 1                              $ Geometry outside the array
+    sector   3 AGM3    -3 -9                $   AGM3 top plate
+    sector   3 AGM3    -4 -9                $   AGM3 top grid
+    sector   3 AGM3    -5 -9                $   AGM3 bottom grid
+    sector   3 AGM3    -6 -9                $   AGM3 bottom plate
+    sector   4 SST     -7 -9                $   SST  plate
+    sector   5 H2O     -1  3  4  5  6  7 -9 $   Water
+    sector   6 Air      1  3  4  5  6  7 -9 $   Air
+ define unit 2                    $ Unit cell with fuel rod
+    sector   1 UO2    -11 -12     $   UO2
+    sector   0 Gap     11 -12     $   Void
+    sector   2 Zr4     11  12 -13 $   Zr4
+    use unit 1 Alles   -9  13     $   AGM3 plates and grids, water 
+ define unit 3                    $ Unit cell w/o a fuel rod
+    sector   5 H2O     -1  -9 -13 $   Water in the hole
+    sector   6 Air      1  -9 -13 $   Air   in the hole
+    use unit 1 Alles       -9  13 $   AGM3 plates and grids, water 
+ define unit 4 $ 36x36 array
+   {x 101 37 [-19.8  19.8]
+    y 151 37 [-19.8  19.8]
+    z 191    -999.9 999.9
+    fill
+    36*3 36*3
+    3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  
+    3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3
+    3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3
+    3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3
+    3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3
+    3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3  3 3 32*2 3 3
+    3 3 32*2 3 3  3 3 32*2 3 3
+    36*3 36*3}
+  picture cs material color res=1500 -20  20  97  -20  -20  97  20  -20  97  title="plane detail in top grid"
+  picture cs material color res=1500 -20  20   5  -20  -20   5  20  -20   5  title="plane detail in water"
+  picture cs material color res=1500 -20  20 -0.2 -20  -20 -0.2 20  -20 -0.2 title="plane detail in water"
+  picture cs material color res=1500 -80  80   5  -80  -80   5  80  -80   5  title="plane view"
+  picture cs material color res=1500 -80 0.55 120 -80 0.55 -30  80 0.55 -30  title="axial x-z view"
+surfaces
+$ --- Geometry outside the array boundary
+   1 p z  86.929                              $ Critical height
+   2 box  39.6    39.6   999.99               $ Array boundary
+   3 box  95.0    95.0     1.2  tr 0 0 107.0  $ AGM3 top plate
+   4 box  50.0    50.0     0.6  tr 0 0  96.8  $ AGM3 top grid
+   5 box  43.5    43.5     0.4  tr 0 0  -0.2  $ AGM3 bottom grid (cases 1-3)
+   6 box  95.0    95.0     1.2  tr 0 0  -2.4  $ AGM3 bottom plate
+   7 box 999.9   999.9     3.5  tr 0 0  -4.75 $ Steel plate
+   8 box 150.0   150.0   140.0  tr 0 0  46.0  $ Entire problem (BCD)
+   9 box 999.9   999.9   999.9                $ Dummy
+$ --- Fuel rod
+  11 c z   0.3945  0.0    89.765 $ UO2
+  12 c z   0.4180  0.0    98.814 $ Gap
+  13 c z   0.4745 -1.18  100.282 $ Zr4
+end

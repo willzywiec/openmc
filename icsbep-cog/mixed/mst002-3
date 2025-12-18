@@ -1,0 +1,36 @@
+MIX-SOL-THERM-002-3: Experiment No. 061
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0 0 40.86
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches (h.h2o) 6.4831-2     n 6.5896-4  o16 3.4438-2 pu238 8.6346-9 pu239 2.7976-5 pu240 2.5418-6  $ Experiment
+                  pu241 1.4161-7 pu242 2.8204-8 u234 4.2240-9  u235 4.6055-7  u236 2.0941-8  u238 1.0334-4  $  no. 061
+                  am241 1.5684-7   b10 6.6608-9   cd 3.7223-9    fe 3.8580-7    gd 5.1351-10  li6 2.3796-10 $  solution
+  mat=2 bunches      fe 5.9355-2    cr 1.7428-2   ni 7.7203-3    mn 1.7363-3                                $ SS304L
+  mat=3 bunches (h.h2o) 6.6705-2   o16 3.3353-2                                                             $ Water at 22.1 C 
+assign-mc
+  1 red 2 gray 3 sky
+geometry
+  sector  1 Soln   -3 -7
+  sector  2 SS3O4L  3 -4
+  sector  2 SS304L  1 -2  4 -5
+  sector  3 Water   2  4 -5 -6
+  boundary  vacuum  5
+picture cs material color 
+  -55   0 110 -55   0 -20  55   0 -20 title="x-z axial view"
+picture cs material color 
+    0 -55 110   0 -55 -20   0  55 -20 title="y-z axial view"
+volume material
+  -50 -51 -17  50 -51 -17 -50  51 -17
+  100 102 125
+surfaces
+  1 c z  2.625                            $ Fill pipe, inner
+  2 c z  3.016                            $ Fill pipe, outer 
+  3 c z 34.340  0.0   106.600             $ Tank, inner
+  4 c z 34.419 -0.953 107.553             $ Tank, outer
+  5 box 98.76 101.31  124.506 tr 0 0 45.3 $ BCD and entire problem
+  6 p z 106.283                           $ Water reflector height
+  7 p z  81.72                            $ Solution critical height
+end

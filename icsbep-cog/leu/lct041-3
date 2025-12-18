@@ -1,0 +1,68 @@
+LCT041-3: CRISTO II Configuration C
+basic
+  neutron delayedn MM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4 
+  -6.3 -6.3 0
+   6.3 -6.3 0
+  -6.3  6.3 0
+   6.3  6.3 0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u234 4.5568-6 u235 6.9241-4 u236 5.4681-6 u238 2.2082-2 o16 4.5568-2 $ UO2
+  mat=2 bunches      fe 1.3300-4   cr 7.8500-5   zr 3.6780-2   sn 4.2900-4              $ Zr (clad)
+  mat=3 bunches      fe 1.5000-4   cr 8.8800-5   zr 4.1580-2   sn 4.8500-4              $ Zr (tube)
+  mat=4 bunches (h.h2o) 6.6734-2  o16 3.3367-2                                          $ Water
+  mat=5 bunches      fe 5.5611-2   cr 1.6643-2   ni 1.0355-2   mn 5.3000-4  mo 8.8000-5 $ Stainless steel,
+                      c 1.3700-4   si 9.1900-4  b10 9.3010-4  b11 3.7204-3              $  2.6 mgB10/cm2
+assign-mc
+  1 red 2 black 3 gray 4 sky 5 lime
+geometry
+   use unit 3 CORE -5    -8
+   sector   4 H2O   5 -6 -8
+   sector   5 BSS   6 -7 -8
+   sector   4 H2O      7 -8
+   boundary reflecting    8
+ define unit 1              $ UNIT FUEL CELL
+   sector   1 UO2  -1    -5 $  Fuel
+   sector   2 Zr    1 -2 -5 $  Clad and gap
+   sector   4 H2O      2 -5 $  Water
+ define unit 2              $ WATER HOLE
+   sector   4 H2O  -3    -5 $  Water
+   sector   3 Zr    3 -4 -5 $  Bracing tube
+   sector   4 H2O      4 -5 $  Water
+ define unit 3              $ 14x14 ARRAY
+  {x 101 15 [-88.2  88.2]
+   y 121 15 [-88.2  88.2]
+   z 141    -999.9 999.9
+   fill
+   1 1 1 1 1 1 1 1 1 1 1 1 1 1
+   1 1 1 1 1 1 1 1 1 1 1 1 1 1
+   1 1 1 1 1 2 1 1 2 1 1 1 1 1
+   1 1 1 2 1 1 1 1 1 1 2 1 1 1
+   1 1 1 1 1 1 1 1 1 1 1 1 1 1
+   1 1 2 1 1 2 1 1 2 1 1 2 1 1
+   1 1 1 1 1 1 1 1 1 1 1 1 1 1
+   1 1 1 1 1 1 1 1 1 1 1 1 1 1
+   1 1 2 1 1 2 1 1 2 1 1 2 1 1
+   1 1 1 1 1 1 1 1 1 1 1 1 1 1
+   1 1 1 2 1 1 1 1 1 1 2 1 1 1
+   1 1 1 1 1 2 1 1 2 1 1 1 1 1
+   1 1 1 1 1 1 1 1 1 1 1 1 1 1
+   1 1 1 1 1 1 1 1 1 1 1 1 1 1}
+picture cs material color
+   -120 120   0 -120 -120    0 120 -120    0 title="plane view of entire geometry"
+picture cs material color
+   -120 6.3 120 -120  6.3 -120 120  6.3 -120 title="axialview of entire geometry"
+surfaces
+$ --- Fuel cell
+   1 c z 4.015 $ UO2
+   2 c z 4.700 $ Zr clad
+$ --- Water hole
+   3 c z 4.1   $ Zr tube, inner
+   4 c z 4.7   $ Zr tube, outer
+$ --- Core boundary and reflector
+   5 box 176.4  176.4  999.9 $ Core boundary
+   6 box 188.2  188.2  999.9 $ Water gap
+   7 box 191.34 191.34 999.9 $ Absorber plate
+   8 box 221.2  221.2  221.2 $ Reflector
+end

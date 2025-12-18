@@ -1,0 +1,73 @@
+LEU-COMP-THERM-074-2: MIRTE-1 Experiment 1A-Al-200; 17x17; Hc=80.268cm
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 40.1340
+assign-mc
+  1 red 2 black 3 lime 4 gray 5 yellow 6 sky 7 white 8 pink
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1  bunches    o16 4.6311-2   fe 9.5121-6   si 2.2475-5   al 4.1693-6  $ U(4.738)O2 
+                   u234 7.1087-6 u235 1.1104-3 u236 3.1792-5 u238 2.2006-2  $  fuel
+  mat=2  bunches      n 8.7300-6  o16 3.3727-4   sn 4.5389-4   fe 1.5680-4  $ Zr-4
+                     cr 8.9516-5    c 4.2233-5   si 1.3904-5   al 2.8361-6  $  clad &
+                     zr 4.2428-2   hf 1.2287-6    h 1.4480-5                $  end plugs
+  mat=3  bunches     si 2.2900-4   fe 1.1516-4   cu 2.5303-5   mn 1.4634-4  $ AG3
+                     mg 2.3816-3   cr 9.2771-5   zn 4.9179-5   ti 5.0373-5  $  grids &
+                     al 5.6226-2                                            $  wedges
+  mat=4 bunches      cr 1.6469-2   ni 8.1061-3   mn 8.6597-4   si 1.6939-3  $ Z3CN18-10
+                      p 6.1438-5    s 4.4504-5    c 1.1883-4   fe 5.9546-2  $  stainless steel
+  mat=5 bunches      al 6.02377-2                                           $ Aluminum
+  mat=6 bunches (h.h2o) 6.6722-2  o16 3.3361-2                              $ Water
+  mat=7 bunches       n 4.1985-5  o16 1.1263-5                              $ Air
+  mat=8 bunches      pb 1.0398-7   ti 1.0038-5    zn 1.3433-3  zr 1.3807-5  $ Aluminum
+                     cu 4.4336-5   fe 2.9379-5    mg 1.9092-3  mn 1.5083-3  $  screen 
+                     ni 1.6943-5  o16 1.7609-4    al 5.6072-2  hf 4.4568-9  $  200 mm thickness
+                     gd 4.2157-10   b 1.8396-6                              $  (case 2)
+geometry
+    use unit 2 core    -8 -10               $ 17 x 17 x 1 array
+    sector   4 SST     -8  10 -4            $ Steel plate  
+    sector   8 Al      -8  10  4  11 -12    $ Screen
+    sector   6 H2O     -8  10  4 -11 -12 -9 $ Water inside  screen
+    sector   7 Air     -8  10  4 -11 -12  9 $ Air   inside  screen
+    sector   6 H2O     -8  10  4  11  12 -9 $ Water outside screen
+    sector   7 Air     -8  10  4  11  12  9 $ Air   outside screen
+    boundary   vacuum   8                 $ Boundary condition
+ define unit 1                            $ One fuel rod in the unit cell
+    sector   1 UO2     -1 -2              $ UO2
+    sector   7 Air      1 -2              $ Air
+    sector   2 Zr4      1  2 -3           $ Zr-4
+    sector   4 SST     -4       -8        $ Z3CN18-10
+    sector   6 H2O      3 -5 -6           $ Water in hole in lower grid
+    sector   3 AG3         5 -6 -8        $ Lower grid
+    sector   7 Air      3 -5 -7           $ Air   in hole in upper grid
+    sector   3 AG3         5 -7 -8        $ Upper grid
+    sector   6 H2O      3  4  6  7 -8 -9  $ Water
+    sector   7 Air      3  4  6  7 -8  9  $ Air
+ define unit 2                            $ An 17 x 17 x 1 array with 1.6 cm pitch
+   {x 101 18 [-13.6  13.6]
+    y 121 18 [-13.6  13.6]
+    z 141    -999.9 999.9
+   fill 289*1}
+ picture cs material color -0.8 0.8  1   -0.8 -0.8  1    0.8 -0.8  1   title="plane detail of unit cell"
+ picture cs material color -0.8 0  101   -0.8  0   88    0.8  0   88   title="axial detail of upper rod" 
+ picture cs material color -0.8 0    3   -0.8  0   -9    0.8  0   -9   title="axial detail of lower rod" 
+ picture cs material color -20 20   97.5 -20  -20  97.5 20  -20   97.5 title="plane detail of the upper grid and screen" 
+ picture cs material color -20 20   40   -20  -20  40   20  -20   40   title="plane detail of the active fuel and screen" 
+ picture cs material color -20 20   -0.1 -20  -20  -0.1 20  -20   -0.1 title="plane detail of the lower grid and screen"
+ picture cs material color -95 95    1  -95  -95    1   95  -95    1   title="plane view of entire geometry" 
+ picture cs material color -95  0  101  -95    0  -33   95    0  -33   title="axial view of entire geometry"
+surface 
+$ --- Fuel rod in unit cell
+   1 c z   0.3946   0.0     89.765  $ UO2
+   2 c z   0.4180   0.0     98.140  $ Air
+   3 c z   0.4745  -1.18   100.282  $ Zr-4
+   4 c z 999.9     -5.50    -3.00   $ Steel plate
+   5 c z   0.49                     $ Hole in grid plates
+   6 c z 999.9     -0.4      0.0    $ Lower grid plate
+   7 c z 999.9     97.3     97.7    $ Upper grid plate
+   8 box 189.7    189.7    140.0 tr 0 0 36.75 $ Boundary condition
+   9 p z  80.268                    $ Critical water height
+  10 box  27.2     27.2    999.9    $ Plane boundaries of the "core"
+  11 box  27.2016  27.2016 999.9    $ Screen, inner
+  12 box  67.2074  67.2074 100.0357 tr 0 0 47.01785 $ Screen, outer
+end

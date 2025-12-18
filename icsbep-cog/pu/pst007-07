@@ -1,0 +1,28 @@
+PU-SOL-THERM-007 (Case 7) 1.240 kg Pu(95.43) @ H/X = 265 in a water reflected 11.5" SS-304L sphere
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 5 and 6
+mat=1 bunches pu238 1.5194-8 pu239 2.3959-4 pu240 1.1722-5 pu241 7.6272-7 pu242 2.2413-8
+n 1.2616-3 (h.h2o) 6.3671-2 o16 3.5494-2
+mat=2 bunches fe 5.9355-2 cr 1.7428-2 ni 7.7203-3 mn 1.7363-3
+mat=3 bunches (h.h2o) 6.6655-2 o16 3.3327-2
+geometry
+sector 0 VOID 1 -2
+sector 1 SOLN -1 -2
+sector 2 SS347 2 -3
+sector 3 WATER 3 -4
+boundary vacuum 4
+picture cs material
+-20 0 20 -20 0 -20 20 0 -20
+volume
+-15 -15 -15 15 -15 -15 -15 15 -15
+30 30 30
+surfaces $ Dimensions from Section 3.2 and Table 4
+1 plane z 10.9741
+2 sphere 14.5603
+3 sphere 14.6848
+4 sphere 44.6848
+end

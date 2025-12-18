@@ -1,0 +1,36 @@
+PU-MET-FAST-040; 13.564 kg d-Pu(98) in 1.6 Cu
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+nsource=1 0. 0. 0.0001
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom Densities per Table 5
+mat=1 bunches pu239 3.6849-2 pu240 6.7362-4 ga 2.3193-3 c 3.0425-4 ni 1.4908-3
+mat=2 bunches pu239 3.6579-2 pu240 6.6875-4 ga 2.3155-3 c 2.0205-4 ni 1.9330-3
+mat=3 bunches pu239 3.6512-2 pu240 6.6739-4 ga 2.2978-3 c 2.2608-4 ni 2.3056-3
+mat=4 bunches pu239 3.6576-2 pu240 6.6878-4 ga 2.3286-3 c 3.0206-4 ni 1.8631-3
+mat=5 bunches pu239 3.6471-2 pu240 6.6665-4 ga 2.2823-3 c 3.0110-4 ni 1.9715-3
+mat=6 bunches cu 8.4168-2 fe 5.0504-6
+geometry
+sector 0 VOID -1
+sector 1 LAYER1 1 -2
+sector 2 LAYER2 2 -3
+sector 3 LAYER3 3 -4
+sector 4 LAYER4 4 -5
+sector 5 LAYER5 5 -6
+sector 6 COPPER 6 -7
+boundary vacuum 7
+picture cs material color
+-8 0 8 -8 0 -8 8 0 -8
+volume material
+-8 -8 -8 8 -8 -8 -8 8 -8
+16 16 16
+surfaces $ PER TABLE 4
+1 sphere 1.531
+2 sphere 3.150
+3 sphere 4.020
+4 sphere 4.660
+5 sphere 5.350
+6 sphere 6.000
+7 sphere 7.600
+end

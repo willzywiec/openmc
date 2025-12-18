@@ -1,0 +1,47 @@
+PU-MET-FAST-019: Sphere of Pu Reflected by Beryllium at VNIITF
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+mat=1 bunches pu239 3.3930-2 pu240 3.5043-3 pu241 3.9189-4 ga 2.2105-3 $ Materials:
+c 3.0246-4 fe 3.2525-4 w 7.4100-5 ni 1.4187-3 $ Pu ---- Table 9
+mat=2 bunches (be) 1.2081-1 o16 8.2064-5 c 1.0020-4 fe 5.0939-5 $ Be ---- Table 1
+mat=3 bunches cu 8.2365-2 $ Cu ---- section 3.3
+mat=4 bunches fe 8.1174-2 $ Steel - Section 3.3
+assign-mc
+1 yellow 2 gray 3 blue 4 black
+geometry
+sector 1 Pu 1 -2
+sector 2 Be 2 -3 -5
+sector 2 Be 11 -12 13 14
+sector 3 Cu 3 -4 -6
+sector 4 STL 4 -7
+sector 4 STL 21 -22
+picture cs material color
+-15 0 15 -15 0 0 15 0 0
+volume
+-15 -15 -15 15 -15 -15 -15 15 -15
+30 30 30
+surfaces $ per Figure 3
+$ ---------------------------------------------
+$ Lower Portion of the Assembly
+$ ---------------------------------------------
+1 sphere 1.4 $ Pu/IR
+2 sphere 5.35 $ Pu/OR
+3 sphere 11.0 $ Be/OR/LHS
+4 sphere 11.15 $ Cu/OR
+5 analytic 1. x 0.15 constant $ Be/TOP/LHS
+6 cylinder x 9.7 -12.00 -3.0 $ Cu/SIDE
+7 cylinder x 2.5 -14.15 -7.0 $ Steel
+$ ---------------------------------------------
+$ Upper Portion of the Assembly
+$ ---------------------------------------------
+11 sphere 5.35 tr 1.05 0. 0. $ Be/IR
+12 sphere 11.00 tr 1.05 0. 0. $ Be/OR
+13 analytic 1. x -1.20 constant $ Be/Bottom
+14 cylinder x 1.1 $ Be/Hole
+21 cylinder x 5.5 1.00 1.20 $ STL/IR
+22 cylinder x 14.0 1.00 1.20 $ STL/OR
+end

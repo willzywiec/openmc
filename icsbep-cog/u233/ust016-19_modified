@@ -1,0 +1,43 @@
+U233-SOL-THERM-016-19: 3.744 kg 233U @ H/X=196.1 and N/U=2.15 (Exp't No. 142)
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0 0 7.037
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0                         $
+  mat=1 bunches u233 3.2729-4 u234 3.4981-6 u235 8.6497-8 u236 3.3126-9 u238 4.5527-6 $ Sol'n No. 13
+             (h.h2o) 6.4193-2    n 7.2029-4  o16 3.4912-2   th 4.2124-6               $  Cases 13-24
+  mat=2 bunches   al 5.9881-2   si 5.8108-4                                           $ Aluminum-2S
+  mat=3 bunches    c 3.1848-4   si 1.7025-3    p 6.9468-5   cr 1.7472-2   mn 1.7407-3 $ Stainless
+                  fe 5.8543-2   ni 7.7398-3                                           $  Steel
+  mat=4 bunches   fe 3.4722-4   al 1.7454-3   ca 1.5206-3  o16 4.6056-2   si 1.6620-2 $ Regualr
+             (h.h2o) 1.3742-2   na 1.7472-3                                           $  Concrete
+assign-mc                                                                             $
+  1 red 2 yellow 3 gray 4 lime
+geometry
+   sector 1 SOL -7 -8 -10   $ Tank Solution
+   sector 2 AlT  5  6  7 -8 $ Tank Aluminum Wall
+   sector 2 ALL  7  8 -9    $ Tank Aluminum Lid
+   sector 1 SOL -5 -6  7    $ Fill Pipe Solution
+   sector 2 ALP  5 -6  7    $ Fill Pipe Aluminum Wall
+   sector 3 SST  3 -4       $ SST Tank
+   sector 4 CNC  1 -2       $ Concrete Room
+  boundary vacuum   2
+picture cs material color  -30   0 190  -30    0  -50  30    0  -50 title="axial view of Alum tank"
+picture cs material color  -80   0 270  -80    0  -50  80    0  -50 title="axial view of SST tank"
+picture cs material color -930   0 750 -930    0 -450 200    0 -450 title="axial view of the room"
+picture cs material color -930 600   1 -930 -650    1 200 -650    1 title="plane view of the room"
+picture cs material color  -80  80  -1  -80  -80   -1  80  -80   -1 title="plane view of fill pipe"
+volume material -26 -26 0 26 -26 0 -26 26 0 52  52 14 
+surfaces                                                         $ The z-axis is in the "up" direction
+   1 box  914.4   914.4  914.7302 tr -318.5414 -13.7414 200.1646 $ Concrete/Inner (w/Origin on the Tank C/L)
+   2 box 1127.76 1219.2 1128.0902 tr -364.2614 -13.7414 154.4446 $ Concrete/Outer (w/Origin on the Tank C/L)
+   3 cylinder z 77.3684  -48.26   261.2136                       $ SST/Tank/Inner 
+   4 cylinder z 77.6986  -48.5902 261.2136                       $ SST/Tank/Outer 
+   5 cylinder z  2.62509 -47.86884  0.     tr 22.51175 0.0 0.0   $ Al-2S/Fill-Pipe/Inner 
+   6 cylinder z  3.01625 -48.26     0.     tr 22.51175 0.0 0.0   $ Al-2S/Fill-Pipe/Outer 
+   7 cylinder z 25.401     0.0    181.61                         $ Al-2S/Soln-Tank/Inner 
+   8 cylinder z 25.528    -1.27   181.61                         $ Al-2S/Soln-Tank/Outer
+   9 cylinder z 29.21    181.61   181.737                        $ Al-2S/Soln-Tank/Lid
+  10 plane z 14.074                                              $ Solution/Hc
+end

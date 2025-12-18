@@ -1,0 +1,28 @@
+U233-SOL-THERM-005 (Case 2) 233U(98.7)O2(NO3)2 @ H/U233=515; N/U=2.652
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0. 0. 12.8
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Sol'n per Table 11
+  mat=1 bunches    u233 1.2707-4 u234 5.8994-7 u238 1.1096-6  $  H/U-233 = 515
+                (h.h2o) 6.5403-2  o16 3.3942-2    n 3.4152-4  $  N/U = 2.652
+  mat=2 bunches      al 5.9881-2   si 5.8108-4                $ Al-2S per Table 12
+  mat=3 bunches (h.h2o) 6.6735-2  o16 3.3368-2                $ Water per Table 13
+assign-mc
+  1 red 2 gray 3 blue
+geometry 
+  sector 1 Soln   -1
+  sector 2 Al2S    1 -2
+  sector 3 Water   2 -3
+  boundary vacuum     3
+picture cs material color
+ -30   0  45  -30   0 -20   30  0 -20
+volume material
+ -29 -29 -16   29 -29 -16  -29 29 -16
+  58  58  58
+surfaces $ per Figure 4
+   1 cylinder z 12.7287   0.0000 25.6482
+   2 cylinder z 12.8578  -0.1291 25.7773
+   3 cylinder z 28.0978 -15.3691 41.0173
+end

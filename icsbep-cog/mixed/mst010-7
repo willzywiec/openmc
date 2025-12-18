@@ -1,0 +1,35 @@
+MST010-7: Exp. 147 with H/X=293 and 0.424 gGd/L and 1.35 gB/L
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 26.06
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu238 2.6699-8 pu239 1.9097-4 pu240 1.2446-5 pu241 9.0862-7 pu242 1.0503-7 $ Solution
+                 u234 3.7041-8  u235 3.0336-6  u236 5.9681-8  u238 4.5213-4 am241 5.6966-8
+              (h.h2o) 5.7049-2     n 3.1176-3   o16 3.8245-2 gd152 3.2475-9 gd154 3.5398-8
+                gd155 2.4032-7 gd156 3.3238-7 gd157 2.5412-7 gd158 4.0334-7 gd160 3.5496-7
+                  b10 1.4888-5   b11 6.0304-5
+  mat=2 bunches   o16 1.0544-5     n 3.9206-5                                              $ Air
+  mat=3 bunches    fe 5.7902-2    cr 1.7384-2    ni 8.1061-3    mn 1.7319-3    si 1.6939-3 $ SS304L
+                    c 1.1883-4                                                             $  solution tank
+  mat=4 bunches    fe 8.4058-2     c 3.9479-3                                              $ Carbon steel
+  mat=5 bunches (h.h2o) 6.6689-8 o16 3.3344-2                                              $ Water
+assign-mc
+  1 red 2 yellow 3 black 4 gray 5 sky
+geometry
+  sector 1 Soln   -1 -2
+  sector 2 Air     1 -2
+  sector 3 SS304L  2 -3
+  sector 5 H2O     3 -4 -5 -6
+  sector 2 Air     3 -4 -5  6
+  sector 4 Steel   4 -5
+  boundary vacuum  5
+picture cs material color -55 0 125 -55 0 -25  55 0 -25
+surfaces 
+  1 p z  52.12                  $ Critical height
+  2 c z  30.515   0.0   106.68  $ Solution tank, inner
+  3 c z  30.594  -0.635 107.633 $ Solution tank, outer
+  4 c z  49.53  -20.635 121.095 $ Reflector tank, inner
+  5 c z  51.00  -21.905 121.095 $ Reflector tank, outer
+  6 p z 107.633                 $ Water height
+end

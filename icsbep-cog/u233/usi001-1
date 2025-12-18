@@ -1,0 +1,30 @@
+FALSTAFF; Sol'n No. 1; Sphere No. 1; 8.00 cm Be
+basic
+  neutron  delayedn  CENTIMETERS
+criticality
+ npart=15000 nbatch=4400 sdt=0.0001 nfirst=1000 norm=1.
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches 
+          u233 2.2379-3 u234 2.4362-5 u235 8.9598-7 u238 7.1284-6 $ Solution No. 1 
+       (h.h2o) 5.5183-2  o16 3.2043-2    f 4.7182-3               $  @ H/X = 25
+  mat=2 w-p 8.0                                                   $ SS-347 @ 8.0 g/cc
+            fe 71.        cr 18.        ni 11.                    $  Fe-18Cr-11Ni
+  mat=3   (be) 1.82                                               $ Beryllium Metal
+assign-mc
+  1 yellow 2 gray 3 green
+geometry
+  sector 1 Soln   -1
+  sector 2 SS347   1 -2
+  sector 3 Be      2 -3
+  boundary vacuum     3
+picture cs material color
+ -16   0  16  -16   0 -16   16  0 -16
+volume material
+ -16 -16 -16   16 -16 -16  -16 16 -16
+  32  32  32
+surfaces
+   1 sphere  7.8726 
+   2 sphere  7.9209 
+   3 sphere 15.9209
+end

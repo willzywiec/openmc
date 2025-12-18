@@ -1,0 +1,25 @@
+IST003-40: 30F12 solution in unreflected 12-inch diameter cylinder
+basic 
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 15.1508
+assign-mc
+  1 red 2 yellow
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u235 4.5458-4 u234 5.2734-6 u236 1.0457-6 u238 1.0263-3 (h.h2o) 6.0804-2  f 2.9743-3 o16 3.3376-2 $ Sol'n No. 30F12
+  mat=2 bunches    c 6.3855-4   si 1.5361-3    p 6.1904-5    s 5.9797-5      ti 8.0092-4 cr 1.6134-2  mn 8.7253-4 $ UKAEA 70001
+                  fe 6.1851-2   ni 6.1256-3                                                                       $  Stainless Steel
+geometry
+  sector 1 SOL   -1 -3
+  sector 2 SST    1 -2
+  boundary vacuum 2
+picture cs material color
+  -20   0  95 -20   0  -5  20  0  -5 title="axial view"
+volume material
+  -16 -16  -1  16 -16  -1 -16 16  -1
+   32  32  95
+surfaces
+  1 c z 15.2435  0.0    91.44   $ r=a
+  2 c z 15.4061 -0.9525 93.3450 $ r=c; Z1=-d; Z2=e+91.44
+  3 p z 30.3016                 $ Z2=Hc=b
+end

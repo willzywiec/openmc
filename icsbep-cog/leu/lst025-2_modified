@@ -1,0 +1,66 @@
+LST025-2: STACY two slabs of 10% 235U uranyl nitrate with concrete (C50) isolators
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=2 
+  -22.6895 0 27.69
+   22.6895 0 27.69
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 5.9902-7 u235 7.4334-5 u236 7.4241-8 u238 6.6210-4 $ Fuel
+             (h.h2o) 5.9474-2    n 1.9801-3  o16 3.6898-2               $  solution
+  mat=2 bunches    n 3.9014-5  o16 1.0410-5                             $ Air
+  mat=3 bunches    c 7.1567-5   si 8.4167-4   mn 7.4321-4    p 4.4712-5 $ SST
+                   s 5.9564-6   ni 7.4249-3   cr 1.6716-2   fe 6.0947-2 $  core tank
+  mat=4 bunches    c 2.0675-5   si 6.6314-4   mn 1.0083-4    p 4.9337-5 $ SST
+                   s 1.6380-6   ni 6.6885-3   cr 1.6798-2   fe 6.1435-2 $  isolator frame
+  mat=5 bunches   cr 7.8896-5   fe 1.3985-4   zr 4.2397-2   sn 4.9709-4 $ Zr-4
+                 o16 3.6981-4                                           $  alloy
+  mat=6 bunches   al 5.9559-2   si 8.0751-5   fe 1.7114-4   cu 1.7845-5 $ Aluminum 
+  mat=7 bunches (h.h2o) 1.4528-2 o16 7.2639-3 o16 3.7326-2  na 1.0533-3 $ Concrete
+                  mg 1.9573-4   al 1.5533-3   si 1.4749-2    s 1.0906-4 $
+                  cl 9.0027-7    k 1.9179-4   ca 3.9337-3   fe 2.7830-4 $
+assign-mc
+  1 yellow 2 pink 3 gray 4 black 5 red 6 lime 7 green 
+geometry
+  use unit 1 tank -10 -11 tr -22.6895 0 0
+  use unit 2 iso  -10  -8 tr   0      0 0
+  use unit 1 tank -10 -12 tr  22.6895 0 0
+  sector   2 air  -10   8  11  12
+  boundary vacuum  10
+define unit 1 $ Core tank
+  sector 5 Zr4    -1
+  sector 5 Zr4    -2
+  sector 1 Soln    1  2 -3 -5
+  sector 2 Air     1  2 -3  5
+  sector 3 SST     3 -4
+define unit 2 $ Concrete isolator
+  sector 7 Conc   -6
+  sector 4 SST     6 -7
+  sector 6 Al      6  7 -8
+picture cs material color
+  -45   0 155 -45   0 -10  45   0 -10 title="axial (x-z) view"
+picture cs material color
+    0 -40 155   0 -40 -10   0  40 -10 title="axial (y-z) view through isolator frame"
+picture cs material color
+    3 -40 155   3 -40 -10   3  40 -10 title="axial (y-z) view through isolator Al cover"
+picture cs material color
+  -45  40  20 -45 -40  20  45 -40  20 title="plane view"
+volume material
+  -45 -40  -3  45 -40  -3 -45  40  -3 
+   90  80 156
+surfaces 
+$ --- Solution tank
+  1 box  0.621 69.139 130.0   tr   4.25   0.0  75.0   $ Zr-4 plate
+  2 box  0.621 69.139 130.0   tr  -4.25   0.0  75.0   $ Zr-4 plate
+  3 box 34.655 69.139 149.578 tr   0.0    0.0  74.789 $ SST tank, inner
+  4 box 38.621 73.201 154.244 tr   0.0    0.0  75.061 $ SST tank, outer
+  5 p z 55.38                                         $ Critical height
+$ --- C50 concrete isolator
+  6 box  5.010 71.4   150.6   tr   0.0    0.0  75.3   $ Concrete     
+  7 box  5.010 77.4   156.6   tr   0.0    0.0  75.3   $ SST frame
+  8 box  6.630 77.4   156.6   tr   0.0    0.0  75.3   $ Aluminum cover
+$ --- Array of solution tanks and isolators
+ 10 box 84.000 77.4   156.6   tr   0.0    0.0  75.3   $ BCD
+ 11 box 38.621 73.201 154.244 tr -22.6895 0.0  75.061 $ LHS SST tank
+ 12 box 38.621 73.201 154.244 tr  22.6895 0.0  75.061 $ RHS SST tank
+end

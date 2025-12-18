@@ -1,0 +1,42 @@
+PU-SOL-THERM-041-4: Experiment 233 with 61.35 gPu(3)/L at H/X=384; Hc=Hw=28.07
+basic
+  neutron delayedn URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4
+  -17.5 0 14.785 17.5 0 14.785 0 -17.5 14.785 0 17.5  14.785
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches   pu239 1.49744-4 pu240 4.61716-6 pu241 1.68592-7 n 3.22551-3 o16 3.71595-2 (h.h2o) 5.75555-2 fe 5.96312-6              $ Pu solution
+  mat=2 bunches (h.h2o) 6.6722-2    o16 3.3361-2                                                                                        $ Water
+  mat=3 bunches      fe 5.8694-2     cr 1.6469-2     ni 8.1061-3 mn 8.6597-4   si 1.6939-3        p 6.1439-5   s 4.4640-5   c 1.1883-4  $ Stainless steel
+  mat=4 bunches     o16 1.1263-5      n 4.1985-5                                                                                        $ Air
+assign-mc
+  1 purple 2 sky 3 gray 4 yellow
+geometry                                              
+  sector 2 WATER -1        6 -7 $ Central volume
+  sector 4 AIR   -1        7 -8 $ Central volume
+  sector 3 SST    1 -2     6 -8 $ Inner tank wall
+  sector 1 SOLN   2 -3     6 -7 $ Solution in annular tank
+  sector 4 AIR    2 -3     7 -8 $ Air in annular tank
+  sector 3 SST    3 -4 -5  6 -8 $ Outer tank wall
+  sector 3 SST      -4 -5 -6    $ Tank bottom
+  sector 3 SST      -4 -5  8    $ Tank top
+  sector 2 WATER     4 -5 -7    $ Water reflector
+  sector 4 AIR       4 -5  7    $ Air reflector
+  boundary vacuum       5
+picture cs material color 
+  -60   0  125 -60   0 -35  60   0 -35 title="axial view"
+picture cs material color 
+  -60  60    5 -60 -60  5   60 -60   5 title="plane view"
+volume
+  -57 -57 -32  57 -57 -32  -57 57 -32
+  114 114  90
+surfaces
+  1 c z  9.688
+  2 c z  9.988
+  3 c z 25.0
+  4 c z 25.3      0.0  120.1
+  5 c z 56.6    -31.3  120.1
+  6 p   -25 0 1.2 0 25 1.5 25 0 1.8 0 0 99
+  7 p z  28.07
+  8 p z 118.3
+end

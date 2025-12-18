@@ -1,0 +1,18 @@
+PU-COMP-MIXED-002 (case 8) 40.902 kg Pu @ H/X = 5.7 with 11.46 wt-% Pu-240 and H/SQRT(A) = 0.259
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Compositions per Tables 17 and 18
+mat=1 bunches pu239 4.9845-3 pu240 6.6182-4 pu241 1.3845-4 pu242 1.0482-5
+c 2.9185-2 (h.ch2) 2.9241-2 o16 1.1589-2
+mat=2 bunches (h.ch2) 5.6642-2 c 3.5648-2 o16 1.4273-2
+geometry
+sector 1 FUEL -1
+sector 2 PLEX 1 -2
+boundary vacuum 2
+surfaces $ Dimensions per Table 16
+1 box 40.96 40.96 10.59 $ Fuel with C(Pu) = 2.3021 g/cc
+2 box 71.44 71.44 41.07 $ 6" (15.24 cm) Plexiglas Reflector
+end

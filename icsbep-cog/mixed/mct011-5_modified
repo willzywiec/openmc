@@ -1,0 +1,145 @@
+MCT011-5: 139 Rapsodie pins with 2.5 cm pitch and Hc = 33.06 cm
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 16.53
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches  u234 1.2214-4   u235 1.0451-2  u238 6.8362-3 pu239 5.2865-3 pu240 5.7495-4 $ Rapsodie
+                pu241 5.1268-5  pu242 4.1063-6 am241 2.0006-5   o16 4.6331-2                $  MOX fuel
+  mat=2 bunches  u235 1.6700-4   u238 2.3027-2   o16 4.6388-2                               $ U(nat)O2
+  mat=3 bunches     n 4.1985-5    o16 1.1263-5                                              $ Air
+  mat=4 bunches (h.h2o) 6.6706-2  o16 3.3353-2                                              $ Water
+  mat=5 bunches    fe 5.8694-2     cr 1.6469-2    ni 8.1061-3    mn 1.7319-3    si 1.6939-3 $ Z2 CN 18-10
+                    p 6.1438-5      s 4.4640-5     c 1.1883-4                               $  alloy
+  mat=6 bunches    fe 5.7232-2     cr 1.5411-2    ni 9.7424-3    mn 1.3647-3    si 6.8186-4 $ Z3 CND 18-12
+                    p 5.5645-5      s 1.9466-7     c 1.8933-6     c 1.8933-6    mo 1.2755-3 $  alloy
+ assign-mc
+  1 red 2 pink 3 white 4 sky 5 black 6 gray
+geometry
+
+  use unit 6 Farray -11 -30                         -99
+  use unit 6 Farray -11  30 -31                     -99
+  use unit 6 Farray -11  30  31 -32                 -99
+  use unit 6 Farray -11  30  31  32 -33             -99
+  use unit 7 Harray -11  30  31  32  33 -34         -99
+  use unit 7 Harray -11  30  31  32  33  34 -35     -99
+  use unit 7 Harray -11  30  31  32  33  34  35 -36 -99
+  use unit 3 Alles  -11  30  31  32  33  34  35  36 -99
+  use unit 3 Alles  -11                              99
+  boundary vacuum    11
+
+define unit 1 $ Rapsodie Mox fuel pinwith positioning rings
+  sector 1 MOX  -1          $ Rapsodie MOX fuel
+  sector 2 UO2   1 -2       $ U(nat)O2
+  sector 6 Z3    2 -3       $ Z3 CND 18-12 SST pellet
+  sector 3 Air   1  2  3 -4 $ Gap
+  sector 6 Z3    4 -5       $ Z3 CND 18-12 SST clad and end plugs
+  sector 6 Z3    5  6 -91   $ Z3 XND 18-12 SST fin
+  sector 5 Z2    5  6 -7 -8 $ Z2 CN  18-10 SST lower positioning ring
+  sector 5 Z2    5  6 -7 10 $ Z2 CN  18-10 SST upper positioning ring
+  sector 3 Air   5 -6 -7  9 $ Air inside lower positioning ring
+  sector 4 H2O   5 -6 -7 -9 $ H2O inside lower positioning ring
+  sector 3 Air   5  6 -7  9 -10  91 $ Air outside pin (in hole)
+  sector 4 H2O   5  6 -7  8  -9  91 $ H2O outside pin (in hole)
+
+define unit 2 $ Water and air for holes
+  sector 3 Air   9 -11
+  sector 4 H2O  -9 -11
+
+define unit 3 $ Basket and grid plates in water and air
+  sector 5 Z2  -12         $ Z2 CN 18-10 SST lower support plate
+  sector 5 Z2  -13         $ Z2 CN 18-10 SST bottom grid
+  sector 5 Z2  -14         $ Z2 CN 18-10 SST upper  grid
+  sector 5 Z2   15 -16     $ Z2 CN 18-10 SST upper support annular plate
+  sector 5 Z2   12  16 -17 $ Z2 CN 18-10 SST tie rod
+  sector 5 Z2   12  16 -18 $ Z2 CN 18-10 SST tie rod
+  sector 5 Z2   12  16 -19 $ Z2 CN 18-10 SST tie rod
+  sector 5 Z2   12  16 -20 $ Z2 CN 18-10 SST tie rod
+  sector 3 Air -15 -16                          $ Air inside the upper support annulus
+  sector 3 Air   9 -11  14  16   17  18  19  20 $ Air elsewhere
+  sector 4 H2O  -9 -11  12  13   17  18  19  20 $ Water elsewhere
+ 
+define unit 4 $ Unit cell of seven Rapsodie MOX pins
+  use unit 1 FPIN  -7
+  use unit 1 FPIN -21 tr -1.25  2.1650635 0
+  use unit 1 FPIN -22 tr  1.25  2.1650635 0
+  use unit 1 FPIN -23 tr -2.50  0         0
+  use unit 1 FPIN -24 tr  2.50  0         0
+  use unit 1 FPIN -25 tr -1.25 -2.1650635 0
+  use unit 1 FPIN -26 tr  1.25 -2.1650635 0
+  use unit 3 Alles  7 -11 21 22 23 24 25 26
+ 
+define unit 5 $ Unit cell of seven holes
+  use unit 2 HOLE  -7
+  use unit 2 HOLE -21
+  use unit 2 HOLE -22
+  use unit 2 HOLE -23
+  use unit 2 HOLE -24
+  use unit 2 HOLE -25
+  use unit 2 HOLE -26
+  use unit 3 Alles  7 -11 21 22 23 24 25 26
+
+define unit 6 $ 11x11 array of Rapsodie MOX fuel pins
+   {x 101 12 [-27.5       27.5]
+    y 121 12 [-23.8156985 23.8156985]
+    z 141    -999.99     999.99
+    fill 121*4}
+
+define unit 7 $ 11x11 array of holes
+   {x 101 12 [-27.5       27.5]
+    y 121 12 [-23.8156985 23.8156985]
+    z 141    -999.99     999.99
+    fill 121*5}
+
+picture cs material color res=1500 -55  0 110    -55   0 -25    55   0 -25    title="axial view"
+picture cs material color res=1500  -1  0   1     -1   0  -2     1   0  -2    title="axial detail of fuel pin bottom"
+picture cs material color res=1500  -1  0  36     -1   0  34     1   0  34    title="axial detail of active fuel top"
+picture cs material color res=1500  -1  0  48     -1   0  45     1   0  45    title="axial detail of fuel pin top"
+picture cs material color res=1500 -40 40  15    -40 -40  15    40 -40  15    title="plane view"
+picture cs material color res=1500  -1  1  15     -1  -1  15     1  -1  15    title="plane detail of one fuel pin showing fin"
+picture cs material color res=1500 -18 18  46.45 -18 -18  46.45 18 -18  46.45 title="plane detail in upper grid"
+picture cs material color res=1500 -18 18  34    -18 -18  34    18 -18  34    title="plane detail in air"
+picture cs material color res=1500 -18 18  15    -18 -18  15    18 -18  15    title="plane detail in water"
+picture cs material color res=1500 -18 18  -0.85 -18 -18  -0.85 18 -18  -0.85 title="plane detail in lower grid"
+surfaces
+
+  1 c z  0.27865  0.0    34.55  $ Rapsodie MOX fuel
+  2 c z  0.27865 -0.3    34.85  $ U(nat)O2
+  3 c z  0.27865 34.85   34.95  $ Z3 CND 18-12 SST pellet
+  4 c z  0.290   -0.3    45.6   $ Air gaps
+  5 c z  0.335   -1.134  46.763 $ Z3 CND 18-12 SST clad and end plugs
+  6 c z  0.335                  $ Z2 CN  18-10 SST positioning ring, inner
+  7 c z  0.425   -1.4    47.1   $ Z2 CN  18-10 SST positioning ring, outer
+  8 p z -0.6                    $ Top of lower positioning ring
+  9 p z 33.06                   $ Critical water height
+ 10 p z 46.3                    $ Bottom of upper positioning ring
+ 91 rpp -0.4144 0 -0.0238 0.0238 -0.3 45.6 $ Z3 CND 18-12 SST fin
+
+ 11 c z 38.0    -34.0    81.8   $ Boundary condition
+ 12 c z 17.5     -1.9    -1.4   $ Z2 CN 18-10 SST lower support plate
+ 13 c z 17.5     -0.9    -0.8   $ Z2 CN 18-10 SST bottom grid
+ 14 c z 17.5     46.4    46.5   $ Z2 CN 18-10 SST upper  grid
+ 15 c z 15.0                    $ Z2 CN 18-10 SST upper support annular plate, inner
+ 16 c z 17.5     81.3    81.8   $ Z2 CN 18-10 SST upper support annular plate, outer
+ 17 c z  0.4     -1.4    81.3 tr -16.6 0   0 $ Z2 CN 18-10 SST tie rod
+ 18 c z  0.4     -1.4    81.3 tr   0  16.6 0 $ Z2 CN 18-10 SST tie rod
+ 19 c z  0.4     -1.4    81.3 tr   0 -16.6 0 $ Z2 CN 18-10 SST tie rod
+ 20 c z  0.4     -1.4    81.3 tr  16.6 0   0 $ Z2 CN 18-10 SST tie rod
+
+ 21 c z 0.425 -1.4 47.1 tr -1.25  2.1650635 0 $ Unit
+ 22 c z 0.425 -1.4 47.1 tr  1.25  2.1650635 0 $  triangular
+ 23 c z 0.425 -1.4 47.1 tr -2.50  0         0 $   cell
+ 24 c z 0.425 -1.4 47.1 tr  2.50  0         0 $    of seven
+ 25 c z 0.425 -1.4 47.1 tr -1.25 -2.1650635 0 $     fuel
+ 26 c z 0.425 -1.4 47.1 tr  1.25 -2.1650635 0 $      pins
+ 
+ 30 prism 6 16.250 0  8.125  14.0729 -8.125  14.0729                      $ Hexagonal prism
+           -16.250 0 -8.125 -14.0729  8.125 -14.0729 tr 0 0 0 0 0 1 1 0 0 $  for fuel
+ 31 box      5.0 32.476 999.999                                           $ Inner X-Y prism for fuel
+ 32 box      5.0 32.476 999.999 tr 0 0 0 500  866.0254 0 -866.0254 500 0  $ Inner X-Y prism for fuel
+ 33 box      5.0 32.476 999.999 tr 0 0 0 500 -866.0254 0  866.0254 500 0  $ Inner X-Y prism for fuel
+ 34 box     15.0 32.476 999.999                                           $ Inner X-Y prism for holes
+ 35 box     15.0 32.476 999.999 tr 0 0 0 500  866.0254 0 -866.0254 500 0  $ Inner X-Y prism for holes
+ 36 box     15.0 32.476 999.999 tr 0 0 0 500 -866.0254 0  866.0254 500 0  $ Inner X-Y prism for holes
+ 99 c z     17.5
+end

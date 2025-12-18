@@ -1,0 +1,25 @@
+IEU-SOL-THERM-002-6: Unreflected 13.75-inch i.d. U(30.45) solution sphere
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0 0 0 
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u235 7.3569-4 u234 9.2204-6 u236 1.9246-6 u238 1.6482-3 (h.h2o) 5.6103-2  f 4.7900-3 o16 3.2842-2 $ Solution
+  mat=2 bunches   mg 2.3154-3   al 5.6165-2   si 2.8625-4   ti 6.7163-5      cr 7.7309-5 mn 1.4634-4  fe 1.4395-4 $ Aluminum
+                  cu 2.5303-5   zn 4.9178-5                                                                       $  BA.27
+assign-mc
+  1 red 2 yellow
+geometry
+  sector 1 Soln     -1
+  sector 2 BA27   1 -2
+  boundary vacuum 2
+picture cs material color
+  -18   0  18 -18   0 -18  18  0 -18
+volume material
+  -18 -18 -18  18 -18 -18 -18 18 -18
+   36  36  36
+surfaces
+  1 sphere 17.4533
+  2 sphere 17.7784
+end

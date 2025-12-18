@@ -1,0 +1,19 @@
+PU-MET-FAST-002: DIRTY JEZEBEL (19.460 kg Pu(20.1 at-% Pu-240)-1.01Ga @ 15.73 g/cc)
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom Densities per Table 3
+mat=1 bunches ga 1.3722-3 pu239 2.9934-2 pu240 7.8754-3 pu241 1.2146-3 pu242 1.5672-4
+geometry
+sector 1 alloy -1
+boundary vacuum 1
+picture cs material
+-7 0 7 -7 0 -7 7 0 -7
+volume
+-7 -7 -7 7 -7 -7 -7 7 -7
+14 14 14
+surfaces
+1 sphere 6.6595 $ per Section 3.2
+end

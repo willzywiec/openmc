@@ -1,0 +1,159 @@
+LMCT002-6: STACY run 400 with U(5)O2 rods immersed in 66.39cm of U(6) uranyl nitrate solution, unreflected
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 33.195
+assign-mc
+  1 orange 2 purple 3 lime 4 green 5 gray 6 white
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches    u234 6.5871-8 u235 7.8971-6 u236 1.3062-8 u238 1.2165-4 o16 3.5870-2 $ Uranyl
+                (h.h2o) 6.2048-2    n 1.7828-3                                          $  nitrate
+  mat=2 bunches    u234 1.1650-5 u235 1.1554-3 u236 9.2408-6 u238 2.1746-2 o16 4.5913-2 $ UO2
+  mat=3 bunches      sn 4.3528-4   fe 1.4832-4   cr 8.3447-5  o16 3.1804-4   c 4.2693-5 $ Zr-4
+                     si 1.3764-5   zr 4.2469-2                                          $  clad, plugs
+  mat=4 bunches      sn 5.0506-4   fe 1.5539-4   cr 8.3447-5  o16 3.2050-4  zr 4.2383-2 $ Zr-4 
+  mat=5 bunches       c 9.9399-5   si 1.2073-3   mn 1.3126-3    p 4.6254-5   s 7.4455-6 $ SS304L
+                     ni 8.2101-3   cr 1.6697-2   fe 5.9387-2                            $
+  mat=6 bunches       n 3.9014-5  o16 1.0410-5                                          $ Air
+geometry
+    use unit 9 Slit  -21 use unit 9 Slit -22 $ Solution, air, fuel rods, and guide pins in safety blade slits
+    use unit 5 Core   -7 -20  21  22         $ Lattice of fuel rods, holes, and guide pins
+    use unit 1 Alles  -7  20                 $ Everything else
+    boundary   vacuum  7
+ define unit 1 $ --- Grid plates, tank, solution, air
+    sector   4 Zr4  -1              $ Upper  grid plate
+    sector   4 Zr4  -2              $ Middle grid plate
+    sector   4 Zr4  -3              $ Upper  grid plate
+    sector   4 Zr4 -51              $ Tie rod
+    sector   4 Zr4 -52              $ Tie rod 
+    sector   4 Zr4 -53              $ Tie rod
+    sector   4 Zr4 -54              $ Tie rods
+    sector   1 Soln  1  2  3 -4 -10 51 52 53 54 $ Solution
+    sector   6 Air   1  2  3 -4  10 51 52 53 54 $ Air
+    sector   6 Air   4 -5                       $ Air
+    sector   5 SST   4  5 -6        51 52 53 54 $ Tank
+    sector   6 Air   6 -7                       $ Air reflector
+ define unit 2 $ --- Fuel rod
+    sector   2 UO2      -11 -12 -13 $ Fuel
+    sector   6 Air       11 -12 -13 $ Air
+    sector   3 Zr4       11  12 -13 $ Clad tube
+    sector   3 Zr4       13 -14 -15 $ Clad ends
+    sector   6 Air   10  13  14 -15 $ Air  in hole 
+    sector   1 Soln -10  13  14 -15 $ Soln in hole 
+    use unit 1 Alles         15 -20 $ Everying outisde hole
+ define unit 3 $ --- Solution and air filled hole
+    sector   6 Air   10 -15         $ Air  in hole
+    sector   1 Soln -10 -15         $ Soln in hole
+    use unit 1 Alles     15 -20     $ Everying outisde hole
+ define unit 4 $ --- Safety blade guide pin
+    sector   4 Zr4      -31 -32     $ Guide pin
+    sector   6 Air   10  31 -32     $ Air  in hole 
+    sector   1 Soln -10  31 -32     $ Soln in hole 
+    use unit 1 Alles         32 -20 $ Everying outisde hole
+ define unit 5 $ --- 21 x 21 array of fuel rods and holes on 2.0995 cm square pitch
+   {x 801 22 [-22.04475  22.04475]
+    y 841 22 [-22.04475  22.04475]
+    z 881    -999.99    999.99
+    fill
+    1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 1 1 1 1 1 1
+    1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 1 1 1 1
+    1 1 1 3 3 3 3 3 2 2 2 2 2 3 3 3 3 3 1 1 1
+    1 1 3 3 3 3 2 2 2 2 2 2 2 2 2 3 3 3 3 1 1
+    1 3 3 3 3 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 1
+    1 3 4 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 4 3 1
+    3 3 4 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 4 3 3
+    3 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3
+    3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3
+    3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3
+    3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3
+    3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3
+    3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3
+    3 3 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3
+    3 3 4 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 4 3 3
+    1 3 4 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 4 3 1
+    1 3 3 3 3 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 1
+    1 1 3 3 3 3 2 2 2 2 2 2 2 2 2 3 3 3 3 1 1
+    1 1 1 3 3 3 3 3 2 2 2 2 2 3 3 3 3 3 1 1 1
+    1 1 1 1 3 3 3 3 3 3 3 3 3 3 3 3 3 1 1 1 1
+    1 1 1 1 1 1 3 3 3 3 3 3 3 3 3 1 1 1 1 1 1}
+ define unit 6 $ --- Fuel rod in safety blade slit
+    sector   2 UO2      -11 -12 -13 $ Fuel
+    sector   6 Air       11 -12 -13 $ Air
+    sector   3 Zr4       11  12 -13 $ Clad tube
+    sector   3 Zr4       13 -14 -15 $ Clad ends
+    sector   6 Air   10  13  14 -20 $ Air
+    sector   1 Soln -10  13  14 -20 $ Soln
+ define unit 7 $ --- Solution and air in safety blade slit
+    sector   6 Air   10 -20         $ Air
+    sector   1 Soln -10 -20         $ Soln
+ define unit 8 $ --- Safety blade guide pin in safety blade slit
+    sector   4 Zr4      -31 -20     $ Guide pin
+    sector   6 Air   10  31 -20     $ Air  outside pin
+    sector   1 Soln -10  31 -20     $ Soln outside pin
+ define unit 9 $ --- 21 x 21 array of fuel rods, holes, guide pins, on 2.0995 cm square pitch, in safety blade slit
+   {x 901 22 [-22.04475  22.04475]
+    y 941 22 [-22.04475  22.04475]
+    z 981    -999.99    999.99
+    fill
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
+    7 7 7 7 7 7 7 7 6 6 6 6 6 7 7 7 7 7 7 7 7
+    7 7 7 7 7 7 6 6 6 6 6 6 6 6 6 7 7 7 7 7 7
+    7 7 7 7 7 6 6 6 6 6 6 6 6 6 6 6 7 7 7 7 7
+    7 7 8 7 6 6 6 6 6 6 6 6 6 6 6 6 6 7 8 7 7
+    7 7 8 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 8 7 7
+    7 7 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 7 7
+    7 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 7
+    7 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 7
+    7 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 7
+    7 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 7
+    7 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 7
+    7 7 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 7 7
+    7 7 8 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 8 7 7
+    7 7 8 7 6 6 6 6 6 6 6 6 6 6 6 6 6 7 8 7 7
+    7 7 7 7 7 6 6 6 6 6 6 6 6 6 6 6 7 7 7 7 7
+    7 7 7 7 7 7 6 6 6 6 6 6 6 6 6 7 7 7 7 7 7
+    7 7 7 7 7 7 7 7 6 6 6 6 6 7 7 7 7 7 7 7 7
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
+    7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7}
+  picture cs material color -60   60 145.7 -60 -60 145.7  60 -60 145.7 title="plane view through upper  grid"
+  picture cs material color -60   60 120   -60 -60 120    60 -60 120   title="plane view in air"
+  picture cs material color -60   60 105.3 -60 -60 105.3  60 -60 105.3 title="plane view through middle grid"
+  picture cs material color -60   60  10   -60 -60  10    60 -60  10   title="plane view in solution"
+  picture cs material color -60   60   5.3 -60 -60   5.3  60 -60   5.3 title="plane view through lower  grid"
+  picture cs material color  13.6  11.5 5.3  13.6   7.3 5.3 17.9  7.3 5.3 title="plane detail of safety blade slit"
+  picture cs material color -60    0 174   -60   0 -30    60   0 -30   title="axial x-z view through center"
+  picture cs material color -55.4 -23 174   -55.4 -23 -30   55.4 23 -30   title="axial diagonal view through tie rods"
+  picture cs material color 16.8   0 155   16.8  0 132   16.8 23 132   title="axial y-z detail of upper fuel"
+  picture cs material color 16.8   0  20   16.8  0  -3   16.8 23  -3   title="axial y-z detail of lower fuel"
+surfaces
+$ --- Entire Problem
+   1 c z 29.5    145.4    146.0  $ Zircaloy upper  grid plate
+   2 c z 29.5    105.0    105.6  $ Zircaloy middle grid plate
+   3 c z 29.5      5.0      5.6  $ Zircaloy lower  grid plate
+   4 c z 29.505    0.0    150.25 $ SS304L tank, inner
+   5 c z 24.0    150.25   152.25 $ SS304L tank, upper
+   6 c z 29.825   -2.01   159.17 $ SS304L tank, outer
+   7 c z 59.825  -32.01   174.17 $ Air reflector
+$ --- Fuel rod
+  10 p z 66.39                   $ Solution height
+  11 c z  0.41015  1.48   143.54 $ UO2
+  12 c z  0.4175   1.48   148.05 $ Air
+  13 c z  0.4746   0.55   148.97 $ Zr-4 clad
+  14 c z  0.2      0.0    149.52 $ Zr-4 ends
+  15 c z  0.4956   0.0    149.52 $ Hole
+$ --- Lattice boundary and safety blade slits
+  20 prism 8 22.04475  14.6965  14.6965  22.04475 -14.6965  22.04475 -22.04475  14.6965 $ Lattice
+            -22.04475 -14.6965 -14.6965 -22.04475  14.6965 -22.04475  22.04475 -14.6965 $  x-y
+          -999.9      999.9 tr 0 0 0 0 0 1 1 0 0                                        $   boundary
+  21 box 42.0      1.198  143.0  tr 0 -9.44775 75.5 $ Safety blade slit 
+  22 box 42.0      1.198  143.0  tr 0  9.44775 75.5 $ Safety blade slit 
+$ --- Safety blade guide pin
+  31 c z  0.585    0.0    149.52 $ Pin
+  32 c z  0.591    0.0    149.52 $ Hole
+$ --- Tie rods
+  51 c z  1.53     0.0    152.25 tr -24.02087 -9.94977 0
+  52 c z  1.53     0.0    152.25 tr  24.02087 -9.94977 0
+  53 c z  1.53     0.0    152.25 tr -24.02087  9.94977 0
+  54 c z  1.53     0.0    152.25 tr  24.02087  9.94977 0
+end

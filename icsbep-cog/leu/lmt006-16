@@ -1,0 +1,191 @@
+LMT006-16: Case 16; Bugey 18; detailed; 42 type 1 tubes; 12.2cm pitch; Hw=56.47cm
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=2
+  -8.3 -5.5 28.2
+  -8.3 -1.3 28.2
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches u234 7.0178-6 u235 7.5544-4 u238 4.5866-2 fe 5.9614-5 al 2.8791-4  c 9.2395-4 $ U(1.6) Metal
+  mat=2 bunches (h.h2o) 6.6692-2 o16 3.3346-2                                                 $ Water
+  mat=3 bunches      fe 8.5086-2   c 5.5545-4                                                 $ Steel
+  mat=4 bunches (h.h2o) 1.0004-2 o16 5.0019-3 fe 4.9890-2 cr 1.3999-2 ni 6.8902-3 mn 1.4721-3 $ 85% SST and
+                     si 1.4398-3   p 5.2223-5  s 3.7828-5  c 1.0100-4                         $ 15% Water
+  mat=5 bunches     o16 1.1263-5   n 4.1985-5                                                 $ Air
+assign-mc
+  1 red 2 sky 3 yellow 4 orange 5 lime
+geometry
+  use unit  5 Beams   905 -999 $ Row of 7 beams
+$ --- Basic fuel tube and 1st row of tubes
+  use unit  3 Ftube  -101  903 -905 -999 tr -40.0     -40.0  0.0 $ Basic fuel tubes
+  use unit  3 Ftube  -102  903 -905 -999 tr -40.0     -27.8  0.0 $  and row 1
+  use unit  3 Ftube  -103  903 -905 -999 tr -40.0     -15.6  0.0 $   ditto
+  use unit  3 Ftube  -104  903 -905 -999 tr -40.0      -3.4  0.0 $   ditto
+  use unit  3 Ftube  -105  903 -905 -999 tr -40.0       8.8  0.0 $   ditto
+  use unit  3 Ftube  -106  903 -905 -999 tr -40.0      21.0  0.0 $   ditto
+$ --- 2nd row of tubes
+  use unit  3 Ftube  -111  903 -905 -999 tr -29.43449 -33.9  0.0 $ Row 2 of fuel tubes
+  use unit  3 Ftube  -112  903 -905 -999 tr -29.43449 -21.7  0.0 $   ditto
+  use unit  3 Ftube  -113  903 -905 -999 tr -29.43449  -9.5  0.0 $   ditto
+  use unit  3 Ftube  -114  903 -905 -999 tr -29.43449   2.7  0.0 $   ditto
+  use unit  3 Ftube  -115  903 -905 -999 tr -29.43449  14.9  0.0 $   ditto
+  use unit  3 Ftube  -116  903 -905 -999 tr -29.43449  27.1  0.0 $   ditto
+$ --- 3rd row of tubes
+  use unit  3 Ftube  -121  903 -905 -999 tr -18.86898 -40.0  0.0 $ Row 3 of fuel tubes
+  use unit  3 Ftube  -122  903 -905 -999 tr -18.86898 -27.8  0.0 $   ditto
+  use unit  3 Ftube  -123  903 -905 -999 tr -18.86898 -15.6  0.0 $   ditto
+  use unit  3 Ftube  -124  903 -905 -999 tr -18.86898  -3.4  0.0 $   ditto
+  use unit  3 Ftube  -125  903 -905 -999 tr -18.86898   8.8  0.0 $   ditto
+  use unit  3 Ftube  -126  903 -905 -999 tr -18.86898  21.0  0.0 $   ditto
+$ --- 4th row of tubes
+  use unit  3 Ftube  -131  903 -905 -999 tr  -8.30347 -33.9  0.0 $ Row 4 of fuel tubes
+  use unit  3 Ftube  -132  903 -905 -999 tr  -8.30347 -21.7  0.0 $   ditto
+  use unit  3 Ftube  -133  903 -905 -999 tr  -8.30347  -9.5  0.0 $   ditto
+  use unit  3 Ftube  -134  903 -905 -999 tr  -8.30347   2.7  0.0 $   ditto
+  use unit  3 Ftube  -135  903 -905 -999 tr  -8.30347  14.9  0.0 $   ditto
+  use unit  3 Ftube  -136  903 -905 -999 tr  -8.30347  27.1  0.0 $   ditto
+$ --- 5th row of tubes
+  use unit  3 Ftube  -141  903 -905 -999 tr   2.26204 -40.0  0.0 $ Row 5 of fuel tubes
+  use unit  3 Ftube  -142  903 -905 -999 tr   2.26204 -27.8  0.0 $   ditto
+  use unit  3 Ftube  -143  903 -905 -999 tr   2.26204 -15.6  0.0 $   ditto
+  use unit  3 Ftube  -144  903 -905 -999 tr   2.26204  -3.4  0.0 $   ditto
+  use unit  3 Ftube  -145  903 -905 -999 tr   2.26204   8.8  0.0 $   ditto
+  use unit  3 Ftube  -146  903 -905 -999 tr   2.26204  21.0  0.0 $   ditto
+$ --- 6th row of tubes
+  use unit  3 Ftube  -151  903 -905 -999 tr  12.82755 -33.9  0.0 $ Row 6 of fuel tubes
+  use unit  3 Ftube  -152  903 -905 -999 tr  12.82755 -21.7  0.0 $   ditto
+  use unit  3 Ftube  -153  903 -905 -999 tr  12.82755  -9.5  0.0 $   ditto
+  use unit  3 Ftube  -154  903 -905 -999 tr  12.82755   2.7  0.0 $   ditto
+  use unit  3 Ftube  -155  903 -905 -999 tr  12.82755  14.9  0.0 $   ditto
+  use unit  3 Ftube  -156  903 -905 -999 tr  12.82755  27.1  0.0 $   ditto
+$ --- 7th row of tubes
+  use unit  3 Ftube  -161  903 -905 -999 tr  23.39306 -40.0  0.0 $ Row 7 of fuel tubes
+  use unit  3 Ftube  -162  903 -905 -999 tr  23.39306 -27.8  0.0 $   ditto
+  use unit  3 Ftube  -163  903 -905 -999 tr  23.39306 -15.6  0.0 $   ditto
+  use unit  3 Ftube  -164  903 -905 -999 tr  23.39306  -3.4  0.0 $   ditto
+  use unit  3 Ftube  -165  903 -905 -999 tr  23.39306   8.8  0.0 $   ditto
+  use unit  3 Ftube  -166  903 -905 -999 tr  23.39306  21.0  0.0 $   ditto
+$ --- Water and outside and between tubes
+  sector    2 Water   903 -904 -999 101 102 103 104 105 106
+                                    111 112 113 114 115 116
+                                    121 122 123 124 125 126
+                                    131 132 133 134 135 136
+                                    141 142 143 144 145 146
+                                    151 152 153 154 155 156
+                                    161 162 163 164 165 166
+  sector    5 Air     904 -905 -999 101 102 103 104 105 106
+                                    111 112 113 114 115 116
+                                    121 122 123 124 125 126
+                                    131 132 133 134 135 136
+                                    141 142 143 144 145 146
+                                    151 152 153 154 155 156
+                                    161 162 163 164 165 166
+$ --- Additional plate and water
+  sector    4 Plate    -3       902 -903 -999 $ Additional plate
+  sector    2 Water     3       902 -903 -999 $ Water on sides of additional plate
+$ --- U-tubes and water
+  sector    2 Water  -801       901 -902 -999 $ Water -LHS of U-tubes
+  use  unit 2 Utubes  801 -813  901 -902 -999 $ U-tubes
+  sector    2 Water        813  901 -902 -999 $ Water -RHS of U-tubes
+$ --- Water beneath U-tubes
+  sector    2 Water  -901 -999                $ Water beneath U-tubes
+$ --- Boundary conditions
+  boundary    vacuum  999                     $ BCD 
+define unit 1 $ One U-shaped plate in water
+  sector 3 Steel  1 -2 $ Steel
+  fill   2             $ Water
+define unit 2 $ Row of 11 U-shaped plates in water
+  {x  801 13 [-60.0 60.0]
+   y  821     -999.9 999.9
+   z  831     -999.9 999.9
+   fill 1 1 1 1 1 1 1 1 1 1 1 1}
+define unit 3 $ One type 1 fuel tube and steel disk in water and air
+  sector 2 Water -4 -5 -904 $ Water inside tube
+  sector 1 Uran   4 -5      $ U(1.6)
+  sector 2 Water  4  5 -904 $ Water outside tube
+  sector 3 Steel  5 -6      $ Disk
+  fill   5                  $ Air
+define unit 4 $ One steel beam
+  sector 3 Steel  7 -8 $ Beam
+  fill   5             $ Air 
+define unit 5 $ Row of 7 beams in air
+  {x  701  8 [-45.28275  28.67581]
+   y  721    -999.9     999.9
+   z  731    -999.9     999.9
+   fill 4 4 4 4 4 4 4}
+  sector 5 Air   -701  904 -999
+  sector 5 Air    708  904 -999
+  sector 2 Water -701 -904 -999
+  sector 2 Water  708 -904 -999
+picture cs material color -80   80 30  -80 -80  30  80 -80  30 title="plane view through fuel"
+picture cs material color 23.4 -80 80 23.4 -80 -40 23.4 80 -40 title="axial view through X=+23.4"
+picture cs material color 12.8 -80 80 12.8 -80 -40 12.8 80 -40 title="axial view through X=+12.8"
+picture cs material color -80  -40 80  -80 -40 -40  80 -40 -40 title="axial view through basic fuel tube at (-40,-40,0)"
+picture cs material color -50  -40 70  -50 -40  50 -30 -40  50 title="axial detail of the beams, disks, fuel tube"
+picture cs material color -50  -40 10  -50 -40 -10 -30 -40 -10 title="axial detail of the table, u-plates, basic fuel tube"
+surfaces
+    1 box   9.0 100.0   7.6 tr 0 0 -4.4 $ U-shaped plates/inner
+    2 box   9.4 100.0   8.0 tr 0 0 -4.4 $ U-shaped plates/outer
+    3 box 119.4 100.0  99.9             $ Additional plate w/water in (smeared) holes
+    4 c z   3.75                        $ Fuel tube/inner
+    5 c z   4.85  0.0  59.0             $ Fuel tube/outer
+    6 c z   4.85 59.0  59.5             $ Steel disk
+    7 box   3.6 999.9   3.6 tr 0 0 62.5 $ Beam/inner
+    8 box   4.0 100.0   4.0 tr 0 0 62.5 $ Beam/outer  
+$ --- Basic fuel tube and disk and 1st row of tubes
+  101 c z   4.85  0.0  59.5 tr -40.0     -40.0  0.0 $ Basic fuel tube and disk
+  102 c z   4.85  0.0  59.5 tr -40.0     -27.8  0.0 $ fuel tube and disk
+  103 c z   4.85  0.0  59.5 tr -40.0     -15.6  0.0 $ fuel tube and disk
+  104 c z   4.85  0.0  59.5 tr -40.0      -3.4  0.0 $ fuel tube and disk
+  105 c z   4.85  0.0  59.5 tr -40.0       8.8  0.0 $ fuel tube and disk
+  106 c z   4.85  0.0  59.5 tr -40.0      21.0  0.0 $ fuel tube and disk
+$ --- 2nd row of tubes
+  111 c z   4.85  0.0  59.5 tr -29.43449 -33.9  0.0 $ Second row
+  112 c z   4.85  0.0  59.5 tr -29.43449 -21.7  0.0 $   ditto
+  113 c z   4.85  0.0  59.5 tr -29.43449  -9.5  0.0 $   ditto
+  114 c z   4.85  0.0  59.5 tr -29.43449   2.7  0.0 $   ditto
+  115 c z   4.85  0.0  59.5 tr -29.43449  14.9  0.0 $   ditto
+  116 c z   4.85  0.0  59.5 tr -29.43449  27.1  0.0 $   ditto
+$ --- 3rd row of tubes
+  121 c z   4.85  0.0  59.5 tr -18.86898 -40.0  0.0 $ Third row
+  122 c z   4.85  0.0  59.5 tr -18.86898 -27.8  0.0 $   ditto
+  123 c z   4.85  0.0  59.5 tr -18.86898 -15.6  0.0 $   ditto
+  124 c z   4.85  0.0  59.5 tr -18.86898  -3.4  0.0 $   ditto
+  125 c z   4.85  0.0  59.5 tr -18.86898   8.8  0.0 $   ditto
+  126 c z   4.85  0.0  59.5 tr -18.86898  21.0  0.0 $   ditto
+$ --- 4th row of tubes
+  131 c z   4.85  0.0  59.5 tr  -8.30347 -33.9  0.0 $ Fourth row
+  132 c z   4.85  0.0  59.5 tr  -8.30347 -21.7  0.0 $   ditto
+  133 c z   4.85  0.0  59.5 tr  -8.30347  -9.5  0.0 $   ditto
+  134 c z   4.85  0.0  59.5 tr  -8.30347   2.7  0.0 $   ditto
+  135 c z   4.85  0.0  59.5 tr  -8.30347  14.9  0.0 $   ditto
+  136 c z   4.85  0.0  59.5 tr  -8.30347  27.1  0.0 $   ditto
+$ --- 5th row of tubes
+  141 c z   4.85  0.0  59.5 tr   2.26204 -40.0  0.0 $ Fifth row
+  142 c z   4.85  0.0  59.5 tr   2.26204 -27.8  0.0 $   ditto
+  143 c z   4.85  0.0  59.5 tr   2.26204 -15.6  0.0 $   ditto
+  144 c z   4.85  0.0  59.5 tr   2.26204  -3.4  0.0 $   ditto
+  145 c z   4.85  0.0  59.5 tr   2.26204   8.8  0.0 $   ditto
+  146 c z   4.85  0.0  59.5 tr   2.26204  21.0  0.0 $   ditto
+$ --- 6th row of tubes
+  151 c z   4.85  0.0  59.5 tr  12.82755 -33.9  0.0 $ Sixth row
+  152 c z   4.85  0.0  59.5 tr  12.82755 -21.7  0.0 $   ditto
+  153 c z   4.85  0.0  59.5 tr  12.82755  -9.5  0.0 $   ditto
+  154 c z   4.85  0.0  59.5 tr  12.82755   2.7  0.0 $   ditto
+  155 c z   4.85  0.0  59.5 tr  12.82755  14.9  0.0 $   ditto
+  156 c z   4.85  0.0  59.5 tr  12.82755  27.1  0.0 $   ditto
+$ --- 7th row of tubes
+  161 c z   4.85  0.0  59.5 tr  23.39306 -40.0  0.0 $ Seventh row
+  162 c z   4.85  0.0  59.5 tr  23.39306 -27.8  0.0 $   ditto
+  163 c z   4.85  0.0  59.5 tr  23.39306 -15.6  0.0 $   ditto
+  164 c z   4.85  0.0  59.5 tr  23.39306  -3.4  0.0 $   ditto
+  165 c z   4.85  0.0  59.5 tr  23.39306   8.8  0.0 $   ditto
+  166 c z   4.85  0.0  59.5 tr  23.39306  21.0  0.0 $   ditto
+$ ---- Axial boundaries
+  901 p z  -4.4
+  902 p z  -0.4
+  903 p z   0.0
+  904 p z  56.47                        $ Critical water height, Hw
+  905 p z  60.0                         $ Above disk and below beam
+  999 box 130.0 140.0 140.0 tr 0 0 34.6 $ Boundary condition
+end

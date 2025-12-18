@@ -1,0 +1,24 @@
+U233-MET-FAST-003: 7.601 kg 233U(98.2) + 5.3086 cm Tu
+basic
+  neutron delayedn CENTIMETERS
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 w-p 18.644 u233 98.2 u234 1.1 u238 0.7      $ U-233 per Table 2
+  mat=2 a-f 18.920 u234 0.005 u235 0.72 u238 99.275 $ Nat-U
+assign-mc
+  1 red 2 gray
+geometry
+  sector 1 U233   -1
+  sector 2 Tu      1 -2
+  boundary vacuum     2
+picture cs material color
+ -10   0  10  -10   0 -10   10  0 -10
+volume material
+ -10 -10 -10   10 -10 -10  -10 10 -10
+  20  20  20
+surfaces
+   1 sphere 4.5999 $ Dimensions per
+   2 sphere 9.9085 $ Section 3.2.2
+end

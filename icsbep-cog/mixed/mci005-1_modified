@@ -1,0 +1,38 @@
+MIX-COMP-INTER-005:  MOX Test Lattice with U(0.52)O2-10.89Pu(77.4)O2
+basic
+  neutron delayedn urrpt CENTIMETERS
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 sablib=T.ENDFB8R0                                                             $
+  mat=1 bunches  u234 8.36956-7  u235 1.08340-4  u238 2.04636-2 pu238 2.95359-5 pu239 1.70943-3 $ MOX per Table 17
+                pu240 4.67331-4 pu241 2.24089-4 pu242 6.69509-5 am241 1.72005-5   o16 4.58515-2 $  UO2-11PuO2
+  mat=2 bunches   o16 1.12630-5     n 4.19850-5                                                 $ Air per Section 3.3
+  mat=3 w-p 7.794  fe 68.59 cr 18.12 ni 10.61 mn 1.43 mo 0.24 cu 0.20 co 0.15 si 0.51 n 0.087   $ SST per Table 7
+                    c  0.026 p  0.025 s  0.009                                                  $  SS304L (Z2CN 18/10)
+  mat=4 a-f 0.9926 (h.h2o) 2.0 o16 1.0                                                          $ H2O per Section 3.3
+assign-mc                                                                                       $
+  1 red 2 yellow 3 gray 4 sky
+geometry                                              
+  sector 1 MOX      -1 -6
+  sector 2 AIR    1 -2 -6
+  sector 3 SST    2 -3 -6
+  sector 2 AIR    3 -4 -6
+  sector 3 SST    4 -5 -6
+  sector 4 H2O    5    -6
+  boundary reflecting   6
+picture cs material color
+   1 -1  0  -1 -1  0  -1 1  0
+volume
+  -1 -1 -1   1 -1 -1  -1 1 -1
+   2  2  2
+surfaces $ Dimensions from Section 3.2, Table 16 
+  1 cylinder x 0.3572 $ = 0.7144/2 (MOX/Outer)
+  2 cylinder x 0.3685 $ = 0.7370/2 (Inner Clad/Inner)
+  3 cylinder x 0.3925 $ = 0.7850/2 (Inner Clad/Outer)
+  4 cylinder x 0.4020 $ = 0.8040/2 (Outer Clad/Inner)
+  5 cylinder x 0.4240 $ = 0.8480/2 (Outer Clad/Outer)
+  6 prism 6    0.545596 0.0  0.272798  0.4725 -0.272798  0.4725
+              -0.545596 0.0 -0.272798 -0.4725  0.272798 -0.4725
+              -1.0      1.0
+end

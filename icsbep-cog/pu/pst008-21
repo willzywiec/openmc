@@ -1,0 +1,37 @@
+PU-SOL-THERM-008 (case 21) 1.150 kg Pu(95.43) @ H/X = 486 in 14" SS304L sphere with 0.030" Cd + 4" concrete
+basic
+neutron delayedn CM URRPT
+criticality
+npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+nsource=1 0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 7b and 8
+mat=1 bunches pu238 7.7259-9 pu239 1.2181-4 pu240 5.9593-6 pu241 4.0564-7 pu242 1.1397-8
+n 2.8494-3 (h.h2o) 5.9352-2 o16 3.7056-2
+mat=2 bunches fe 5.9355-2 cr 1.7428-2 ni 7.7203-3 mn 1.7363-3
+mat=3 bunches cd 4.6340-2
+mat=4 bunches (h.h2o) 1.7376-2 o16 4.5294-2 mg 7.6195-4 al 3.3533-3 ca 2.6095-3
+fe 1.3417-3 na 1.1416-4 k 4.3569-4 mn 2.7673-5 si 1.2931-2
+geometry
+sector 1 SOLN -1 -2 $ Sphere
+sector 1 SOLN -1 2 -6 $ Tube/Inner
+sector 2 SST 2 -3 6 $ SST/Shell
+sector 3 CADMIUM 3 -4 7 9 $ Cd/Shell
+sector 2 SST 3 -5 6 -7 $ Tube/Support
+sector 2 SST 3 -5 8 -9 $ Tube/Inlet
+sector 4 CONCRETE 4 -5 7 9 $ Concrete
+picture cs material
+-30 0 30 -30 0 -30 30 0 -30
+volume
+-18 -18 -18 18 -18 -18 -18 18 -18
+36 36 36
+surfaces $ Dimensions
+1 plane z 14.2707 $ = Hc ------------ Table 5b
+2 sphere 17.6955 $ Sphere/Inner ---- Table 6b
+3 sphere 17.8073 $ Sphere/Outer ---- Table 6b
+4 sphere 17.8835 $ Cadmium/Outer --- Table 6b
+5 sphere 28.0435 $ Concrete/Outer -- Table 6b
+6 cylinder z 2.695 0 99 tr -3.811 0 0 $ Support Tube/Inner -- Figure 7
+7 cylinder z 2.860 0 99 tr -3.811 0 0 $ Support Tube/Outer -- Figure 7
+8 cylinder z 2.555 -99 0 $ Inlet Tube/Inner -- Figure 7
+9 cylinder z 2.860 -99 0 $ Inlet Tube/Outer -- Figure 7
+end

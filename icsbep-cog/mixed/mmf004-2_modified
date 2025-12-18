@@ -1,0 +1,60 @@
+MIX-MET-FAST-004-2: Pu sphere surrounded by HEU reflected by BeO
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  0 0  2.8   2.0 0 -0.75  0  2.0 -0.75
+  0 0 -2.0  -2.0 0 -0.75  0 -2.0 -0.75
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu239 3.4304-2 pu240 3.4950-3 pu241 3.9076-4   ga 2.1289-3 $ Pu
+                    c 3.0536-4    fe 3.2837-4     w 7.4811-5   ni 8.6774-4 $ 
+  mat=2 bunches  u234 5.2286-4  u235 4.1030-2  u236 8.7989-5 u238 4.1009-3 $ HEU
+                    c 3.9571-4    fe 1.3507-4     w 1.2436-5   cu 7.2150-4 $
+                   ni 3.3480-4                                             $
+  mat=3 bunches (be.beo) 6.7508-2 (o.beo) 6.7508-2                         $ BeO
+  mat=4 bunches    al 5.8077-2    mg 1.0332-3    mn 1.8284-4   cu 1.1329-3 $ Duralumin
+  mat=5 bunches    fe 8.1174-2 $ Fe
+  mat=6 bunches    cu 8.2365-2 $ Cu
+assign-mc
+  1 purple 2 orange 3 lime 4 yellow 5 black 6 pink
+geometry
+$ --- Upper portion of the assembly
+  sector  4 Dural    1 -2 -3       $ Duralumin
+  sector  2 HEU      3  4 -5  7    $ HEU
+  sector  3 BeO      3  5 -6  8  9 $ BeO
+$ --- Lower portion of the assembly
+  sector  1 Pu      11 -12         $ Pu
+  sector  2 HEU     12 -13         $ HEU full shell
+  sector  2 HEU    -10  13 -14  20 $ HEU half shell
+  sector  3 BeO    -10  14 -15  21 $ BeO
+  sector  6 Cu     -10  15 -16 -22 $ Cu
+  sector  5 Steel  -10  16 -17     $ Steel (Fe)
+picture cs material color
+   -15   0  10 -15   0 -16   0   0 -16 title="axial x-z half view"
+volume material 
+   -14 -14 -16  14 -14 -16 -14  14 -16
+    28  28  26
+surfaces
+$ --- Upper portion of the assembly
+  1 c z  7.0           $ Duralumin diaphragm, inner
+  2 c z 14.0  -0.2 0.0 $ Duralumin diaphragm, outer
+  3 p z  0.0           $ interface
+  4 s    6.75          $ HEU, inner
+  5 s    8.35          $ HEU, outer; BeO, inner
+  6 s    9.15          $ BeO, outer
+  7 c x  0.6           $ Hole in HEU
+  8 c x  0.15          $ Hole in BeO
+  9 c z  1.1           $ Hole in BeO
+$ --- Lower portion of the assembly
+ 10 p z -0.75              $ top
+ 11 s    1.40 tr 0 0 -0.75 $ Cavity
+ 12 s    3.15 tr 0 0 -0.75 $ Pu
+ 13 s    6.75 tr 0 0 -0.75 $ HEU, full shell
+ 14 s    8.35 tr 0 0 -0.75 $ HEU, half shell
+ 15 s    9.15 tr 0 0 -0.75 $ BeO
+ 16 s    9.30 tr 0 0 -0.75 $ Cu
+ 17 c z  2.5 -15.05 -1.0   $ Steel (Fe)
+ 20 c x  0.6  tr 0 0 -0.75 $ Hole in HEU
+ 21 c x  0.15 tr 0 0 -0.75 $ Hole in BeO
+ 22 c z  8.0               $ Extent of Cu 
+end 

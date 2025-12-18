@@ -1,0 +1,25 @@
+PU-SOL-THERM-003 (Case 7) 0.647 kg Pu(96.88) @ H/X = 738 in a water reflected 13" Al-2S sphere
+basic
+  neutron delayedn urrpt
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1  0. 0. 0.
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches   pu239 8.7811-5 pu240 2.8161-6  n 9.0422-4 (h.h2o) 6.4783-2 o16 3.4833-2 fe 1.2293-6 
+  mat=2 bunches      al 5.9881-2    si 3.7770-4 cu 5.1364-5      zn 2.4958-5  mn 1.4853-5
+  mat=3 bunches (h.h2o) 6.6622-2   o16 3.3311-2
+geometry                                              
+  sector 1 SOLN     -1
+  sector 2 AL2S   1 -2
+  sector 3 WATER  2 -3
+  boundary vacuum 3
+picture cs material
+  -20   0  20 -20   0 -20   20  0 -20
+volume
+  -17 -17 -17  17 -17 -17  -17 17 -17
+   34  34  34
+surfaces $ Dimensions from Table 4
+  1 sphere  16.2487
+  2 sphere  16.3777
+  3 sphere  46.3777
+end

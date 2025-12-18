@@ -1,0 +1,219 @@
+IEU-MET-FAST-022-1: FR0 experiment 3X-D (case 1 detailed model)
+basic
+  neutron delayedn CM URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=25
+   9.14  9.14 0.0 4.57  9.14 0.0 0.00  9.14 0.0 -4.57  9.14 0.0 -9.14  9.14 0.0
+   9.14  4.57 0.0 4.57  4.57 0.0 0.00  4.57 0.0 -4.57  4.57 0.0 -9.14  4.57 0.0
+   9.14  0.00 0.0 4.57  0.00 0.0 0.00  0.00 0.0 -4.57  0.00 0.0 -9.14  0.00 0.0
+   9.14 -4.57 0.0 4.57 -4.57 0.0 0.00 -4.57 0.0 -4.57 -4.57 0.0 -9.14 -4.57 0.0
+   9.14 -9.14 0.0 4.57 -9.14 0.0 0.00 -9.14 0.0 -4.57 -9.14 0.0 -9.14 -9.14 0.0
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0                          $
+  mat=1 bunches u234 9.6287-5 u235 9.6116-3 u238 3.7748-2  c 5.1781-5  f 1.0356-4  $ Fuel and teflon
+  mat=2 bunches   cu 8.4174-2   ag 7.9500-5  o16 1.3400-4                          $ Copper blocks
+  mat=3 bunches   cu 8.3512-2   ag 7.88740-5 o16 1.3294-4                          $ Copper plates
+  mat=4 bunches   fe 5.8345-2   cr 1.5887-2   ni 7.4286-3 mn 8.3536-4 si 8.1703-4  $ SST frames & inner part end blocks
+  mat=5 bunches   fe 5.4794-2   cr 1.4920-2   ni 6.9764-3 mn 7.8451-4 si 7.6729-4  $ SST outer part end blocks
+  mat=6 bunches (c30p) 8.3029-2                                                    $ Graphite
+assign-mc 1 purple 2 yellow 3 orange 4 gray 5 black 6 green                        $
+geometry
+  use unit 4 FuArry -10
+  boundary vacuum    10
+define unit 1 $ Copper reflector element
+  sector 2 CuBlk  -1
+  sector 4 Frame   2 -3
+  sector 5 EndBlk  4 -5
+define unit 2 $ $ Odd Module
+  sector 1 Fuel      -11
+  sector 6 Grpht  11 -12
+  sector 1 Fuel   12 -13 
+  sector 6 Grpht  13 -14
+  sector 1 Fuel   14 -15
+  sector 6 Grpht  15 -16
+  sector 1 Fuel   16 -17
+  sector 6 Grpht  17 -18
+define unit 32
+  sector    2 CuBlk  -1     -20
+  use unit  2 Odd    -1  20 -21 tr 0 0 -19.35
+  use unit  2 Even   -1  21 -22 tr 0 0 -15.05 -1 0 -15.05 0 -1 -15.05
+  use unit  2 Odd    -1  22 -23 tr 0 0 -10.75
+  use unit  2 Even   -1  23 -24 tr 0 0  -6.45 -1 0  -6.45 0 -1  -6.45
+  use unit  2 Odd    -1  24 -25 tr 0 0  -2.15
+  use unit  2 Even   -1  25 -26 tr 0 0   2.15 -1 0   2.15 0 -1   2.15
+  use unit  2 Odd    -1  26 -27 tr 0 0   6.45
+  use unit  2 Even   -1  27 -28 tr 0 0  10.75 -1 0  10.75 0 -1  10.75
+  use unit  2 Odd    -1  28 -29 tr 0 0  15.05
+  sector    2 CuBlk  -1  29
+  sector    4 Frame   2  -3
+  sector    5 EndBlk  4  -5
+
+define unit 116 
+  use  unit  32 R+90   -5 tr 0 0 0 0  1 0 -1 0 0
+
+define unit 117 
+  use  unit  32 R-90   -5 tr 0 0 0 0 -1 0  1 0 0
+
+define unit 125
+  use  unit  32 U32   -40 -32 -42
+  use  unit  32 U32   -40  32 -41
+  sector      3 CuPlt -40 -32  42
+  sector      3 CuPlt -40  32  41
+  use  unit  32 U32    40 -5
+
+define unit 126
+  use  unit  32 U32   -40 -32 -41
+  use  unit  32 U32   -40  32 -42
+  sector      3 CuPlt -40 -32  41
+  sector      3 CuPlt -40  32  42
+  use  unit  32 U32    40 -5
+
+define unit 127
+  use  unit  32 U32   -40 -32  42
+  use  unit  32 U32   -40  32  43
+  sector      3 CuPlt -40 -32 -42
+  sector      3 CuPlt -40  32 -43
+  use  unit  32 U32    40 -5
+
+define unit 128
+  use  unit  32 U32   -40 -32  43
+  use  unit  32 U32   -40  32  42
+  sector      3 CuPlt -40 -32 -43
+  sector      3 CuPlt -40  32 -42
+  use  unit  32 U32    40 -5
+
+define unit 130
+  use  unit  32 U32   -40  32
+  use  unit  32 U32   -40 -32 -42
+  sector      3 CuPlt -40 -32  42
+  use  unit  32 U32    40 -5
+
+define unit 132
+  use  unit 116 U116  -30 -32
+  use  unit 116 U116  -30 -42
+  sector      3 CuPlt -30  32  42
+  use  unit 116 U116   30 -5
+
+define unit 134
+  use  unit  32 U32   -40  32
+  use  unit  32 U32   -40 -32  42
+  sector      3 CuPlt -40 -32 -42
+  use  unit  32 U32    40 -5
+
+define unit 136
+  use  unit  32 U32   -40  32 -43
+  sector      3 CuPlt -40  32  43
+  sector      3 CuPlt -40 -32
+  use  unit  32 U32    40 -5
+
+define unit 138
+  use  unit  32 U32   -40 -32 -43
+  sector      3 CuPlt -40 -32  43
+  sector      3 CuPlt -40  32
+  use  unit  32 U32    40 -5
+
+define unit 140
+  use  unit  32 U32   -40  32  41
+  sector      3 CuPlt -40  32 -41
+  sector      3 CuPlt -40 -32
+  use  unit  32 U32    40 -5
+
+define unit 142
+  use  unit  32 U32   -40 -32  41
+  sector      3 CuPlt -40 -32 -41
+  sector      3 CuPlt -40  32
+  use  unit  32 U32    40 -5
+
+define unit 144 
+  use  unit 116 U116  -30  31
+  sector      3 CuPlt -30 -31
+  use  unit 116 U116   30 -5
+
+define unit 146
+  use  unit  32 U32   -40 -32  44
+  use  unit  32 U32   -40  32  43
+  sector      3 CuPlt -40 -32 -44
+  sector      3 CuPlt -40  32 -43
+  use  unit  32 U32    40 -5
+
+define unit 4 $ 23x23 array of fuel plates and reflectors
+   {x 101 24 [-52.555 52.555]
+    y 131 24 [-52.555 52.555]
+    z 161    -999.99 999.99
+    fill
+     - - - - - - -   -   -   1   1   1   1   1   -   - - - - - - - -
+     - - - - - - -   1   1   1   1   1   1   1   1   1 - - - - - - -
+     - - - - - 1 1   1   1   1   1   1   1   1   1   1 1 1 - - - - -
+     - - - - 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 - - - -
+     - - - 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 - - -
+     - - 1 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 1 - -
+     - 1 1 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1   1 126 116  32 116 125   1   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1 130 116  32 116  32 116 132   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1 136 116  32 116  32 117  32 116 138 1 1 1 1 1 1 -
+     1 1 1 1 1 1 1 144  32 116  32  32 116  32  32 116 1 1 1 1 1 1 1
+     1 1 1 1 1 1 1  32 116  32 116  32 117  32 116  32 1 1 1 1 1 1 1
+     1 1 1 1 1 1 1 144  32 116  32  32 116  32 116  32 1 1 1 1 1 1 1
+     - 1 1 1 1 1 1 140 116  32 116  32 117  32 116 142 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1 134 116  32  32  32 116 146   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1   1 128 116  32 116 127   1   1 1 1 1 1 1 1 -
+     - 1 1 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 1 1 -
+     - - 1 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 1 - -
+     - - - 1 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 1 - - -
+     - - - - 1 1 1   1   1   1   1   1   1   1   1   1 1 1 1 - - - -
+     - - - - - 1 1   1   1   1   1   1   1   1   1   1 1 1 - - - - -
+     - - - - - - -   1   1   1   1   1   1   1   1   1 - - - - - - -
+     - - - - - - -   -   -   1   1   1   1   1   -   - - - - - - - - }
+  picture cs material color res=1500 -77   77   0 -77  -77   0  77  -77   0 title="plane view"
+  picture cs material color res=1500 -25   25  17 -25  -25  17  25  -25  17 title="plane view of the array at x=17"
+  picture cs material color res=1500 -25   25  13 -25  -25  13  25  -25  13 title="plane view of the array at x=13"
+  picture cs material color res=1500 -25   25   8 -25  -25   8  25  -25   8 title="plane view of the array at x=8"
+  picture cs material color res=1500 -25   25   4 -25  -25   4  25  -25   4 title="plane view of the array at x=4"
+  picture cs material color res=1500 -25   25   0 -25  -25   0  25  -25   0 title="plane view of the array at x=0"
+  picture cs material color res=1500 -25   25  -4 -25  -25  -4  25  -25  -4 title="plane view of the array at x=-4"
+  picture cs material color res=1500 -25   25  -8 -25  -25  -8  25  -25  -8 title="plane view of the array at x=-8"
+  picture cs material color res=1500 -25   25 -13 -25  -25 -13  25  -25 -13 title="plane view of the array at x=-13"
+  picture cs material color res=1500 -25   25 -17 -25  -25 -17  25  -25 -17 title="plane view of the array at x=-17"
+  picture cs material color res=1500 -77 -0.1  65 -77 -0.1 -65  77 -0.1 -65 title="axial x/z view"
+  picture cs material color res=1500 -25 -0.1  21 -25 -0.1 -21  25 -0.1 -21 title="axial x/z view of the array"
+  picture cs material color res=1500 0.1  -77  65 0.1  -77 -65 0.1   77 -65 title="axial y/z view"
+  picture cs material color res=1500 0.1  -25  21 0.1  -25 -21 0.1   25 -21 title="axial y/z view of the array"
+surfaces
+   1  rpp  -2.15    2.15   -2.15    2.15  -55.9  55.9   $ Fuel or Copper plates
+   2  rpp  -2.17    2.17   -2.17    2.17  -58.05 58.05  $ Inner void
+   3  rpp  -2.25    2.25   -2.25    2.25  -60.0  60.0   $ Frame and inner end block
+   4  rpp  -2.285   2.285  -2.285   2.285 -60.0  60.0   $ Outer void
+   5  rpp  -2.285   2.285  -2.285   2.285 -61.75 61.75  $ SST outside end block
+
+  10  rpp -52.555  52.555 -52.555  52.555 -61.75 61.75  $ Array boundary
+
+  11  rpp  -2.15    2.15   -2.148  -1.432   0.0   4.3   $ Fuel
+  12  rpp  -2.15    2.15   -1.432  -1.074   0.0   4.3   $ Graphite
+  13  rpp  -2.15    2.15   -1.074  -0.358   0.0   4.3   $ Fuel
+  14  rpp  -2.15    2.15   -0.358   0.0     0.0   4.3   $ Graphite
+  15  rpp  -2.15    2.15    0.0     0.716   0.0   4.3   $ Fuel
+  16  rpp  -2.15    2.15    0.716   1.074   0.0   4.3   $ Graphite
+  17  rpp  -2.15    2.15    1.074   1.790   0.0   4.3   $ Fuel
+  18  rpp  -2.15    2.15    1.790   2.148   0.0   4.3   $ Graphite
+
+  20  p z -19.35
+  21  p z -15.05
+  22  p z -10.75
+  23  p z  -6.45
+  24  p z  -2.15
+  25  p z   2.15
+  26  p z   6.45
+  27  p z  10.75
+  28  p z  15.05
+  29  p z  19.35
+
+  30  rpp  -2.148   2.148  -2.150   2.150 -19.35 19.35 $ Core region
+  31  p x  -1.074                                      $ x boundary
+  32  p x   0.0                                        $ x boundary
+  33  p x   1.074                                      $ x boundary
+
+  40  rpp  -2.150   2.150  -2.148   2.148 -19.35 19.35 $ Core region
+  41  p y  -1.074                                      $ y boundary
+  42  p y   0.0                                        $ y boundary
+  43  p y   1.074                                      $ y boundary
+  44  p y   0.358                                      $ y boundary
+end

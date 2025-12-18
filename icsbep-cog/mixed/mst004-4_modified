@@ -1,0 +1,41 @@
+MIX-SOL-THERM-004-4: Exp. No. 066 with 41.89 gPu/l and 63.65 gU/L with 0.61M
+basic
+  neutron delayedn CENTIMETERS URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 14.055
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches pu238 3.0732-8 pu239 9.6155-5 pu240 8.7327-6 pu241 4.7092-7 pu242 9.6922-8 $ Solution
+                 u234 1.1464-8  u235 9.1976-7  u236 3.7349-8  u238 1.6006-4 am241 5.4398-7 $  for
+              (h.h2o) 6.3476-2     n 1.1242-3   o16 3.5250-2   b10 2.2752-8    cd 1.2791-8 $   exp.
+                   fe 1.3258-6    gd 1.7646-9   li6 8.1772-10                              $    066
+  mat=2 bunches    fe 6.1376-2    cr 1.7648-2    ni 8.2292-3     c 1.2063-4                $ SS304L
+  mat=3 bunches (h.h2o) 6.6811-2 o16 3.3405-2                                              $ Water (066)
+assign-mc
+  1 purple 2 gray 3 sky
+geometry
+  sector  0 Void    -1 -2 -5    $ Void inside dump line
+  sector  2 SS304L   1 -2 -5    $ Dump line
+  sector  1 Soln    -3 -6       $ Solution
+  sector  0 Void    -3  6       $ Void above solution
+  sector  2 SS304L   2  3 -4 -5 $ Tank
+  sector  3 Water    2  4 -5 -7 $ Water
+  sector  0 Void     2  4 -5  7 $ Void above water
+  boundary  vacuum   5          $ BCD
+picture cs material color
+  -50   0  95 -50   0 -20  50   0 -20 title="axial x-z view"
+picture cs material color
+    0 -50  95   0 -50 -20   0  50 -20 title="axial y-z view"
+picture cs material color
+  -50  50  14 -50 -50  14  50 -50  14 title="plane x-y view"
+volume material $ volume of solution 
+  -18 -18   0  18 -18   0 -18  18   0 
+   36  36  30
+surfaces
+  1 c z   2.625                $ Dump line, inner
+  2 c z   3.016 -16.953 -0.953 $ Dump line, outer
+  3 c z  17.695   0.0   90.6   $ Solution tank, inner
+  4 c z  17.774  -0.953 91.553 $ Solution tank, outer
+  5 rpp -49.38 49.38 -46.75 46.75 -16.953 91.553 $ Boundary
+  6 p z  28.11                 $ Sol'n height
+  7 p z  89.013                $ Water height
+end

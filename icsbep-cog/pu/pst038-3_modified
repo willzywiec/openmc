@@ -1,0 +1,42 @@
+PU-SOL-THERM-038-3: Experiment 3003
+basic
+  neutron delayedn URRPT
+criticality
+  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  nsource=1 0 0 42.5955
+mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
+  mat=1 bunches   pu238 7.3182-8 pu239 2.9053-5  pu240 7.8155-6 pu241 4.0533-7 pu242 4.1045-7 $ Plutonium
+                (h.h2o) 6.4907-2   o16 3.4475-2      n 7.7830-4 am241 3.0498-8     b 9.3504-8 $  solution for
+                     ba 5.0189-9    ca 5.5031-8     cr 5.9208-8    fe 2.7974-7    mg 4.3482-8 $  experiment
+                     ni 1.5345-7    pb 7.9834-10 th232 3.9604-9    zn 2.4594-8                $  no. 3003
+  mat=2 bunches (h.h2o) 6.6707-2   o16 3.3353-2                                               $ Water
+  mat=3 bunches       n 4.1985-5   o16 1.1263-5                                               $ Air
+  mat=4 bunches      cr 1.5653-2    ni 9.7889-3     mo 1.1228-3    mn 8.7145-4    si 1.7046-3 $ Z2 CND 17-12
+                      p 6.1827-5     s 4.4786-5      c 1.1958-4    fe 5.7137-2                $  steel
+  mat=5 bunches      cr 1.6470-2    ni 8.1061-3     mn 8.6597-4    si 1.6939-3     p 6.1439-3 $ Z2 CND 18-10
+                      s 4.4512-5     c 1.1883-4     fe 5.9546-2                               $  steel
+assign-mc
+  1 yellow 2 sky 3 pink 4 lime 5 green
+geometry                                              
+  sector 1 Soln   -1 -3
+  sector 3 Air     1 -3
+  sector 4 SS1712  3 -4
+  sector 4 SS1712  3  4 -5
+  sector 2 Water  -2  4 -6
+  sector 3 Air     2  4 -6
+  sector 5 SS1810  4  5  6 -7
+  boundary vacuum  7
+picture cs material color  -65   0 220 -65   0 -25  65   0 -25 title="axial view"
+picture cs material color    0   0 220   0   0 -25  65   0 -25 title="axial half-view"
+picture cs material color   35   0 216  35   0 210  45   0 210 title="axial detail near the top of the inner tank"
+picture cs material color   35   0   5  35   0  -5  45   0  -5 title="axial detail near the bottom of the inner tank"
+volume -61 -61 -24  61 -61 -24 -61  61 -24 122 122 240
+surfaces $ Dimensions in CM
+  1 p z  85.191 $ = Hc per Table 3-2
+  2 p z 200.0   $ = Water height
+  3 c z  37.8   0.0 212.7
+  4 c z  38.1  -0.3 212.7
+  5 c z  44.5 212.7 215.2
+  6 c z  60.1 -22.3 212.7
+  7 c z  60.5 -23.3 215.2
+end
