@@ -1,6 +1,7 @@
 #ifdef OPENMC_MPI
 #include <mpi.h>
 #endif
+#include <iostream>
 #include "openmc/capi.h"
 #include "openmc/constants.h"
 #include "openmc/error.h"
@@ -29,6 +30,7 @@ int main(int argc, char* argv[])
   }
 
   // start problem based on mode
+  std::cerr << "[DEBUG] main: starting problem" << std::endl;
   switch (settings::run_mode) {
   case RunMode::FIXED_SOURCE:
   case RunMode::EIGENVALUE:
@@ -56,16 +58,22 @@ int main(int argc, char* argv[])
   default:
     break;
   }
+  std::cerr << "[DEBUG] main: run completed with err=" << err << std::endl;
   if (err)
     fatal_error(openmc_err_msg);
 
   // Finalize and free up memory
+  std::cerr << "[DEBUG] main: calling openmc_finalize()" << std::endl;
   err = openmc_finalize();
+  std::cerr << "[DEBUG] main: openmc_finalize() returned " << err << std::endl;
   if (err)
     fatal_error(openmc_err_msg);
+
+  std::cerr << "[DEBUG] main: exiting normally" << std::endl;
 
     // If MPI is in use and enabled, terminate it
 #ifdef OPENMC_MPI
   MPI_Finalize();
 #endif
+  return 0;
 }
