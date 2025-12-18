@@ -76,89 +76,89 @@ surf7 = openmc.model.RectangularParallelepiped(-1.8, 1.8, -499.95, 499.95, 60.7,
 # Beam/outer
 surf8 = openmc.model.RectangularParallelepiped(-2.0, 2.0, -50.0, 50.0, 60.5, 64.5)
 # Basic fuel tube and disk
-# surf101: Error converting surface type "c": could not convert string to float: 'tr'
+surf101 = openmc.ZCylinder(surface_id=101, x0=-40.0, y0=-40.0, r=4.85)
 # fuel tube and disk
-# surf102: Error converting surface type "c": could not convert string to float: 'tr'
+surf102 = openmc.ZCylinder(surface_id=102, x0=-40.0, y0=-27.8, r=4.85)
 # fuel tube and disk
-# surf103: Error converting surface type "c": could not convert string to float: 'tr'
+surf103 = openmc.ZCylinder(surface_id=103, x0=-40.0, y0=-15.6, r=4.85)
 # fuel tube and disk
-# surf104: Error converting surface type "c": could not convert string to float: 'tr'
+surf104 = openmc.ZCylinder(surface_id=104, x0=-40.0, y0=-3.4, r=4.85)
 # fuel tube and disk
-# surf105: Error converting surface type "c": could not convert string to float: 'tr'
+surf105 = openmc.ZCylinder(surface_id=105, x0=-40.0, y0=8.8, r=4.85)
 # fuel tube and disk
-# surf106: Error converting surface type "c": could not convert string to float: 'tr'
+surf106 = openmc.ZCylinder(surface_id=106, x0=-40.0, y0=21.0, r=4.85)
 # Second row
-# surf111: Error converting surface type "c": could not convert string to float: 'tr'
+surf111 = openmc.ZCylinder(surface_id=111, x0=-29.43449, y0=-33.9, r=4.85)
 # ditto
-# surf112: Error converting surface type "c": could not convert string to float: 'tr'
+surf112 = openmc.ZCylinder(surface_id=112, x0=-29.43449, y0=-21.7, r=4.85)
 # ditto
-# surf113: Error converting surface type "c": could not convert string to float: 'tr'
+surf113 = openmc.ZCylinder(surface_id=113, x0=-29.43449, y0=-9.5, r=4.85)
 # ditto
-# surf114: Error converting surface type "c": could not convert string to float: 'tr'
+surf114 = openmc.ZCylinder(surface_id=114, x0=-29.43449, y0=2.7, r=4.85)
 # ditto
-# surf115: Error converting surface type "c": could not convert string to float: 'tr'
+surf115 = openmc.ZCylinder(surface_id=115, x0=-29.43449, y0=14.9, r=4.85)
 # ditto
-# surf116: Error converting surface type "c": could not convert string to float: 'tr'
+surf116 = openmc.ZCylinder(surface_id=116, x0=-29.43449, y0=27.1, r=4.85)
 # Third row
-# surf121: Error converting surface type "c": could not convert string to float: 'tr'
+surf121 = openmc.ZCylinder(surface_id=121, x0=-18.86898, y0=-40.0, r=4.85)
 # ditto
-# surf122: Error converting surface type "c": could not convert string to float: 'tr'
+surf122 = openmc.ZCylinder(surface_id=122, x0=-18.86898, y0=-27.8, r=4.85)
 # ditto
-# surf123: Error converting surface type "c": could not convert string to float: 'tr'
+surf123 = openmc.ZCylinder(surface_id=123, x0=-18.86898, y0=-15.6, r=4.85)
 # ditto
-# surf124: Error converting surface type "c": could not convert string to float: 'tr'
+surf124 = openmc.ZCylinder(surface_id=124, x0=-18.86898, y0=-3.4, r=4.85)
 # ditto
-# surf125: Error converting surface type "c": could not convert string to float: 'tr'
+surf125 = openmc.ZCylinder(surface_id=125, x0=-18.86898, y0=8.8, r=4.85)
 # ditto
-# surf126: Error converting surface type "c": could not convert string to float: 'tr'
+surf126 = openmc.ZCylinder(surface_id=126, x0=-18.86898, y0=21.0, r=4.85)
 # Fourth row
-# surf131: Error converting surface type "c": could not convert string to float: 'tr'
+surf131 = openmc.ZCylinder(surface_id=131, x0=-8.30347, y0=-33.9, r=4.85)
 # ditto
-# surf132: Error converting surface type "c": could not convert string to float: 'tr'
+surf132 = openmc.ZCylinder(surface_id=132, x0=-8.30347, y0=-21.7, r=4.85)
 # ditto
-# surf133: Error converting surface type "c": could not convert string to float: 'tr'
+surf133 = openmc.ZCylinder(surface_id=133, x0=-8.30347, y0=-9.5, r=4.85)
 # ditto
-# surf134: Error converting surface type "c": could not convert string to float: 'tr'
+surf134 = openmc.ZCylinder(surface_id=134, x0=-8.30347, y0=2.7, r=4.85)
 # ditto
-# surf135: Error converting surface type "c": could not convert string to float: 'tr'
+surf135 = openmc.ZCylinder(surface_id=135, x0=-8.30347, y0=14.9, r=4.85)
 # ditto
-# surf136: Error converting surface type "c": could not convert string to float: 'tr'
+surf136 = openmc.ZCylinder(surface_id=136, x0=-8.30347, y0=27.1, r=4.85)
 # Fifth row
-# surf141: Error converting surface type "c": could not convert string to float: 'tr'
+surf141 = openmc.ZCylinder(surface_id=141, x0=2.26204, y0=-40.0, r=4.85)
 # ditto
-# surf142: Error converting surface type "c": could not convert string to float: 'tr'
+surf142 = openmc.ZCylinder(surface_id=142, x0=2.26204, y0=-27.8, r=4.85)
 # ditto
-# surf143: Error converting surface type "c": could not convert string to float: 'tr'
+surf143 = openmc.ZCylinder(surface_id=143, x0=2.26204, y0=-15.6, r=4.85)
 # ditto
-# surf144: Error converting surface type "c": could not convert string to float: 'tr'
+surf144 = openmc.ZCylinder(surface_id=144, x0=2.26204, y0=-3.4, r=4.85)
 # ditto
-# surf145: Error converting surface type "c": could not convert string to float: 'tr'
+surf145 = openmc.ZCylinder(surface_id=145, x0=2.26204, y0=8.8, r=4.85)
 # ditto
-# surf146: Error converting surface type "c": could not convert string to float: 'tr'
+surf146 = openmc.ZCylinder(surface_id=146, x0=2.26204, y0=21.0, r=4.85)
 # Sixth row
-# surf151: Error converting surface type "c": could not convert string to float: 'tr'
+surf151 = openmc.ZCylinder(surface_id=151, x0=12.82755, y0=-33.9, r=4.85)
 # ditto
-# surf152: Error converting surface type "c": could not convert string to float: 'tr'
+surf152 = openmc.ZCylinder(surface_id=152, x0=12.82755, y0=-21.7, r=4.85)
 # ditto
-# surf153: Error converting surface type "c": could not convert string to float: 'tr'
+surf153 = openmc.ZCylinder(surface_id=153, x0=12.82755, y0=-9.5, r=4.85)
 # ditto
-# surf154: Error converting surface type "c": could not convert string to float: 'tr'
+surf154 = openmc.ZCylinder(surface_id=154, x0=12.82755, y0=2.7, r=4.85)
 # ditto
-# surf155: Error converting surface type "c": could not convert string to float: 'tr'
+surf155 = openmc.ZCylinder(surface_id=155, x0=12.82755, y0=14.9, r=4.85)
 # ditto
-# surf156: Error converting surface type "c": could not convert string to float: 'tr'
+surf156 = openmc.ZCylinder(surface_id=156, x0=12.82755, y0=27.1, r=4.85)
 # Seventh row
-# surf161: Error converting surface type "c": could not convert string to float: 'tr'
+surf161 = openmc.ZCylinder(surface_id=161, x0=23.39306, y0=-40.0, r=4.85)
 # ditto
-# surf162: Error converting surface type "c": could not convert string to float: 'tr'
+surf162 = openmc.ZCylinder(surface_id=162, x0=23.39306, y0=-27.8, r=4.85)
 # ditto
-# surf163: Error converting surface type "c": could not convert string to float: 'tr'
+surf163 = openmc.ZCylinder(surface_id=163, x0=23.39306, y0=-15.6, r=4.85)
 # ditto
-# surf164: Error converting surface type "c": could not convert string to float: 'tr'
+surf164 = openmc.ZCylinder(surface_id=164, x0=23.39306, y0=-3.4, r=4.85)
 # ditto
-# surf165: Error converting surface type "c": could not convert string to float: 'tr'
+surf165 = openmc.ZCylinder(surface_id=165, x0=23.39306, y0=8.8, r=4.85)
 # ditto
-# surf166: Error converting surface type "c": could not convert string to float: 'tr'
+surf166 = openmc.ZCylinder(surface_id=166, x0=23.39306, y0=21.0, r=4.85)
 surf901 = openmc.ZPlane(surface_id=901, z0=-4.4)
 surf902 = openmc.ZPlane(surface_id=902, z0=-0.4)
 surf903 = openmc.ZPlane(surface_id=903, z0=0.0)
@@ -214,220 +214,220 @@ cell1.region = +surf905 & -surf999
 # Ftube
 cell2 = openmc.Cell(cell_id=2, fill=universe3)
 cell2.translation = (-40.0, -40.0, 0.0)
-cell2.region = +surf903 & -surf905 & -surf999
+cell2.region = -surf101 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell3 = openmc.Cell(cell_id=3, fill=universe3)
 cell3.translation = (-40.0, -27.8, 0.0)
-cell3.region = +surf903 & -surf905 & -surf999
+cell3.region = -surf102 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell4 = openmc.Cell(cell_id=4, fill=universe3)
 cell4.translation = (-40.0, -15.6, 0.0)
-cell4.region = +surf903 & -surf905 & -surf999
+cell4.region = -surf103 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell5 = openmc.Cell(cell_id=5, fill=universe3)
 cell5.translation = (-40.0, -3.4, 0.0)
-cell5.region = +surf903 & -surf905 & -surf999
+cell5.region = -surf104 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell6 = openmc.Cell(cell_id=6, fill=universe3)
 cell6.translation = (-40.0, 8.8, 0.0)
-cell6.region = +surf903 & -surf905 & -surf999
+cell6.region = -surf105 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell7 = openmc.Cell(cell_id=7, fill=universe3)
 cell7.translation = (-40.0, 21.0, 0.0)
-cell7.region = +surf903 & -surf905 & -surf999
+cell7.region = -surf106 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell8 = openmc.Cell(cell_id=8, fill=universe3)
 cell8.translation = (-29.43449, -33.9, 0.0)
-cell8.region = +surf903 & -surf905 & -surf999
+cell8.region = -surf111 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell9 = openmc.Cell(cell_id=9, fill=universe3)
 cell9.translation = (-29.43449, -21.7, 0.0)
-cell9.region = +surf903 & -surf905 & -surf999
+cell9.region = -surf112 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell10 = openmc.Cell(cell_id=10, fill=universe3)
 cell10.translation = (-29.43449, -9.5, 0.0)
-cell10.region = +surf903 & -surf905 & -surf999
+cell10.region = -surf113 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell11 = openmc.Cell(cell_id=11, fill=universe3)
 cell11.translation = (-29.43449, 2.7, 0.0)
-cell11.region = +surf903 & -surf905 & -surf999
+cell11.region = -surf114 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell12 = openmc.Cell(cell_id=12, fill=universe3)
 cell12.translation = (-29.43449, 14.9, 0.0)
-cell12.region = +surf903 & -surf905 & -surf999
+cell12.region = -surf115 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell13 = openmc.Cell(cell_id=13, fill=universe3)
 cell13.translation = (-29.43449, 27.1, 0.0)
-cell13.region = +surf903 & -surf905 & -surf999
+cell13.region = -surf116 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell14 = openmc.Cell(cell_id=14, fill=universe3)
 cell14.translation = (-18.86898, -40.0, 0.0)
-cell14.region = +surf903 & -surf905 & -surf999
+cell14.region = -surf121 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell15 = openmc.Cell(cell_id=15, fill=universe3)
 cell15.translation = (-18.86898, -27.8, 0.0)
-cell15.region = +surf903 & -surf905 & -surf999
+cell15.region = -surf122 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell16 = openmc.Cell(cell_id=16, fill=universe3)
 cell16.translation = (-18.86898, -15.6, 0.0)
-cell16.region = +surf903 & -surf905 & -surf999
+cell16.region = -surf123 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell17 = openmc.Cell(cell_id=17, fill=universe3)
 cell17.translation = (-18.86898, -3.4, 0.0)
-cell17.region = +surf903 & -surf905 & -surf999
+cell17.region = -surf124 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell18 = openmc.Cell(cell_id=18, fill=universe3)
 cell18.translation = (-18.86898, 8.8, 0.0)
-cell18.region = +surf903 & -surf905 & -surf999
+cell18.region = -surf125 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell19 = openmc.Cell(cell_id=19, fill=universe3)
 cell19.translation = (-18.86898, 21.0, 0.0)
-cell19.region = +surf903 & -surf905 & -surf999
+cell19.region = -surf126 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell20 = openmc.Cell(cell_id=20, fill=universe3)
 cell20.translation = (-8.30347, -33.9, 0.0)
-cell20.region = +surf903 & -surf905 & -surf999
+cell20.region = -surf131 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell21 = openmc.Cell(cell_id=21, fill=universe3)
 cell21.translation = (-8.30347, -21.7, 0.0)
-cell21.region = +surf903 & -surf905 & -surf999
+cell21.region = -surf132 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell22 = openmc.Cell(cell_id=22, fill=universe3)
 cell22.translation = (-8.30347, -9.5, 0.0)
-cell22.region = +surf903 & -surf905 & -surf999
+cell22.region = -surf133 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell23 = openmc.Cell(cell_id=23, fill=universe3)
 cell23.translation = (-8.30347, 2.7, 0.0)
-cell23.region = +surf903 & -surf905 & -surf999
+cell23.region = -surf134 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell24 = openmc.Cell(cell_id=24, fill=universe3)
 cell24.translation = (-8.30347, 14.9, 0.0)
-cell24.region = +surf903 & -surf905 & -surf999
+cell24.region = -surf135 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell25 = openmc.Cell(cell_id=25, fill=universe3)
 cell25.translation = (-8.30347, 27.1, 0.0)
-cell25.region = +surf903 & -surf905 & -surf999
+cell25.region = -surf136 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell26 = openmc.Cell(cell_id=26, fill=universe3)
 cell26.translation = (2.26204, -40.0, 0.0)
-cell26.region = +surf903 & -surf905 & -surf999
+cell26.region = -surf141 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell27 = openmc.Cell(cell_id=27, fill=universe3)
 cell27.translation = (2.26204, -27.8, 0.0)
-cell27.region = +surf903 & -surf905 & -surf999
+cell27.region = -surf142 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell28 = openmc.Cell(cell_id=28, fill=universe3)
 cell28.translation = (2.26204, -15.6, 0.0)
-cell28.region = +surf903 & -surf905 & -surf999
+cell28.region = -surf143 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell29 = openmc.Cell(cell_id=29, fill=universe3)
 cell29.translation = (2.26204, -3.4, 0.0)
-cell29.region = +surf903 & -surf905 & -surf999
+cell29.region = -surf144 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell30 = openmc.Cell(cell_id=30, fill=universe3)
 cell30.translation = (2.26204, 8.8, 0.0)
-cell30.region = +surf903 & -surf905 & -surf999
+cell30.region = -surf145 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell31 = openmc.Cell(cell_id=31, fill=universe3)
 cell31.translation = (2.26204, 21.0, 0.0)
-cell31.region = +surf903 & -surf905 & -surf999
+cell31.region = -surf146 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell32 = openmc.Cell(cell_id=32, fill=universe3)
 cell32.translation = (12.82755, -33.9, 0.0)
-cell32.region = +surf903 & -surf905 & -surf999
+cell32.region = -surf151 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell33 = openmc.Cell(cell_id=33, fill=universe3)
 cell33.translation = (12.82755, -21.7, 0.0)
-cell33.region = +surf903 & -surf905 & -surf999
+cell33.region = -surf152 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell34 = openmc.Cell(cell_id=34, fill=universe3)
 cell34.translation = (12.82755, -9.5, 0.0)
-cell34.region = +surf903 & -surf905 & -surf999
+cell34.region = -surf153 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell35 = openmc.Cell(cell_id=35, fill=universe3)
 cell35.translation = (12.82755, 2.7, 0.0)
-cell35.region = +surf903 & -surf905 & -surf999
+cell35.region = -surf154 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell36 = openmc.Cell(cell_id=36, fill=universe3)
 cell36.translation = (12.82755, 14.9, 0.0)
-cell36.region = +surf903 & -surf905 & -surf999
+cell36.region = -surf155 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell37 = openmc.Cell(cell_id=37, fill=universe3)
 cell37.translation = (12.82755, 27.1, 0.0)
-cell37.region = +surf903 & -surf905 & -surf999
+cell37.region = -surf156 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell38 = openmc.Cell(cell_id=38, fill=universe3)
 cell38.translation = (23.39306, -40.0, 0.0)
-cell38.region = +surf903 & -surf905 & -surf999
+cell38.region = -surf161 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell39 = openmc.Cell(cell_id=39, fill=universe3)
 cell39.translation = (23.39306, -27.8, 0.0)
-cell39.region = +surf903 & -surf905 & -surf999
+cell39.region = -surf162 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell40 = openmc.Cell(cell_id=40, fill=universe3)
 cell40.translation = (23.39306, -15.6, 0.0)
-cell40.region = +surf903 & -surf905 & -surf999
+cell40.region = -surf163 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell41 = openmc.Cell(cell_id=41, fill=universe3)
 cell41.translation = (23.39306, -3.4, 0.0)
-cell41.region = +surf903 & -surf905 & -surf999
+cell41.region = -surf164 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell42 = openmc.Cell(cell_id=42, fill=universe3)
 cell42.translation = (23.39306, 8.8, 0.0)
-cell42.region = +surf903 & -surf905 & -surf999
+cell42.region = -surf165 & +surf903 & -surf905 & -surf999
 
 # Ftube
 cell43 = openmc.Cell(cell_id=43, fill=universe3)
 cell43.translation = (23.39306, 21.0, 0.0)
-cell43.region = +surf903 & -surf905 & -surf999
+cell43.region = -surf166 & +surf903 & -surf905 & -surf999
 
 # Water
 cell44 = openmc.Cell(cell_id=44, fill=mat2)
-cell44.region = +surf903 & -surf904 & -surf999
+cell44.region = +surf903 & -surf904 & -surf999 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106
 
 # Air
 cell45 = openmc.Cell(cell_id=45, fill=mat5)
-cell45.region = +surf904 & -surf905 & -surf999
+cell45.region = +surf904 & -surf905 & -surf999 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106
 
 # Plate
 cell46 = openmc.Cell(cell_id=46, fill=mat4)

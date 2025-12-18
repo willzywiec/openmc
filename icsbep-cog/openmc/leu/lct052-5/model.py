@@ -73,59 +73,59 @@ surf12 = openmc.ZCylinder(surface_id=12, x0=0.0, y0=96.9, r=0.41)
 # Hole
 surf20 = openmc.ZCylinder(surface_id=20, x0=-1.8, y0=98.2, r=0.5)
 # Hole
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
+surf21 = openmc.ZCylinder(surface_id=21, x0=-0.86, y0=1.489564, r=0.5)
 # Hole
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
+surf22 = openmc.ZCylinder(surface_id=22, x0=0.86, y0=1.489564, r=0.5)
 # Hole
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
+surf23 = openmc.ZCylinder(surface_id=23, x0=-1.72, y0=0.0, r=0.5)
 # Hole
-# surf24: Error converting surface type "c": could not convert string to float: 'tr'
+surf24 = openmc.ZCylinder(surface_id=24, x0=1.72, y0=0.0, r=0.5)
 # Hole
-# surf25: Error converting surface type "c": could not convert string to float: 'tr'
+surf25 = openmc.ZCylinder(surface_id=25, x0=-0.86, y0=-1.489564, r=0.5)
 # Hole
-# surf26: Error converting surface type "c": could not convert string to float: 'tr'
-# surf31: Error converting surface type "c": could not convert string to float: 'tr'
-# surf32: Error converting surface type "c": could not convert string to float: 'tr'
-# surf33: Error converting surface type "c": could not convert string to float: 'tr'
-# surf34: Error converting surface type "c": could not convert string to float: 'tr'
-# surf35: Error converting surface type "c": could not convert string to float: 'tr'
-# surf36: Error converting surface type "c": could not convert string to float: 'tr'
-# surf37: Error converting surface type "c": could not convert string to float: 'tr'
-# surf38: Error converting surface type "c": could not convert string to float: 'tr'
-# surf39: Error converting surface type "c": could not convert string to float: 'tr'
-# surf40: Error converting surface type "c": could not convert string to float: 'tr'
-# surf41: Error converting surface type "c": could not convert string to float: 'tr'
-# surf42: Error converting surface type "c": could not convert string to float: 'tr'
-# surf43: Error converting surface type "c": could not convert string to float: 'tr'
-# surf44: Error converting surface type "c": could not convert string to float: 'tr'
-# surf45: Error converting surface type "c": could not convert string to float: 'tr'
-# surf46: Error converting surface type "c": could not convert string to float: 'tr'
-# surf47: Error converting surface type "c": could not convert string to float: 'tr'
-# surf48: Error converting surface type "c": could not convert string to float: 'tr'
-# surf49: Error converting surface type "c": could not convert string to float: 'tr'
-# surf50: Error converting surface type "c": could not convert string to float: 'tr'
-# surf51: Error converting surface type "c": could not convert string to float: 'tr'
-# surf52: Error converting surface type "c": could not convert string to float: 'tr'
-# surf53: Error converting surface type "c": could not convert string to float: 'tr'
-# surf54: Error converting surface type "c": could not convert string to float: 'tr'
-# surf55: Error converting surface type "c": could not convert string to float: 'tr'
-# surf56: Error converting surface type "c": could not convert string to float: 'tr'
-# surf57: Error converting surface type "c": could not convert string to float: 'tr'
-# surf58: Error converting surface type "c": could not convert string to float: 'tr'
-# surf59: Error converting surface type "c": could not convert string to float: 'tr'
-# surf60: Error converting surface type "c": could not convert string to float: 'tr'
-# surf61: Error converting surface type "c": could not convert string to float: 'tr'
-# surf62: Error converting surface type "c": could not convert string to float: 'tr'
-# surf63: Error converting surface type "c": could not convert string to float: 'tr'
-# surf64: Error converting surface type "c": could not convert string to float: 'tr'
-# surf65: Error converting surface type "c": could not convert string to float: 'tr'
-# surf66: Error converting surface type "c": could not convert string to float: 'tr'
-# surf67: Error converting surface type "c": could not convert string to float: 'tr'
-# surf68: Error converting surface type "c": could not convert string to float: 'tr'
-# surf69: Error converting surface type "c": could not convert string to float: 'tr'
-# surf70: Error converting surface type "c": could not convert string to float: 'tr'
-# surf71: Error converting surface type "c": could not convert string to float: 'tr'
-# surf72: Error converting surface type "c": could not convert string to float: 'tr'
+surf26 = openmc.ZCylinder(surface_id=26, x0=0.86, y0=-1.489564, r=0.5)
+surf31 = openmc.ZCylinder(surface_id=31, x0=-11.18, y0=31.280839, r=0.51)
+surf32 = openmc.ZCylinder(surface_id=32, x0=-9.46, y0=31.280839, r=0.51)
+surf33 = openmc.ZCylinder(surface_id=33, x0=9.46, y0=31.280839, r=0.51)
+surf34 = openmc.ZCylinder(surface_id=34, x0=11.18, y0=31.280839, r=0.51)
+surf35 = openmc.ZCylinder(surface_id=35, x0=-13.76, y0=29.791274, r=0.51)
+surf36 = openmc.ZCylinder(surface_id=36, x0=13.76, y0=29.791274, r=0.51)
+surf37 = openmc.ZCylinder(surface_id=37, x0=-16.34, y0=28.30171, r=0.51)
+surf38 = openmc.ZCylinder(surface_id=38, x0=16.34, y0=28.30171, r=0.51)
+surf39 = openmc.ZCylinder(surface_id=39, x0=-18.92, y0=26.812147, r=0.51)
+surf40 = openmc.ZCylinder(surface_id=40, x0=18.92, y0=26.812147, r=0.51)
+surf41 = openmc.ZCylinder(surface_id=41, x0=-21.5, y0=25.322583, r=0.51)
+surf42 = openmc.ZCylinder(surface_id=42, x0=21.5, y0=25.322583, r=0.51)
+surf43 = openmc.ZCylinder(surface_id=43, x0=-22.36, y0=23.833019, r=0.51)
+surf44 = openmc.ZCylinder(surface_id=44, x0=22.36, y0=23.833019, r=0.51)
+surf45 = openmc.ZCylinder(surface_id=45, x0=-31.82, y0=7.447818, r=0.51)
+surf46 = openmc.ZCylinder(surface_id=46, x0=31.82, y0=7.447818, r=0.51)
+surf47 = openmc.ZCylinder(surface_id=47, x0=-32.68, y0=5.958255, r=0.51)
+surf48 = openmc.ZCylinder(surface_id=48, x0=32.68, y0=5.958255, r=0.51)
+surf49 = openmc.ZCylinder(surface_id=49, x0=-32.68, y0=2.979127, r=0.51)
+surf50 = openmc.ZCylinder(surface_id=50, x0=32.68, y0=2.979127, r=0.51)
+surf51 = openmc.ZCylinder(surface_id=51, x0=-32.68, y0=0.0, r=0.51)
+surf52 = openmc.ZCylinder(surface_id=52, x0=32.68, y0=0.0, r=0.51)
+surf53 = openmc.ZCylinder(surface_id=53, x0=-32.68, y0=-2.979127, r=0.51)
+surf54 = openmc.ZCylinder(surface_id=54, x0=32.68, y0=-2.979127, r=0.51)
+surf55 = openmc.ZCylinder(surface_id=55, x0=-32.68, y0=-5.958255, r=0.51)
+surf56 = openmc.ZCylinder(surface_id=56, x0=32.68, y0=-5.958255, r=0.51)
+surf57 = openmc.ZCylinder(surface_id=57, x0=-31.82, y0=-7.447818, r=0.51)
+surf58 = openmc.ZCylinder(surface_id=58, x0=31.82, y0=-7.447818, r=0.51)
+surf59 = openmc.ZCylinder(surface_id=59, x0=-22.36, y0=-23.833019, r=0.51)
+surf60 = openmc.ZCylinder(surface_id=60, x0=22.36, y0=-23.833019, r=0.51)
+surf61 = openmc.ZCylinder(surface_id=61, x0=-21.5, y0=-25.322583, r=0.51)
+surf62 = openmc.ZCylinder(surface_id=62, x0=21.5, y0=-25.322583, r=0.51)
+surf63 = openmc.ZCylinder(surface_id=63, x0=-18.92, y0=-26.812147, r=0.51)
+surf64 = openmc.ZCylinder(surface_id=64, x0=18.92, y0=-26.812147, r=0.51)
+surf65 = openmc.ZCylinder(surface_id=65, x0=-16.34, y0=-28.30171, r=0.51)
+surf66 = openmc.ZCylinder(surface_id=66, x0=16.34, y0=-28.30171, r=0.51)
+surf67 = openmc.ZCylinder(surface_id=67, x0=-13.76, y0=-29.791274, r=0.51)
+surf68 = openmc.ZCylinder(surface_id=68, x0=13.76, y0=-29.791274, r=0.51)
+surf69 = openmc.ZCylinder(surface_id=69, x0=-11.18, y0=-31.280839, r=0.51)
+surf70 = openmc.ZCylinder(surface_id=70, x0=-9.46, y0=-31.280839, r=0.51)
+surf71 = openmc.ZCylinder(surface_id=71, x0=9.46, y0=-31.280839, r=0.51)
+surf72 = openmc.ZCylinder(surface_id=72, x0=11.18, y0=-31.280839, r=0.51)
 # Lattice
 # Prism 99: 12-sided polygon
 surf99_0 = openmc.Plane(a=0.5115817809, b=-0.8592345904, c=0, d=32.3570669474)
@@ -195,91 +195,91 @@ universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, 
 
 # Core
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11)
+cell1.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf31 & +surf32 & +surf33 & +surf34 & +surf35 & +surf36 & +surf37 & +surf38 & +surf39 & +surf40 & +surf41 & +surf42 & +surf43 & +surf44 & +surf45 & +surf46 & +surf47 & +surf48 & +surf49 & +surf50
 
 # Refl
 cell2 = openmc.Cell(cell_id=2, fill=universe4)
-cell2.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell2.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf31 & +surf4 & (-surf99_0 & -surf52
 
 # Refl
 cell3 = openmc.Cell(cell_id=3, fill=universe4)
-cell3.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell3.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf32 & +surf4 & (-surf99_0 & -surf53
 
 # Refl
 cell4 = openmc.Cell(cell_id=4, fill=universe4)
-cell4.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell4.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf33 & +surf4 & (-surf99_0 & -surf54
 
 # Refl
 cell5 = openmc.Cell(cell_id=5, fill=universe4)
-cell5.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell5.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf34 & +surf4 & (-surf99_0 & -surf55
 
 # Refl
 cell6 = openmc.Cell(cell_id=6, fill=universe4)
-cell6.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell6.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf35 & +surf4 & (-surf99_0 & -surf56
 
 # Refl
 cell7 = openmc.Cell(cell_id=7, fill=universe4)
-cell7.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell7.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf36 & +surf4 & (-surf99_0 & -surf57
 
 # Refl
 cell8 = openmc.Cell(cell_id=8, fill=universe4)
-cell8.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell8.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf37 & +surf4 & (-surf99_0 & -surf58
 
 # Refl
 cell9 = openmc.Cell(cell_id=9, fill=universe4)
-cell9.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell9.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf38 & +surf4 & (-surf99_0 & -surf59
 
 # Refl
 cell10 = openmc.Cell(cell_id=10, fill=universe4)
-cell10.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell10.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf39 & +surf4 & (-surf99_0 & -surf60
 
 # Refl
 cell11 = openmc.Cell(cell_id=11, fill=universe4)
-cell11.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell11.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf40 & +surf4 & (-surf99_0 & -surf61
 
 # Refl
 cell12 = openmc.Cell(cell_id=12, fill=universe4)
-cell12.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell12.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf41 & +surf4 & (-surf99_0 & -surf62
 
 # Refl
 cell13 = openmc.Cell(cell_id=13, fill=universe4)
-cell13.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell13.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf42 & +surf4 & (-surf99_0 & -surf63
 
 # Refl
 cell14 = openmc.Cell(cell_id=14, fill=universe4)
-cell14.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell14.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf43 & +surf4 & (-surf99_0 & -surf64
 
 # Refl
 cell15 = openmc.Cell(cell_id=15, fill=universe4)
-cell15.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell15.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf44 & +surf4 & (-surf99_0 & -surf65
 
 # Refl
 cell16 = openmc.Cell(cell_id=16, fill=universe4)
-cell16.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell16.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf45 & +surf4 & (-surf99_0 & -surf66
 
 # Refl
 cell17 = openmc.Cell(cell_id=17, fill=universe4)
-cell17.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell17.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf46 & +surf4 & (-surf99_0 & -surf67
 
 # Refl
 cell18 = openmc.Cell(cell_id=18, fill=universe4)
-cell18.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell18.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf47 & +surf4 & (-surf99_0 & -surf68
 
 # Refl
 cell19 = openmc.Cell(cell_id=19, fill=universe4)
-cell19.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell19.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf48 & +surf4 & (-surf99_0 & -surf69
 
 # Refl
 cell20 = openmc.Cell(cell_id=20, fill=universe4)
-cell20.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell20.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf49 & +surf4 & (-surf99_0 & -surf70
 
 # Refl
 cell21 = openmc.Cell(cell_id=21, fill=universe4)
-cell21.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell21.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf50 & +surf4 & (-surf99_0 & -surf71
 
 # Refl
 cell22 = openmc.Cell(cell_id=22, fill=universe4)
-cell22.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & +surf4 & (-surf99_0
+cell22.region = -surf1 & (-surf99_0 & -surf99_1 & -surf99_2 & -surf99_3 & -surf99_4 & -surf99_5 & -surf99_6 & -surf99_7 & -surf99_8 & -surf99_9 & -surf99_10 & -surf99_11) & -surf51 & +surf4 & (-surf99_0 & -surf72
 
 # Refl
 cell23 = openmc.Cell(cell_id=23, fill=universe4)
@@ -303,7 +303,7 @@ cell27.region = -surf5 & -surf20
 
 # Refl
 cell28 = openmc.Cell(cell_id=28, fill=universe4)
-cell28.region = -surf1 & +surf20
+cell28.region = -surf1 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
 
 # Grid
 cell33 = openmc.Cell(cell_id=33, fill=mat3)

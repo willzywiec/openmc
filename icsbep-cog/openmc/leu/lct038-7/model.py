@@ -123,43 +123,31 @@ surf14 = openmc.model.RectangularParallelepiped(-47.5, 47.5, -47.5, 47.5, -3.4, 
 # Water in tank & BCD
 surf15 = openmc.model.RectangularParallelepiped(-60.15, 60.15, -60.0, 60.0, -22.599999999999994, 117.5, boundary_type="vacuum")
 # Xo = (5.1/2) + 0.8 = 3.35
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
+surf21 = openmc.ZCylinder(surface_id=21, x0=-3.35, y0=28.0, r=0.5)
 # Xo = 17.5(1.6) + (5.1/2) = 30.55
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
-# surf24: Error converting surface type "c": could not convert string to float: 'tr'
-# surf25: Error converting surface type "c": could not convert string to float: 'tr'
-# surf26: Error converting surface type "c": could not convert string to float: 'tr'
-# surf27: Error converting surface type "c": could not convert string to float: 'tr'
-# surf28: Error converting surface type "c": could not convert string to float: 'tr'
+surf22 = openmc.ZCylinder(surface_id=22, x0=-30.55, y0=0.8, r=0.5)
+surf23 = openmc.ZCylinder(surface_id=23, x0=-30.55, y0=-0.8, r=0.5)
+surf24 = openmc.ZCylinder(surface_id=24, x0=-3.35, y0=-28.0, r=0.5)
+surf25 = openmc.ZCylinder(surface_id=25, x0=3.35, y0=28.0, r=0.5)
+surf26 = openmc.ZCylinder(surface_id=26, x0=30.55, y0=0.8, r=0.5)
+surf27 = openmc.ZCylinder(surface_id=27, x0=30.55, y0=-0.8, r=0.5)
+surf28 = openmc.ZCylinder(surface_id=28, x0=3.35, y0=-28.0, r=0.5)
 # Inner
-surf31_cyl = openmc.ZCylinder(surface_id=31, x0=tr, y0=-30.4175, r=0.7975)
-surf31_zmin = openmc.ZPlane(z0=27.8675)
-surf31_zmax = openmc.ZPlane(z0=0.0)
-surf31 = (surf31_cyl, surf31_zmin, surf31_zmax)
+surf31 = openmc.ZCylinder(surface_id=31, x0=-30.4175, y0=27.8675, r=0.7975)
 # Outer
-# surf32: Error converting surface type "c": could not convert string to float: 'tr'
+surf32 = openmc.ZCylinder(surface_id=32, x0=-30.4175, y0=27.8675, r=0.9325)
 # Inner
-surf33_cyl = openmc.ZCylinder(surface_id=33, x0=tr, y0=-30.4175, r=0.7975)
-surf33_zmin = openmc.ZPlane(z0=-27.8675)
-surf33_zmax = openmc.ZPlane(z0=0.0)
-surf33 = (surf33_cyl, surf33_zmin, surf33_zmax)
+surf33 = openmc.ZCylinder(surface_id=33, x0=-30.4175, y0=-27.8675, r=0.7975)
 # Outer
-# surf34: Error converting surface type "c": could not convert string to float: 'tr'
+surf34 = openmc.ZCylinder(surface_id=34, x0=-30.4175, y0=-27.8675, r=0.9325)
 # Inner
-surf35_cyl = openmc.ZCylinder(surface_id=35, x0=tr, y0=30.4175, r=0.7975)
-surf35_zmin = openmc.ZPlane(z0=27.8675)
-surf35_zmax = openmc.ZPlane(z0=0.0)
-surf35 = (surf35_cyl, surf35_zmin, surf35_zmax)
+surf35 = openmc.ZCylinder(surface_id=35, x0=30.4175, y0=27.8675, r=0.7975)
 # Outer
-# surf36: Error converting surface type "c": could not convert string to float: 'tr'
+surf36 = openmc.ZCylinder(surface_id=36, x0=30.4175, y0=27.8675, r=0.9325)
 # Inner
-surf37_cyl = openmc.ZCylinder(surface_id=37, x0=tr, y0=30.4175, r=0.7975)
-surf37_zmin = openmc.ZPlane(z0=-27.8675)
-surf37_zmax = openmc.ZPlane(z0=0.0)
-surf37 = (surf37_cyl, surf37_zmin, surf37_zmax)
+surf37 = openmc.ZCylinder(surface_id=37, x0=30.4175, y0=-27.8675, r=0.7975)
 # Outer
-# surf38: Error converting surface type "c": could not convert string to float: 'tr'
+surf38 = openmc.ZCylinder(surface_id=38, x0=30.4175, y0=-27.8675, r=0.9325)
 # Concrete
 surf40 = openmc.model.RectangularParallelepiped(-2.2, 2.2, -34.7, 34.7, -2.25, 97.15)
 # Concrete
@@ -272,86 +260,86 @@ universe4.add_cell(openmc.Cell(fill=lattice4))
 # Assy
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
 cell1.translation = (-16.95, 14.4, 0.0)
-cell1.region = -surf10 & +surf43
+cell1.region = -surf10 & +surf21 & +surf22 & +surf32 & +surf43
 
 # Assy
 cell2 = openmc.Cell(cell_id=2, fill=universe3)
 cell2.translation = (-16.95, -14.4, 0.0)
-cell2.region = +surf10 & -surf11 & +surf43
+cell2.region = +surf10 & -surf11 & +surf23 & +surf24 & +surf34 & +surf43
 
 # Assy
 cell3 = openmc.Cell(cell_id=3, fill=universe4)
 cell3.translation = (16.95, 14.4, 0.0)
-cell3.region = -surf12 & +surf43
+cell3.region = -surf12 & +surf25 & +surf26 & +surf36 & +surf43
 
 # Assy
 cell4 = openmc.Cell(cell_id=4, fill=universe4)
 cell4.translation = (16.95, -14.4, 0.0)
-cell4.region = +surf12 & -surf13 & +surf43
+cell4.region = +surf12 & -surf13 & +surf27 & +surf28 & +surf38 & +surf43
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = -surf10
+cell5.region = -surf10 & -surf21
 
 # SST
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
-cell6.region = -surf10
+cell6.region = -surf10 & -surf22
 
 # SST
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
-cell7.region = +surf10 & -surf11
+cell7.region = +surf10 & -surf11 & -surf23
 
 # SST
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = +surf10 & -surf11
+cell8.region = +surf10 & -surf11 & -surf24
 
 # SST
 cell9 = openmc.Cell(cell_id=9, fill=mat3)
-cell9.region = -surf12
+cell9.region = -surf12 & -surf25
 
 # SST
 cell10 = openmc.Cell(cell_id=10, fill=mat3)
-cell10.region = -surf12
+cell10.region = -surf12 & -surf26
 
 # SST
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
-cell11.region = +surf12 & -surf13
+cell11.region = +surf12 & -surf13 & -surf27
 
 # SST
 cell12 = openmc.Cell(cell_id=12, fill=mat3)
-cell12.region = +surf12 & -surf13
+cell12.region = +surf12 & -surf13 & -surf28
 
 # Air
 cell13 = openmc.Cell(cell_id=13, fill=mat4)
-cell13.region = -surf10 & -surf31
+cell13.region = -surf10 & -surf31 & -surf32
 
 # SST
 cell14 = openmc.Cell(cell_id=14, fill=mat3)
-cell14.region = -surf10 & +surf31
+cell14.region = -surf10 & +surf31 & -surf32
 
 # Air
 cell15 = openmc.Cell(cell_id=15, fill=mat4)
-cell15.region = +surf10 & -surf11 & -surf33
+cell15.region = +surf10 & -surf11 & -surf33 & -surf34
 
 # SST
 cell16 = openmc.Cell(cell_id=16, fill=mat3)
-cell16.region = +surf10 & -surf11 & +surf33
+cell16.region = +surf10 & -surf11 & +surf33 & -surf34
 
 # Air
 cell17 = openmc.Cell(cell_id=17, fill=mat4)
-cell17.region = -surf12 & -surf35
+cell17.region = -surf12 & -surf35 & -surf36
 
 # SST
 cell18 = openmc.Cell(cell_id=18, fill=mat3)
-cell18.region = -surf12 & +surf35
+cell18.region = -surf12 & +surf35 & -surf36
 
 # Air
 cell19 = openmc.Cell(cell_id=19, fill=mat4)
-cell19.region = +surf12 & -surf13 & -surf37
+cell19.region = +surf12 & -surf13 & -surf37 & -surf38
 
 # SST
 cell20 = openmc.Cell(cell_id=20, fill=mat3)
-cell20.region = +surf12 & -surf13 & +surf37
+cell20.region = +surf12 & -surf13 & +surf37 & -surf38
 
 # Cncrt
 cell21 = openmc.Cell(cell_id=21, fill=mat6)

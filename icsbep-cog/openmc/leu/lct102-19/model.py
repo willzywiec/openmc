@@ -92,11 +92,11 @@ surf1 = openmc.ZCylinder(surface_id=1, x0=-1.27, y0=68.2752, r=0.333375)
 # Al-3003 lower end cap
 surf2 = openmc.ZCylinder(surface_id=2, x0=-1.27, y0=0.0, r=0.317474)
 # UO2 fuel
-surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=48.780, r=0.262814)
+surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=48.78, r=0.262814)
 # SS304 spring/inner
 surf4 = openmc.ZCylinder(surface_id=4, r=0.17526)
 # SS304 spring/outer
-surf5 = openmc.ZCylinder(surface_id=5, x0=48.780, y0=50.4952, r=0.2286)
+surf5 = openmc.ZCylinder(surface_id=5, x0=48.78, y0=50.4952, r=0.2286)
 # Al-6061 spacer
 surf6 = openmc.ZCylinder(surface_id=6, x0=50.4952, y0=53.0352, r=0.26289)
 # CH2 spacer
@@ -122,9 +122,9 @@ surf23 = openmc.ZCylinder(surface_id=23, r=3.30581)
 # CH2/outer
 surf24 = openmc.ZCylinder(surface_id=24, x0=0.762, y0=30.7848, r=5.75945)
 # Location of 1st detector
-# surf26: Error converting surface type "cylinder": could not convert string to float: 'tr'
+surf26 = openmc.ZCylinder(surface_id=26, x0=-6.4122, y0=28.94, r=6.0)
 # Location of 2nd detector
-# surf27: Error converting surface type "cylinder": could not convert string to float: 'tr'
+surf27 = openmc.ZCylinder(surface_id=27, x0=6.4122, y0=-28.94, r=6.0)
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -247,16 +247,16 @@ cell1.region = -surf15 & -surf16
 # dtct1
 cell2 = openmc.Cell(cell_id=2, fill=universe4)
 cell2.translation = (-6.4122, 28.94, 0.0)
-cell2.region = -surf16
+cell2.region = -surf26 & -surf16
 
 # dtct2
 cell3 = openmc.Cell(cell_id=3, fill=universe4)
 cell3.translation = (6.4122, -28.94, 0.0)
-cell3.region = -surf16
+cell3.region = -surf27 & -surf16
 
 # assy
 cell4 = openmc.Cell(cell_id=4, fill=universe5)
-cell4.region = +surf15 & -surf16
+cell4.region = +surf15 & -surf16 & +surf26 & +surf27
 
 # Al6061
 cell15 = openmc.Cell(cell_id=15, fill=mat4)

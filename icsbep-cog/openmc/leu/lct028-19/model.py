@@ -65,19 +65,19 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # ==============================================================================
 
 # Lexan  lattice plate
-surf1 = openmc.ZCylinder(surface_id=1, x0=83.165, y0=83.800, r=42.0)
+surf1 = openmc.ZCylinder(surface_id=1, x0=83.165, y0=83.8, r=42.0)
 # SS304L lattice plate
 surf2 = openmc.ZCylinder(surface_id=2, x0=-2.225, y0=-0.635, r=42.0)
 # Al6061 lattice plate
-surf3 = openmc.ZCylinder(surface_id=3, x0=-2.860, y0=-2.225, r=42.0)
+surf3 = openmc.ZCylinder(surface_id=3, x0=-2.86, y0=-2.225, r=42.0)
 # Water and boundary condition
 surf4 = openmc.ZCylinder(surface_id=4, x0=-33.34, y0=146.66, r=50.8, boundary_type="vacuum")
 # Al6061 tie rod
-# surf5: Error converting surface type "c": could not convert string to float: 'tr'
+surf5 = openmc.ZCylinder(surface_id=5, x0=0.0, y0=40.0, r=1.27)
 # Al6061 tie rod
-# surf6: Error converting surface type "c": could not convert string to float: 'tr'
+surf6 = openmc.ZCylinder(surface_id=6, x0=-34.641, y0=-20.0, r=1.27)
 # Al6061 tie rod
-# surf7: Error converting surface type "c": could not convert string to float: 'tr'
+surf7 = openmc.ZCylinder(surface_id=7, x0=34.641, y0=-20.0, r=1.27)
 # U(4.31)O2 fuel
 surf11 = openmc.ZCylinder(surface_id=11, x0=0.0, y0=82.72, r=0.63245)
 # Void
@@ -105,11 +105,11 @@ u1_cell1.region = -surf2
 u1_cell2 = openmc.Cell(fill=mat3)
 u1_cell2.region = +surf2 & -surf3
 u1_cell3 = openmc.Cell(fill=mat3)
-u1_cell3.region = +surf1 & +surf2 & +surf3
+u1_cell3.region = +surf1 & +surf2 & +surf3 & -surf5
 u1_cell4 = openmc.Cell(fill=mat3)
-u1_cell4.region = +surf1 & +surf2 & +surf3
+u1_cell4.region = +surf1 & +surf2 & +surf3 & -surf6
 u1_cell5 = openmc.Cell(fill=mat3)
-u1_cell5.region = +surf1 & +surf2 & +surf3
+u1_cell5.region = +surf1 & +surf2 & +surf3 & -surf7
 u1_cell6 = openmc.Cell(fill=mat5)
 u1_cell6.region = +surf1 & +surf2 & +surf3 & -surf4
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6])

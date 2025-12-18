@@ -118,6 +118,7 @@ universe4 = openmc.Universe(universe_id=4, cells=[])
 
 # lttc
 cell1 = openmc.Cell(cell_id=1, fill=universe4)
+
 root_universe = openmc.Universe(cells=[cell1])
 geometry = openmc.Geometry(root_universe)
 

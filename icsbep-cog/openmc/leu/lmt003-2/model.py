@@ -175,26 +175,17 @@ surf22 = openmc.ZCylinder(surface_id=22, x0=-2.69, y0=333.0, r=168.635)
 # Lattice boundary
 surf23 = openmc.model.RectangularParallelepiped(-105.0, 105.0, -95.0262805, 95.0262805, -499.95, 499.95)
 # Dump line inner - 1st
-surf24_cyl = openmc.ZCylinder(surface_id=24, x0=tr, y0=129.54, r=22.066)
-surf24_zmin = openmc.ZPlane(z0=0.0)
-surf24_zmax = openmc.ZPlane(z0=0.0)
-surf24 = (surf24_cyl, surf24_zmin, surf24_zmax)
+surf24 = openmc.ZCylinder(surface_id=24, x0=129.54, y0=0.0, r=22.066)
 # Dump line outer - 1st
-# surf25: Error converting surface type "c": could not convert string to float: 'tr'
+surf25 = openmc.ZCylinder(surface_id=25, x0=129.54, y0=0.0, r=22.86)
 # Dump line inner - 2nd
-surf26_cyl = openmc.ZCylinder(surface_id=26, x0=tr, y0=-64.77, r=22.066)
-surf26_zmin = openmc.ZPlane(z0=122.18)
-surf26_zmax = openmc.ZPlane(z0=0.0)
-surf26 = (surf26_cyl, surf26_zmin, surf26_zmax)
+surf26 = openmc.ZCylinder(surface_id=26, x0=-64.77, y0=122.18, r=22.066)
 # Dump line outer - 2nd
-# surf27: Error converting surface type "c": could not convert string to float: 'tr'
+surf27 = openmc.ZCylinder(surface_id=27, x0=-64.77, y0=122.18, r=22.86)
 # Dump line inner - 3rd
-surf28_cyl = openmc.ZCylinder(surface_id=28, x0=tr, y0=-64.77, r=22.066)
-surf28_zmin = openmc.ZPlane(z0=-122.18)
-surf28_zmax = openmc.ZPlane(z0=0.0)
-surf28 = (surf28_cyl, surf28_zmin, surf28_zmax)
+surf28 = openmc.ZCylinder(surface_id=28, x0=-64.77, y0=-122.18, r=22.066)
 # Dump line outer - 3rd
-# surf29: Error converting surface type "c": could not convert string to float: 'tr'
+surf29 = openmc.ZCylinder(surface_id=29, x0=-64.77, y0=-122.18, r=22.86)
 # Casing, inner
 surf31 = openmc.ZCylinder(surface_id=31, r=169.88)
 # Cadmium, inner
@@ -208,45 +199,21 @@ surf40 = openmc.ZCylinder(surface_id=40, x0=-2.69, y0=315.45, r=171.806)
 # Graphite, inner
 surf41 = openmc.ZCylinder(surface_id=41, x0=-92.69, y0=315.45, r=231.806)
 # Dump line outer - 1st
-surf42_cyl = openmc.ZCylinder(surface_id=42, x0=tr, y0=129.54, r=23.1775)
-surf42_zmin = openmc.ZPlane(z0=0.0)
-surf42_zmax = openmc.ZPlane(z0=0.0)
-surf42 = (surf42_cyl, surf42_zmin, surf42_zmax)
+surf42 = openmc.ZCylinder(surface_id=42, x0=129.54, y0=0.0, r=23.1775)
 # Dump line outer - 2nd
-surf43_cyl = openmc.ZCylinder(surface_id=43, x0=tr, y0=-64.77, r=23.1775)
-surf43_zmin = openmc.ZPlane(z0=122.18)
-surf43_zmax = openmc.ZPlane(z0=0.0)
-surf43 = (surf43_cyl, surf43_zmin, surf43_zmax)
+surf43 = openmc.ZCylinder(surface_id=43, x0=-64.77, y0=122.18, r=23.1775)
 # Dump line outer - 3rd
-surf44_cyl = openmc.ZCylinder(surface_id=44, x0=tr, y0=-64.77, r=23.1775)
-surf44_zmin = openmc.ZPlane(z0=-122.18)
-surf44_zmax = openmc.ZPlane(z0=0.0)
-surf44 = (surf44_cyl, surf44_zmin, surf44_zmax)
+surf44 = openmc.ZCylinder(surface_id=44, x0=-64.77, y0=-122.18, r=23.1775)
 # Detector hole - 1st
-surf45_cyl = openmc.ZCylinder(surface_id=45, x0=tr, y0=91.44, r=7.1438)
-surf45_zmin = openmc.ZPlane(z0=0.0)
-surf45_zmax = openmc.ZPlane(z0=0.0)
-surf45 = (surf45_cyl, surf45_zmin, surf45_zmax)
+surf45 = openmc.ZCylinder(surface_id=45, x0=91.44, y0=0.0, r=7.1438)
 # Detector hole - 2nd
-surf46_cyl = openmc.ZCylinder(surface_id=46, x0=tr, y0=0, r=7.1438)
-surf46_zmin = openmc.ZPlane(z0=91.44)
-surf46_zmax = openmc.ZPlane(z0=0.0)
-surf46 = (surf46_cyl, surf46_zmin, surf46_zmax)
+surf46 = openmc.ZCylinder(surface_id=46, x0=0.0, y0=91.44, r=7.1438)
 # Detector hole - 3rd
-surf47_cyl = openmc.ZCylinder(surface_id=47, x0=tr, y0=-91.44, r=7.1438)
-surf47_zmin = openmc.ZPlane(z0=0.0)
-surf47_zmax = openmc.ZPlane(z0=0.0)
-surf47 = (surf47_cyl, surf47_zmin, surf47_zmax)
+surf47 = openmc.ZCylinder(surface_id=47, x0=-91.44, y0=0.0, r=7.1438)
 # Detector hole - 4th
-surf48_cyl = openmc.ZCylinder(surface_id=48, x0=tr, y0=0, r=7.1438)
-surf48_zmin = openmc.ZPlane(z0=-91.44)
-surf48_zmax = openmc.ZPlane(z0=0.0)
-surf48 = (surf48_cyl, surf48_zmin, surf48_zmax)
+surf48 = openmc.ZCylinder(surface_id=48, x0=0.0, y0=-91.44, r=7.1438)
 # Detector hole - 5th
-surf49_cyl = openmc.ZCylinder(surface_id=49, x0=tr, y0=64.66, r=7.1438)
-surf49_zmin = openmc.ZPlane(z0=-64.66)
-surf49_zmax = openmc.ZPlane(z0=0.0)
-surf49 = (surf49_cyl, surf49_zmin, surf49_zmax)
+surf49 = openmc.ZCylinder(surface_id=49, x0=64.66, y0=-64.66, r=7.1438)
 surf51 = openmc.model.RectangularParallelepiped(-200.422, 200.422, 114.70357, 119.78357000000001, 366.42499999999995, 395.0)
 surf52 = openmc.model.RectangularParallelepiped(-200.422, 200.422, 97.38306, 102.46306000000001, 366.42499999999995, 395.0)
 surf53 = openmc.model.RectangularParallelepiped(-200.422, 200.422, 80.06254999999999, 85.14255, 366.42499999999995, 395.0)
@@ -392,39 +359,39 @@ cell7.region = +surf21 & -surf22 & +surf24 & +surf26 & +surf28
 
 # Dumpline
 cell8 = openmc.Cell(cell_id=8, fill=mat6)
-cell8.region = +surf22 & +surf24
+cell8.region = +surf22 & +surf24 & -surf25
 
 # Dumpline
 cell9 = openmc.Cell(cell_id=9, fill=mat6)
-cell9.region = +surf22 & +surf26
+cell9.region = +surf22 & +surf26 & -surf27
 
 # Dumpline
 cell10 = openmc.Cell(cell_id=10, fill=mat6)
-cell10.region = +surf22 & +surf28
+cell10.region = +surf22 & +surf28 & -surf29
 
 # D2O
 cell11 = openmc.Cell(cell_id=11, fill=mat2)
-cell11.region = +surf20 & +surf22 & -surf24
+cell11.region = +surf20 & +surf22 & -surf24 & -surf25
 
 # D2O
 cell12 = openmc.Cell(cell_id=12, fill=mat2)
-cell12.region = +surf20 & +surf22 & -surf26
+cell12.region = +surf20 & +surf22 & -surf26 & -surf27
 
 # D2O
 cell13 = openmc.Cell(cell_id=13, fill=mat2)
-cell13.region = +surf20 & +surf22 & -surf28
+cell13.region = +surf20 & +surf22 & -surf28 & -surf29
 
 # Air
 cell14 = openmc.Cell(cell_id=14, fill=mat10)
-cell14.region = -surf20 & -surf24
+cell14.region = -surf20 & -surf24 & -surf25
 
 # Air
 cell15 = openmc.Cell(cell_id=15, fill=mat10)
-cell15.region = -surf20 & -surf26
+cell15.region = -surf20 & -surf26 & -surf27
 
 # Air
 cell16 = openmc.Cell(cell_id=16, fill=mat10)
-cell16.region = -surf20 & -surf28
+cell16.region = -surf20 & -surf28 & -surf29
 
 # Sheath
 cell17 = openmc.Cell(cell_id=17, fill=mat5)

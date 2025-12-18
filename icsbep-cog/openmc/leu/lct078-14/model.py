@@ -105,11 +105,11 @@ surf1 = openmc.ZCylinder(surface_id=1, x0=-1.27, y0=68.2752, r=0.333375)
 # Al-3003 lower end cap
 surf2 = openmc.ZCylinder(surface_id=2, x0=-1.27, y0=0.0, r=0.317475)
 # UO2 fuel
-surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=48.780, r=0.262814)
+surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=48.78, r=0.262814)
 # SS304 spring/inner
 surf4 = openmc.ZCylinder(surface_id=4, r=0.17526)
 # SS304 spring/outer
-surf5 = openmc.ZCylinder(surface_id=5, x0=48.780, y0=50.4952, r=0.2286)
+surf5 = openmc.ZCylinder(surface_id=5, x0=48.78, y0=50.4952, r=0.2286)
 # Al-6061 spacer
 surf6 = openmc.ZCylinder(surface_id=6, x0=50.4952, y0=53.0352, r=0.26289)
 # CH2 spacer

@@ -79,160 +79,238 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 
 # NatU
 cell1 = openmc.Cell(cell_id=1, fill=mat3)
+
 # HEU
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
+
 # NatU
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
+
 # HEU
 cell4 = openmc.Cell(cell_id=4, fill=mat1)
+
 # NatU
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
+
 # HEU
 cell6 = openmc.Cell(cell_id=6, fill=mat1)
+
 # NatU
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
+
 # HEU
 cell8 = openmc.Cell(cell_id=8, fill=mat1)
+
 # NatU
 cell9 = openmc.Cell(cell_id=9, fill=mat3)
+
 # HEU
 cell10 = openmc.Cell(cell_id=10, fill=mat1)
+
 # NatU
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
+
 # HEU
 cell12 = openmc.Cell(cell_id=12, fill=mat1)
+
 # D38
 cell13 = openmc.Cell(cell_id=13, fill=mat4)
+
 # HEU
 cell14 = openmc.Cell(cell_id=14, fill=mat1)
+
 # NatU
 cell15 = openmc.Cell(cell_id=15, fill=mat3)
+
 # NatU
 cell16 = openmc.Cell(cell_id=16, fill=mat3)
+
 # HEU
 cell17 = openmc.Cell(cell_id=17, fill=mat1)
+
 # NatU
 cell18 = openmc.Cell(cell_id=18, fill=mat3)
+
 # NatU
 cell19 = openmc.Cell(cell_id=19, fill=mat3)
+
 # HEU
 cell20 = openmc.Cell(cell_id=20, fill=mat1)
+
 # NatU
 cell21 = openmc.Cell(cell_id=21, fill=mat3)
+
 # NatU
 cell22 = openmc.Cell(cell_id=22, fill=mat3)
+
 # HEU
 cell23 = openmc.Cell(cell_id=23, fill=mat1)
+
 # NatU
 cell24 = openmc.Cell(cell_id=24, fill=mat3)
+
 # NatU
 cell25 = openmc.Cell(cell_id=25, fill=mat3)
+
 # HEU
 cell26 = openmc.Cell(cell_id=26, fill=mat1)
+
 # NatU
 cell27 = openmc.Cell(cell_id=27, fill=mat3)
+
 # NatU
 cell28 = openmc.Cell(cell_id=28, fill=mat3)
+
 # HEU
 cell29 = openmc.Cell(cell_id=29, fill=mat1)
+
 # NatU
 cell30 = openmc.Cell(cell_id=30, fill=mat3)
+
 # NatU
 cell31 = openmc.Cell(cell_id=31, fill=mat3)
+
 # HEU
 cell32 = openmc.Cell(cell_id=32, fill=mat1)
+
 # NatU
 cell33 = openmc.Cell(cell_id=33, fill=mat3)
+
 # NatU
 cell34 = openmc.Cell(cell_id=34, fill=mat3)
+
 # HEU
 cell35 = openmc.Cell(cell_id=35, fill=mat1)
+
 # NatU
 cell36 = openmc.Cell(cell_id=36, fill=mat3)
+
 # NatU
 cell37 = openmc.Cell(cell_id=37, fill=mat3)
+
 # HEU
 cell38 = openmc.Cell(cell_id=38, fill=mat1)
+
 # NatU
 cell39 = openmc.Cell(cell_id=39, fill=mat3)
+
 # NatU
 cell40 = openmc.Cell(cell_id=40, fill=mat3)
+
 # HEU
 cell41 = openmc.Cell(cell_id=41, fill=mat1)
+
 # NatU
 cell42 = openmc.Cell(cell_id=42, fill=mat3)
+
 # NatU
 cell43 = openmc.Cell(cell_id=43, fill=mat3)
+
 # HEU
 cell44 = openmc.Cell(cell_id=44, fill=mat1)
+
 # NatU
 cell45 = openmc.Cell(cell_id=45, fill=mat3)
+
 # NatU
 cell46 = openmc.Cell(cell_id=46, fill=mat3)
+
 # HEU
 cell47 = openmc.Cell(cell_id=47, fill=mat1)
+
 # NatU
 cell48 = openmc.Cell(cell_id=48, fill=mat3)
+
 # NatU
 cell49 = openmc.Cell(cell_id=49, fill=mat3)
+
 # HEU
 cell50 = openmc.Cell(cell_id=50, fill=mat1)
+
 # NatUp6
 cell51 = openmc.Cell(cell_id=51, fill=mat5)
+
 # SS304
 cell52 = openmc.Cell(cell_id=52, fill=mat7)
+
 # U10
 cell53 = openmc.Cell(cell_id=53, fill=mat2)
+
 # U10
 cell54 = openmc.Cell(cell_id=54, fill=mat2)
+
 # U10
 cell55 = openmc.Cell(cell_id=55, fill=mat2)
+
 # U10
 cell56 = openmc.Cell(cell_id=56, fill=mat2)
+
 # U10
 cell57 = openmc.Cell(cell_id=57, fill=mat2)
+
 # U10
 cell58 = openmc.Cell(cell_id=58, fill=mat2)
+
 # U10
 cell59 = openmc.Cell(cell_id=59, fill=mat2)
+
 # U10
 cell60 = openmc.Cell(cell_id=60, fill=mat2)
+
 # D38
 cell61 = openmc.Cell(cell_id=61, fill=mat4)
+
 # D38
 cell62 = openmc.Cell(cell_id=62, fill=mat4)
+
 # D38
 cell63 = openmc.Cell(cell_id=63, fill=mat4)
+
 # D38
 cell64 = openmc.Cell(cell_id=64, fill=mat4)
+
 # D38
 cell65 = openmc.Cell(cell_id=65, fill=mat4)
+
 # D38
 cell66 = openmc.Cell(cell_id=66, fill=mat4)
+
 # D38
 cell67 = openmc.Cell(cell_id=67, fill=mat4)
+
 # SS347
 cell68 = openmc.Cell(cell_id=68, fill=mat6)
+
 # D38
 cell69 = openmc.Cell(cell_id=69, fill=mat4)
+
 # SS347
 cell70 = openmc.Cell(cell_id=70, fill=mat6)
+
 # D38
 cell71 = openmc.Cell(cell_id=71, fill=mat4)
+
 # SS347
 cell72 = openmc.Cell(cell_id=72, fill=mat6)
+
 # D38
 cell73 = openmc.Cell(cell_id=73, fill=mat4)
+
 # SS347
 cell74 = openmc.Cell(cell_id=74, fill=mat6)
+
 # D38
 cell75 = openmc.Cell(cell_id=75, fill=mat4)
+
 # SS347
 cell76 = openmc.Cell(cell_id=76, fill=mat6)
+
 # D38
 cell77 = openmc.Cell(cell_id=77, fill=mat4)
+
 # SS347
 cell78 = openmc.Cell(cell_id=78, fill=mat6)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30, cell31, cell32, cell33, cell34, cell35, cell36, cell37, cell38, cell39, cell40, cell41, cell42, cell43, cell44, cell45, cell46, cell47, cell48, cell49, cell50, cell51, cell52, cell53, cell54, cell55, cell56, cell57, cell58, cell59, cell60, cell61, cell62, cell63, cell64, cell65, cell66, cell67, cell68, cell69, cell70, cell71, cell72, cell73, cell74, cell75, cell76, cell77, cell78])
 geometry = openmc.Geometry(root_universe)
 

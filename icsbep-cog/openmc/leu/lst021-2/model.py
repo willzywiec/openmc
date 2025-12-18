@@ -52,10 +52,7 @@ surf2 = openmc.ZCylinder(surface_id=2, x0=-2.06, y0=152.64, r=39.815)
 # Base plate
 surf3 = openmc.model.RectangularParallelepiped(-60.2, 39.8, -50.0, 50.0, -19.0, -16.0)
 # Hole in base plate
-surf4_cyl = openmc.ZCylinder(surface_id=4, x0=tr, y0=24.8, r=7.76)
-surf4_zmin = openmc.ZPlane(z0=17.0)
-surf4_zmax = openmc.ZPlane(z0=0.0)
-surf4 = (surf4_cyl, surf4_zmin, surf4_zmax)
+surf4 = openmc.ZCylinder(surface_id=4, x0=24.8, y0=17.0, r=7.76)
 # boundary condition
 surf5 = openmc.ZCylinder(surface_id=5, x0=-34.5, y0=169.71, r=79.815, boundary_type="vacuum")
 # Hc

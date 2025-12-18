@@ -125,10 +125,10 @@ surf22 = openmc.model.RectangularParallelepiped(-21.0, 21.0, 8.848749999999999, 
 surf31 = openmc.ZCylinder(surface_id=31, x0=0.0, y0=149.52, r=0.585)
 # Hole
 surf32 = openmc.ZCylinder(surface_id=32, x0=0.0, y0=149.52, r=0.591)
-# surf51: Error converting surface type "c": could not convert string to float: 'tr'
-# surf52: Error converting surface type "c": could not convert string to float: 'tr'
-# surf53: Error converting surface type "c": could not convert string to float: 'tr'
-# surf54: Error converting surface type "c": could not convert string to float: 'tr'
+surf51 = openmc.ZCylinder(surface_id=51, x0=-24.02087, y0=-9.94977, r=1.53)
+surf52 = openmc.ZCylinder(surface_id=52, x0=24.02087, y0=-9.94977, r=1.53)
+surf53 = openmc.ZCylinder(surface_id=53, x0=-24.02087, y0=9.94977, r=1.53)
+surf54 = openmc.ZCylinder(surface_id=54, x0=24.02087, y0=9.94977, r=1.53)
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -278,13 +278,15 @@ cell1.region = -surf21 & -surf22
 
 # Zr4
 cell2 = openmc.Cell(cell_id=2, fill=mat4)
+cell2.region = -surf51 & -surf52 & -surf53 & -surf54
+
 # Core
 cell3 = openmc.Cell(cell_id=3, fill=universe5)
 cell3.region = -surf7 & (-surf20_0 & -surf20_1 & -surf20_2 & -surf20_3 & -surf20_4 & -surf20_5 & -surf20_6 & -surf20_7) & +surf21 & +surf22
 
 # Alles
 cell4 = openmc.Cell(cell_id=4, fill=universe1)
-cell4.region = -surf7 & (+surf20_0 | +surf20_1 | +surf20_2 | +surf20_3 | +surf20_4 | +surf20_5 | +surf20_6 | +surf20_7)
+cell4.region = -surf7 & (+surf20_0 | +surf20_1 | +surf20_2 | +surf20_3 | +surf20_4 | +surf20_5 | +surf20_6 | +surf20_7) & +surf51 & +surf52 & +surf53 & +surf54
 
 # H2O
 cell13 = openmc.Cell(cell_id=13, fill=mat6)

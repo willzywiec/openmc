@@ -323,24 +323,38 @@ cell8.region = -surf1
 # HFR
 cell9 = openmc.Cell(cell_id=9, fill=universe7)
 cell9.translation = (0.0, 0.0, 0.0)
+
+
 # HFR
 cell10 = openmc.Cell(cell_id=10, fill=universe7)
 cell10.translation = (2.54, 2.1997, 0.0)
+
+
 # HFR
 cell11 = openmc.Cell(cell_id=11, fill=universe7)
 cell11.translation = (-0.635, 3.29955, 0.0)
+
+
 # HFR
 cell12 = openmc.Cell(cell_id=12, fill=universe7)
 cell12.translation = (-3.175, 1.09985, 0.0)
+
+
 # HFR
 cell13 = openmc.Cell(cell_id=13, fill=universe7)
 cell13.translation = (-2.54, -2.1997, 0.0)
+
+
 # HFR
 cell14 = openmc.Cell(cell_id=14, fill=universe7)
 cell14.translation = (0.635, -3.29955, 0.0)
+
+
 # HFR
 cell15 = openmc.Cell(cell_id=15, fill=universe7)
 cell15.translation = (3.175, -1.09985, 0.0)
+
+
 # Holes
 cell16 = openmc.Cell(cell_id=16, fill=universe6)
 cell16.region = -surf4 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5)

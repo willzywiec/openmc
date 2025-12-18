@@ -151,32 +151,46 @@ universe4.add_cell(openmc.Cell(fill=lattice4))
 
 # core
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
+
 # core
 cell2 = openmc.Cell(cell_id=2, fill=universe4)
+
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
+
 # AG3
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
+
 # AG3e
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
+
 # AG3
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
+
 # AG3
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
+
 # Pb
 cell8 = openmc.Cell(cell_id=8, fill=mat8)
+
 # Pb
 cell9 = openmc.Cell(cell_id=9, fill=mat8)
+
 # SST
 cell10 = openmc.Cell(cell_id=10, fill=mat4)
+
 # Air
 cell11 = openmc.Cell(cell_id=11, fill=mat7)
+
 # H2O
 cell12 = openmc.Cell(cell_id=12, fill=mat6)
+
 # Air
 cell23 = openmc.Cell(cell_id=23, fill=mat7)
+
 # Air
 cell31 = openmc.Cell(cell_id=31, fill=mat7)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell23, cell31])
 geometry = openmc.Geometry(root_universe)
 

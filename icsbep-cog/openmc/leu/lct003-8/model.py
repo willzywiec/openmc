@@ -140,14 +140,19 @@ universe4.add_cell(openmc.Cell(fill=lattice4))
 
 # CORE
 cell1 = openmc.Cell(cell_id=1, fill=universe4)
+
 # H2O
 cell2 = openmc.Cell(cell_id=2, fill=mat5)
+
 # Water
 cell11 = openmc.Cell(cell_id=11, fill=mat5)
+
 # Water
 cell15 = openmc.Cell(cell_id=15, fill=mat5)
+
 # Water
 cell21 = openmc.Cell(cell_id=21, fill=mat5)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell11, cell15, cell21])
 geometry = openmc.Geometry(root_universe)
 

@@ -105,22 +105,16 @@ surf17 = openmc.model.RectangularParallelepiped(1.0, 31.1, -31.1, -1.0, -2.20000
 surf18 = openmc.model.RectangularParallelepiped(-47.5, 47.5, -47.5, 47.5, -3.0, -2.2)
 # Tank & BCD
 surf19 = openmc.model.RectangularParallelepiped(-60.0, 60.0, -60.0, 60.0, -22.200000000000003, 103.8, boundary_type="vacuum")
-surf20_cyl = openmc.ZCylinder(surface_id=20, x0=tr, y0=-29.5175, r=0.7975)
-surf20_zmin = openmc.ZPlane(z0=29.5175)
-surf20_zmax = openmc.ZPlane(z0=0.0)
-surf20 = (surf20_cyl, surf20_zmin, surf20_zmax)
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
-# surf24: Error converting surface type "c": could not convert string to float: 'tr'
-surf25_cyl = openmc.ZCylinder(surface_id=25, x0=tr, y0=29.5175, r=0.7975)
-surf25_zmin = openmc.ZPlane(z0=29.5175)
-surf25_zmax = openmc.ZPlane(z0=0.0)
-surf25 = (surf25_cyl, surf25_zmin, surf25_zmax)
-# surf26: Error converting surface type "c": could not convert string to float: 'tr'
-# surf27: Error converting surface type "c": could not convert string to float: 'tr'
-# surf28: Error converting surface type "c": could not convert string to float: 'tr'
-# surf29: Error converting surface type "c": could not convert string to float: 'tr'
+surf20 = openmc.ZCylinder(surface_id=20, x0=-29.5175, y0=29.5175, r=0.7975)
+surf21 = openmc.ZCylinder(surface_id=21, x0=-29.5175, y0=29.5175, r=0.9325)
+surf22 = openmc.ZCylinder(surface_id=22, x0=-2.45, y0=29.65, r=0.5)
+surf23 = openmc.ZCylinder(surface_id=23, x0=-29.65, y0=2.45, r=0.5)
+surf24 = openmc.ZCylinder(surface_id=24, x0=-2.45, y0=2.45, r=0.5)
+surf25 = openmc.ZCylinder(surface_id=25, x0=29.5175, y0=29.5175, r=0.7975)
+surf26 = openmc.ZCylinder(surface_id=26, x0=29.5175, y0=29.5175, r=0.9325)
+surf27 = openmc.ZCylinder(surface_id=27, x0=2.45, y0=29.65, r=0.5)
+surf28 = openmc.ZCylinder(surface_id=28, x0=29.65, y0=2.45, r=0.5)
+surf29 = openmc.ZCylinder(surface_id=29, x0=2.45, y0=2.45, r=0.5)
 # Aluminum cover
 surf40 = openmc.model.RectangularParallelepiped(-15.049999999999999, 14.4, -15.049999999999999, -14.4, -2.200000000000003, 97.8)
 # B4C+Al
@@ -210,11 +204,11 @@ universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2, 
 # Assy
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
 cell1.translation = (-16.05, 16.05, 0.0)
-cell1.region = +surf18 & -surf10
+cell1.region = +surf18 & -surf10 & +surf21 & +surf22 & +surf23 & +surf24
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = +surf18 & -surf10 & +surf20
+cell2.region = +surf18 & -surf10 & +surf20 & -surf21 & -surf22 & -surf23 & -surf24
 
 # Boral
 cell3 = openmc.Cell(cell_id=3, fill=universe3)
@@ -224,11 +218,11 @@ cell3.region = +surf18 & +surf10 & -surf11
 # Assy
 cell4 = openmc.Cell(cell_id=4, fill=universe2)
 cell4.translation = (16.05, 16.05, 0.0)
-cell4.region = +surf18 & -surf12
+cell4.region = +surf18 & -surf12 & +surf26 & +surf27 & +surf28 & +surf29
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf18 & -surf12 & +surf25
+cell5.region = +surf18 & -surf12 & +surf25 & -surf26 & -surf27 & -surf28 & -surf29
 
 # Boral
 cell6 = openmc.Cell(cell_id=6, fill=universe3)

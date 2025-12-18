@@ -76,32 +76,20 @@ surf10 = openmc.ZCylinder(surface_id=10, x0=-2.3, y0=-1.1, r=99.9)
 # Lattice plate hole - 1
 surf11 = openmc.ZCylinder(surface_id=11, r=0.26)
 # Lattice plate hole - 2
-surf12_cyl = openmc.ZCylinder(surface_id=12, x0=tr, y0=-0.7, r=0.26)
-surf12_zmin = openmc.ZPlane(z0=1.212436)
-surf12_zmax = openmc.ZPlane(z0=0.0)
-surf12 = (surf12_cyl, surf12_zmin, surf12_zmax)
+surf12 = openmc.ZCylinder(surface_id=12, x0=-0.7, y0=1.212436, r=0.26)
 # Lattice plate hole - 3
-surf13_cyl = openmc.ZCylinder(surface_id=13, x0=tr, y0=-0.7, r=0.26)
-surf13_zmin = openmc.ZPlane(z0=-1.212436)
-surf13_zmax = openmc.ZPlane(z0=0.0)
-surf13 = (surf13_cyl, surf13_zmin, surf13_zmax)
+surf13 = openmc.ZCylinder(surface_id=13, x0=-0.7, y0=-1.212436, r=0.26)
 # Lattice plate hole - 4
-surf14_cyl = openmc.ZCylinder(surface_id=14, x0=tr, y0=0.7, r=0.26)
-surf14_zmin = openmc.ZPlane(z0=1.212436)
-surf14_zmax = openmc.ZPlane(z0=0.0)
-surf14 = (surf14_cyl, surf14_zmin, surf14_zmax)
+surf14 = openmc.ZCylinder(surface_id=14, x0=0.7, y0=1.212436, r=0.26)
 # Lattice plate hole - 5
-surf15_cyl = openmc.ZCylinder(surface_id=15, x0=tr, y0=0.7, r=0.26)
-surf15_zmin = openmc.ZPlane(z0=-1.212436)
-surf15_zmax = openmc.ZPlane(z0=0.0)
-surf15 = (surf15_cyl, surf15_zmin, surf15_zmax)
+surf15 = openmc.ZCylinder(surface_id=15, x0=0.7, y0=-1.212436, r=0.26)
 # Lattice plate - lower
 surf16 = openmc.ZCylinder(surface_id=16, x0=0.4, y0=0.7, r=99.9)
 # Lattice plate - upper
 surf17 = openmc.ZCylinder(surface_id=17, x0=81.8, y0=82.1, r=99.9)
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
+surf21 = openmc.ZCylinder(surface_id=21, x0=-14.7, y0=-3.637308, r=0.26)
+surf22 = openmc.ZCylinder(surface_id=22, x0=-14.7, y0=-1.212436, r=0.26)
+surf23 = openmc.ZCylinder(surface_id=23, x0=-14.7, y0=3.637308, r=0.26)
 # Prism 81: 12-sided polygon
 surf81_0 = openmc.Plane(a=0.4999999970, b=-0.8660254055, c=0, d=14.3500003946)
 surf81_1 = openmc.Plane(a=0.8660254304, b=-0.4999999539, c=0, d=15.1554446747)
@@ -180,19 +168,19 @@ universe3.add_cell(openmc.Cell(fill=lattice3))
 
 # core
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = (-surf81_0 & -surf81_1 & -surf81_2 & -surf81_3 & -surf81_4 & -surf81_5 & -surf81_6 & -surf81_7 & -surf81_8 & -surf81_9 & -surf81_10 & -surf81_11) & -surf99
+cell1.region = (-surf81_0 & -surf81_1 & -surf81_2 & -surf81_3 & -surf81_4 & -surf81_5 & -surf81_6 & -surf81_7 & -surf81_8 & -surf81_9 & -surf81_10 & -surf81_11) & -surf99 & +surf21 & +surf22 & +surf23
 
 # water
 cell2 = openmc.Cell(cell_id=2, fill=mat4)
-cell2.region = (-surf81_0 & -surf81_1 & -surf81_2 & -surf81_3 & -surf81_4 & -surf81_5 & -surf81_6 & -surf81_7 & -surf81_8 & -surf81_9 & -surf81_10 & -surf81_11) & -surf99
+cell2.region = (-surf81_0 & -surf81_1 & -surf81_2 & -surf81_3 & -surf81_4 & -surf81_5 & -surf81_6 & -surf81_7 & -surf81_8 & -surf81_9 & -surf81_10 & -surf81_11) & -surf99 & -surf21
 
 # water
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
-cell3.region = (-surf81_0 & -surf81_1 & -surf81_2 & -surf81_3 & -surf81_4 & -surf81_5 & -surf81_6 & -surf81_7 & -surf81_8 & -surf81_9 & -surf81_10 & -surf81_11) & -surf99
+cell3.region = (-surf81_0 & -surf81_1 & -surf81_2 & -surf81_3 & -surf81_4 & -surf81_5 & -surf81_6 & -surf81_7 & -surf81_8 & -surf81_9 & -surf81_10 & -surf81_11) & -surf99 & -surf22
 
 # water
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = (-surf81_0 & -surf81_1 & -surf81_2 & -surf81_3 & -surf81_4 & -surf81_5 & -surf81_6 & -surf81_7 & -surf81_8 & -surf81_9 & -surf81_10 & -surf81_11) & -surf99
+cell4.region = (-surf81_0 & -surf81_1 & -surf81_2 & -surf81_3 & -surf81_4 & -surf81_5 & -surf81_6 & -surf81_7 & -surf81_8 & -surf81_9 & -surf81_10 & -surf81_11) & -surf99 & -surf23
 
 # water
 cell5 = openmc.Cell(cell_id=5, fill=mat4)

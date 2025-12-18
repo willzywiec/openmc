@@ -120,6 +120,7 @@ universe4 = openmc.Universe(universe_id=4, cells=[])
 
 # lttc
 cell1 = openmc.Cell(cell_id=1, fill=universe4)
+
 # Air
 cell13 = openmc.Cell(cell_id=13, fill=mat5)
 cell13.region = -surf9

@@ -79,9 +79,9 @@ surf5_3 = openmc.Plane(a=-0.5000000035, b=0.8660254018, c=0, d=2.5500000176)
 surf5_4 = openmc.Plane(a=-1.0000000000, b=0.0000000000, c=0, d=2.5500000000)
 surf5_5 = openmc.Plane(a=-0.5000000035, b=-0.8660254018, c=0, d=2.5500000176)
 # U(90)O2
-surf10 = openmc.ZCylinder(surface_id=10, x0=0.020, y0=0.153, r=2.32)
+surf10 = openmc.ZCylinder(surface_id=10, x0=0.02, y0=0.153, r=2.32)
 # Can-UO2
-surf11 = openmc.ZCylinder(surface_id=11, x0=0.000, y0=0.173, r=2.34)
+surf11 = openmc.ZCylinder(surface_id=11, x0=0.0, y0=0.173, r=2.34)
 # Th
 surf20 = openmc.ZCylinder(surface_id=20, x0=0.203, y0=1.143, r=2.3)
 # Can-Th
