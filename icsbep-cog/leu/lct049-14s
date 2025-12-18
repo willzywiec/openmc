@@ -2,7 +2,7 @@ LCT049-14S: Simplified model of R3-3R(4,4) with H/U=2 & 3 (concentric) and d=4.3
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=8
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=8
   -12.425 -10.26  10  12.425 -10.26  10
   -12.425  10.26  10  12.425  10.26  10
   -12.425 -10.26 -10  12.425 -10.26 -10

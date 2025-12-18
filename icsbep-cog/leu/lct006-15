@@ -2,7 +2,7 @@ LCT006-15: Tank-Type Critical Assembly (TCA) 16x16 rods with 2.293 cm pitch; Hc=
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4 
   -1.1 -1.1 32.21
   -1.1  1.1 32.21
    1.1 -1.1 32.21

@@ -2,7 +2,7 @@ LCT029-12: 20x20 array of 400 U(4.738)O2 fuel rods with 1.60 cm square pitch wit
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=1
   1.6 -1.6 18.93
 assign-mc
   1 red 2 yellow 3 gray 4 black 5 pink 6 sky

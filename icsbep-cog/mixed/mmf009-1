@@ -2,7 +2,7 @@ MixMF009-1: 13.710 kg d-Pu and 6.952 kg (0.75 cm) HEU
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=6
   -1.3 0 0  1.3 0 0
   0 -1.3 0  0 1.3 0
   0 0 -1.3  0 0 1.3

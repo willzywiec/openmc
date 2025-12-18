@@ -2,7 +2,7 @@ MIX-SOL-THERM-004-3: Exp. No. 077 with 172.56 gPu/l and 262.79 gU/L with 1.23M
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 28.985
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 28.985
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches pu238 1.2660-7 pu239 3.9610-4 pu240 3.5973-5 pu241 1.9399-6 pu242 3.9925-7 $ Solution
                  u234 4.7333-8  u235 3.7974-6  u236 1.5420-7  u238 6.6085-4 am241 2.2562-6 $  for

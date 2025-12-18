@@ -2,7 +2,7 @@ MCT013-14: MOX/Polystyrene with H/X=226 with 1.28 SST-1.6B absorber and 15.24cm 
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=2 0 0 -7.34 0 0 11.90
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=2 0 0 -7.34 0 0 11.90
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches   pu239 1.9516-4 pu240 1.7016-5 pu241 9.5533-7 pu242 8.0358-8 u235 1.9034-6 u238 1.2510-3 am241 7.3440-7
                 (h.ch2) 4.4831-2     c 4.4101-2   o16 3.0175-3

@@ -2,7 +2,7 @@ LCT042-5: (20x18)-3.446cm-PlexCd(25x18)CdPlex-3.446cm-(20x18) array of U(2.35)O2
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
   -40.494 -0.842 45.72 -40.494 0.842 45.72
     0     -0.842 45.72   0     0.842 45.72
    40.494 -0.842 45.72  40.494 0.842 45.72

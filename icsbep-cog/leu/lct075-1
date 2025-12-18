@@ -2,7 +2,7 @@ LCT075-1: 1,195 VVER U(6.5)O2 rods, 1.10 cm trianglur pitch, 4 B4C rods 15.4 fro
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 46.915
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=1 0 0 46.915
 dump  1000 1500 2000 2500 
 assign-mc
   1 red 2 lime 3 black 4 sky 5 gray 6 yellow

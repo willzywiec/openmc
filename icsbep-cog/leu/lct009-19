@@ -2,7 +2,7 @@ LEU-COMP-THERM-009-19: (15x8)-3.6795cm-(0.061cm Cd)-3.6795cm-(15x8)-3.6795cm-(0.
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
    45.52 -1.27 46.0375  45.52 1.27 46.0375
     0.0  -1.27 46.0375   0.0  1.27 46.0375
   -45.52 -1.27 46.0375 -45.52 1.27 46.0375

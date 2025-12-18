@@ -2,7 +2,7 @@ PMF016-1: Flooded 3x3x3 arrays of 3kg Pu metal cylinders; Hw=48.30; dx=dy=12.00;
 basic
    neutron delayedn CM URRPT
 criticality
-   npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=5 -12 0 41.2  0 0 41.2  12 0 41.2  0 -12 41.2  0 12 41.2 
+   npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=5 -12 0 41.2  0 0 41.2  12 0 41.2  0 -12 41.2  0 12 41.2 
 assign-mc
    1 purple 2 yellow 3 black 4 gray 5 lime 6 sky
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

@@ -2,7 +2,7 @@ PU-MET-INTER-002: ZPR-6/10 Loading 24; Benchmark Model
 basic
 neutron delayedn CM URRPT
 criticality
-npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
 nsource=1 0.0001 0.0001 0.0001
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Compositions per Tables 17 and 18
 mat=1 bunches pu238 1.69380-9 pu239 1.06299-3 pu240 5.03037-5 pu241 1.70034-6

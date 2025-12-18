@@ -2,7 +2,7 @@ PU-SOL-THERM-034-6: 27.271 kg Pu(8.3) @ H/X=228 with 2.38 gGd/L
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 40.185
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 
   mat=1 bunches pu238 1.2912-7 pu239 2.6498-4 pu240 2.4383-5 pu241 2.4661-6 pu242 1.4141-7 $ 116.0 gPu(8.3)/L Sol'n

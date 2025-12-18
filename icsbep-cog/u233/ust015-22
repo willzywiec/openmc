@@ -2,7 +2,7 @@ U233-SOL-THERM-015-22; FALSTAFF; Sol'n No. 6; Sphere No. 3; 6.68 cm Be
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1 0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches 

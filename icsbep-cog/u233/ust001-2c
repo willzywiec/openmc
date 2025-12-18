@@ -2,7 +2,7 @@ U233-SOL-THERM-001: 233U(97.7)O2(NO3)2 @ H/U233=1472; N/U=2.65; B/U = 0.0288
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0      $ Exp't No. 2 with
   mat=1 bunches u233 4.5093-5 u234 7.4451-7 u235 1.8305-8 u238 2.8917-7 $  H/U-233 = 1471.7

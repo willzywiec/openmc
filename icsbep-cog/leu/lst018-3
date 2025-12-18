@@ -2,7 +2,7 @@ LST018-3: Concrete reflected 28-cm-thick slab tank with 10% enriched uranyl nitr
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1  0 0 36.59
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1  0 0 36.59
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 6.4369-7 u235 7.9877-5  u236 7.9777-8 u238 7.1147-4 (h.h2o) 5.8762-2  n 2.1593-3 o16 3.7155-2             $ Solution: Run 143
   mat=2 bunches    c 7.1567-5   si 7.1415-4    mn 9.9095-4    p 5.0879-5       s 1.0424-5 ni 8.5600-3  cr 1.6725-2 fe 5.9560-2 $ Stainless Steel Tank

@@ -2,7 +2,7 @@ LCT034-26: Four 18x18 arrays of U(4.738)O2 rods, 1.60 cm pitch, 0.33cm steel and
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=72
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=72
     -3.38  -3.38 42.425   3.38  -3.38 42.425  -3.38  3.38 42.425   3.38  3.38 42.425
     -4.98  -4.98 42.425   4.98  -4.98 42.425  -4.98  4.98 42.425   4.98  4.98 42.425
     -6.58  -6.58 42.425   6.58  -6.58 42.425  -6.58  6.58 42.425   6.58  6.58 42.425

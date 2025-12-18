@@ -2,7 +2,7 @@ LCT050-9: Exp. No. 2770; 23x23-31=498 array of U(4.738)O2 rods on 1.3cm pitch; s
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=4
   -3.25  0    42.30
    4.55  0    42.30
    0    -3.25 42.30

@@ -2,7 +2,7 @@ PU-MET-FAST-041; 5.070 kg a-Pu(88) in 1.6 D-38
 basic
 neutron delayedn CM URRPT
 criticality
-npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
 nsource=1 0. 0. 0.0001
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom Densities per Table 8
 mat=101 bunches pu239 4.2477-2 pu240 4.9721-3 pu241 8.2604-4 fe 3.3168-4

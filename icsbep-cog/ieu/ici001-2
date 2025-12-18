@@ -2,7 +2,7 @@ IEU-COMP-THERM-001-2: KBR-19
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=4  0 0 0.1015  0 0 1.3045  0 0 1.4925  0 0 2.6955
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1  bunches      fe 6.1216-2   cr 1.6579-2  ni 8.5122-3 mn 1.0698-3 ti 6.1377-4 si 8.7196-4 c 4.0778-4 $ SST Tube

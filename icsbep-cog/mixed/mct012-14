@@ -2,7 +2,7 @@ MCT012-14: MOX/Polystyrene (H/SQRT(LxW)=0.85) with H/X=226 reflected by 15.24cm 
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches   pu239 1.9516-4 pu240 1.7016-5 pu241 1.2104-6 pu242 8.0358-8 u235 1.9034-6 u238 1.2510-3 am241 4.8415-7
                 (h.ch2) 4.4831-2     c 4.4101-2   o16 3.0175-3

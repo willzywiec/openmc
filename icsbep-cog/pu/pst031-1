@@ -2,7 +2,7 @@ PU-SOL-THERM-031-1: H/X=287 and 7 Hafnium Plates with 7.1446 cm Pitch
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=2 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=2 
   0 -3.4562 20.805
   0  3.6884 20.805
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

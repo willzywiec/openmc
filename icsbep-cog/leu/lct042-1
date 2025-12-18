@@ -2,7 +2,7 @@ LCT042-1: (20x18)-7.866cm-SS304L(25x18)SS304L-7.866cm-(20x18) array of U(2.35)O2
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
   -44.914 -0.842 45.72 -44.914 0.842 45.72
     0     -0.842 45.72   0     0.842 45.72
    44.914 -0.842 45.72  44.914 0.842 45.72

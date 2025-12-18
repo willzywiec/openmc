@@ -2,7 +2,7 @@ PU-SOL-THERM-030-1: Exp. No. 506 with H/X=1044 with AIR in the central cavity
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 21.62
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 21.62
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches   pu239 6.1395-5 pu240 9.3134-7 pu241 1.8549-8 (h.h2o) 6.4100-2 o16 3.2050-2 o16 3.1583-3 n 1.2124-3 fe 1.8224-6 $ Pu solution
   mat=2 bunches      fe 5.9546-2    si 1.6939-3     c 1.1883-4      cr 1.6469-2  mn 8.6597-4  ni 8.1061-3 p 6.1439-5  s 4.4640-5 $ Stainless steel

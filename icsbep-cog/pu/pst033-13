@@ -2,7 +2,7 @@ PU-SOL-THERM-033-13: 178.5 gPu(4.23)/L at H/X=136.3 with no poisons
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 9.565
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 9.565
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches    u235 1.6967-10 u238 2.3765-8 pu238 3.2964-8 pu239 4.2924-4 pu240 1.8939-5 pu241 1.2930-6 pu242 7.1053-8 am241 1.5518-7 $ Plutonium 
                 (h.h2o) 5.8693-2   o16 3.8247-2     n 3.1968-3    fe 3.5585-6    cr 1.4471-7    ni 3.8096-7    mn 1.5653-7    ca 2.1457-6 $  nitrate

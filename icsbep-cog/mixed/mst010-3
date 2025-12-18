@@ -2,7 +2,7 @@ MST010-3: Exp. 139R with H/X=284 and 0.04 gGd/L and 0.3 gB/L
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 9.84
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 9.84
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches pu238 3.4336-8 pu239 1.9892-4 pu240 1.3513-5 pu241 1.0681-6  pu242 1.0130-7 $ Solution
                  u234 2.8189-8  u235 3.0689-6  u236 5.5900-8  u238 4.5879-4  am241 2.6099-8

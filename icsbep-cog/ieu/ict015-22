@@ -2,7 +2,7 @@ ICT015-22: 35.56 x 35.56 x 23.1013 cc U(30.14)O2/wax parallelepiped reflected by
 basic 
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 0
 assign-mc
   1 red 2 blue
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

@@ -2,7 +2,7 @@ PMF003-2: LLNL Pu Array - 2x2x2 with CH2 reflection on one side - case 102
 basic 
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=8 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=8 
    3.82  3.82 17.5   3.82  3.82 23.2
   -3.82  3.82 17.5  -3.82  3.82 23.2
   -3.82 -3.82 17.5  -3.82 -3.82 23.2

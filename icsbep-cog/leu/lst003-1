@@ -2,7 +2,7 @@ LST003-1: Bare partially full sphere of 10% enriched uranyl nitrate solution at 
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=3  0 0 4  0 0 0  0 0 -4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=3  0 0 4  0 0 0  0 0 -4
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 6.7481-7 u235 7.6403-5 u238 6.7271-4  n 2.3185-3 o16 3.7473-2 (h.h2o) 5.8854-2 $ Solution
   mat=2 bunches   fe 5.9088-2   cr 1.6532-2   ni 8.1369-3 mn 1.3039-3  si 1.3603-3      ti 5.9844-4 $ Stainless Steel

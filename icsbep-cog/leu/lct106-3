@@ -2,7 +2,7 @@ LEU-COMP-THERM-101-3: MIRTE-2.2 Experiment 2A-Rh(40-1N)-040-Zr-010; 9x28; Hc=74.
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=36
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=36
   -0.8  3.8 37.3065  0.8  3.8 37.3065  -0.8  -3.8 37.3065  0.8  -3.8 37.3065
   -0.8  5.4 37.3065  0.8  5.4 37.3065  -0.8  -5.4 37.3065  0.8  -5.4 37.3065
   -0.8  7.0 37.3065  0.8  7.0 37.3065  -0.8  -7.0 37.3065  0.8  -7.0 37.3065

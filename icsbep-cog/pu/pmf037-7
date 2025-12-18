@@ -2,7 +2,7 @@ PMF037-7: Flooded 2x2x2 array of double-canned 3kg Pu parts in water; Hw=26.3; d
 basic
    neutron delayedn CM URRPT
 criticality
-   npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=8 
+   npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=8 
    -5.0145 -5.0145 14.0285  -5.0145 -5.0145 24.0865
    -5.0145  5.0145 14.0285  -5.0145  5.0145 24.0865
     5.0145 -5.0145 14.0285   5.0145 -5.0145 24.0865

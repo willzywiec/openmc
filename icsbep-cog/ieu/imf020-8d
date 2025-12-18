@@ -2,7 +2,7 @@ IEU-MET-FAST-020-8: FR0 experiment 1G-D (case 8 detailed model)
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=20
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=20
   -6.855  9.14 31.5 -2.285  9.14 31.5 6.855  9.14 31.5  11.425  9.14 31.5
   -6.855  4.57 31.5 -2.285  4.57 31.5 6.855  4.57 31.5  11.425  4.57 31.5
   -6.855   0   31.5 -2.285  0    31.5 6.855  0    31.5  11.425  0    31.5

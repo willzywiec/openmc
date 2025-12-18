@@ -2,7 +2,7 @@ MIX-MET-FAST-008-7: ZEBRA-8H (in IRPhE: ZEBRA-FUND-RESR-001)
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1 0 0 1.11125
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0     
   mat=1 bunches u235 1.7730-2 u238 2.8958-2 (c) 1.8440-4 o16 3.4608-4 fe 5.9492-5 al 4.1043-5      $ U(37.5) Metal 

@@ -2,7 +2,7 @@ PMF023-1D: 2.35cm graphite reflected spherical assembly of 13.484 kg delta-239Pu
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6 -2 0 0 2 0 0 0 -2 0 0 2 0 0 0 -2 0 0 2
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=6 -2 0 0 2 0 0 0 -2 0 0 2 0 0 0 -2 0 0 2
 assign-mc
   1 purple 2 red 3 orange 4 sky 5 blue 6 gray 
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

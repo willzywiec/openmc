@@ -2,7 +2,7 @@ LEU-COMP-THERM-074-21: MIRTE-1 Experiment 4A-Fe-003; 9x9; Hc=79.456cm
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=20
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=20
    7.35  7.35 39.728  5.75  5.75 39.728  4.15  4.15 39.728  2.55  2.55 39.728  0.95  0.95 39.728
   -7.35  7.35 39.728 -5.75  5.75 39.728 -4.15  4.15 39.728 -2.55  2.55 39.728 -0.95  0.95 39.728
   -7.35 -7.35 39.728 -5.75 -5.75 39.728 -4.15 -4.15 39.728 -2.55 -2.55 39.728 -0.95 -0.95 39.728

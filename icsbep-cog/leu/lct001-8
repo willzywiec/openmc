@@ -2,7 +2,7 @@ LCT001-8: (19x16)-7.57cm-(19x16)-7.57cm-(19x16) array of U(2.35)O2 fuel rods wit
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=2
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=2
    0 1.016 45.72  0 -1.016 45.72
 assign-mc
   1 red 2 green 3 lime 4 yellow 5 sky 6 blue

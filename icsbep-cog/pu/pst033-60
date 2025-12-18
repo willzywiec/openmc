@@ -2,7 +2,7 @@ PU-SOL-THERM-033-60: 99.05 gPu(3.13)/L at H/X=250.4 with 55 (4x40) pyrex tubes a
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1
   0  0 29.59
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches    u235 7.2834-11 u238 1.0201-8 pu239 2.4137-4 pu240 7.7889-6 pu241 2.9694-7 pu242 2.9571-8 am241 3.4643-8 $ Plutonium

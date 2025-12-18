@@ -2,7 +2,7 @@ LCT043-3: Array of U(4.3486)O2 fuel rods with 1.5 cm square pitch in water next 
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=4
   0.0  0.75 27.42  -1.5  0.75 27.42 
   0.0 -0.75 27.42  -1.5 -0.75 27.42
 assign-mc

@@ -2,7 +2,7 @@ IST003-24: 30F20 solution in a water reflected 12-inch diameter cylinder
 basic 
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 25.8796
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 25.8796
 assign-mc
   1 red 2 yellow 3 sky
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

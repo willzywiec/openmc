@@ -2,7 +2,7 @@ IEU-SOL-THERM-002-3: Fully reflected 16-inch i.d. U(30.45) solution sphere
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 0 
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u235 8.3478-5 u234 1.0462-6 u236 2.1839-7 u238 1.8702-4 (h.h2o) 6.5795-2  f 5.4351-4 o16 3.3441-2 $ Solution

@@ -2,7 +2,7 @@ LEU-COMP-THERM-074-26: MIRTE-1 Experiment R4A-Water-003; 9x8; Hc=60.450cm
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=20
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=20
    7.35  7.35 30.225  5.75  5.75 30.225  4.15  4.15 30.225  2.55  2.55 30.225  0.95  0.95 30.225
   -7.35  7.35 30.225 -5.75  5.75 30.225 -4.15  4.15 30.225 -2.55  2.55 30.225 -0.95  0.95 30.225
   -7.35 -7.35 30.225 -5.75 -5.75 30.225 -4.15 -4.15 30.225 -2.55 -2.55 30.225 -0.95 -0.95 30.225

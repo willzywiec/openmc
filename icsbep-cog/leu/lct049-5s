@@ -2,7 +2,7 @@ LCT049-5S: Simplified model of R2-2R(4,5) with H/U=2.5 and d=4.23cm
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4
   -12.375 -10.26 0  12.375 -10.26 0
   -12.375  10.26 0  12.375  10.26 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

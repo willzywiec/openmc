@@ -2,7 +2,7 @@ U233-MET-FAST-002: 7.601 kg 233U(98.2) + 1.9888 cm Oy
 basic
   neutron  delayedn CENTIMETERS
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=1000 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 w-p 18.644 u233 98.2 u234 1.1 u238 0.7 $ U-233 per Table 2

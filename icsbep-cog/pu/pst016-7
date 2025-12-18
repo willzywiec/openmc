@@ -2,7 +2,7 @@ PU-SOL-THERM-016 (Case 7) 300 and 256 mm cylinders with 115.1 gPu/L at 30 cm s-t
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=2  0 0 20.2  57.79 0 20.2
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 
   mat=1 bunches   pu238 2.7777-8 pu239 3.6662-4   pu240 1.6176-5 pu241 1.2068-6 pu242 6.0704-8 $ 152.5 gPu/L Sol'n 

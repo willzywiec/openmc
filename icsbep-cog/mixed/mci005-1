@@ -2,7 +2,7 @@ MIX-COMP-INTER-005:  MOX Test Lattice with U(0.52)O2-10.89Pu(77.4)O2
 basic
   neutron delayedn CENTIMETERS
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 0.
 mix nlib=ENDFB8R0 sablib=T.ENDFB8R0                                                             $
   mat=1 bunches  u234 8.36956-7  u235 1.08340-4  u238 2.04636-2 pu238 2.95359-5 pu239 1.70943-3 $ MOX per Table 17

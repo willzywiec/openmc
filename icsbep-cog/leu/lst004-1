@@ -2,7 +2,7 @@ LST004-1: Water-reflected 60-cm-diameter cylindrical tank with 10% enriched uran
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1  0 0 20.765
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1  0 0 20.765
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 6.3833-7 u235 7.9213-5 u236 7.9114-8 u238 7.0556-4 (h.h2o) 5.6956-2  n 2.8778-3 o16 3.8029-2             $ Solution: Run 1
   mat=2 bunches    c 4.3736-5   si 1.0627-3   mn 1.1561-3    p 4.3170-5       s 2.9782-6 ni 8.3403-3  cr 1.6775-2 fe 5.9421-2 $ Stainless Steel

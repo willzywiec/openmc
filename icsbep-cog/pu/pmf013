@@ -2,7 +2,7 @@ PU-MET-FAST-013: BR-1-2 Assembly with Cu Reflector
 basic
 neutron delayedn CM URRPT
 criticality
-npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
 nsource=4 -2 -2 35 -2 +2 35 +2 -2 35 +2 +2 35
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom Densities per Tables 9.a and 9.b
 mat=1 bunches pu238 1.3679-5 pu239 2.6712-2 pu240 6.2650-4 pu241 5.4716-6

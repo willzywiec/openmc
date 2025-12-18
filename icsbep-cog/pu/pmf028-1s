@@ -2,7 +2,7 @@ PMF028-1S: 1.176cm void; 9.8375 kg delta-239Pu(89%); 19.65cm Steel reflector; si
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=6
    -2  0  0  2 0 0
     0 -2  0  0 2 0
     0  0 -2  0 0 2

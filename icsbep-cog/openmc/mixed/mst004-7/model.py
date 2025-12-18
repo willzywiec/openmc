@@ -1,0 +1,210 @@
+"""
+MIX-SOL-THERM-004-7: Exp. No. 067 with 41.83 gPu/l and 63.55 gU/L with 0.61M
+Converted from COG to OpenMC
+"""
+
+import openmc
+
+# ==============================================================================
+# Materials
+# ==============================================================================
+
+# Solution
+mat1 = openmc.Material(material_id=1)
+mat1.set_density("sum")
+mat1.add_nuclide("Pu238", 3.068800e-08)
+mat1.add_nuclide("Pu239", 9.601700e-05)
+mat1.add_nuclide("Pu240", 8.720200e-06)
+mat1.add_nuclide("Pu241", 4.702500e-07)
+mat1.add_nuclide("Pu242", 9.678300e-08)
+mat1.add_nuclide("U234", 1.144600e-08)
+mat1.add_nuclide("U235", 9.183200e-07)
+mat1.add_nuclide("U236", 3.729000e-08)
+mat1.add_nuclide("U238", 1.598100e-04)
+mat1.add_nuclide("Am241", 5.435700e-07)
+mat1.add_nuclide("H1", 6.347500e-02)
+mat1.add_element("N", 1.123100e-03)
+mat1.add_nuclide("O16", 3.524600e-02)
+mat1.add_nuclide("B10", 2.272000e-08)
+mat1.add_element("Cd", 1.277300e-08)
+mat1.add_element("Fe", 1.323900e-06)
+mat1.add_element("Gd", 1.762100e-09)
+mat1.add_nuclide("Li6", 8.165500e-10)
+mat1.add_s_alpha_beta("c_H_in_H2O")
+
+# SS304L
+mat2 = openmc.Material(material_id=2)
+mat2.set_density("sum")
+mat2.add_element("Fe", 6.137600e-02)
+mat2.add_element("Cr", 1.764800e-02)
+mat2.add_element("Ni", 8.229200e-03)
+mat2.add_element("C", 1.206300e-04)
+
+# Carbon
+mat3 = openmc.Material(material_id=3)
+mat3.set_density("sum")
+mat3.add_element("Fe", 8.366500e-02)
+mat3.add_element("P", 4.561200e-06)
+mat3.add_element("S", 2.790400e-05)
+mat3.add_element("Mn", 3.257400e-04)
+mat3.add_element("Si", 3.185900e-04)
+mat3.add_element("C", 7.449500e-04)
+
+# Concrete
+mat4 = openmc.Material(material_id=4)
+mat4.set_density("sum")
+mat4.add_nuclide("O16", 4.552500e-02)
+mat4.add_element("Si", 1.154100e-02)
+mat4.add_element("Ca", 4.201200e-03)
+mat4.add_element("Al", 2.491000e-03)
+mat4.add_element("Fe", 8.467000e-04)
+mat4.add_nuclide("H1", 1.461700e-02)
+mat4.add_element("Na", 8.727800e-04)
+mat4.add_element("Mg", 5.311200e-04)
+mat4.add_element("K", 2.583900e-04)
+mat4.add_element("S", 1.662800e-04)
+mat4.add_element("Ti", 9.670200e-05)
+mat4.add_s_alpha_beta("c_H_in_H2O")
+
+materials = openmc.Materials([mat1, mat2, mat3, mat4])
+
+# ==============================================================================
+# Geometry
+# ==============================================================================
+
+# Dump line, inner
+surf1 = openmc.ZCylinder(surface_id=1, r=2.625)
+# Dump line, outer
+surf2 = openmc.ZCylinder(surface_id=2, x0=-16.953, y0=-0.953, r=3.016)
+# Solution tank, inner
+surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=90.6, r=17.695)
+# Solution tank, outer
+surf4 = openmc.ZCylinder(surface_id=4, x0=-0.953, y0=91.553, r=17.774)
+# Sol'n height
+surf5 = openmc.ZPlane(surface_id=5, z0=29.36)
+# Dump line, inner
+surf6_cyl = openmc.ZCylinder(surface_id=6, x0=tr, y0=0, r=2.625)
+surf6_zmin = openmc.ZPlane(z0=80.01)
+surf6_zmax = openmc.ZPlane(z0=0.0)
+surf6 = (surf6_cyl, surf6_zmin, surf6_zmax)
+# Dump line, outer
+# surf7: Error converting surface type "c": could not convert string to float: 'tr'
+# Empty tank, inner
+# surf8: Error converting surface type "c": could not convert string to float: 'tr'
+# Empty tank, outer
+# surf9: Error converting surface type "c": could not convert string to float: 'tr'
+# Reflector tank, inner
+surf10 = openmc.model.RectangularParallelepiped(-48.745, 48.745, -46.845, 130.665, -16.953, 139.107)
+# Reflector tank, outer
+surf11 = openmc.model.RectangularParallelepiped(-48.895, 48.895, -46.995, 130.815, -17.588, 139.257)
+# Concrete tank, inner
+surf12 = openmc.model.RectangularParallelepiped(-866.105, 200.895, -509.190, 557.810, -144.528, 495.442)
+# Concrete tank, outer
+surf13 = openmc.model.RectangularParallelepiped(-1018.105, 352.895, -600.190, 709.810, -205.528, 556.442, boundary_type="vacuum")
+# Concrete, inner, upper
+surf21_cyl = openmc.ZCylinder(surface_id=21, x0=tr, y0=-0.6, r=18.415)
+surf21_zmin = openmc.ZPlane(z0=0.3)
+surf21_zmax = openmc.ZPlane(z0=0.0)
+surf21 = (surf21_cyl, surf21_zmin, surf21_zmax)
+# Concrete, outer, upper
+# surf22: Error converting surface type "c": could not convert string to float: 'tr'
+# Concrete
+surf23 = openmc.XPlane(surface_id=23, x0=-30.5)
+# female
+surf24 = openmc.XPlane(surface_id=24, x0=30.5)
+# nesting
+surf25 = openmc.YPlane(surface_id=25, y0=-7.62)
+# feature
+surf26 = openmc.YPlane(surface_id=26, y0=0.0)
+# Concrete, inner, lower
+surf31_cyl = openmc.ZCylinder(surface_id=31, x0=tr, y0=-0.4, r=18.415)
+surf31_zmin = openmc.ZPlane(z0=-1.5)
+surf31_zmax = openmc.ZPlane(z0=0.0)
+surf31 = (surf31_cyl, surf31_zmin, surf31_zmax)
+# Concrete, outer, lower
+# surf32: Error converting surface type "c": could not convert string to float: 'tr'
+# Concrete
+surf33 = openmc.XPlane(surface_id=33, x0=-29.5)
+# male
+surf34 = openmc.XPlane(surface_id=34, x0=29.5)
+# nesting
+surf35 = openmc.YPlane(surface_id=35, y0=-7.62)
+# feature
+surf36 = openmc.YPlane(surface_id=36, y0=0.0)
+
+# ------------------------------------------------------------------------------
+# Root Cells
+# ------------------------------------------------------------------------------
+
+# SS304L
+cell1 = openmc.Cell(cell_id=1, fill=mat2)
+cell1.region = +surf1 & -surf2 & -surf10
+
+# Soln
+cell2 = openmc.Cell(cell_id=2, fill=mat1)
+cell2.region = -surf3 & -surf5
+
+# SS304L
+cell3 = openmc.Cell(cell_id=3, fill=mat2)
+cell3.region = +surf2 & +surf3 & -surf4 & -surf10
+
+# SS304L
+cell4 = openmc.Cell(cell_id=4, fill=mat2)
+cell4.region = +surf6 & -surf7 & -surf10
+
+# SS304L
+cell5 = openmc.Cell(cell_id=5, fill=mat2)
+cell5.region = +surf7 & +surf8 & -surf9 & -surf10
+
+# CSTEEL
+cell6 = openmc.Cell(cell_id=6, fill=mat3)
+cell6.region = +surf10 & -surf11
+
+# Cncrt
+cell7 = openmc.Cell(cell_id=7, fill=mat4)
+cell7.region = +surf12 & -surf13
+
+# Cncrt
+cell8 = openmc.Cell(cell_id=8, fill=mat4)
+cell8.region = -surf10 & +surf21 & -surf22 & +surf26
+
+# Cncrt
+cell9 = openmc.Cell(cell_id=9, fill=mat4)
+cell9.region = -surf10 & +surf21 & -surf22 & -surf23 & +surf25 & -surf26
+
+# Cncrt
+cell10 = openmc.Cell(cell_id=10, fill=mat4)
+cell10.region = -surf10 & +surf21 & -surf22 & +surf24 & +surf25 & -surf26
+
+# Cncrt
+cell11 = openmc.Cell(cell_id=11, fill=mat4)
+cell11.region = -surf10 & +surf31 & -surf32 & +surf33 & -surf34 & +surf35 & -surf36
+
+# Cncrt
+cell12 = openmc.Cell(cell_id=12, fill=mat4)
+cell12.region = -surf10 & +surf31 & -surf32 & -surf35 & -surf36
+
+root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12])
+geometry = openmc.Geometry(root_universe)
+
+# ==============================================================================
+# Settings
+# ==============================================================================
+
+settings = openmc.Settings()
+settings.particles = 10000
+settings.batches = 150
+settings.inactive = 10
+settings.run_mode = "eigenvalue"
+
+source = openmc.IndependentSource()
+source.space = openmc.stats.Point((0.0, 0.0, 14.68))
+settings.source = source
+
+# ==============================================================================
+# Export
+# ==============================================================================
+
+materials.export_to_xml()
+geometry.export_to_xml()
+settings.export_to_xml()

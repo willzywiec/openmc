@@ -2,7 +2,7 @@ MIX-SOL-THERM-001-8: Exp. No. 096
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=6
   -19.7 0 34.85  -19.7 0 34.85  0 0 34.85
    19.7 0 34.85   19.7 0 34.85  0 0 40.235
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

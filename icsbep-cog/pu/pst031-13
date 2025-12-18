@@ -2,7 +2,7 @@ PU-SOL-THERM-031-13: H/X=829 with no Hafnium
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1
   0 0 14.265
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches    u238 9.3348-8 pu239 6.9663-5 pu240 1.7463-5 pu241 4.6676-6 pu242 1.0377-6 am241 1.0461-6 $ Plutonium

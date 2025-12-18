@@ -2,7 +2,7 @@ U233-MET-FAST-006: 5.740 kg 233U(98.1) in FLATTOP
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 w-p 18.42 u233 98.13 u234 1.24 u235 0.03 u238 0.60 $ U-233 per Table 2

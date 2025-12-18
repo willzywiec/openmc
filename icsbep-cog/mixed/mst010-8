@@ -2,7 +2,7 @@ MST010-8: Exp. 150 with H/X=296 and 0.519 gGd/L and 1.5 gB/L
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 33.915
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 33.915
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches pu238 2.6624-8 pu239 1.9043-4 pu240 1.2411-5 pu241 9.0605-7 pu242 1.0473-7 $ Solution
                  u234 3.7135-8  u235 3.0413-6  u236 5.9832-8  u238 4.5327-4 am241 6.0660-8

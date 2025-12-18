@@ -2,7 +2,7 @@ MMI003-1: ZPR-3/54 Loading 11 Benchmark Model (Simplified)
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches pu240 1.06599-4 pu241 8.39340-6 u235 6.02648-6 u238 2.60167-3 pu239 1.65483-3 pu242 3.42253-7 $ Core
                 am241 2.89303-6    cr 1.84689-3   ni 7.93454-4   fe 7.30229-3    al 1.10407-4     c 5.55813-2 $  

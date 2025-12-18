@@ -2,7 +2,7 @@ LEU-COMP-THERM-005-13: 1,495 U(4.31)O2 rods in water; 1.598 cm pitch; 0.121gGd/L
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 48.26
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=1 0 0 48.26
 assign-mc
   1 red 2 yellow 3 gray 4 lime 5 blue 6 sky
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

@@ -2,7 +2,7 @@ IEU-COMP-FAST-004-1: ZPR-3 Assembly 12: Simplified benchmark R/Z model
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=500 nbatch=505 sdt=0.0001 nfirst=6 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 0
 mix nlib=ENDFB7R1 ptlib=PT.ENDFB7R1.BNL
   mat=1 bunches u235 4.53763-3 u238 1.68116-2 u234 4.40100-5 u236 2.10981-5 cr 1.44259-3 ni 6.19051-4 fe 5.78763-3   c 2.67827-2 mn 7.21394-5 $ Core

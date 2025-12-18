@@ -2,7 +2,7 @@ LCT041-1: CRISTO II Configuration A
 basic
   neutron delayedn MM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=4 
   -6.3 -6.3 0
    6.3 -6.3 0
   -6.3  6.3 0

@@ -2,7 +2,7 @@ LCT022-1: 1,969 U(10)O2 rods with 0.7 cm hexagonal pitch
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 42.8
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 42.8
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 1.7636-5 u235 2.1577-3 u236 1.5300-5 u238 1.9510-2 o16 4.4661-2 $ U(10)O2
   mat=2 bunches   fe 5.8894-2   cr 1.6469-2   ni 8.1061-3   si 1.3551-3  mn 1.2990-3 $ SST

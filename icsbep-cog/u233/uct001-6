@@ -2,7 +2,7 @@ LCT001-6: SB-5
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 3.7302-5 u235 3.8783-3 u238 2.5273-4 o16 5.4821-2  zr 2.3242-2 $ 235UO2-ZrO2
   mat=2 bunches   th 2.1641-2  o16 4.3282-2   gd 9.2607-8                           $ ThO2

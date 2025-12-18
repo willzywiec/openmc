@@ -2,7 +2,7 @@ LCT063-4: DIMPLE S06C/3
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=100 nbatch=520 sdt=0.0001 nfirst=21 norm=1. nsource=4 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4 
    -0.62535 -0.62535 26.9
    -0.62535  0.62535 26.9
     0.62535 -0.62535 26.9

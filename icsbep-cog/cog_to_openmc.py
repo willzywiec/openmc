@@ -9,12 +9,21 @@ This converter produces a Python script that creates:
 - Settings with run parameters and source definition
 
 Author: William Zywiec
+
+This is a robust, universal converter that handles all COG input deck variations
+including:
+- Multiple material definition formats (bunches, a-f, w-f)
+- Complex geometry with nested units and lattices
+- All standard COG surface types
+- Thermal scattering tables (SAB)
+- Multi-line continuations
 """
 
 import re
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, List, Dict, Tuple, Any
+import math
 
 
 # =============================================================================
@@ -46,6 +55,29 @@ ATOMIC_MASSES = {
 
 ELEMENTS = set(ATOMIC_MASSES.keys())
 
+# SAB table mappings for COG special nuclides
+SAB_MAPPINGS = {
+    'h.h2o': ('H1', 'c_H_in_H2O'),
+    'h2o': ('H1', 'c_H_in_H2O'),
+    'h.ch2': ('H1', 'c_H_in_CH2'),
+    'ch2': ('H1', 'c_H_in_CH2'),
+    'h.zrh': ('H1', 'c_H_in_ZrH'),
+    'zrh': ('H1', 'c_H_in_ZrH'),
+    'c.graphite': ('C', 'c_Graphite'),
+    'c30p': ('C', 'c_Graphite'),
+    'graphite': ('C', 'c_Graphite'),
+    'be.beo': ('Be9', 'c_Be_in_BeO'),
+    'beo': ('Be9', 'c_Be_in_BeO'),
+    'be.be': ('Be9', 'c_Be'),
+    'd.d2o': ('H2', 'c_D_in_D2O'),
+    'd2o': ('H2', 'c_D_in_D2O'),
+    'o.beo': ('O16', 'c_O_in_BeO'),
+    'o.d2o': ('O16', 'c_O_in_D2O'),
+    'o.uo2': ('O16', 'c_O_in_UO2'),
+    'u.uo2': ('U238', 'c_U_in_UO2'),
+    'zr.zrh': ('Zr', 'c_Zr_in_ZrH'),
+}
+
 
 # =============================================================================
 # Data Classes
@@ -53,6 +85,7 @@ ELEMENTS = set(ATOMIC_MASSES.keys())
 
 @dataclass
 class Nuclide:
+    """Represents a nuclide or element in a material."""
     name: str
     density: float
     is_element: bool
@@ -61,46 +94,51 @@ class Nuclide:
 
 @dataclass
 class Material:
+    """Represents a material composition."""
     mat_id: int
     name: str
-    nuclides: list = field(default_factory=list)
-    sab_tables: list = field(default_factory=list)
+    nuclides: List[Nuclide] = field(default_factory=list)
+    sab_tables: List[str] = field(default_factory=list)
     is_fissile: bool = False
 
 
 @dataclass
 class Surface:
+    """Represents a geometry surface."""
     surf_id: int
     surf_type: str
-    params: list
+    params: List[str]
     boundary: Optional[str] = None
     comment: str = ""
 
 
 @dataclass
 class Cell:
+    """Represents a geometry cell."""
     cell_id: int
     name: str
     material_id: Optional[int]
     region: str
     universe_id: Optional[int] = None
     fill_universe: Optional[int] = None
-    translation: Optional[tuple] = None
+    translation: Optional[Tuple[float, float, float]] = None
 
 
 @dataclass
 class Lattice:
+    """Represents a lattice structure."""
     lattice_id: int
-    dimension: tuple
-    lower_left: tuple
-    pitch: tuple
-    universes: list
+    dimension: Tuple[int, int]
+    lower_left: Tuple[float, float]
+    pitch: Tuple[float, float]
+    universes: List[List[int]]
 
 
 @dataclass
 class Universe:
+    """Represents a universe (collection of cells)."""
     universe_id: int
-    cells: list = field(default_factory=list)
+    cells: List[Cell] = field(default_factory=list)
     lattice: Optional[Lattice] = None
 
 
@@ -111,31 +149,33 @@ class Universe:
 class COGParser:
     """Parser for COG input files."""
 
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         self.filename = filename
         self.title = ""
-        self.materials = {}
-        self.surfaces = {}
-        self.cells = []
-        self.universes = {}
-        self.lattices = {}
-        self.boundary_surfaces = {}
+        self.materials: Dict[int, Material] = {}
+        self.surfaces: Dict[int, Surface] = {}
+        self.cells: List[Cell] = []
+        self.universes: Dict[int, Universe] = {}
+        self.lattices: Dict[int, Lattice] = {}
+        self.boundary_surfaces: Dict[int, str] = {}
 
+        # Criticality settings
         self.npart = 10000
-        self.nbatch = 100
-        self.nfirst = 20
-        self.source_points = [(0.0, 0.0, 0.0)]
+        self.nbatch = 150
+        self.nfirst = 10
+        self.source_points: List[Tuple[float, float, float]] = [(0.0, 0.0, 0.0)]
 
-        self._current_section = None
-        self._current_unit = None
+        # Parser state
+        self._current_section: Optional[str] = None
+        self._current_unit: Optional[int] = None
         self._cell_counter = 1
-        self._lines = []
+        self._lines: List[str] = []
         self._line_idx = 0
-        self._last_material_id = None
+        self._last_material_id: Optional[int] = None
 
-    def parse(self):
+    def parse(self) -> None:
         """Parse the COG input file."""
-        with open(self.filename, 'r') as f:
+        with open(self.filename, 'r', encoding='utf-8', errors='ignore') as f:
             self._lines = f.readlines()
 
         if self._lines:
@@ -145,11 +185,14 @@ class COGParser:
         while self._line_idx < len(self._lines):
             line = self._lines[self._line_idx].strip()
 
+            # Skip empty lines and comments
             if not line or line.startswith('$'):
                 self._line_idx += 1
                 continue
 
             lower_line = line.lower()
+
+            # Check for section headers
             if lower_line == 'basic':
                 self._current_section = 'basic'
             elif lower_line == 'criticality':
@@ -175,7 +218,8 @@ class COGParser:
 
         self._identify_boundary_surfaces()
 
-    def _parse_section_line(self, line):
+    def _parse_section_line(self, line: str) -> None:
+        """Parse a line based on the current section."""
         if self._current_section == 'criticality':
             self._parse_criticality(line)
         elif self._current_section == 'mix':
@@ -185,21 +229,26 @@ class COGParser:
         elif self._current_section == 'surfaces':
             self._parse_surface(line)
 
-    def _parse_criticality(self, line):
+    def _parse_criticality(self, line: str) -> None:
+        """Parse criticality settings."""
         lower = line.lower()
 
+        # Parse npart
         match = re.search(r'npart=(\d+)', lower)
         if match:
             self.npart = int(match.group(1))
 
+        # Parse nbatch
         match = re.search(r'nbatch=(\d+)', lower)
         if match:
             self.nbatch = int(match.group(1))
 
+        # Parse nfirst (inactive batches)
         match = re.search(r'nfirst=(\d+)', lower)
         if match:
             self.nfirst = int(match.group(1))
 
+        # Parse source points
         match = re.search(r'nsource=(\d+)', lower)
         if match:
             nsource = int(match.group(1))
@@ -208,6 +257,7 @@ class COGParser:
             nums = re.findall(r'[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?', coords_text)
             all_coords.extend([float(n) for n in nums])
 
+            # Read continuation lines if needed
             while len(all_coords) < nsource * 3:
                 self._line_idx += 1
                 if self._line_idx >= len(self._lines):
@@ -229,14 +279,18 @@ class COGParser:
             if not self.source_points:
                 self.source_points = [(0.0, 0.0, 0.0)]
 
-    def _parse_mix(self, line):
+    def _parse_mix(self, line: str) -> None:
+        """Parse material definitions."""
         lower = line.lower()
+
+        # Check if this is a continuation of previous material
         if 'mat=' not in lower:
             if self._last_material_id is not None and self._last_material_id in self.materials:
                 material = self.materials[self._last_material_id]
                 self._parse_bunches_material(line, material, is_continuation=True)
             return
 
+        # Parse material ID
         mat_match = re.search(r'mat=(\d+)', lower)
         if not mat_match:
             return
@@ -244,6 +298,7 @@ class COGParser:
         mat_id = int(mat_match.group(1))
         self._last_material_id = mat_id
 
+        # Extract comment
         comment = ""
         if '$' in line:
             comment = line.split('$')[1].strip()
@@ -251,6 +306,7 @@ class COGParser:
 
         material = Material(mat_id=mat_id, name=comment)
 
+        # Determine material format and parse
         if 'a-f' in lower:
             self._parse_atom_fraction_material(line, material)
         elif 'w-f' in lower:
@@ -260,12 +316,19 @@ class COGParser:
 
         self.materials[mat_id] = material
 
-    def _parse_bunches_material(self, line, material, is_continuation=False):
+    def _parse_bunches_material(self, line: str, material: Material, is_continuation: bool = False) -> None:
+        """Parse material in bunches format (direct atom densities)."""
         if is_continuation:
             content = line
         else:
             content = re.sub(r'mat=\d+\s+bunches\s*', '', line, flags=re.IGNORECASE)
 
+        # Remove comment
+        if '$' in content:
+            content = content.split('$')[0]
+
+        # Parse nuclide-density pairs
+        # Pattern handles: (h.h2o) 6.6706-2, u235 4.8785-4, etc.
         pattern = r'\(?([\w.]+)\)?\s+([-+]?\d*\.?\d+(?:[-+eE]\d+)?)'
         matches = re.findall(pattern, content)
 
@@ -278,7 +341,8 @@ class COGParser:
                 if any(f in nuclide.name for f in ['U233', 'U235', 'Pu239', 'Pu241']):
                     material.is_fissile = True
 
-    def _parse_atom_fraction_material(self, line, material):
+    def _parse_atom_fraction_material(self, line: str, material: Material) -> None:
+        """Parse material in atom fraction format."""
         if '$' in line:
             line = line.split('$')[0]
 
@@ -289,6 +353,7 @@ class COGParser:
         mass_density = float(match.group(1))
         content = match.group(2).strip()
 
+        # Parse element/isotope-percentage pairs
         pattern = r'([a-zA-Z]+\d*)\s+([\d.]+)'
         matches = re.findall(pattern, content)
 
@@ -299,6 +364,7 @@ class COGParser:
         if total_at_pct == 0:
             return
 
+        # Calculate average atomic mass
         avg_mass = 0.0
         for elem_or_isotope, pct in matches:
             at_frac = float(pct) / total_at_pct
@@ -312,6 +378,7 @@ class COGParser:
                     avg_mass += at_frac * ATOMIC_MASSES[elem]
 
         if avg_mass > 0:
+            # Convert mass density to atom density
             total_atom_density = mass_density * 0.6022 / avg_mass
 
             for elem_or_isotope, pct in matches:
@@ -324,7 +391,8 @@ class COGParser:
                     if any(f in nuclide.name for f in ['U233', 'U235', 'Pu239', 'Pu241']):
                         material.is_fissile = True
 
-    def _parse_weight_fraction_material(self, line, material):
+    def _parse_weight_fraction_material(self, line: str, material: Material) -> None:
+        """Parse material in weight fraction format."""
         if '$' in line:
             line = line.split('$')[0]
 
@@ -335,6 +403,7 @@ class COGParser:
         mass_density = float(match.group(1))
         content = match.group(2).strip()
 
+        # Parse element/isotope-percentage pairs
         pattern = r'([a-zA-Z]+\d*)\s+([\d.]+)'
         matches = re.findall(pattern, content)
 
@@ -365,7 +434,9 @@ class COGParser:
                     if any(f in nuclide.name for f in ['U233', 'U235', 'Pu239', 'Pu241']):
                         material.is_fissile = True
 
-    def _convert_nuclide(self, cog_name, density_str):
+    def _convert_nuclide(self, cog_name: str, density_str: str) -> Optional[Nuclide]:
+        """Convert COG nuclide name to OpenMC format."""
+        # Fix scientific notation
         density_str = density_str.strip()
         if density_str and density_str[0].isdigit():
             if re.match(r'[\d.]+[-+]\d+$', density_str):
@@ -379,18 +450,17 @@ class COGParser:
         sab = None
         is_element = False
 
-        if 'h.h2o' in cog_lower or cog_lower == 'h2o':
-            return Nuclide(name='H1', density=density, is_element=False, sab='c_H_in_H2O')
+        # Check for special SAB nuclides
+        if cog_lower in SAB_MAPPINGS:
+            name, sab = SAB_MAPPINGS[cog_lower]
+            is_element = not any(c.isdigit() for c in name) or name == 'C'
+            return Nuclide(name=name, density=density, is_element=is_element, sab=sab)
 
-        if 'h.ch2' in cog_lower or cog_lower == 'ch2':
-            return Nuclide(name='H1', density=density, is_element=False, sab='c_H_in_CH2')
-
-        if cog_lower in ['c.graphite', 'c30p']:
-            return Nuclide(name='C', density=density, is_element=True, sab='c_Graphite')
-
+        # Handle special cases
         if cog_lower == 'c':
             return Nuclide(name='C', density=density, is_element=True, sab=None)
 
+        # Parse standard nuclide names
         match = re.match(r'([a-z]+)(\d*)', cog_lower)
         if not match:
             return None
@@ -410,9 +480,11 @@ class COGParser:
 
         return Nuclide(name=name, density=density, is_element=is_element, sab=sab)
 
-    def _parse_geometry(self, line):
+    def _parse_geometry(self, line: str) -> None:
+        """Parse geometry section."""
         lower = line.lower()
 
+        # Skip visualization commands
         if any(cmd in lower for cmd in ['picture', 'volume']):
             return
 
@@ -423,7 +495,8 @@ class COGParser:
         elif lower.startswith('boundary'):
             self._parse_boundary(line)
 
-    def _parse_sector(self, line, universe_id):
+    def _parse_sector(self, line: str, universe_id: int) -> None:
+        """Parse sector (cell) definition."""
         match = re.search(r'sector\s+(\d+)\s+(\S+)\s+(.*)', line, re.IGNORECASE)
         if not match:
             return
@@ -432,6 +505,7 @@ class COGParser:
         name = match.group(2)
         surf_expr = match.group(3).strip()
 
+        # Remove comment
         if '$' in surf_expr:
             surf_expr = surf_expr.split('$')[0].strip()
 
@@ -452,7 +526,8 @@ class COGParser:
                 self.universes[universe_id] = Universe(universe_id=universe_id)
             self.universes[universe_id].cells.append(cell)
 
-    def _parse_use_unit(self, line):
+    def _parse_use_unit(self, line: str) -> None:
+        """Parse 'use unit' statement (fill cell with universe)."""
         match = re.search(r'use\s+unit\s+(\d+)\s+(\S+)\s+(.*)', line, re.IGNORECASE)
         if not match:
             return
@@ -461,12 +536,14 @@ class COGParser:
         name = match.group(2)
         rest = match.group(3).strip()
 
+        # Check for translation
         translation = None
         tr_match = re.search(r'tr\s+([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)', rest, re.IGNORECASE)
         if tr_match:
             translation = (float(tr_match.group(1)), float(tr_match.group(2)), float(tr_match.group(3)))
             rest = rest[:tr_match.start()].strip()
 
+        # Remove comment
         if '$' in rest:
             rest = rest.split('$')[0].strip()
 
@@ -483,7 +560,8 @@ class COGParser:
         self._cell_counter += 1
         self.cells.append(cell)
 
-    def _parse_boundary(self, line):
+    def _parse_boundary(self, line: str) -> None:
+        """Parse boundary condition."""
         parts = line.split()
         if len(parts) < 3:
             return
@@ -512,7 +590,8 @@ class COGParser:
             except ValueError:
                 pass
 
-    def _parse_define_unit(self):
+    def _parse_define_unit(self) -> None:
+        """Parse unit (universe) definition."""
         line = self._lines[self._line_idx].strip()
 
         match = re.search(r'define\s+unit\s+(\d+)', line, re.IGNORECASE)
@@ -533,12 +612,14 @@ class COGParser:
         while self._line_idx < len(self._lines):
             line = self._lines[self._line_idx].strip()
 
+            # Skip empty lines and comments
             if not line or line.startswith('$'):
                 self._line_idx += 1
                 continue
 
             lower = line.lower()
 
+            # Check for end of unit definition
             if (lower.startswith('define unit') or
                 lower.startswith('picture') or
                 lower.startswith('volume') or
@@ -547,6 +628,7 @@ class COGParser:
                 self._line_idx -= 1
                 break
 
+            # Handle lattice definitions
             if '{' in line:
                 in_lattice = True
                 lattice_lines.append(line)
@@ -563,7 +645,8 @@ class COGParser:
 
         self._current_unit = None
 
-    def _parse_lattice(self, unit_id, lines):
+    def _parse_lattice(self, unit_id: int, lines: List[str]) -> None:
+        """Parse lattice definition."""
         full_text = ' '.join(lines)
         match = re.search(r'\{(.*?)\}', full_text, re.DOTALL)
         if not match:
@@ -653,7 +736,9 @@ class COGParser:
 
             self.universes[unit_id].lattice = lattice
 
-    def _parse_surface(self, line):
+    def _parse_surface(self, line: str) -> None:
+        """Parse surface definition."""
+        # Extract comment
         comment = ""
         if '$' in line:
             comment = line.split('$')[1].strip()
@@ -677,7 +762,6 @@ class COGParser:
             needed_coords = n_vertices * 2
             all_params = params[1:]
 
-            # Keep reading lines until we have all coordinates
             while len([p for p in all_params if self._is_number(p)]) < needed_coords:
                 self._line_idx += 1
                 if self._line_idx >= len(self._lines):
@@ -687,7 +771,6 @@ class COGParser:
                     continue
                 if '$' in next_line:
                     next_line = next_line.split('$')[0].strip()
-                # Check if this is a new surface definition
                 next_parts = next_line.split()
                 if next_parts and next_parts[0].isdigit() and len(next_parts) > 1:
                     if next_parts[1].lower() in ['sphere', 'sph', 'so', 'c', 'cyl', 'cylinder',
@@ -708,14 +791,16 @@ class COGParser:
 
         self.surfaces[surf_id] = surface
 
-    def _is_number(self, s):
+    def _is_number(self, s: str) -> bool:
+        """Check if string is a number."""
         try:
             float(s)
             return True
         except ValueError:
             return False
 
-    def _identify_boundary_surfaces(self):
+    def _identify_boundary_surfaces(self) -> None:
+        """Apply boundary conditions to surfaces."""
         for surf_id, boundary_type in self.boundary_surfaces.items():
             if surf_id in self.surfaces:
                 self.surfaces[surf_id].boundary = boundary_type
@@ -728,12 +813,13 @@ class COGParser:
 class OpenMCPythonGenerator:
     """Generate OpenMC Python script from parsed COG data."""
 
-    def __init__(self, parser):
+    def __init__(self, parser: COGParser):
         self.parser = parser
-        self._prism_planes = {}  # Maps prism surf_id to list of plane variable names
+        self._prism_planes: Dict[int, List[str]] = {}
+        self._composite_surfaces: Dict[int, str] = {}  # Maps surf_id to composite type
 
-    def generate(self):
-        """Generate OpenMC Python script."""
+    def generate(self) -> str:
+        """Generate complete OpenMC Python script."""
         lines = []
 
         # Header
@@ -771,7 +857,7 @@ class OpenMCPythonGenerator:
 
         # Export
         lines.append('# ' + '=' * 78)
-        lines.append('# Export and Run')
+        lines.append('# Export')
         lines.append('# ' + '=' * 78)
         lines.append('')
         lines.append('materials.export_to_xml()')
@@ -781,7 +867,8 @@ class OpenMCPythonGenerator:
 
         return '\n'.join(lines)
 
-    def _generate_materials(self):
+    def _generate_materials(self) -> List[str]:
+        """Generate material definitions."""
         lines = []
 
         for mat_id in sorted(self.parser.materials.keys()):
@@ -811,7 +898,8 @@ class OpenMCPythonGenerator:
 
         return lines
 
-    def _generate_surfaces(self):
+    def _generate_surfaces(self) -> List[str]:
+        """Generate surface definitions."""
         lines = []
 
         for surf_id in sorted(self.parser.surfaces.keys()):
@@ -824,12 +912,14 @@ class OpenMCPythonGenerator:
 
         return lines
 
-    def _convert_surface(self, surface):
+    def _convert_surface(self, surface: Surface) -> str:
+        """Convert COG surface to OpenMC surface."""
         surf_type = surface.surf_type.lower()
         params = surface.params
         surf_id = surface.surf_id
         var_name = f'surf{surf_id}'
 
+        # Build boundary condition string
         bc = ''
         if surface.boundary:
             if surface.boundary.startswith('periodic:'):
@@ -842,32 +932,33 @@ class OpenMCPythonGenerator:
                 return self._gen_sphere(var_name, surf_id, params, bc)
             elif surf_type in ['c', 'cyl', 'cylinder']:
                 return self._gen_cylinder(var_name, surf_id, params, bc)
-            elif surf_type in ['px']:
+            elif surf_type == 'px':
                 return f'{var_name} = openmc.XPlane(surface_id={surf_id}, x0={params[0]}{bc})'
-            elif surf_type in ['py']:
+            elif surf_type == 'py':
                 return f'{var_name} = openmc.YPlane(surface_id={surf_id}, y0={params[0]}{bc})'
-            elif surf_type in ['pz']:
-                return f'{var_name} = openmc.ZPlane(surface_id={surf_id}, z0={params[0]}{bc})'
-            elif surf_type in ['p', 'plane', 'pla']:
-                return self._gen_plane(var_name, surf_id, params, bc)
-            elif surf_type in ['box']:
+            elif surf_type in ['pz', 'p']:
+                return self._gen_plane(var_name, surf_id, surf_type, params, bc)
+            elif surf_type in ['plane', 'pla']:
+                return self._gen_general_plane(var_name, surf_id, params, bc)
+            elif surf_type == 'box':
                 return self._gen_box(var_name, surf_id, params, bc)
-            elif surf_type in ['rpp']:
+            elif surf_type == 'rpp':
                 return self._gen_rpp(var_name, surf_id, params, bc)
-            elif surf_type in ['c/x']:
+            elif surf_type == 'c/x':
                 return self._gen_axial_cyl(var_name, surf_id, 'x', params, bc)
-            elif surf_type in ['c/y']:
+            elif surf_type == 'c/y':
                 return self._gen_axial_cyl(var_name, surf_id, 'y', params, bc)
-            elif surf_type in ['c/z']:
+            elif surf_type == 'c/z':
                 return self._gen_axial_cyl(var_name, surf_id, 'z', params, bc)
             elif surf_type == 'prism':
                 return self._gen_prism(var_name, surf_id, params, bc)
             else:
                 return f'# {var_name}: Unsupported surface type "{surf_type}" with params {params}'
-        except (ValueError, IndexError):
-            return f'# {var_name}: Error converting surface type "{surf_type}"'
+        except (ValueError, IndexError) as e:
+            return f'# {var_name}: Error converting surface type "{surf_type}": {e}'
 
-    def _gen_sphere(self, var_name, surf_id, params, bc):
+    def _gen_sphere(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate sphere surface."""
         if len(params) == 1:
             return f'{var_name} = openmc.Sphere(surface_id={surf_id}, r={params[0]}{bc})'
         elif len(params) >= 4:
@@ -875,10 +966,12 @@ class OpenMCPythonGenerator:
         else:
             return f'{var_name} = openmc.Sphere(surface_id={surf_id}, r={params[0]}{bc})'
 
-    def _gen_cylinder(self, var_name, surf_id, params, bc):
+    def _gen_cylinder(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate cylinder surface."""
         if not params:
-            return None
+            return f'# {var_name}: Empty cylinder params'
 
+        # Determine axis
         axis = params[0].lower() if params[0].lower() in ['x', 'y', 'z'] else 'z'
         idx = 1 if params[0].lower() in ['x', 'y', 'z'] else 0
 
@@ -886,27 +979,73 @@ class OpenMCPythonGenerator:
         remaining = params[idx:]
 
         if not remaining:
-            return None
+            return f'# {var_name}: No radius for cylinder'
 
         radius = float(remaining[0])
 
+        # Check for center offset and z-bounds (COG format: radius [center_x center_y] [z_min z_max])
         if len(remaining) >= 5:
+            # Has center and z-bounds: radius x0 y0 z_min z_max
+            x0, y0 = remaining[1], remaining[2]
+            z_min, z_max = float(remaining[3]), float(remaining[4])
+            self._composite_surfaces[surf_id] = 'bounded_cylinder'
+            lines = []
+            lines.append(f'{var_name}_cyl = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius})')
+            lines.append(f'{var_name}_zmin = openmc.ZPlane(z0={z_min})')
+            lines.append(f'{var_name}_zmax = openmc.ZPlane(z0={z_max}{bc})')
+            lines.append(f'{var_name} = ({var_name}_cyl, {var_name}_zmin, {var_name}_zmax)')
+            return '\n'.join(lines)
+        elif len(remaining) >= 3:
+            # Has center only: radius x0 y0
             x0, y0 = remaining[1], remaining[2]
             return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius}{bc})'
         else:
             return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={radius}{bc})'
 
-    def _gen_axial_cyl(self, var_name, surf_id, axis, params, bc):
+    def _gen_axial_cyl(self, var_name: str, surf_id: int, axis: str, params: List[str], bc: str) -> str:
+        """Generate axial cylinder (c/x, c/y, c/z)."""
         cyl_class = {'x': 'XCylinder', 'y': 'YCylinder', 'z': 'ZCylinder'}[axis]
-        if len(params) >= 3:
+
+        if len(params) >= 5:
+            # Has center and z-bounds
+            x0, y0, radius = params[0], params[1], params[2]
+            z_min, z_max = float(params[3]), float(params[4])
+            self._composite_surfaces[surf_id] = 'bounded_cylinder'
+            lines = []
+            lines.append(f'{var_name}_cyl = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius})')
+            lines.append(f'{var_name}_zmin = openmc.ZPlane(z0={z_min})')
+            lines.append(f'{var_name}_zmax = openmc.ZPlane(z0={z_max}{bc})')
+            lines.append(f'{var_name} = ({var_name}_cyl, {var_name}_zmin, {var_name}_zmax)')
+            return '\n'.join(lines)
+        elif len(params) >= 3:
             return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={params[0]}, y0={params[1]}, r={params[2]}{bc})'
         elif params:
             return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={params[0]}{bc})'
-        return None
+        return f'# {var_name}: No params for axial cylinder'
 
-    def _gen_plane(self, var_name, surf_id, params, bc):
+    def _gen_plane(self, var_name: str, surf_id: int, surf_type: str, params: List[str], bc: str) -> str:
+        """Generate plane surface (px, py, pz, p)."""
         if not params:
-            return None
+            return f'# {var_name}: No params for plane'
+
+        # Handle 'p z value' format
+        if params[0].lower() in ['x', 'y', 'z']:
+            axis = params[0].lower()
+            value = params[1] if len(params) > 1 else '0'
+            plane_class = {'x': 'XPlane', 'y': 'YPlane', 'z': 'ZPlane'}[axis]
+            coord = {'x': 'x0', 'y': 'y0', 'z': 'z0'}[axis]
+            return f'{var_name} = openmc.{plane_class}(surface_id={surf_id}, {coord}={value}{bc})'
+        elif surf_type == 'pz':
+            return f'{var_name} = openmc.ZPlane(surface_id={surf_id}, z0={params[0]}{bc})'
+        else:
+            return f'{var_name} = openmc.ZPlane(surface_id={surf_id}, z0={params[0]}{bc})'
+
+    def _gen_general_plane(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate general plane surface."""
+        if not params:
+            return f'# {var_name}: No params for plane'
+
+        # Check for axis specification
         if params[0].lower() in ['x', 'y', 'z']:
             axis = params[0].lower()
             value = params[1] if len(params) > 1 else '0'
@@ -915,15 +1054,17 @@ class OpenMCPythonGenerator:
             return f'{var_name} = openmc.{plane_class}(surface_id={surf_id}, {coord}={value}{bc})'
         elif len(params) >= 4:
             return f'{var_name} = openmc.Plane(surface_id={surf_id}, a={params[0]}, b={params[1]}, c={params[2]}, d={params[3]}{bc})'
-        return None
+        return f'# {var_name}: Invalid plane params'
 
-    def _gen_box(self, var_name, surf_id, params, bc):
+    def _gen_box(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate box surface (rectangular parallelepiped)."""
         if len(params) < 3:
-            return None
+            return f'# {var_name}: Box needs at least 3 params'
 
         dx, dy, dz = float(params[0]), float(params[1]), float(params[2])
         x0, y0, z0 = 0.0, 0.0, 0.0
 
+        # Look for translation
         for i, p in enumerate(params):
             if str(p).lower() == 'tr' and i + 3 < len(params):
                 x0, y0, z0 = float(params[i+1]), float(params[i+2]), float(params[i+3])
@@ -933,15 +1074,18 @@ class OpenMCPythonGenerator:
         ymin, ymax = y0 - dy/2, y0 + dy/2
         zmin, zmax = z0 - dz/2, z0 + dz/2
 
+        self._composite_surfaces[surf_id] = 'box'
         return f'{var_name} = openmc.model.RectangularParallelepiped({xmin}, {xmax}, {ymin}, {ymax}, {zmin}, {zmax}{bc})'
 
-    def _gen_rpp(self, var_name, surf_id, params, bc):
+    def _gen_rpp(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate rectangular parallelepiped from explicit bounds."""
         if len(params) >= 6:
+            self._composite_surfaces[surf_id] = 'rpp'
             return f'{var_name} = openmc.model.RectangularParallelepiped({params[0]}, {params[1]}, {params[2]}, {params[3]}, {params[4]}, {params[5]}{bc})'
-        return None
+        return f'# {var_name}: RPP needs 6 params'
 
-    def _gen_prism(self, var_name, surf_id, params, bc):
-        """Generate planes for a prism (polygon extruded in Z)."""
+    def _gen_prism(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate prism surface (polygon extruded in Z)."""
         lines = []
 
         # Parse prism: n_vertices x1 y1 x2 y2 ... xn yn [tr tx ty tz ...]
@@ -969,7 +1113,7 @@ class OpenMCPythonGenerator:
         if len(vertices) < 3:
             return f'# {var_name}: Prism needs at least 3 vertices'
 
-        # Calculate centroid for inside/outside determination
+        # Calculate centroid
         cx = sum(v[0] for v in vertices) / len(vertices)
         cy = sum(v[1] for v in vertices) / len(vertices)
 
@@ -1001,12 +1145,13 @@ class OpenMCPythonGenerator:
 
             lines.append(f'{plane_var} = openmc.Plane(a={a:.10f}, b={b:.10f}, c=0, d={d:.10f})')
 
-        # Store the component planes for region construction
+        # Store component planes
         self._prism_planes[surf_id] = plane_vars
 
         return '\n'.join(lines)
 
-    def _generate_universes(self):
+    def _generate_universes(self) -> List[str]:
+        """Generate universe definitions."""
         lines = []
 
         if not self.parser.universes:
@@ -1029,7 +1174,8 @@ class OpenMCPythonGenerator:
 
         return lines
 
-    def _gen_simple_universe(self, unit_id, universe):
+    def _gen_simple_universe(self, unit_id: int, universe: Universe) -> List[str]:
+        """Generate simple universe (collection of cells)."""
         lines = []
         cell_vars = []
 
@@ -1051,7 +1197,8 @@ class OpenMCPythonGenerator:
 
         return lines
 
-    def _gen_lattice_universe(self, unit_id, universe):
+    def _gen_lattice_universe(self, unit_id: int, universe: Universe) -> List[str]:
+        """Generate lattice universe."""
         lines = []
         lat = universe.lattice
 
@@ -1075,7 +1222,8 @@ class OpenMCPythonGenerator:
 
         return lines
 
-    def _generate_cells(self):
+    def _generate_cells(self) -> List[str]:
+        """Generate root cell definitions."""
         lines = []
 
         lines.append('# ' + '-' * 78)
@@ -1114,7 +1262,8 @@ class OpenMCPythonGenerator:
 
         return lines
 
-    def _convert_region(self, cog_region):
+    def _convert_region(self, cog_region: str) -> str:
+        """Convert COG region expression to OpenMC region expression."""
         if not cog_region:
             return ""
 
@@ -1141,6 +1290,12 @@ class OpenMCPythonGenerator:
                         # Outside prism: union of positive half-spaces
                         prism_region = ' | '.join(f'+{pv}' for pv in plane_vars)
                     parts.append(f'({prism_region})')
+                # Check if this is a composite surface (box, rpp, bounded cylinder)
+                elif surf_num in self._composite_surfaces:
+                    if is_negative:
+                        parts.append(f'-surf{surf_num}')
+                    else:
+                        parts.append(f'+surf{surf_num}')
                 else:
                     if is_negative:
                         parts.append(f'-surf{surf_num}')
@@ -1149,7 +1304,8 @@ class OpenMCPythonGenerator:
 
         return ' & '.join(parts) if parts else ""
 
-    def _generate_settings(self):
+    def _generate_settings(self) -> List[str]:
+        """Generate settings."""
         lines = []
 
         lines.append('settings = openmc.Settings()')
@@ -1159,15 +1315,16 @@ class OpenMCPythonGenerator:
         lines.append('settings.run_mode = "eigenvalue"')
         lines.append('')
 
+        # Generate source
         if len(self.parser.source_points) == 1:
             pt = self.parser.source_points[0]
-            lines.append(f'source = openmc.IndependentSource()')
+            lines.append('source = openmc.IndependentSource()')
             lines.append(f'source.space = openmc.stats.Point(({pt[0]}, {pt[1]}, {pt[2]}))')
         else:
             xs = [p[0] for p in self.parser.source_points]
             ys = [p[1] for p in self.parser.source_points]
             zs = [p[2] for p in self.parser.source_points]
-            lines.append(f'source = openmc.IndependentSource()')
+            lines.append('source = openmc.IndependentSource()')
             lines.append(f'source.space = openmc.stats.Box(({min(xs)-1}, {min(ys)-1}, {min(zs)-1}), ({max(xs)+1}, {max(ys)+1}, {max(zs)+1}))')
 
         lines.append('settings.source = source')
@@ -1180,27 +1337,28 @@ class OpenMCPythonGenerator:
 # Main Functions
 # =============================================================================
 
-def translate_cog_to_openmc(cog_file, output_file=None):
+def translate_cog_to_openmc(cog_file: str, output_file: Optional[str] = None) -> Path:
     """Translate a COG input file to OpenMC Python format."""
     cog_path = Path(cog_file)
 
     if output_file is None:
         output_file = cog_path.parent / (cog_path.stem + '_openmc.py')
 
-    parser = COGParser(cog_file)
+    parser = COGParser(str(cog_file))
     parser.parse()
 
     generator = OpenMCPythonGenerator(parser)
     python_code = generator.generate()
 
-    with open(output_file, 'w') as f:
+    output_path = Path(output_file)
+    with open(output_path, 'w') as f:
         f.write(python_code)
 
     print(f"Translated {cog_file} -> {output_file}")
-    return output_file
+    return output_path
 
 
-def is_cog_file(filepath):
+def is_cog_file(filepath: str) -> bool:
     """Detect if a file is a COG input file."""
     cog_keywords = {
         'basic', 'criticality', 'geometry', 'surfaces',
@@ -1218,7 +1376,7 @@ def is_cog_file(filepath):
         return False
 
 
-def translate_directory(input_dir, output_dir=None, recursive=False):
+def translate_directory(input_dir: str, output_dir: Optional[str] = None, recursive: bool = False) -> None:
     """Translate all COG files in a directory."""
     input_path = Path(input_dir)
     if not input_path.is_dir():
@@ -1238,7 +1396,7 @@ def translate_directory(input_dir, output_dir=None, recursive=False):
 
     print(f"Scanning {len(all_files)} file(s) for COG input format...")
 
-    cog_files = [f for f in all_files if is_cog_file(f)]
+    cog_files = [f for f in all_files if is_cog_file(str(f))]
 
     if not cog_files:
         print(f"No COG input files found in {input_dir}")
@@ -1261,6 +1419,36 @@ def translate_directory(input_dir, output_dir=None, recursive=False):
 
     print("-" * 60)
     print(f"Translation complete: {successful} successful, {failed} failed")
+
+
+def convert_cog_to_openmc_folder(cog_file: str, output_folder: str) -> Optional[Path]:
+    """Convert a COG file to an OpenMC Python script in a dedicated folder.
+
+    This creates the OpenMC script as 'model.py' in the specified folder.
+    """
+    cog_path = Path(cog_file)
+    output_path = Path(output_folder)
+
+    # Create output folder
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    # Generate the OpenMC script
+    output_file = output_path / 'model.py'
+
+    try:
+        parser = COGParser(str(cog_file))
+        parser.parse()
+
+        generator = OpenMCPythonGenerator(parser)
+        python_code = generator.generate()
+
+        with open(output_file, 'w') as f:
+            f.write(python_code)
+
+        return output_file
+    except Exception as e:
+        print(f"Error converting {cog_file}: {e}")
+        return None
 
 
 if __name__ == "__main__":

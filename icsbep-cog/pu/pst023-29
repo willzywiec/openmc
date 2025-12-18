@@ -2,7 +2,7 @@ PU-SOL-THERM-023 (Case 29)
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 10.6
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 14, 15 and 16
   mat=1 bunches   pu238 5.6513-9 pu239 7.3587-5   pu240 3.2468-6 pu241 2.1865-7 pu242 1.2181-8 $ Inner Sol'n

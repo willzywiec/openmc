@@ -2,7 +2,7 @@ PMF003-4: LLNL Pu Array - 3x3x3 with polyethylene reflection on one side - case 
 basic 
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=27 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=27 
   -10.15  10.15 32.8  0  10.15 32.8  10.15  10.15 32.8  
   -10.15   0    32.8  0   0    32.8  10.15   0    32.8
   -10.15 -10.15 32.8  0 -10.15 32.8  10.15 -10.15 32.8

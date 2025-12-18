@@ -2,7 +2,7 @@ LMT007-1: 394 U(4.948) Metal Rods in Water; Pitch=1.300cm; Hf=30cm; Hw=60.49-21.
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4
   -0.665 -0.665 15  -0.665 0.665 15
    0.665 -0.665 15   0.665 0.665 15
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

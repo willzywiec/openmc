@@ -2,7 +2,7 @@ LCT039-4: Exp. No. 1668 21x21-49=392 rods (3-1/3) array of U(4.738)O2 rods on 1.
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=9
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=9
   -1.89  1.89 44.535 -0.63  1.89 44.535  0.63  1.89 44.535
   -1.89  0.63 44.535 -0.63  0.63 44.535  0.63  0.63 44.535
   -1.89 -0.63 44.535 -0.63 -0.63 44.535  0.63 -0.63 44.535

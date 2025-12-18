@@ -2,7 +2,7 @@ LCT712-1: 36x35=1260 U(4.738)O2 Zr-4 clad rods with 1.1cm pitch; Hc=57.323cm
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
   -0.55 -0.55 28.6615
    0.55 -0.55 28.6615
   -0.55  0.55 28.6615

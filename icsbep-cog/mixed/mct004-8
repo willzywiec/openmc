@@ -2,7 +2,7 @@ MIX-COMP-THERM-004-8: 20x20 MOX pins with 2.225 cm pitch; Hc=62.99
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4
   -1.1 -1.1 31.495  -1.1  1.1 31.495
    1.1 -1.1 31.495   1.1  1.1 31.495
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0     

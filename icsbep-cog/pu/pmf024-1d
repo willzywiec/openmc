@@ -2,7 +2,7 @@ PMF024-1D: 1.550cm polyethylene reflected spherical assembly of 13.815 kg delta-
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 0 
 assign-mc
   1 purple 2 red 3 pink 4 orange 5 sky 6 blue 7 lime
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

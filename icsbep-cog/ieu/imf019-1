@@ -2,7 +2,7 @@ IEU-MET-FAST-019-1: Type 1 Assembly: U(45.5) metal hexagon on an aluminum suppor
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 9.2202
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 3.6341-4 u235 2.1108-2 u238 2.4607-2 c 7.7399-4 h 2.2307-4 o16 1.1329-4 al 1.2124-4 si 1.1647-4 fe 7.8100-5 $ U(45.5)

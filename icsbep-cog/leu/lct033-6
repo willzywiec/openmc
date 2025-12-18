@@ -2,7 +2,7 @@ LCT033-6: U(2)F4-2, Paraffin reflected on top and sides; Plexiglas on bottom
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u235 1.3300-4 u238 6.4332-3 u234 1.3357-6 $ U(2)F4-2
              (h.ch2) 3.9150-2    c 1.8822-2    f 2.6270-2 $  with polythene stops

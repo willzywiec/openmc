@@ -2,7 +2,7 @@ IEU-COMP-FAST-001:  ZPR6-6A Loading 06 (Simplified Benchmark Model)
 basic
   neutrons delayedn CENTIMETERS
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0
   nsource=1 0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Materials per Tables 25, 26 and 27
   mat=1 bunches u234 1.12777-5 u235 1.15084-3 u236 5.40689-6 u238 5.79612-3  c 4.97945-5 $ IC1

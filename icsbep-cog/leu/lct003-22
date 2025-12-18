@@ -2,7 +2,7 @@ LCT003-22: (20x18)-6.826cm-(25x18)-6.826cm-(20x18) arrays of U(2.35)O2 fuel rods
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
    -43.874  0.842 45.72 0  0.842 45.72  43.874  0.842 45.72
    -43.874 -0.842 45.72 0 -0.842 45.72  43.874 -0.842 45.72
 assign-mc

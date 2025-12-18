@@ -2,7 +2,7 @@ LCT035-1: 21x21 array of U(2.6)O2 rods on 1.956cm pitch in soluble boron (TCA Co
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=1
    0 0 26.17
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches    u234 4.8872-6 u235 6.0830-4 u238 2.2531-2 o16 4.7214-2 $ U(2.60)O2 fuel

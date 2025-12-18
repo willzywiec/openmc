@@ -2,7 +2,7 @@ LST011-12: Air reflected 80-cm-diameter cylindrical tank with 6% enriched uranyl
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1  0 0 43.955
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1  0 0 43.955
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 4.8181-7 u235 5.7667-5 u236 9.5544-8 u238 8.8989-4 (h.h2o) 5.7423-2  n 2.5226-3 o16 3.7862-2             $ Solution: Run 472
   mat=2 bunches    c 4.3736-5   si 1.0627-3   mn 1.1561-3    p 4.3170-5       s 2.9782-6 ni 8.3403-3  cr 1.6775-2 fe 5.9421-2 $ Stainless Steel

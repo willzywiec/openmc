@@ -2,7 +2,7 @@ LST012-2: TRACY R203-Hc2 (transient)
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=101 norm=1. nsource=1 0 0 31.188
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 31.188
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 7.9910-7 u235 9.9262-5 u236 9.9039-8 u238 8.8316-4 $ Fuel
              (h.h2o) 5.7674-2    n 2.3159-3  o16 3.7577-2               $   solution
