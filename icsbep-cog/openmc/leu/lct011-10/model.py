@@ -216,39 +216,39 @@ universe4.add_cell(openmc.Cell(fill=lattice4))
 
 # CORE
 cell1 = openmc.Cell(cell_id=1, fill=universe4)
-cell1.region = -surf2 & -surf3 & +surf101 & -surf145 & +surf201 & -surf245
+cell1.region = -surf2 & -surf3
 
 # Water
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = -surf1 & -surf2 & -surf3 & -surf101
+cell2.region = -surf1 & -surf2 & -surf3
 
 # Water
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = -surf1 & -surf2 & -surf3 & +surf101 & -surf145 & -surf201
+cell3.region = -surf1 & -surf2 & -surf3
 
 # Water
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = -surf1 & -surf2 & -surf3 & +surf101 & -surf145 & +surf245
+cell4.region = -surf1 & -surf2 & -surf3
 
 # Water
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = -surf1 & -surf2 & -surf3 & +surf145
+cell5.region = -surf1 & -surf2 & -surf3
 
 # Air
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = +surf1 & -surf2 & -surf3 & -surf101
+cell6.region = +surf1 & -surf2 & -surf3
 
 # Air
 cell7 = openmc.Cell(cell_id=7, fill=mat4)
-cell7.region = +surf1 & -surf2 & -surf3 & +surf101 & -surf145 & -surf201
+cell7.region = +surf1 & -surf2 & -surf3
 
 # Air
 cell8 = openmc.Cell(cell_id=8, fill=mat4)
-cell8.region = +surf1 & -surf2 & -surf3 & +surf101 & -surf145 & +surf245
+cell8.region = +surf1 & -surf2 & -surf3
 
 # Air
 cell9 = openmc.Cell(cell_id=9, fill=mat4)
-cell9.region = +surf1 & -surf2 & -surf3 & +surf145
+cell9.region = +surf1 & -surf2 & -surf3
 
 # Tank
 cell10 = openmc.Cell(cell_id=10, fill=mat2)

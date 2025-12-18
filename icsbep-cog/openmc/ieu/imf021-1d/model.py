@@ -674,51 +674,51 @@ cell42.region = +surf3 & +surf213 & -surf214
 
 # Alum
 cell43 = openmc.Cell(cell_id=43, fill=mat7)
-cell43.region = +surf3 & +surf61 & -surf81
+cell43.region = +surf3 & +surf61
 
 # Alum
 cell44 = openmc.Cell(cell_id=44, fill=mat7)
-cell44.region = +surf3 & +surf62 & -surf82
+cell44.region = +surf3 & +surf62
 
 # Alum
 cell45 = openmc.Cell(cell_id=45, fill=mat7)
-cell45.region = +surf3 & +surf63 & -surf83
+cell45.region = +surf3 & +surf63
 
 # Alum
 cell46 = openmc.Cell(cell_id=46, fill=mat7)
-cell46.region = +surf3 & +surf64 & -surf84
+cell46.region = +surf3 & +surf64
 
 # Alum
 cell47 = openmc.Cell(cell_id=47, fill=mat7)
-cell47.region = +surf3 & +surf65 & -surf85
+cell47.region = +surf3 & +surf65
 
 # Alum
 cell48 = openmc.Cell(cell_id=48, fill=mat7)
-cell48.region = +surf3 & +surf66 & -surf86
+cell48.region = +surf3 & +surf66
 
 # Alum
 cell49 = openmc.Cell(cell_id=49, fill=mat7)
-cell49.region = +surf3 & +surf67 & -surf87
+cell49.region = +surf3 & +surf67
 
 # Alum
 cell50 = openmc.Cell(cell_id=50, fill=mat7)
-cell50.region = +surf3 & +surf68 & -surf88
+cell50.region = +surf3 & +surf68
 
 # Alum
 cell51 = openmc.Cell(cell_id=51, fill=mat7)
-cell51.region = +surf3 & +surf69 & -surf89
+cell51.region = +surf3 & +surf69
 
 # Alum
 cell52 = openmc.Cell(cell_id=52, fill=mat7)
-cell52.region = +surf3 & +surf70 & -surf90
+cell52.region = +surf3 & +surf70
 
 # Alum
 cell53 = openmc.Cell(cell_id=53, fill=mat7)
-cell53.region = +surf3 & +surf71 & -surf91
+cell53.region = +surf3 & +surf71
 
 # Alum
 cell54 = openmc.Cell(cell_id=54, fill=mat7)
-cell54.region = +surf3 & +surf72 & -surf92
+cell54.region = +surf3 & +surf72
 
 # Alum
 cell55 = openmc.Cell(cell_id=55, fill=mat7)
@@ -726,791 +726,791 @@ cell55.region = -surf100 & +surf101 & +surf102 & +surf103
 
 # NatU
 cell56 = openmc.Cell(cell_id=56, fill=mat2)
-cell56.region = +surf100 & -surf1001
+cell56.region = +surf100
 
 # NatU
 cell57 = openmc.Cell(cell_id=57, fill=mat2)
-cell57.region = +surf100 & -surf1002
+cell57.region = +surf100
 
 # NatU
 cell58 = openmc.Cell(cell_id=58, fill=mat2)
-cell58.region = +surf100 & -surf1003
+cell58.region = +surf100
 
 # NatU
 cell59 = openmc.Cell(cell_id=59, fill=mat2)
-cell59.region = +surf100 & -surf1004
+cell59.region = +surf100
 
 # NatU
 cell60 = openmc.Cell(cell_id=60, fill=mat2)
-cell60.region = +surf100 & -surf1005
+cell60.region = +surf100
 
 # NatU
 cell61 = openmc.Cell(cell_id=61, fill=mat2)
-cell61.region = +surf100 & -surf1006
+cell61.region = +surf100
 
 # NatU
 cell62 = openmc.Cell(cell_id=62, fill=mat2)
-cell62.region = +surf100 & -surf1007
+cell62.region = +surf100
 
 # NatU
 cell63 = openmc.Cell(cell_id=63, fill=mat2)
-cell63.region = +surf100 & -surf1008
+cell63.region = +surf100
 
 # NatU
 cell64 = openmc.Cell(cell_id=64, fill=mat2)
-cell64.region = +surf100 & -surf1009
+cell64.region = +surf100
 
 # NatU
 cell65 = openmc.Cell(cell_id=65, fill=mat2)
-cell65.region = +surf100 & -surf1010
+cell65.region = +surf100
 
 # NatU
 cell66 = openmc.Cell(cell_id=66, fill=mat2)
-cell66.region = +surf100 & -surf1011
+cell66.region = +surf100
 
 # NatU
 cell67 = openmc.Cell(cell_id=67, fill=mat2)
-cell67.region = +surf100 & -surf1012
+cell67.region = +surf100
 
 # NatU
 cell68 = openmc.Cell(cell_id=68, fill=mat2)
-cell68.region = +surf100 & -surf1013
+cell68.region = +surf100
 
 # NatU
 cell69 = openmc.Cell(cell_id=69, fill=mat2)
-cell69.region = +surf100 & -surf1014
+cell69.region = +surf100
 
 # NatU
 cell70 = openmc.Cell(cell_id=70, fill=mat2)
-cell70.region = +surf100 & -surf1015
+cell70.region = +surf100
 
 # NatU
 cell71 = openmc.Cell(cell_id=71, fill=mat2)
-cell71.region = +surf100 & -surf1016
+cell71.region = +surf100
 
 # NatU
 cell72 = openmc.Cell(cell_id=72, fill=mat2)
-cell72.region = +surf100 & -surf1017
+cell72.region = +surf100
 
 # NatU
 cell73 = openmc.Cell(cell_id=73, fill=mat2)
-cell73.region = +surf100 & -surf1018
+cell73.region = +surf100
 
 # NatU
 cell74 = openmc.Cell(cell_id=74, fill=mat2)
-cell74.region = +surf100 & -surf1019
+cell74.region = +surf100
 
 # NatU
 cell75 = openmc.Cell(cell_id=75, fill=mat2)
-cell75.region = +surf100 & -surf1020
+cell75.region = +surf100
 
 # NatU
 cell76 = openmc.Cell(cell_id=76, fill=mat2)
-cell76.region = +surf100 & -surf1021
+cell76.region = +surf100
 
 # NatU
 cell77 = openmc.Cell(cell_id=77, fill=mat2)
-cell77.region = +surf100 & -surf1022
+cell77.region = +surf100
 
 # NatU
 cell78 = openmc.Cell(cell_id=78, fill=mat2)
-cell78.region = +surf100 & -surf1023
+cell78.region = +surf100
 
 # NatU
 cell79 = openmc.Cell(cell_id=79, fill=mat2)
-cell79.region = +surf100 & -surf1024
+cell79.region = +surf100
 
 # NatU
 cell80 = openmc.Cell(cell_id=80, fill=mat2)
-cell80.region = +surf100 & -surf1025
+cell80.region = +surf100
 
 # NatU
 cell81 = openmc.Cell(cell_id=81, fill=mat2)
-cell81.region = +surf100 & -surf1026
+cell81.region = +surf100
 
 # NatU
 cell82 = openmc.Cell(cell_id=82, fill=mat2)
-cell82.region = +surf100 & -surf1027
+cell82.region = +surf100
 
 # NatU
 cell83 = openmc.Cell(cell_id=83, fill=mat2)
-cell83.region = +surf100 & -surf1028
+cell83.region = +surf100
 
 # NatU
 cell84 = openmc.Cell(cell_id=84, fill=mat2)
-cell84.region = +surf100 & -surf1029
+cell84.region = +surf100
 
 # NatU
 cell85 = openmc.Cell(cell_id=85, fill=mat2)
-cell85.region = +surf100 & -surf1030
+cell85.region = +surf100
 
 # NatU
 cell86 = openmc.Cell(cell_id=86, fill=mat2)
-cell86.region = +surf100 & -surf1031
+cell86.region = +surf100
 
 # NatU
 cell87 = openmc.Cell(cell_id=87, fill=mat2)
-cell87.region = +surf100 & -surf1032
+cell87.region = +surf100
 
 # NatU
 cell88 = openmc.Cell(cell_id=88, fill=mat2)
-cell88.region = +surf100 & -surf1033
+cell88.region = +surf100
 
 # NatU
 cell89 = openmc.Cell(cell_id=89, fill=mat2)
-cell89.region = +surf100 & -surf1034
+cell89.region = +surf100
 
 # NatU
 cell90 = openmc.Cell(cell_id=90, fill=mat2)
-cell90.region = +surf100 & -surf1035
+cell90.region = +surf100
 
 # NatU
 cell91 = openmc.Cell(cell_id=91, fill=mat2)
-cell91.region = +surf100 & -surf1036
+cell91.region = +surf100
 
 # NatU
 cell92 = openmc.Cell(cell_id=92, fill=mat2)
-cell92.region = +surf100 & -surf1037
+cell92.region = +surf100
 
 # NatU
 cell93 = openmc.Cell(cell_id=93, fill=mat2)
-cell93.region = +surf100 & -surf1038
+cell93.region = +surf100
 
 # NatU
 cell94 = openmc.Cell(cell_id=94, fill=mat2)
-cell94.region = +surf100 & -surf1039
+cell94.region = +surf100
 
 # NatU
 cell95 = openmc.Cell(cell_id=95, fill=mat2)
-cell95.region = +surf100 & -surf1040
+cell95.region = +surf100
 
 # NatU
 cell96 = openmc.Cell(cell_id=96, fill=mat2)
-cell96.region = +surf100 & -surf1041
+cell96.region = +surf100
 
 # NatU
 cell97 = openmc.Cell(cell_id=97, fill=mat2)
-cell97.region = +surf100 & -surf1042
+cell97.region = +surf100
 
 # NatU
 cell98 = openmc.Cell(cell_id=98, fill=mat2)
-cell98.region = +surf100 & -surf1043
+cell98.region = +surf100
 
 # NatU
 cell99 = openmc.Cell(cell_id=99, fill=mat2)
-cell99.region = +surf100 & -surf1044
+cell99.region = +surf100
 
 # NatU
 cell100 = openmc.Cell(cell_id=100, fill=mat2)
-cell100.region = +surf100 & -surf1045
+cell100.region = +surf100
 
 # NatU
 cell101 = openmc.Cell(cell_id=101, fill=mat2)
-cell101.region = +surf100 & -surf1046
+cell101.region = +surf100
 
 # NatU
 cell102 = openmc.Cell(cell_id=102, fill=mat2)
-cell102.region = +surf100 & -surf1047
+cell102.region = +surf100
 
 # NatU
 cell103 = openmc.Cell(cell_id=103, fill=mat2)
-cell103.region = +surf100 & -surf1048
+cell103.region = +surf100
 
 # NatU
 cell104 = openmc.Cell(cell_id=104, fill=mat2)
-cell104.region = +surf100 & -surf1049
+cell104.region = +surf100
 
 # NatU
 cell105 = openmc.Cell(cell_id=105, fill=mat2)
-cell105.region = +surf100 & -surf1050
+cell105.region = +surf100
 
 # NatU
 cell106 = openmc.Cell(cell_id=106, fill=mat2)
-cell106.region = +surf100 & -surf1051
+cell106.region = +surf100
 
 # NatU
 cell107 = openmc.Cell(cell_id=107, fill=mat2)
-cell107.region = +surf100 & -surf1052
+cell107.region = +surf100
 
 # NatU
 cell108 = openmc.Cell(cell_id=108, fill=mat2)
-cell108.region = +surf100 & -surf1053
+cell108.region = +surf100
 
 # NatU
 cell109 = openmc.Cell(cell_id=109, fill=mat2)
-cell109.region = +surf100 & -surf1054
+cell109.region = +surf100
 
 # NatU
 cell110 = openmc.Cell(cell_id=110, fill=mat2)
-cell110.region = +surf100 & -surf1055
+cell110.region = +surf100
 
 # NatU
 cell111 = openmc.Cell(cell_id=111, fill=mat2)
-cell111.region = +surf100 & -surf1056
+cell111.region = +surf100
 
 # NatU
 cell112 = openmc.Cell(cell_id=112, fill=mat2)
-cell112.region = +surf100 & -surf1057
+cell112.region = +surf100
 
 # NatU
 cell113 = openmc.Cell(cell_id=113, fill=mat2)
-cell113.region = +surf100 & -surf1058
+cell113.region = +surf100
 
 # NatU
 cell114 = openmc.Cell(cell_id=114, fill=mat2)
-cell114.region = +surf100 & -surf1059
+cell114.region = +surf100
 
 # NatU
 cell115 = openmc.Cell(cell_id=115, fill=mat2)
-cell115.region = +surf100 & -surf1060
+cell115.region = +surf100
 
 # NatU
 cell116 = openmc.Cell(cell_id=116, fill=mat2)
-cell116.region = +surf100 & -surf1061
+cell116.region = +surf100
 
 # NatU
 cell117 = openmc.Cell(cell_id=117, fill=mat2)
-cell117.region = +surf100 & -surf1062
+cell117.region = +surf100
 
 # NatU
 cell118 = openmc.Cell(cell_id=118, fill=mat2)
-cell118.region = +surf100 & -surf1063
+cell118.region = +surf100
 
 # NatU
 cell119 = openmc.Cell(cell_id=119, fill=mat2)
-cell119.region = +surf100 & -surf1064
+cell119.region = +surf100
 
 # NatU
 cell120 = openmc.Cell(cell_id=120, fill=mat2)
-cell120.region = +surf100 & -surf1065
+cell120.region = +surf100
 
 # NatU
 cell121 = openmc.Cell(cell_id=121, fill=mat2)
-cell121.region = +surf100 & -surf1066
+cell121.region = +surf100
 
 # NatU
 cell122 = openmc.Cell(cell_id=122, fill=mat2)
-cell122.region = +surf100 & -surf1067
+cell122.region = +surf100
 
 # NatU
 cell123 = openmc.Cell(cell_id=123, fill=mat2)
-cell123.region = +surf100 & -surf1068
+cell123.region = +surf100
 
 # NatU
 cell124 = openmc.Cell(cell_id=124, fill=mat2)
-cell124.region = +surf100 & -surf1069
+cell124.region = +surf100
 
 # NatU
 cell125 = openmc.Cell(cell_id=125, fill=mat2)
-cell125.region = +surf100 & -surf1070
+cell125.region = +surf100
 
 # NatU
 cell126 = openmc.Cell(cell_id=126, fill=mat2)
-cell126.region = +surf100 & -surf1071
+cell126.region = +surf100
 
 # NatU
 cell127 = openmc.Cell(cell_id=127, fill=mat2)
-cell127.region = +surf100 & -surf1072
+cell127.region = +surf100
 
 # NatU
 cell128 = openmc.Cell(cell_id=128, fill=mat2)
-cell128.region = +surf100 & -surf1073
+cell128.region = +surf100
 
 # NatU
 cell129 = openmc.Cell(cell_id=129, fill=mat2)
-cell129.region = +surf100 & -surf1074
+cell129.region = +surf100
 
 # NatU
 cell130 = openmc.Cell(cell_id=130, fill=mat2)
-cell130.region = +surf100 & -surf1075
+cell130.region = +surf100
 
 # NatU
 cell131 = openmc.Cell(cell_id=131, fill=mat2)
-cell131.region = +surf100 & -surf1076
+cell131.region = +surf100
 
 # NatU
 cell132 = openmc.Cell(cell_id=132, fill=mat2)
-cell132.region = +surf100 & -surf1077
+cell132.region = +surf100
 
 # NatU
 cell133 = openmc.Cell(cell_id=133, fill=mat2)
-cell133.region = +surf100 & -surf1078
+cell133.region = +surf100
 
 # NatU
 cell134 = openmc.Cell(cell_id=134, fill=mat2)
-cell134.region = +surf100 & -surf1079
+cell134.region = +surf100
 
 # NatU
 cell135 = openmc.Cell(cell_id=135, fill=mat2)
-cell135.region = +surf100 & -surf1080
+cell135.region = +surf100
 
 # NatU
 cell136 = openmc.Cell(cell_id=136, fill=mat2)
-cell136.region = +surf100 & -surf1081
+cell136.region = +surf100
 
 # NatU
 cell137 = openmc.Cell(cell_id=137, fill=mat2)
-cell137.region = +surf100 & -surf1082
+cell137.region = +surf100
 
 # NatU
 cell138 = openmc.Cell(cell_id=138, fill=mat2)
-cell138.region = +surf100 & -surf1083
+cell138.region = +surf100
 
 # NatU
 cell139 = openmc.Cell(cell_id=139, fill=mat2)
-cell139.region = +surf100 & -surf1084
+cell139.region = +surf100
 
 # NatU
 cell140 = openmc.Cell(cell_id=140, fill=mat2)
-cell140.region = +surf100 & -surf1085
+cell140.region = +surf100
 
 # NatU
 cell141 = openmc.Cell(cell_id=141, fill=mat2)
-cell141.region = +surf100 & -surf1086
+cell141.region = +surf100
 
 # NatU
 cell142 = openmc.Cell(cell_id=142, fill=mat2)
-cell142.region = +surf100 & -surf1087
+cell142.region = +surf100
 
 # NatU
 cell143 = openmc.Cell(cell_id=143, fill=mat2)
-cell143.region = +surf100 & -surf1088
+cell143.region = +surf100
 
 # NatU
 cell144 = openmc.Cell(cell_id=144, fill=mat2)
-cell144.region = +surf100 & -surf1089
+cell144.region = +surf100
 
 # NatU
 cell145 = openmc.Cell(cell_id=145, fill=mat2)
-cell145.region = +surf100 & -surf1090
+cell145.region = +surf100
 
 # NatU
 cell146 = openmc.Cell(cell_id=146, fill=mat2)
-cell146.region = +surf100 & -surf1091
+cell146.region = +surf100
 
 # NatU
 cell147 = openmc.Cell(cell_id=147, fill=mat2)
-cell147.region = +surf100 & -surf1092
+cell147.region = +surf100
 
 # NatU
 cell148 = openmc.Cell(cell_id=148, fill=mat2)
-cell148.region = +surf100 & -surf1093
+cell148.region = +surf100
 
 # NatU
 cell149 = openmc.Cell(cell_id=149, fill=mat2)
-cell149.region = +surf100 & -surf1094
+cell149.region = +surf100
 
 # NatU
 cell150 = openmc.Cell(cell_id=150, fill=mat2)
-cell150.region = +surf100 & -surf1095
+cell150.region = +surf100
 
 # NatU
 cell151 = openmc.Cell(cell_id=151, fill=mat2)
-cell151.region = +surf100 & -surf1096
+cell151.region = +surf100
 
 # NatU
 cell152 = openmc.Cell(cell_id=152, fill=mat2)
-cell152.region = +surf100 & -surf1097
+cell152.region = +surf100
 
 # NatU
 cell153 = openmc.Cell(cell_id=153, fill=mat2)
-cell153.region = +surf100 & -surf1098
+cell153.region = +surf100
 
 # NatU
 cell154 = openmc.Cell(cell_id=154, fill=mat2)
-cell154.region = +surf100 & -surf1099
+cell154.region = +surf100
 
 # NatU
 cell155 = openmc.Cell(cell_id=155, fill=mat2)
-cell155.region = +surf100 & -surf1100
+cell155.region = +surf100
 
 # NatU
 cell156 = openmc.Cell(cell_id=156, fill=mat2)
-cell156.region = +surf100 & -surf1101
+cell156.region = +surf100
 
 # NatU
 cell157 = openmc.Cell(cell_id=157, fill=mat2)
-cell157.region = +surf100 & -surf1102
+cell157.region = +surf100
 
 # NatU
 cell158 = openmc.Cell(cell_id=158, fill=mat2)
-cell158.region = +surf100 & -surf1103
+cell158.region = +surf100
 
 # NatU
 cell159 = openmc.Cell(cell_id=159, fill=mat2)
-cell159.region = +surf100 & -surf1104
+cell159.region = +surf100
 
 # NatU
 cell160 = openmc.Cell(cell_id=160, fill=mat2)
-cell160.region = +surf100 & -surf1105
+cell160.region = +surf100
 
 # NatU
 cell161 = openmc.Cell(cell_id=161, fill=mat2)
-cell161.region = +surf100 & -surf1106
+cell161.region = +surf100
 
 # NatU
 cell162 = openmc.Cell(cell_id=162, fill=mat2)
-cell162.region = +surf100 & -surf1107
+cell162.region = +surf100
 
 # NatU
 cell163 = openmc.Cell(cell_id=163, fill=mat2)
-cell163.region = +surf100 & -surf1108
+cell163.region = +surf100
 
 # NatU
 cell164 = openmc.Cell(cell_id=164, fill=mat2)
-cell164.region = +surf100 & -surf1109
+cell164.region = +surf100
 
 # NatU
 cell165 = openmc.Cell(cell_id=165, fill=mat2)
-cell165.region = +surf100 & -surf1110
+cell165.region = +surf100
 
 # NatU
 cell166 = openmc.Cell(cell_id=166, fill=mat2)
-cell166.region = +surf100 & -surf1111
+cell166.region = +surf100
 
 # NatU
 cell167 = openmc.Cell(cell_id=167, fill=mat2)
-cell167.region = +surf100 & -surf1112
+cell167.region = +surf100
 
 # NatU
 cell168 = openmc.Cell(cell_id=168, fill=mat2)
-cell168.region = +surf100 & -surf1113
+cell168.region = +surf100
 
 # NatU
 cell169 = openmc.Cell(cell_id=169, fill=mat2)
-cell169.region = +surf100 & -surf1114
+cell169.region = +surf100
 
 # NatU
 cell170 = openmc.Cell(cell_id=170, fill=mat2)
-cell170.region = +surf100 & -surf1115
+cell170.region = +surf100
 
 # NatU
 cell171 = openmc.Cell(cell_id=171, fill=mat2)
-cell171.region = +surf100 & -surf1116
+cell171.region = +surf100
 
 # NatU
 cell172 = openmc.Cell(cell_id=172, fill=mat2)
-cell172.region = +surf100 & -surf1117
+cell172.region = +surf100
 
 # NatU
 cell173 = openmc.Cell(cell_id=173, fill=mat2)
-cell173.region = +surf100 & -surf1118
+cell173.region = +surf100
 
 # NatU
 cell174 = openmc.Cell(cell_id=174, fill=mat2)
-cell174.region = +surf100 & -surf1119
+cell174.region = +surf100
 
 # NatU
 cell175 = openmc.Cell(cell_id=175, fill=mat2)
-cell175.region = +surf100 & -surf1120
+cell175.region = +surf100
 
 # NatU
 cell176 = openmc.Cell(cell_id=176, fill=mat2)
-cell176.region = +surf100 & -surf1121
+cell176.region = +surf100
 
 # NatU
 cell177 = openmc.Cell(cell_id=177, fill=mat2)
-cell177.region = +surf100 & -surf1122
+cell177.region = +surf100
 
 # NatU
 cell178 = openmc.Cell(cell_id=178, fill=mat2)
-cell178.region = +surf100 & -surf1123
+cell178.region = +surf100
 
 # NatU
 cell179 = openmc.Cell(cell_id=179, fill=mat2)
-cell179.region = +surf100 & -surf1124
+cell179.region = +surf100
 
 # NatU
 cell180 = openmc.Cell(cell_id=180, fill=mat2)
-cell180.region = +surf100 & -surf1125
+cell180.region = +surf100
 
 # NatU
 cell181 = openmc.Cell(cell_id=181, fill=mat2)
-cell181.region = +surf100 & -surf1126
+cell181.region = +surf100
 
 # NatU
 cell182 = openmc.Cell(cell_id=182, fill=mat2)
-cell182.region = +surf100 & -surf1127
+cell182.region = +surf100
 
 # NatU
 cell183 = openmc.Cell(cell_id=183, fill=mat2)
-cell183.region = +surf100 & -surf1128
+cell183.region = +surf100
 
 # NatU
 cell184 = openmc.Cell(cell_id=184, fill=mat2)
-cell184.region = +surf100 & -surf1129
+cell184.region = +surf100
 
 # NatU
 cell185 = openmc.Cell(cell_id=185, fill=mat2)
-cell185.region = +surf100 & -surf1130
+cell185.region = +surf100
 
 # NatU
 cell186 = openmc.Cell(cell_id=186, fill=mat2)
-cell186.region = +surf100 & -surf1131
+cell186.region = +surf100
 
 # NatU
 cell187 = openmc.Cell(cell_id=187, fill=mat2)
-cell187.region = +surf100 & -surf1132
+cell187.region = +surf100
 
 # NatU
 cell188 = openmc.Cell(cell_id=188, fill=mat2)
-cell188.region = +surf100 & -surf1133
+cell188.region = +surf100
 
 # NatU
 cell189 = openmc.Cell(cell_id=189, fill=mat2)
-cell189.region = +surf100 & -surf1134
+cell189.region = +surf100
 
 # NatU
 cell190 = openmc.Cell(cell_id=190, fill=mat2)
-cell190.region = +surf100 & -surf1135
+cell190.region = +surf100
 
 # NatU
 cell191 = openmc.Cell(cell_id=191, fill=mat2)
-cell191.region = +surf100 & -surf1136
+cell191.region = +surf100
 
 # NatU
 cell192 = openmc.Cell(cell_id=192, fill=mat2)
-cell192.region = +surf100 & -surf1137
+cell192.region = +surf100
 
 # NatU
 cell193 = openmc.Cell(cell_id=193, fill=mat2)
-cell193.region = +surf100 & -surf1138
+cell193.region = +surf100
 
 # NatU
 cell194 = openmc.Cell(cell_id=194, fill=mat2)
-cell194.region = +surf100 & -surf1139
+cell194.region = +surf100
 
 # NatU
 cell195 = openmc.Cell(cell_id=195, fill=mat2)
-cell195.region = +surf100 & -surf1140
+cell195.region = +surf100
 
 # NatU
 cell196 = openmc.Cell(cell_id=196, fill=mat2)
-cell196.region = +surf100 & -surf1141
+cell196.region = +surf100
 
 # NatU
 cell197 = openmc.Cell(cell_id=197, fill=mat2)
-cell197.region = +surf100 & -surf1142
+cell197.region = +surf100
 
 # NatU
 cell198 = openmc.Cell(cell_id=198, fill=mat2)
-cell198.region = +surf100 & -surf1143
+cell198.region = +surf100
 
 # NatU
 cell199 = openmc.Cell(cell_id=199, fill=mat2)
-cell199.region = +surf100 & -surf1144
+cell199.region = +surf100
 
 # NatU
 cell200 = openmc.Cell(cell_id=200, fill=mat2)
-cell200.region = +surf100 & -surf1145
+cell200.region = +surf100
 
 # NatU
 cell201 = openmc.Cell(cell_id=201, fill=mat2)
-cell201.region = +surf100 & -surf1146
+cell201.region = +surf100
 
 # NatU
 cell202 = openmc.Cell(cell_id=202, fill=mat2)
-cell202.region = +surf100 & -surf1147
+cell202.region = +surf100
 
 # NatU
 cell203 = openmc.Cell(cell_id=203, fill=mat2)
-cell203.region = +surf100 & -surf1148
+cell203.region = +surf100
 
 # NatU
 cell204 = openmc.Cell(cell_id=204, fill=mat2)
-cell204.region = +surf100 & -surf1149
+cell204.region = +surf100
 
 # NatU
 cell205 = openmc.Cell(cell_id=205, fill=mat2)
-cell205.region = +surf100 & -surf1150
+cell205.region = +surf100
 
 # NatU
 cell206 = openmc.Cell(cell_id=206, fill=mat2)
-cell206.region = +surf100 & -surf1151
+cell206.region = +surf100
 
 # NatU
 cell207 = openmc.Cell(cell_id=207, fill=mat2)
-cell207.region = +surf100 & -surf1152
+cell207.region = +surf100
 
 # NatU
 cell208 = openmc.Cell(cell_id=208, fill=mat2)
-cell208.region = +surf100 & -surf1153
+cell208.region = +surf100
 
 # NatU
 cell209 = openmc.Cell(cell_id=209, fill=mat2)
-cell209.region = +surf100 & -surf1154
+cell209.region = +surf100
 
 # NatU
 cell210 = openmc.Cell(cell_id=210, fill=mat2)
-cell210.region = +surf100 & -surf1155
+cell210.region = +surf100
 
 # NatU
 cell211 = openmc.Cell(cell_id=211, fill=mat2)
-cell211.region = +surf100 & -surf1156
+cell211.region = +surf100
 
 # NatU
 cell212 = openmc.Cell(cell_id=212, fill=mat2)
-cell212.region = +surf100 & -surf1157
+cell212.region = +surf100
 
 # NatU
 cell213 = openmc.Cell(cell_id=213, fill=mat2)
-cell213.region = +surf100 & -surf1158
+cell213.region = +surf100
 
 # NatU
 cell214 = openmc.Cell(cell_id=214, fill=mat2)
-cell214.region = +surf100 & -surf1159
+cell214.region = +surf100
 
 # NatU
 cell215 = openmc.Cell(cell_id=215, fill=mat2)
-cell215.region = +surf100 & -surf1160
+cell215.region = +surf100
 
 # NatU
 cell216 = openmc.Cell(cell_id=216, fill=mat2)
-cell216.region = +surf100 & -surf1161
+cell216.region = +surf100
 
 # NatU
 cell217 = openmc.Cell(cell_id=217, fill=mat2)
-cell217.region = +surf100 & -surf1162 & +surf54
+cell217.region = +surf100 & +surf54
 
 # NatU
 cell218 = openmc.Cell(cell_id=218, fill=mat2)
-cell218.region = +surf100 & -surf1163 & +surf54
+cell218.region = +surf100 & +surf54
 
 # NatU
 cell219 = openmc.Cell(cell_id=219, fill=mat2)
-cell219.region = +surf100 & -surf1164 & +surf54
+cell219.region = +surf100 & +surf54
 
 # NatU
 cell220 = openmc.Cell(cell_id=220, fill=mat2)
-cell220.region = +surf100 & -surf1165 & +surf54
+cell220.region = +surf100 & +surf54
 
 # NatU
 cell221 = openmc.Cell(cell_id=221, fill=mat2)
-cell221.region = +surf100 & -surf1166
+cell221.region = +surf100
 
 # NatU
 cell222 = openmc.Cell(cell_id=222, fill=mat2)
-cell222.region = +surf100 & -surf1167
+cell222.region = +surf100
 
 # NatU
 cell223 = openmc.Cell(cell_id=223, fill=mat2)
-cell223.region = +surf100 & -surf1168
+cell223.region = +surf100
 
 # NatU
 cell224 = openmc.Cell(cell_id=224, fill=mat2)
-cell224.region = +surf100 & -surf1169
+cell224.region = +surf100
 
 # NatU
 cell225 = openmc.Cell(cell_id=225, fill=mat2)
-cell225.region = +surf100 & -surf1170
+cell225.region = +surf100
 
 # NatU
 cell226 = openmc.Cell(cell_id=226, fill=mat2)
-cell226.region = +surf100 & -surf1171
+cell226.region = +surf100
 
 # NatU
 cell227 = openmc.Cell(cell_id=227, fill=mat2)
-cell227.region = +surf100 & -surf1172
+cell227.region = +surf100
 
 # NatU
 cell228 = openmc.Cell(cell_id=228, fill=mat2)
-cell228.region = +surf100 & -surf1173
+cell228.region = +surf100
 
 # NatU
 cell229 = openmc.Cell(cell_id=229, fill=mat2)
-cell229.region = +surf100 & -surf1174
+cell229.region = +surf100
 
 # NatU
 cell230 = openmc.Cell(cell_id=230, fill=mat2)
-cell230.region = +surf100 & -surf1175
+cell230.region = +surf100
 
 # NatU
 cell231 = openmc.Cell(cell_id=231, fill=mat2)
-cell231.region = +surf100 & -surf1176
+cell231.region = +surf100
 
 # NatU
 cell232 = openmc.Cell(cell_id=232, fill=mat2)
-cell232.region = +surf100 & -surf1177
+cell232.region = +surf100
 
 # NatU
 cell233 = openmc.Cell(cell_id=233, fill=mat2)
-cell233.region = +surf100 & -surf1178
+cell233.region = +surf100
 
 # NatU
 cell234 = openmc.Cell(cell_id=234, fill=mat2)
-cell234.region = +surf100 & -surf1179
+cell234.region = +surf100
 
 # NatU
 cell235 = openmc.Cell(cell_id=235, fill=mat2)
-cell235.region = +surf100 & -surf1180
+cell235.region = +surf100
 
 # NatU
 cell236 = openmc.Cell(cell_id=236, fill=mat2)
-cell236.region = +surf100 & -surf1181
+cell236.region = +surf100
 
 # NatU
 cell237 = openmc.Cell(cell_id=237, fill=mat2)
-cell237.region = +surf100 & -surf1182
+cell237.region = +surf100
 
 # NatU
 cell238 = openmc.Cell(cell_id=238, fill=mat2)
-cell238.region = +surf100 & -surf1183
+cell238.region = +surf100
 
 # NatU
 cell239 = openmc.Cell(cell_id=239, fill=mat2)
-cell239.region = +surf100 & -surf1184
+cell239.region = +surf100
 
 # NatU
 cell240 = openmc.Cell(cell_id=240, fill=mat2)
-cell240.region = +surf100 & -surf1185
+cell240.region = +surf100
 
 # NatU
 cell241 = openmc.Cell(cell_id=241, fill=mat2)
-cell241.region = +surf100 & -surf1186
+cell241.region = +surf100
 
 # NatU
 cell242 = openmc.Cell(cell_id=242, fill=mat2)
-cell242.region = +surf100 & -surf1187
+cell242.region = +surf100
 
 # NatU
 cell243 = openmc.Cell(cell_id=243, fill=mat2)
-cell243.region = +surf100 & -surf1188
+cell243.region = +surf100
 
 # NatU
 cell244 = openmc.Cell(cell_id=244, fill=mat2)
-cell244.region = +surf100 & -surf1189
+cell244.region = +surf100
 
 # NatU
 cell245 = openmc.Cell(cell_id=245, fill=mat2)
-cell245.region = +surf100 & -surf1190
+cell245.region = +surf100
 
 # NatU
 cell246 = openmc.Cell(cell_id=246, fill=mat2)
-cell246.region = +surf100 & -surf1191
+cell246.region = +surf100
 
 # NatU
 cell247 = openmc.Cell(cell_id=247, fill=mat2)
-cell247.region = +surf100 & -surf1192
+cell247.region = +surf100
 
 # NatU
 cell248 = openmc.Cell(cell_id=248, fill=mat2)
-cell248.region = +surf100 & -surf1193
+cell248.region = +surf100
 
 # NatU
 cell249 = openmc.Cell(cell_id=249, fill=mat2)
-cell249.region = +surf100 & -surf1194
+cell249.region = +surf100
 
 # NatU
 cell250 = openmc.Cell(cell_id=250, fill=mat2)
-cell250.region = +surf100 & -surf1195
+cell250.region = +surf100
 
 # NatU
 cell251 = openmc.Cell(cell_id=251, fill=mat2)
-cell251.region = +surf100 & -surf1196
+cell251.region = +surf100
 
 # NatU
 cell252 = openmc.Cell(cell_id=252, fill=mat2)
-cell252.region = +surf100 & -surf1197
+cell252.region = +surf100
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30, cell31, cell32, cell33, cell34, cell35, cell36, cell37, cell38, cell39, cell40, cell41, cell42, cell43, cell44, cell45, cell46, cell47, cell48, cell49, cell50, cell51, cell52, cell53, cell54, cell55, cell56, cell57, cell58, cell59, cell60, cell61, cell62, cell63, cell64, cell65, cell66, cell67, cell68, cell69, cell70, cell71, cell72, cell73, cell74, cell75, cell76, cell77, cell78, cell79, cell80, cell81, cell82, cell83, cell84, cell85, cell86, cell87, cell88, cell89, cell90, cell91, cell92, cell93, cell94, cell95, cell96, cell97, cell98, cell99, cell100, cell101, cell102, cell103, cell104, cell105, cell106, cell107, cell108, cell109, cell110, cell111, cell112, cell113, cell114, cell115, cell116, cell117, cell118, cell119, cell120, cell121, cell122, cell123, cell124, cell125, cell126, cell127, cell128, cell129, cell130, cell131, cell132, cell133, cell134, cell135, cell136, cell137, cell138, cell139, cell140, cell141, cell142, cell143, cell144, cell145, cell146, cell147, cell148, cell149, cell150, cell151, cell152, cell153, cell154, cell155, cell156, cell157, cell158, cell159, cell160, cell161, cell162, cell163, cell164, cell165, cell166, cell167, cell168, cell169, cell170, cell171, cell172, cell173, cell174, cell175, cell176, cell177, cell178, cell179, cell180, cell181, cell182, cell183, cell184, cell185, cell186, cell187, cell188, cell189, cell190, cell191, cell192, cell193, cell194, cell195, cell196, cell197, cell198, cell199, cell200, cell201, cell202, cell203, cell204, cell205, cell206, cell207, cell208, cell209, cell210, cell211, cell212, cell213, cell214, cell215, cell216, cell217, cell218, cell219, cell220, cell221, cell222, cell223, cell224, cell225, cell226, cell227, cell228, cell229, cell230, cell231, cell232, cell233, cell234, cell235, cell236, cell237, cell238, cell239, cell240, cell241, cell242, cell243, cell244, cell245, cell246, cell247, cell248, cell249, cell250, cell251, cell252])
 geometry = openmc.Geometry(root_universe)

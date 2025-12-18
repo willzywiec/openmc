@@ -165,19 +165,19 @@ surf24 = openmc.ZCylinder(surface_id=24, x0=1.5, y0=41.5, r=1.5)
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1 & -surf2 & -surf3
+u1_cell0.region = -surf1 & -surf3
 u1_cell1 = openmc.Cell(fill=mat4)
-u1_cell1.region = +surf1 & -surf2 & -surf3
+u1_cell1.region = +surf1 & -surf3
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = +surf2 & -surf3
+u1_cell2.region = -surf3
 u1_cell3 = openmc.Cell(fill=mat3)
-u1_cell3.region = -surf1 & +surf2 & +surf3 & -surf4
+u1_cell3.region = -surf1 & +surf3 & -surf4
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = +surf1 & +surf2 & +surf3 & -surf4
+u1_cell4.region = +surf1 & +surf3 & -surf4
 u1_cell5 = openmc.Cell(fill=mat2)
-u1_cell5.region = +surf2 & +surf3 & +surf4 & -surf5 & -surf6
+u1_cell5.region = +surf3 & +surf4 & -surf5 & -surf6
 u1_cell6 = openmc.Cell(fill=mat4)
-u1_cell6.region = +surf2 & +surf3 & +surf4 & +surf5 & -surf6
+u1_cell6.region = +surf3 & +surf4 & +surf5 & -surf6
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6])
 
 u2_cell0 = openmc.Cell(fill=mat1)
@@ -195,15 +195,15 @@ u3_cell2.region = +surf23 & -surf6
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2])
 
 u4_cell0 = openmc.Cell(fill=mat2)
-u4_cell0.region = -surf10 & -surf11 & +surf16 & +surf17 & +surf18
+u4_cell0.region = -surf10 & -surf11
 u4_cell1 = openmc.Cell(fill=mat5)
-u4_cell1.region = -surf10 & -surf19 & +surf16 & +surf17 & +surf18 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110 & +surf111 & +surf112 & +surf113 & +surf114 & +surf115 & +surf116 & +surf117 & +surf118 & +surf119
+u4_cell1.region = -surf10 & -surf19
 u4_cell2 = openmc.Cell(fill=mat5)
-u4_cell2.region = -surf10 & -surf20 & +surf16 & +surf17 & +surf18 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110 & +surf111 & +surf112 & +surf113 & +surf114 & +surf115 & +surf116 & +surf117 & +surf118 & +surf119
+u4_cell2.region = -surf10 & -surf20
 u4_cell3 = openmc.Cell(fill=mat2)
-u4_cell3.region = -surf10 & +surf12 & -surf13 & +surf16 & +surf17 & +surf18
+u4_cell3.region = -surf10 & +surf12 & -surf13
 u4_cell4 = openmc.Cell(fill=mat1)
-u4_cell4.region = -surf10 & +surf11 & +surf16 & +surf17 & +surf18 & +surf19 & +surf20
+u4_cell4.region = -surf10 & +surf11 & +surf19 & +surf20
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 # ------------------------------------------------------------------------------
@@ -228,7 +228,7 @@ cell14.region = +surf1 & -surf14 & -surf15
 
 # Air
 cell22 = openmc.Cell(cell_id=22, fill=mat4)
-cell22.region = +surf2 & +surf3 & +surf4 & +surf5 & -surf6
+cell22.region = +surf3 & +surf4 & +surf5 & -surf6
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell11, cell14, cell22])
 geometry = openmc.Geometry(root_universe)

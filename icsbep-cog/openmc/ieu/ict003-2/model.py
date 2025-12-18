@@ -308,37 +308,37 @@ u3_cell5.region = +surf405 & -surf199
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2, u3_cell3, u3_cell4, u3_cell5])
 
 u4_cell0 = openmc.Cell(fill=mat9)
-u4_cell0.region = -surf38 & +surf9 & -surf39 & +surf9 & -surf40
+u4_cell0.region = 
 u4_cell1 = openmc.Cell(fill=mat9)
-u4_cell1.region = -surf48 & +surf9 & -surf49 & +surf9 & -surf50
+u4_cell1.region = 
 u4_cell2 = openmc.Cell(fill=mat9)
-u4_cell2.region = -surf51 & +surf9 & -surf52 & +surf9 & -surf53
+u4_cell2.region = 
 u4_cell3 = openmc.Cell(fill=mat9)
-u4_cell3.region = -surf54 & +surf9 & -surf55 & +surf9 & -surf56
+u4_cell3.region = 
 u4_cell4 = openmc.Cell(fill=mat9)
-u4_cell4.region = -surf57 & +surf9 & -surf58 & +surf9 & -surf59
+u4_cell4.region = 
 u4_cell5 = openmc.Cell(fill=mat9)
-u4_cell5.region = -surf60 & +surf9 & -surf61
+u4_cell5.region = 
 u4_cell6 = openmc.Cell(fill=mat9)
-u4_cell6.region = -surf62 & +surf9 & -surf63 & +surf9 & -surf64 & +surf9 & -surf65
+u4_cell6.region = 
 u4_cell7 = openmc.Cell(fill=mat9)
-u4_cell7.region = -surf66 & +surf9 & -surf67 & +surf9 & -surf68 & +surf9 & -surf69
+u4_cell7.region = 
 u4_cell8 = openmc.Cell(fill=mat9)
-u4_cell8.region = -surf70 & +surf9 & -surf71 & +surf9 & -surf72 & +surf9 & -surf73
+u4_cell8.region = 
 u4_cell9 = openmc.Cell(fill=mat9)
-u4_cell9.region = -surf74 & +surf9 & -surf75 & +surf9 & -surf76 & +surf9 & -surf77
+u4_cell9.region = 
 u4_cell10 = openmc.Cell(fill=mat9)
-u4_cell10.region = -surf78 & +surf9 & -surf79 & +surf9 & -surf80 & +surf9 & -surf81
+u4_cell10.region = 
 u4_cell11 = openmc.Cell(fill=mat9)
-u4_cell11.region = -surf82 & +surf9 & -surf83 & +surf9 & -surf84 & +surf9 & -surf85
+u4_cell11.region = 
 u4_cell12 = openmc.Cell(fill=mat9)
-u4_cell12.region = -surf86 & +surf9 & -surf87 & +surf9 & -surf88 & +surf9 & -surf89
+u4_cell12.region = 
 u4_cell13 = openmc.Cell(fill=mat9)
-u4_cell13.region = -surf90 & +surf9 & -surf91
+u4_cell13.region = 
 u4_cell14 = openmc.Cell(fill=mat6)
-u4_cell14.region = -surf100 & +surf1 & +surf2 & +surf3 & +surf4 & +surf5 & +surf6 & +surf7 & +surf8 & +surf9 & +surf10 & +surf11 & +surf12 & +surf13 & +surf14 & +surf15 & +surf16 & +surf17 & +surf18 & +surf19 & +surf20
+u4_cell14.region = -surf100 & +surf1
 u4_cell15 = openmc.Cell(fill=mat6)
-u4_cell15.region = -surf101 & +surf1 & +surf2 & +surf3 & +surf4 & +surf5 & +surf6 & +surf7 & +surf8 & +surf9 & +surf10 & +surf11 & +surf12 & +surf13 & +surf14 & +surf15 & +surf16 & +surf17 & +surf18 & +surf19 & +surf20
+u4_cell15.region = -surf101 & +surf1
 u4_cell16 = openmc.Cell(fill=mat6)
 u4_cell16.region = +surf110 & -surf111 & -surf116
 u4_cell17 = openmc.Cell(fill=mat6)

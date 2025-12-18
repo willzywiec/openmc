@@ -47,23 +47,23 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # SOLN
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf2
+cell1.region = 
 
 # SOLN
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = -surf1 & +surf2 & -surf4 & -surf5
+cell2.region = 
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf2 & -surf3 & +surf5
+cell3.region = 
 
 # SST
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
-cell4.region = +surf3 & -surf4 & +surf5 & -surf6
+cell4.region = 
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf3 & -surf4 & +surf7 & -surf8
+cell5.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)

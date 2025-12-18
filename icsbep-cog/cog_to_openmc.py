@@ -817,6 +817,7 @@ class OpenMCPythonGenerator:
         self.parser = parser
         self._prism_planes: Dict[int, List[str]] = {}
         self._composite_surfaces: Dict[int, str] = {}  # Maps surf_id to composite type
+        self._defined_surfaces: set = set()  # Track all defined surface IDs
 
     def generate(self) -> str:
         """Generate complete OpenMC Python script."""
@@ -909,6 +910,8 @@ class OpenMCPythonGenerator:
                 if surface.comment:
                     lines.append(f'# {surface.comment}')
                 lines.append(surf_code)
+                # Track this surface as defined
+                self._defined_surfaces.add(surf_id)
 
         return lines
 
@@ -1296,11 +1299,13 @@ class OpenMCPythonGenerator:
                         parts.append(f'-surf{surf_num}')
                     else:
                         parts.append(f'+surf{surf_num}')
-                else:
+                # Only add reference if surface is defined
+                elif surf_num in self._defined_surfaces:
                     if is_negative:
                         parts.append(f'-surf{surf_num}')
                     else:
                         parts.append(f'+surf{surf_num}')
+                # Skip undefined surface references
 
         return ' & '.join(parts) if parts else ""
 

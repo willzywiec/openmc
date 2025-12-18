@@ -72,15 +72,15 @@ cell2.region = +surf2 & -surf3
 
 # Void
 cell3 = openmc.Cell(cell_id=3)
-cell3.region = +surf4 & -surf5
+cell3.region = +surf4
 
 # Soln
 cell4 = openmc.Cell(cell_id=4, fill=mat1)
-cell4.region = -surf4 & -surf5
+cell4.region = -surf4
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf5 & -surf6
+cell5.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)

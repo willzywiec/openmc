@@ -263,68 +263,68 @@ universe8 = openmc.Universe(universe_id=8, cells=[u8_cell0, u8_cell1, u8_cell2])
 # Pin
 cell1 = openmc.Cell(cell_id=1, fill=universe8)
 cell1.translation = (-15.903539, -10.602359, 0.0)
-cell1.region = -surf41
+cell1.region = 
 
 # Pin
 cell2 = openmc.Cell(cell_id=2, fill=universe8)
 cell2.translation = (15.903539, -10.602359, 0.0)
-cell2.region = -surf42
+cell2.region = 
 
 # Pin
 cell3 = openmc.Cell(cell_id=3, fill=universe8)
 cell3.translation = (-17.670598, -8.835299, 0.0)
-cell3.region = -surf43
+cell3.region = 
 
 # Pin
 cell4 = openmc.Cell(cell_id=4, fill=universe8)
 cell4.translation = (17.670598, -8.835299, 0.0)
-cell4.region = -surf44
+cell4.region = 
 
 # Pin
 cell5 = openmc.Cell(cell_id=5, fill=universe8)
 cell5.translation = (-17.670598, 8.835299, 0.0)
-cell5.region = -surf45
+cell5.region = 
 
 # Pin
 cell6 = openmc.Cell(cell_id=6, fill=universe8)
 cell6.translation = (17.670598, 8.835299, 0.0)
-cell6.region = -surf46
+cell6.region = 
 
 # Pin
 cell7 = openmc.Cell(cell_id=7, fill=universe8)
 cell7.translation = (-15.903539, 10.602359, 0.0)
-cell7.region = -surf47
+cell7.region = 
 
 # Pin
 cell8 = openmc.Cell(cell_id=8, fill=universe8)
 cell8.translation = (15.903539, 10.602359, 0.0)
-cell8.region = -surf48
+cell8.region = 
 
 # Slit
 cell9 = openmc.Cell(cell_id=9, fill=universe7)
 cell9.translation = (0.0, 0.0, 0.0)
-cell9.region = -surf21 & +surf41 & +surf42 & +surf43 & +surf44
+cell9.region = -surf21
 
 # Slit
 cell10 = openmc.Cell(cell_id=10, fill=universe7)
 cell10.translation = (0.0, 0.0, 0.0)
-cell10.region = -surf22 & +surf45 & +surf46 & +surf47 & +surf48
+cell10.region = -surf22
 
 # Core
 cell11 = openmc.Cell(cell_id=11, fill=universe4)
-cell11.region = -surf4 & -surf7 & -surf20 & +surf21 & +surf22 & +surf41 & +surf42 & +surf43 & +surf44 & +surf45 & +surf46 & +surf47 & +surf48 & +surf51 & +surf52 & +surf53 & +surf54
+cell11.region = -surf4 & -surf7 & -surf20 & +surf21 & +surf22
 
 # Alles
 cell12 = openmc.Cell(cell_id=12, fill=universe1)
-cell12.region = -surf4 & -surf7 & +surf20 & +surf51 & +surf52 & +surf53 & +surf54
+cell12.region = -surf4 & -surf7 & +surf20
 
 # Alles
 cell13 = openmc.Cell(cell_id=13, fill=universe1)
-cell13.region = +surf4 & -surf7 & +surf51 & +surf52 & +surf53 & +surf54
+cell13.region = +surf4 & -surf7
 
 # Zr4
 cell14 = openmc.Cell(cell_id=14, fill=mat4)
-cell14.region = -surf51 & +surf4 & -surf52 & +surf4 & -surf53 & +surf4 & -surf54
+cell14.region = +surf4
 
 # Air
 cell23 = openmc.Cell(cell_id=23, fill=mat7)

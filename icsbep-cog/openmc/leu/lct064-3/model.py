@@ -354,11 +354,11 @@ cell25.region = +surf10 & -surf13
 
 # ALLES
 cell26 = openmc.Cell(cell_id=26, fill=universe1)
-cell26.region = +surf13 & +surf21 & +surf22 & +surf23 & +surf24 & -surf15
+cell26.region = +surf13 & -surf15
 
 # ALLES
 cell27 = openmc.Cell(cell_id=27, fill=universe1)
-cell27.region = +surf13 & +surf21 & +surf22 & +surf23 & +surf24 & -surf15
+cell27.region = +surf13 & -surf15
 
 # M-LATT
 cell28 = openmc.Cell(cell_id=28, fill=universe8)

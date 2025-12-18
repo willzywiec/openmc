@@ -392,39 +392,39 @@ cell7.region = +surf21 & -surf22 & +surf24 & +surf26 & +surf28
 
 # Dumpline
 cell8 = openmc.Cell(cell_id=8, fill=mat6)
-cell8.region = +surf22 & +surf24 & -surf25
+cell8.region = +surf22 & +surf24
 
 # Dumpline
 cell9 = openmc.Cell(cell_id=9, fill=mat6)
-cell9.region = +surf22 & +surf26 & -surf27
+cell9.region = +surf22 & +surf26
 
 # Dumpline
 cell10 = openmc.Cell(cell_id=10, fill=mat6)
-cell10.region = +surf22 & +surf28 & -surf29
+cell10.region = +surf22 & +surf28
 
 # D2O
 cell11 = openmc.Cell(cell_id=11, fill=mat2)
-cell11.region = +surf20 & +surf22 & -surf24 & -surf25
+cell11.region = +surf20 & +surf22 & -surf24
 
 # D2O
 cell12 = openmc.Cell(cell_id=12, fill=mat2)
-cell12.region = +surf20 & +surf22 & -surf26 & -surf27
+cell12.region = +surf20 & +surf22 & -surf26
 
 # D2O
 cell13 = openmc.Cell(cell_id=13, fill=mat2)
-cell13.region = +surf20 & +surf22 & -surf28 & -surf29
+cell13.region = +surf20 & +surf22 & -surf28
 
 # Air
 cell14 = openmc.Cell(cell_id=14, fill=mat10)
-cell14.region = -surf20 & -surf24 & -surf25
+cell14.region = -surf20 & -surf24
 
 # Air
 cell15 = openmc.Cell(cell_id=15, fill=mat10)
-cell15.region = -surf20 & -surf26 & -surf27
+cell15.region = -surf20 & -surf26
 
 # Air
 cell16 = openmc.Cell(cell_id=16, fill=mat10)
-cell16.region = -surf20 & -surf28 & -surf29
+cell16.region = -surf20 & -surf28
 
 # Sheath
 cell17 = openmc.Cell(cell_id=17, fill=mat5)

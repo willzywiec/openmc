@@ -45,15 +45,15 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # dPu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = +surf1 & -surf2
+cell1.region = 
 
 # CH2
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf2 & -surf3
+cell2.region = 
 
 # CH2
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = +surf3 & -surf4
+cell3.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3])
 geometry = openmc.Geometry(root_universe)

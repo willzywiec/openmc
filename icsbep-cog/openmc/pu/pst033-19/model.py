@@ -283,19 +283,19 @@ surf119_5 = openmc.Plane(a=0.8660253883, b=-0.5000000269, c=0, d=1.6100000865)
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1 & -surf2 & -surf3
+u1_cell0.region = -surf1 & -surf3
 u1_cell1 = openmc.Cell(fill=mat4)
-u1_cell1.region = +surf1 & -surf2 & -surf3
+u1_cell1.region = +surf1 & -surf3
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = +surf2 & -surf3
+u1_cell2.region = -surf3
 u1_cell3 = openmc.Cell(fill=mat3)
-u1_cell3.region = -surf1 & +surf2 & +surf3 & -surf4
+u1_cell3.region = -surf1 & +surf3 & -surf4
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = +surf1 & +surf2 & +surf3 & -surf4
+u1_cell4.region = +surf1 & +surf3 & -surf4
 u1_cell5 = openmc.Cell(fill=mat2)
-u1_cell5.region = +surf2 & +surf3 & +surf4 & -surf5 & -surf6
+u1_cell5.region = +surf3 & +surf4 & -surf5 & -surf6
 u1_cell6 = openmc.Cell(fill=mat4)
-u1_cell6.region = +surf2 & +surf3 & +surf4 & +surf5 & -surf6
+u1_cell6.region = +surf3 & +surf4 & +surf5 & -surf6
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6])
 
 u2_cell0 = openmc.Cell(fill=mat1)
@@ -317,15 +317,15 @@ u3_cell4.region = +surf24 & -surf20 & (-surf110_0 & -surf110_1 & -surf110_2 & -s
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2, u3_cell3, u3_cell4])
 
 u4_cell0 = openmc.Cell(fill=mat2)
-u4_cell0.region = -surf10 & -surf11 & +surf16 & +surf17 & +surf18
+u4_cell0.region = -surf10 & -surf11
 u4_cell1 = openmc.Cell(fill=mat5)
-u4_cell1.region = -surf10 & -surf21 & +surf16 & +surf17 & +surf18 & (+surf101_0 | +surf101_1 | +surf101_2 | +surf101_3 | +surf101_4 | +surf101_5) & (+surf102_0 | +surf102_1 | +surf102_2 | +surf102_3 | +surf102_4 | +surf102_5) & (+surf103_0 | +surf103_1 | +surf103_2 | +surf103_3 | +surf103_4 | +surf103_5) & (+surf104_0 | +surf104_1 | +surf104_2 | +surf104_3 | +surf104_4 | +surf104_5) & (+surf105_0 | +surf105_1 | +surf105_2 | +surf105_3 | +surf105_4 | +surf105_5) & (+surf106_0 | +surf106_1 | +surf106_2 | +surf106_3 | +surf106_4 | +surf106_5) & (+surf107_0 | +surf107_1 | +surf107_2 | +surf107_3 | +surf107_4 | +surf107_5) & (+surf108_0 | +surf108_1 | +surf108_2 | +surf108_3 | +surf108_4 | +surf108_5) & (+surf109_0 | +surf109_1 | +surf109_2 | +surf109_3 | +surf109_4 | +surf109_5) & (+surf110_0 | +surf110_1 | +surf110_2 | +surf110_3 | +surf110_4 | +surf110_5) & (+surf111_0 | +surf111_1 | +surf111_2 | +surf111_3 | +surf111_4 | +surf111_5) & (+surf112_0 | +surf112_1 | +surf112_2 | +surf112_3 | +surf112_4 | +surf112_5) & (+surf113_0 | +surf113_1 | +surf113_2 | +surf113_3 | +surf113_4 | +surf113_5) & (+surf114_0 | +surf114_1 | +surf114_2 | +surf114_3 | +surf114_4 | +surf114_5) & (+surf115_0 | +surf115_1 | +surf115_2 | +surf115_3 | +surf115_4 | +surf115_5) & (+surf116_0 | +surf116_1 | +surf116_2 | +surf116_3 | +surf116_4 | +surf116_5) & (+surf117_0 | +surf117_1 | +surf117_2 | +surf117_3 | +surf117_4 | +surf117_5) & (+surf118_0 | +surf118_1 | +surf118_2 | +surf118_3 | +surf118_4 | +surf118_5) & (+surf119_0 | +surf119_1 | +surf119_2 | +surf119_3 | +surf119_4 | +surf119_5)
+u4_cell1.region = -surf10 & -surf21 & (+surf101_0 | +surf101_1 | +surf101_2 | +surf101_3 | +surf101_4 | +surf101_5) & (+surf102_0 | +surf102_1 | +surf102_2 | +surf102_3 | +surf102_4 | +surf102_5) & (+surf103_0 | +surf103_1 | +surf103_2 | +surf103_3 | +surf103_4 | +surf103_5) & (+surf104_0 | +surf104_1 | +surf104_2 | +surf104_3 | +surf104_4 | +surf104_5) & (+surf105_0 | +surf105_1 | +surf105_2 | +surf105_3 | +surf105_4 | +surf105_5) & (+surf106_0 | +surf106_1 | +surf106_2 | +surf106_3 | +surf106_4 | +surf106_5) & (+surf107_0 | +surf107_1 | +surf107_2 | +surf107_3 | +surf107_4 | +surf107_5) & (+surf108_0 | +surf108_1 | +surf108_2 | +surf108_3 | +surf108_4 | +surf108_5) & (+surf109_0 | +surf109_1 | +surf109_2 | +surf109_3 | +surf109_4 | +surf109_5) & (+surf110_0 | +surf110_1 | +surf110_2 | +surf110_3 | +surf110_4 | +surf110_5) & (+surf111_0 | +surf111_1 | +surf111_2 | +surf111_3 | +surf111_4 | +surf111_5) & (+surf112_0 | +surf112_1 | +surf112_2 | +surf112_3 | +surf112_4 | +surf112_5) & (+surf113_0 | +surf113_1 | +surf113_2 | +surf113_3 | +surf113_4 | +surf113_5) & (+surf114_0 | +surf114_1 | +surf114_2 | +surf114_3 | +surf114_4 | +surf114_5) & (+surf115_0 | +surf115_1 | +surf115_2 | +surf115_3 | +surf115_4 | +surf115_5) & (+surf116_0 | +surf116_1 | +surf116_2 | +surf116_3 | +surf116_4 | +surf116_5) & (+surf117_0 | +surf117_1 | +surf117_2 | +surf117_3 | +surf117_4 | +surf117_5) & (+surf118_0 | +surf118_1 | +surf118_2 | +surf118_3 | +surf118_4 | +surf118_5) & (+surf119_0 | +surf119_1 | +surf119_2 | +surf119_3 | +surf119_4 | +surf119_5)
 u4_cell2 = openmc.Cell(fill=mat5)
-u4_cell2.region = -surf10 & -surf22 & +surf16 & +surf17 & +surf18 & (+surf101_0 | +surf101_1 | +surf101_2 | +surf101_3 | +surf101_4 | +surf101_5) & (+surf102_0 | +surf102_1 | +surf102_2 | +surf102_3 | +surf102_4 | +surf102_5) & (+surf103_0 | +surf103_1 | +surf103_2 | +surf103_3 | +surf103_4 | +surf103_5) & (+surf104_0 | +surf104_1 | +surf104_2 | +surf104_3 | +surf104_4 | +surf104_5) & (+surf105_0 | +surf105_1 | +surf105_2 | +surf105_3 | +surf105_4 | +surf105_5) & (+surf106_0 | +surf106_1 | +surf106_2 | +surf106_3 | +surf106_4 | +surf106_5) & (+surf107_0 | +surf107_1 | +surf107_2 | +surf107_3 | +surf107_4 | +surf107_5) & (+surf108_0 | +surf108_1 | +surf108_2 | +surf108_3 | +surf108_4 | +surf108_5) & (+surf109_0 | +surf109_1 | +surf109_2 | +surf109_3 | +surf109_4 | +surf109_5) & (+surf110_0 | +surf110_1 | +surf110_2 | +surf110_3 | +surf110_4 | +surf110_5) & (+surf111_0 | +surf111_1 | +surf111_2 | +surf111_3 | +surf111_4 | +surf111_5) & (+surf112_0 | +surf112_1 | +surf112_2 | +surf112_3 | +surf112_4 | +surf112_5) & (+surf113_0 | +surf113_1 | +surf113_2 | +surf113_3 | +surf113_4 | +surf113_5) & (+surf114_0 | +surf114_1 | +surf114_2 | +surf114_3 | +surf114_4 | +surf114_5) & (+surf115_0 | +surf115_1 | +surf115_2 | +surf115_3 | +surf115_4 | +surf115_5) & (+surf116_0 | +surf116_1 | +surf116_2 | +surf116_3 | +surf116_4 | +surf116_5) & (+surf117_0 | +surf117_1 | +surf117_2 | +surf117_3 | +surf117_4 | +surf117_5) & (+surf118_0 | +surf118_1 | +surf118_2 | +surf118_3 | +surf118_4 | +surf118_5) & (+surf119_0 | +surf119_1 | +surf119_2 | +surf119_3 | +surf119_4 | +surf119_5)
+u4_cell2.region = -surf10 & -surf22 & (+surf101_0 | +surf101_1 | +surf101_2 | +surf101_3 | +surf101_4 | +surf101_5) & (+surf102_0 | +surf102_1 | +surf102_2 | +surf102_3 | +surf102_4 | +surf102_5) & (+surf103_0 | +surf103_1 | +surf103_2 | +surf103_3 | +surf103_4 | +surf103_5) & (+surf104_0 | +surf104_1 | +surf104_2 | +surf104_3 | +surf104_4 | +surf104_5) & (+surf105_0 | +surf105_1 | +surf105_2 | +surf105_3 | +surf105_4 | +surf105_5) & (+surf106_0 | +surf106_1 | +surf106_2 | +surf106_3 | +surf106_4 | +surf106_5) & (+surf107_0 | +surf107_1 | +surf107_2 | +surf107_3 | +surf107_4 | +surf107_5) & (+surf108_0 | +surf108_1 | +surf108_2 | +surf108_3 | +surf108_4 | +surf108_5) & (+surf109_0 | +surf109_1 | +surf109_2 | +surf109_3 | +surf109_4 | +surf109_5) & (+surf110_0 | +surf110_1 | +surf110_2 | +surf110_3 | +surf110_4 | +surf110_5) & (+surf111_0 | +surf111_1 | +surf111_2 | +surf111_3 | +surf111_4 | +surf111_5) & (+surf112_0 | +surf112_1 | +surf112_2 | +surf112_3 | +surf112_4 | +surf112_5) & (+surf113_0 | +surf113_1 | +surf113_2 | +surf113_3 | +surf113_4 | +surf113_5) & (+surf114_0 | +surf114_1 | +surf114_2 | +surf114_3 | +surf114_4 | +surf114_5) & (+surf115_0 | +surf115_1 | +surf115_2 | +surf115_3 | +surf115_4 | +surf115_5) & (+surf116_0 | +surf116_1 | +surf116_2 | +surf116_3 | +surf116_4 | +surf116_5) & (+surf117_0 | +surf117_1 | +surf117_2 | +surf117_3 | +surf117_4 | +surf117_5) & (+surf118_0 | +surf118_1 | +surf118_2 | +surf118_3 | +surf118_4 | +surf118_5) & (+surf119_0 | +surf119_1 | +surf119_2 | +surf119_3 | +surf119_4 | +surf119_5)
 u4_cell3 = openmc.Cell(fill=mat2)
-u4_cell3.region = -surf10 & +surf12 & -surf13 & +surf16 & +surf17 & +surf18
+u4_cell3.region = -surf10 & +surf12 & -surf13
 u4_cell4 = openmc.Cell(fill=mat1)
-u4_cell4.region = -surf10 & +surf11 & +surf16 & +surf17 & +surf18 & +surf21 & +surf22
+u4_cell4.region = -surf10 & +surf11 & +surf21 & +surf22
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 # ------------------------------------------------------------------------------
@@ -346,7 +346,7 @@ cell15.region = +surf1 & -surf14 & -surf15
 
 # Air
 cell23 = openmc.Cell(cell_id=23, fill=mat4)
-cell23.region = +surf2 & +surf3 & +surf4 & +surf5 & -surf6
+cell23.region = +surf3 & +surf4 & +surf5 & -surf6
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell15, cell23])
 geometry = openmc.Geometry(root_universe)

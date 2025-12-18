@@ -127,11 +127,11 @@ u1_cell0.region = -surf1 & -surf11 & -surf12
 u1_cell1 = openmc.Cell(fill=mat3)
 u1_cell1.region = -surf1 & +surf11 & -surf12
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = -surf1 & +surf11 & +surf12 & -surf13
+u1_cell2.region = -surf1 & +surf11 & +surf12
 u1_cell3 = openmc.Cell(fill=mat4)
-u1_cell3.region = -surf1 & -surf10 & +surf13
+u1_cell3.region = -surf1 & -surf10
 u1_cell4 = openmc.Cell(fill=mat3)
-u1_cell4.region = -surf1 & +surf10 & +surf13
+u1_cell4.region = -surf1 & +surf10
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4])
 
 u2_cell0 = openmc.Cell(fill=mat5)
@@ -210,7 +210,7 @@ cell2.region = -surf1 & (+surf3_0 | +surf3_1 | +surf3_2 | +surf3_3 | +surf3_4 | 
 
 # Air
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = -surf1 & +surf10 & +surf13
+cell8.region = -surf1 & +surf10
 
 # Air
 cell14 = openmc.Cell(cell_id=14, fill=mat3)

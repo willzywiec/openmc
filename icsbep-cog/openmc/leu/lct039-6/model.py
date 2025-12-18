@@ -99,17 +99,17 @@ u1_cell4.region = +surf1 & +surf3 & +surf4 & +surf5 & -surf6
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4])
 
 u2_cell0 = openmc.Cell(fill=mat1)
-u2_cell0.region = -surf11 & -surf12 & -surf13
+u2_cell0.region = -surf11 & -surf12
 u2_cell1 = openmc.Cell(fill=mat3)
-u2_cell1.region = +surf11 & -surf12 & -surf13
+u2_cell1.region = +surf11 & -surf12
 u2_cell2 = openmc.Cell(fill=mat2)
-u2_cell2.region = +surf11 & +surf12 & -surf13
+u2_cell2.region = +surf11 & +surf12
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2])
 
 u3_cell0 = openmc.Cell(fill=mat3)
-u3_cell0.region = +surf1 & -surf13
+u3_cell0.region = +surf1
 u3_cell1 = openmc.Cell(fill=mat4)
-u3_cell1.region = -surf1 & -surf13
+u3_cell1.region = -surf1
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1])
 
 # Lattice 4: 22x22 array
@@ -161,11 +161,11 @@ cell8.region = +surf1 & +surf3 & +surf4 & +surf5 & -surf6
 
 # Alles
 cell12 = openmc.Cell(cell_id=12, fill=universe1)
-cell12.region = +surf11 & +surf12 & +surf13 & -surf6
+cell12.region = +surf11 & +surf12 & -surf6
 
 # Alles
 cell15 = openmc.Cell(cell_id=15, fill=universe1)
-cell15.region = -surf6 & +surf13
+cell15.region = -surf6
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell8, cell12, cell15])
 geometry = openmc.Geometry(root_universe)

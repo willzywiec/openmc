@@ -120,11 +120,11 @@ cell3.region = +surf2 & +surf3 & -surf4 & -surf10
 
 # SS304L
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
-cell4.region = +surf6 & -surf7 & -surf10
+cell4.region = +surf6 & -surf10
 
 # SS304L
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf7 & +surf8 & -surf9 & -surf10
+cell5.region = -surf10
 
 # CSTEEL
 cell6 = openmc.Cell(cell_id=6, fill=mat3)

@@ -151,11 +151,11 @@ u1_cell5.region = +surf5 & -surf6 & -surf7
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5])
 
 u2_cell0 = openmc.Cell(fill=mat5)
-u2_cell0.region = +surf10 & -surf19 & -surf22
+u2_cell0.region = +surf10 & -surf19
 u2_cell1 = openmc.Cell(fill=mat6)
-u2_cell1.region = +surf19 & +surf20 & -surf21 & -surf22
+u2_cell1.region = +surf19 & +surf20 & -surf21
 u2_cell2 = openmc.Cell(fill=mat10)
-u2_cell2.region = +surf19 & +surf21 & -surf22 & -surf9
+u2_cell2.region = +surf19 & +surf21 & -surf9
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2])
 
 # Lattice 3: 36x36 array

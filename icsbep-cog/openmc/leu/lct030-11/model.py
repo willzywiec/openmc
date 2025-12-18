@@ -153,19 +153,19 @@ universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, 
 universe3 = openmc.Universe(universe_id=3, cells=[])
 
 u4_cell0 = openmc.Cell(fill=mat4)
-u4_cell0.region = -surf1 & -surf4 & -surf20
+u4_cell0.region = -surf1 & -surf4
 u4_cell1 = openmc.Cell(fill=mat4)
-u4_cell1.region = -surf1 & -surf4 & -surf21
+u4_cell1.region = -surf1 & -surf4
 u4_cell2 = openmc.Cell(fill=mat4)
-u4_cell2.region = -surf1 & -surf4 & -surf22
+u4_cell2.region = -surf1 & -surf4
 u4_cell3 = openmc.Cell(fill=mat4)
-u4_cell3.region = -surf1 & -surf4 & -surf23
+u4_cell3.region = -surf1 & -surf4
 u4_cell4 = openmc.Cell(fill=mat4)
-u4_cell4.region = -surf1 & -surf4 & -surf24
+u4_cell4.region = -surf1 & -surf4
 u4_cell5 = openmc.Cell(fill=mat4)
-u4_cell5.region = -surf1 & -surf4 & -surf25
+u4_cell5.region = -surf1 & -surf4
 u4_cell6 = openmc.Cell(fill=mat4)
-u4_cell6.region = -surf1 & -surf4 & -surf26
+u4_cell6.region = -surf1 & -surf4
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4, u4_cell5, u4_cell6])
 
 # Lattice 5: 29x29 array
@@ -304,11 +304,11 @@ cell22.region = -surf1 & -surf4 & +surf16 & +surf17
 
 # Alles
 cell23 = openmc.Cell(cell_id=23, fill=universe1)
-cell23.region = -surf4 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
+cell23.region = -surf4
 
 # Alles
 cell31 = openmc.Cell(cell_id=31, fill=universe1)
-cell31.region = -surf4 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
+cell31.region = -surf4
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell15, cell22, cell23, cell31])
 geometry = openmc.Geometry(root_universe)

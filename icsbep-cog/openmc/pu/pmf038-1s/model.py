@@ -49,31 +49,31 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 
 # Pu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1
+cell1.region = 
 
 # SS304
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf2 & -surf3
+cell2.region = 
 
 # SS304
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf3 & -surf4
+cell3.region = 
 
 # Be
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = +surf5 & +surf6 & -surf7
+cell4.region = 
 
 # Be
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = -surf8 & +surf9 & -surf10
+cell5.region = 
 
 # Be
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = +surf11 & +surf12 & -surf13 & -surf14
+cell6.region = 
 
 # Be
 cell7 = openmc.Cell(cell_id=7, fill=mat4)
-cell7.region = +surf11 & +surf12 & -surf13 & +surf14 & +surf15
+cell7.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7])
 geometry = openmc.Geometry(root_universe)

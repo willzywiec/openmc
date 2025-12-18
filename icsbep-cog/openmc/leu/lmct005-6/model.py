@@ -304,19 +304,19 @@ cell2.region = -surf22
 
 # Core
 cell3 = openmc.Cell(cell_id=3, fill=universe5)
-cell3.region = -surf4 & -surf7 & -surf20 & +surf21 & +surf22 & +surf51 & +surf52 & +surf53 & +surf54
+cell3.region = -surf4 & -surf7 & -surf20 & +surf21 & +surf22
 
 # Alles
 cell4 = openmc.Cell(cell_id=4, fill=universe1)
-cell4.region = -surf4 & -surf7 & +surf20 & +surf51 & +surf52 & +surf53 & +surf54
+cell4.region = -surf4 & -surf7 & +surf20
 
 # Alles
 cell5 = openmc.Cell(cell_id=5, fill=universe1)
-cell5.region = +surf4 & -surf7 & +surf51 & +surf52 & +surf53 & +surf54
+cell5.region = +surf4 & -surf7
 
 # Zr4
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = -surf51 & +surf4 & -surf52 & +surf4 & -surf53 & +surf4 & -surf54
+cell6.region = +surf4
 
 # H2O
 cell15 = openmc.Cell(cell_id=15, fill=mat6)

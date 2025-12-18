@@ -199,19 +199,19 @@ universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, 
 universe3 = openmc.Universe(universe_id=3, cells=[])
 
 u4_cell0 = openmc.Cell(fill=mat4)
-u4_cell0.region = -surf1 & -surf20
+u4_cell0.region = -surf1
 u4_cell1 = openmc.Cell(fill=mat4)
-u4_cell1.region = -surf1 & -surf21
+u4_cell1.region = -surf1
 u4_cell2 = openmc.Cell(fill=mat4)
-u4_cell2.region = -surf1 & -surf22
+u4_cell2.region = -surf1
 u4_cell3 = openmc.Cell(fill=mat4)
-u4_cell3.region = -surf1 & -surf23
+u4_cell3.region = -surf1
 u4_cell4 = openmc.Cell(fill=mat4)
-u4_cell4.region = -surf1 & -surf24
+u4_cell4.region = -surf1
 u4_cell5 = openmc.Cell(fill=mat4)
-u4_cell5.region = -surf1 & -surf25
+u4_cell5.region = -surf1
 u4_cell6 = openmc.Cell(fill=mat4)
-u4_cell6.region = -surf1 & -surf26
+u4_cell6.region = -surf1
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4, u4_cell5, u4_cell6])
 
 # Lattice 5: 21x21 array
@@ -288,70 +288,70 @@ universe7 = openmc.Universe(universe_id=7, cells=[u7_cell0, u7_cell1, u7_cell2])
 
 # Frods
 cell1 = openmc.Cell(cell_id=1, fill=universe5)
-cell1.region = -surf4 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & +surf41 & +surf42 & +surf43 & +surf44 & +surf45 & +surf46 & +surf47 & +surf48 & +surf49 & +surf50 & +surf51 & +surf52 & +surf53 & +surf54 & +surf55 & +surf56 & +surf57 & +surf58 & +surf59 & +surf60
+cell1.region = -surf4 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5)
 
 # H2O
 cell2 = openmc.Cell(cell_id=2, fill=mat4)
-cell2.region = -surf1 & -surf41 & -surf1 & -surf42 & -surf1 & -surf43 & -surf1 & -surf44 & -surf1 & -surf45 & -surf1 & -surf46 & -surf1 & -surf47
+cell2.region = -surf1
 
 # H2O
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
-cell3.region = -surf1 & -surf48 & -surf1 & -surf49 & -surf1 & -surf50 & -surf1 & -surf51 & -surf1 & -surf52 & -surf1 & -surf53 & -surf1 & -surf54
+cell3.region = -surf1
 
 # H2O
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = -surf1 & -surf55 & -surf1 & -surf56 & -surf1 & -surf57 & -surf1 & -surf58 & -surf1 & -surf59 & -surf1 & -surf60 & -surf1 & -surf61
+cell4.region = -surf1
 
 # H2O
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = -surf1 & -surf62 & -surf1 & -surf63 & -surf1 & -surf64 & -surf1 & -surf65 & -surf1 & -surf66 & -surf1 & -surf67 & -surf1 & -surf68
+cell5.region = -surf1
 
 # H2O
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = -surf1 & -surf69 & -surf1 & -surf70 & -surf1 & -surf71 & -surf1 & -surf72 & -surf1 & -surf73 & -surf1 & -surf74 & -surf1 & -surf75
+cell6.region = -surf1
 
 # H2O
 cell7 = openmc.Cell(cell_id=7, fill=mat4)
-cell7.region = -surf1 & -surf76 & -surf1 & -surf77 & -surf1 & -surf78 & -surf1 & -surf79 & -surf1 & -surf80 & -surf1 & -surf81 & -surf1 & -surf82
+cell7.region = -surf1
 
 # H2O
 cell8 = openmc.Cell(cell_id=8, fill=mat4)
-cell8.region = -surf1 & -surf83 & -surf1 & -surf84 & -surf1 & -surf85 & -surf1 & -surf86 & -surf1 & -surf87 & -surf1 & -surf88
+cell8.region = -surf1
 
 # HFR
 cell9 = openmc.Cell(cell_id=9, fill=universe7)
 cell9.translation = (0.0, 0.0, 0.0)
-cell9.region = -surf101
+cell9.region = 
 
 # HFR
 cell10 = openmc.Cell(cell_id=10, fill=universe7)
 cell10.translation = (0.0, 6.5991, 0.0)
-cell10.region = -surf102
+cell10.region = 
 
 # HFR
 cell11 = openmc.Cell(cell_id=11, fill=universe7)
 cell11.translation = (0.0, -6.5991, 0.0)
-cell11.region = -surf103
+cell11.region = 
 
 # HFR
 cell12 = openmc.Cell(cell_id=12, fill=universe7)
 cell12.translation = (5.715, 3.29955, 0.0)
-cell12.region = -surf104
+cell12.region = 
 
 # HFR
 cell13 = openmc.Cell(cell_id=13, fill=universe7)
 cell13.translation = (-5.715, 3.29955, 0.0)
-cell13.region = -surf105
+cell13.region = 
 
 # HFR
 cell14 = openmc.Cell(cell_id=14, fill=universe7)
 cell14.translation = (5.715, -3.29955, 0.0)
-cell14.region = -surf106
+cell14.region = 
 
 # HFR
 cell15 = openmc.Cell(cell_id=15, fill=universe7)
 cell15.translation = (-5.715, -3.29955, 0.0)
-cell15.region = -surf107
+cell15.region = 
 
 # Holes
 cell16 = openmc.Cell(cell_id=16, fill=universe6)
@@ -371,11 +371,11 @@ cell28.region = -surf1 & -surf4 & +surf16 & +surf17
 
 # Alles
 cell29 = openmc.Cell(cell_id=29, fill=universe1)
-cell29.region = -surf4 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
+cell29.region = -surf4
 
 # Alles
 cell37 = openmc.Cell(cell_id=37, fill=universe1)
-cell37.region = -surf4 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
+cell37.region = -surf4
 
 # Mod
 cell41 = openmc.Cell(cell_id=41, fill=mat4)

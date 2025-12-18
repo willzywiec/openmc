@@ -181,11 +181,11 @@ u1_cell0.region = -surf1 & -surf11 & -surf12
 u1_cell1 = openmc.Cell(fill=mat3)
 u1_cell1.region = -surf1 & +surf11 & -surf12
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = -surf1 & +surf11 & +surf12 & -surf13
+u1_cell2.region = -surf1 & +surf11 & +surf12
 u1_cell3 = openmc.Cell(fill=mat4)
-u1_cell3.region = -surf1 & -surf10 & +surf13
+u1_cell3.region = -surf1 & -surf10
 u1_cell4 = openmc.Cell(fill=mat3)
-u1_cell4.region = -surf1 & +surf10 & +surf13
+u1_cell4.region = -surf1 & +surf10
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4])
 
 u2_cell0 = openmc.Cell(fill=mat5)
@@ -234,51 +234,51 @@ universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2])
 
 # Core
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = -surf1 & (-surf3_0 & -surf3_1 & -surf3_2 & -surf3_3 & -surf3_4 & -surf3_5) & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110
+cell1.region = -surf1 & (-surf3_0 & -surf3_1 & -surf3_2 & -surf3_3 & -surf3_4 & -surf3_5)
 
 # Hole
 cell2 = openmc.Cell(cell_id=2, fill=universe4)
-cell2.region = -surf1 & -surf101 & +surf4 & -surf1 & -surf102 & +surf4 & -surf1 & -surf103 & +surf4 & -surf1 & -surf104 & +surf4 & -surf1 & -surf105
+cell2.region = -surf1
 
 # Hole
 cell3 = openmc.Cell(cell_id=3, fill=universe4)
-cell3.region = -surf1 & -surf106 & +surf4 & -surf1 & -surf107 & +surf4 & -surf1 & -surf108 & +surf4 & -surf1 & -surf109 & +surf4 & -surf1 & -surf110
+cell3.region = -surf1
 
 # Hole
 cell4 = openmc.Cell(cell_id=4, fill=universe4)
-cell4.region = -surf1 & -surf111 & +surf4 & -surf1 & -surf112 & +surf4 & -surf1 & -surf113 & +surf4 & -surf1 & -surf114 & +surf4 & -surf1 & -surf115
+cell4.region = -surf1
 
 # Hole
 cell5 = openmc.Cell(cell_id=5, fill=universe4)
-cell5.region = -surf1 & -surf116 & +surf4 & -surf1 & -surf117 & +surf4 & -surf1 & -surf118 & +surf4 & -surf1 & -surf119 & +surf4 & -surf1 & -surf120
+cell5.region = -surf1
 
 # Hole
 cell6 = openmc.Cell(cell_id=6, fill=universe4)
-cell6.region = -surf1 & -surf121 & +surf4 & -surf1 & -surf122 & +surf4 & -surf1 & -surf123 & +surf4 & -surf1 & -surf124 & +surf4 & -surf1 & -surf125
+cell6.region = -surf1
 
 # Hole
 cell7 = openmc.Cell(cell_id=7, fill=universe4)
-cell7.region = -surf1 & -surf126 & +surf4 & -surf1 & -surf127 & +surf4 & -surf1 & -surf128 & +surf4 & -surf1 & -surf129 & +surf4 & -surf1 & -surf130
+cell7.region = -surf1
 
 # Hole
 cell8 = openmc.Cell(cell_id=8, fill=universe4)
-cell8.region = -surf1 & -surf131 & +surf4 & -surf1 & -surf132 & +surf4 & -surf1 & -surf133 & +surf4 & -surf1 & -surf134 & +surf4 & -surf1 & -surf135
+cell8.region = -surf1
 
 # Hole
 cell9 = openmc.Cell(cell_id=9, fill=universe4)
-cell9.region = -surf1 & -surf136 & +surf4 & -surf1 & -surf137 & +surf4 & -surf1 & -surf138 & +surf4 & -surf1 & -surf139 & +surf4 & -surf1 & -surf140
+cell9.region = -surf1
 
 # Hole
 cell10 = openmc.Cell(cell_id=10, fill=universe4)
-cell10.region = -surf1 & -surf141 & +surf4 & -surf1 & -surf142 & +surf4 & -surf1 & -surf143 & +surf4 & -surf1 & -surf144 & +surf4 & -surf1 & -surf145
+cell10.region = -surf1
 
 # Hole
 cell11 = openmc.Cell(cell_id=11, fill=universe4)
-cell11.region = -surf1 & -surf146 & +surf4 & -surf1 & -surf147 & +surf4 & -surf1 & -surf148 & +surf4 & -surf1 & -surf149 & +surf4 & -surf1 & -surf150
+cell11.region = -surf1
 
 # Hole
 cell12 = openmc.Cell(cell_id=12, fill=universe4)
-cell12.region = -surf1 & -surf151 & +surf4 & -surf1 & -surf152 & +surf4 & -surf1 & -surf153 & +surf4 & -surf1 & -surf154
+cell12.region = -surf1
 
 # Refl
 cell13 = openmc.Cell(cell_id=13, fill=universe4)
@@ -286,7 +286,7 @@ cell13.region = -surf1 & (+surf3_0 | +surf3_1 | +surf3_2 | +surf3_3 | +surf3_4 |
 
 # Air
 cell19 = openmc.Cell(cell_id=19, fill=mat3)
-cell19.region = -surf1 & +surf10 & +surf13
+cell19.region = -surf1 & +surf10
 
 # Air
 cell25 = openmc.Cell(cell_id=25, fill=mat3)

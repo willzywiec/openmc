@@ -85,15 +85,15 @@ surf4 = openmc.ZPlane(surface_id=4, z0=60.06)
 
 # Soln
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1 & -surf4
+cell1.region = -surf4
 
 # Air
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = -surf1 & +surf4
+cell2.region = +surf4
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = +surf1 & -surf2
+cell3.region = -surf2
 
 # H2O
 cell4 = openmc.Cell(cell_id=4, fill=mat4)

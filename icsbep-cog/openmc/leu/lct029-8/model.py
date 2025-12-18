@@ -120,9 +120,9 @@ u1_cell4.region = -surf11 & -surf12
 u1_cell5 = openmc.Cell()
 u1_cell5.region = +surf11 & -surf12
 u1_cell6 = openmc.Cell(fill=mat2)
-u1_cell6.region = +surf11 & +surf12 & -surf13 & -surf14
+u1_cell6.region = +surf11 & +surf12 & -surf14
 u1_cell7 = openmc.Cell(fill=mat6)
-u1_cell7.region = -surf5 & +surf13 & -surf14
+u1_cell7.region = -surf5 & -surf14
 u1_cell8 = openmc.Cell(fill=mat6)
 u1_cell8.region = -surf5 & -surf14
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7, u1_cell8])

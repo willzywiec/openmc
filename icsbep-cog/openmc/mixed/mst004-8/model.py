@@ -150,11 +150,11 @@ cell3.region = +surf2 & +surf3 & -surf4 & -surf10
 
 # SS304L
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
-cell4.region = +surf6 & -surf7 & -surf10
+cell4.region = +surf6 & -surf10
 
 # SS304L
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf7 & +surf8 & -surf9 & -surf10
+cell5.region = -surf10
 
 # CSTEEL
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
@@ -166,23 +166,23 @@ cell7.region = +surf12 & -surf13
 
 # Cncrt
 cell8 = openmc.Cell(cell_id=8, fill=mat4)
-cell8.region = -surf10 & +surf21 & -surf22 & +surf26
+cell8.region = -surf10 & +surf21 & +surf26
 
 # Cncrt
 cell9 = openmc.Cell(cell_id=9, fill=mat4)
-cell9.region = -surf10 & +surf21 & -surf22 & -surf23 & +surf25 & -surf26
+cell9.region = -surf10 & +surf21 & -surf23 & +surf25 & -surf26
 
 # Cncrt
 cell10 = openmc.Cell(cell_id=10, fill=mat4)
-cell10.region = -surf10 & +surf21 & -surf22 & +surf24 & +surf25 & -surf26
+cell10.region = -surf10 & +surf21 & +surf24 & +surf25 & -surf26
 
 # Cncrt
 cell11 = openmc.Cell(cell_id=11, fill=mat4)
-cell11.region = -surf10 & +surf31 & -surf32 & +surf33 & -surf34 & +surf35 & -surf36
+cell11.region = -surf10 & +surf31 & +surf33 & -surf34 & +surf35 & -surf36
 
 # Cncrt
 cell12 = openmc.Cell(cell_id=12, fill=mat4)
-cell12.region = -surf10 & +surf31 & -surf32 & -surf35 & -surf36
+cell12.region = -surf10 & +surf31 & -surf35 & -surf36
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12])
 geometry = openmc.Geometry(root_universe)
