@@ -570,24 +570,10 @@ void print_results()
       if (settings::calculate_alpha) {
         fmt::print(" Prompt Neutron Lifetime    = {:.5e} +/- {:.5e} seconds\n",
           simulation::prompt_neutron_lifetime, t_n1 * simulation::prompt_neutron_lifetime_std);
-        fmt::print(" Mean Gen Time (derived)    = {:.5e} +/- {:.5e} seconds\n",
-          simulation::mean_generation_time_derived, t_n1 * simulation::mean_generation_time_derived_std);
-        fmt::print(" Mean Gen Time (direct)     = {:.5e} +/- {:.5e} seconds\n",
+        fmt::print(" Mean Generation Time       = {:.5e} +/- {:.5e} seconds\n",
           simulation::mean_generation_time, t_n1 * simulation::mean_generation_time_std);
-        fmt::print(" Alpha (k_p-1)/l            = {:.5e} +/- {:.5e} 1/seconds\n",
-          simulation::alpha_k_based, t_n1 * simulation::alpha_k_based_std);
-        fmt::print(" Alpha (rho-beta)/Lambda    = {:.5e} +/- {:.5e} 1/seconds\n",
-          simulation::alpha_static, t_n1 * simulation::alpha_static_std);
-        // Print bias-corrected values if system is delayed critical
-        if (simulation::is_delayed_critical) {
-          fmt::print(" *** Delayed Critical System Detected (k >= 1.0, k_p < 1.0) ***\n");
-          fmt::print(" k-eff Bias                 = {:.5e}\n",
-            simulation::keff_bias);
-          fmt::print(" k-prompt (corrected)       = {:.5f} +/- {:.5f}\n",
-            simulation::keff_prompt_corrected, t_n1 * simulation::keff_prompt_corrected_std);
-          fmt::print(" Alpha Corrected (k_p-1)/l  = {:.5e} +/- {:.5e} 1/seconds\n",
-            simulation::alpha_k_based_corrected, t_n1 * simulation::alpha_k_based_corrected_std);
-        }
+        fmt::print(" Alpha                      = {:.5e} +/- {:.5e} 1/seconds\n",
+          simulation::alpha, t_n1 * simulation::alpha_std);
       }
     }
   } else {
@@ -617,23 +603,9 @@ void print_results()
         fmt::print(
           " Prompt Neutron Lifetime    = {:.5e} seconds\n", simulation::prompt_neutron_lifetime);
         fmt::print(
-          " Mean Gen Time (derived)    = {:.5e} seconds\n", simulation::mean_generation_time_derived);
+          " Mean Generation Time       = {:.5e} seconds\n", simulation::mean_generation_time);
         fmt::print(
-          " Mean Gen Time (direct)     = {:.5e} seconds\n", simulation::mean_generation_time);
-        fmt::print(
-          " Alpha (k_p-1)/l            = {:.5e} 1/seconds\n", simulation::alpha_k_based);
-        fmt::print(
-          " Alpha (rho-beta)/Lambda    = {:.5e} 1/seconds\n", simulation::alpha_static);
-        // Print bias-corrected values if system is delayed critical
-        if (simulation::is_delayed_critical) {
-          fmt::print(" *** Delayed Critical System Detected (k >= 1.0, k_p < 1.0) ***\n");
-          fmt::print(" k-eff Bias                 = {:.5e}\n",
-            simulation::keff_bias);
-          fmt::print(" k-prompt (corrected)       = {:.5f}\n",
-            simulation::keff_prompt_corrected);
-          fmt::print(" Alpha Corrected (k_p-1)/l  = {:.5e} 1/seconds\n",
-            simulation::alpha_k_based_corrected);
-        }
+          " Alpha                      = {:.5e} 1/seconds\n", simulation::alpha);
       }
     }
   }

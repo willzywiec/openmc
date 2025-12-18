@@ -4,7 +4,9 @@ Example demonstrating delayed neutron kinetics calculations in OpenMC.
 This example shows how to enable calculation of:
 - k_prompt: prompt neutron k-effective
 - beta_eff: effective delayed neutron fraction
-- alpha eigenvalues: reactor kinetics parameters (both k-based and rate-based)
+- prompt_neutron_lifetime (ℓ): time from neutron birth to absorption or leakage
+- mean_generation_time (Λ): time from neutron birth to next-generation fission
+- alpha: α = (ρ - β_eff) / Λ
 
 The kinetics parameters are automatically calculated during an eigenvalue
 simulation when enabled in the settings.
@@ -54,7 +56,7 @@ settings.particles = 10000
 settings.calculate_prompt_k = True
 
 # Enable alpha eigenvalue calculations
-# This will also calculate alpha (k-based) and alpha (rate-based)
+# This will also calculate prompt_neutron_lifetime, mean_generation_time, and alpha
 settings.calculate_alpha = True
 
 settings.export_to_xml()
@@ -67,8 +69,9 @@ settings.export_to_xml()
 # print(f"k-effective: {sp.keff}")
 # print(f"k-prompt: {sp.k_prompt}")
 # print(f"Beta-effective: {sp.beta_eff}")
-# print(f"Prompt generation time: {sp.prompt_gen_time}")
-# print(f"Alpha (k-based): {sp.alpha_k_based}")
+# print(f"Prompt neutron lifetime: {sp.prompt_neutron_lifetime}")
+# print(f"Mean generation time: {sp.mean_generation_time}")
+# print(f"Alpha: {sp.alpha}")
 
 print("Example files created successfully!")
 print("To run this example:")

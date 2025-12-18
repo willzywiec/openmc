@@ -345,110 +345,29 @@ class StatePoint:
         else:
             return None
 
-    # Backward compatibility alias
-    prompt_lifetime = prompt_neutron_lifetime
-
-    @property
-    def mean_generation_time_derived(self):
-        """Mean generation time (Λ) derived from lifetime, with uncertainty.
-
-        The mean generation time derived from lifetime using Λ = ℓ/k.
-        For a more accurate measurement, see mean_generation_time which measures
-        generation time directly at fission events.
-        """
-        if self.run_mode == 'eigenvalue' and 'prompt_gen_time' in self._f:
-            return ufloat(*self._f['prompt_gen_time'][()])
-        else:
-            return None
-
-    # Backward compatibility alias
-    prompt_gen_time = mean_generation_time_derived
-
     @property
     def mean_generation_time(self):
-        """Mean generation time (Λ) direct measurement, with uncertainty.
+        """Mean generation time (Λ) with uncertainty.
 
         The mean generation time measured directly by scoring time-to-fission
         events weighted by nu (neutrons produced). This is the physically accurate
         birth-to-fission time used in alpha calculations.
         """
-        if self.run_mode == 'eigenvalue' and 'prompt_gen_time_direct' in self._f:
-            return ufloat(*self._f['prompt_gen_time_direct'][()])
-        else:
-            return None
-
-    # Backward compatibility alias
-    prompt_gen_time_direct = mean_generation_time
-
-    @property
-    def alpha_k_based(self):
-        """Alpha eigenvalue using prompt neutron lifetime, with uncertainty.
-
-        Calculated as: α = (k_p - 1) / ℓ
-        where k_p is the prompt k-effective and ℓ is the prompt neutron lifetime.
-        This is the prompt neutron approximation from point kinetics.
-        """
-        if self.run_mode == 'eigenvalue' and 'alpha_k_based' in self._f:
-            return ufloat(*self._f['alpha_k_based'][()])
+        if self.run_mode == 'eigenvalue' and 'mean_generation_time' in self._f:
+            return ufloat(*self._f['mean_generation_time'][()])
         else:
             return None
 
     @property
-    def alpha_static(self):
-        """Alpha eigenvalue using mean generation time, with uncertainty.
+    def alpha(self):
+        """Alpha eigenvalue with uncertainty.
 
         Calculated as: α = (ρ - β_eff) / Λ
         where ρ = (k-1)/k is reactivity, β_eff is effective delayed neutron
-        fraction, and Λ is the mean generation time (direct measurement).
-        This is the inhour equation form and is more robust to k_eff bias.
+        fraction, and Λ is the mean generation time.
         """
-        if self.run_mode == 'eigenvalue' and 'alpha_static' in self._f:
-            return ufloat(*self._f['alpha_static'][()])
-        else:
-            return None
-
-    @property
-    def is_delayed_critical(self):
-        """True if system is detected as delayed critical (k >= 1.0, k_p < 1.0)."""
-        if self.run_mode == 'eigenvalue' and 'is_delayed_critical' in self._f:
-            return bool(self._f['is_delayed_critical'][()])
-        else:
-            return None
-
-    @property
-    def keff_bias(self):
-        """k-effective bias for delayed critical systems.
-
-        For delayed critical systems (k >= 1.0, k_p < 1.0), this is calculated
-        as bias = 1.0 - k_eff. Used to correct k_prompt values.
-        """
-        if self.run_mode == 'eigenvalue' and 'keff_bias' in self._f:
-            return self._f['keff_bias'][()]
-        else:
-            return None
-
-    @property
-    def k_prompt_corrected(self):
-        """Bias-corrected prompt k-effective with uncertainty.
-
-        For delayed critical systems, this is k_prompt + keff_bias.
-        For other systems, this equals k_prompt.
-        """
-        if self.run_mode == 'eigenvalue' and 'k_prompt_corrected' in self._f:
-            return ufloat(*self._f['k_prompt_corrected'][()])
-        else:
-            return None
-
-    @property
-    def alpha_k_based_corrected(self):
-        """Bias-corrected alpha eigenvalue with uncertainty.
-
-        Calculated as: α = (k_p_corrected - 1) / τ_r
-        For delayed critical systems, uses the bias-corrected k_prompt.
-        For other systems, this equals alpha_k_based.
-        """
-        if self.run_mode == 'eigenvalue' and 'alpha_k_based_corrected' in self._f:
-            return ufloat(*self._f['alpha_k_based_corrected'][()])
+        if self.run_mode == 'eigenvalue' and 'alpha' in self._f:
+            return ufloat(*self._f['alpha'][()])
         else:
             return None
 

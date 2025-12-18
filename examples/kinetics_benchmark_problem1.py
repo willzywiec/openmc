@@ -9,8 +9,8 @@ k_prompt, beta_eff, and alpha eigenvalue calculations.
 The problem demonstrates:
 - Calculation of k_eff and k_prompt for a near-critical fast system
 - Determination of beta_eff from the difference between k_eff and k_prompt
-- Alpha eigenvalue calculations using both k-based and rate-based methods
-- Comparison of static vs dynamic criticality approaches
+- Alpha eigenvalue calculation: α = (ρ - β_eff) / Λ
+- Prompt neutron lifetime (ℓ) and mean generation time (Λ)
 - Validation that beta_eff matches known delayed neutron fraction data
 
 Reference:
@@ -132,10 +132,12 @@ if sp.k_prompt is not None:
     results.append(f" k-prompt                   = {sp.k_prompt.nominal_value:.5f} +/- {sp.k_prompt.std_dev:.5f}")
 if sp.beta_eff is not None:
     results.append(f" Beta-effective             = {sp.beta_eff.nominal_value:.5f} +/- {sp.beta_eff.std_dev:.5f}")
-if sp.prompt_gen_time is not None:
-    results.append(f" Prompt Neutron Lifetime    = {sp.prompt_gen_time.nominal_value:.5e} +/- {sp.prompt_gen_time.std_dev:.5e} seconds")
-if sp.alpha_k_based is not None:
-    results.append(f" Alpha Eigenvalue           = {sp.alpha_k_based.nominal_value:.5e} +/- {sp.alpha_k_based.std_dev:.5e} 1/seconds")
+if sp.prompt_neutron_lifetime is not None:
+    results.append(f" Prompt Neutron Lifetime    = {sp.prompt_neutron_lifetime.nominal_value:.5e} +/- {sp.prompt_neutron_lifetime.std_dev:.5e} seconds")
+if sp.mean_generation_time is not None:
+    results.append(f" Mean Generation Time       = {sp.mean_generation_time.nominal_value:.5e} +/- {sp.mean_generation_time.std_dev:.5e} seconds")
+if sp.alpha is not None:
+    results.append(f" Alpha Eigenvalue           = {sp.alpha.nominal_value:.5e} +/- {sp.alpha.std_dev:.5e} 1/seconds")
 
 # Print results
 print("\n" + "=" * 70)
