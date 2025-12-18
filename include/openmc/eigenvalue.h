@@ -18,39 +18,6 @@
 namespace openmc {
 
 //==============================================================================
-// Time-dependent fission tally for alpha eigenvalue extraction
-//==============================================================================
-
-//! \class TimeFissionTally
-//! \brief Accumulates fission events in time bins for exponential fit
-struct TimeFissionTally {
-  vector<double> bin_edges;     //!< Time bin edges [seconds]
-  vector<double> bin_counts;    //!< Accumulated ν×weight per bin
-  vector<double> bin_counts_sq; //!< For variance calculation
-  int n_samples {0};            //!< Number of samples accumulated
-
-  //! Initialize time bins
-  //! \param n_bins Number of time bins
-  //! \param t_min Minimum time [s]
-  //! \param t_max Maximum time [s]
-  //! \param logarithmic Use logarithmic bin spacing if true
-  void initialize(int n_bins, double t_min, double t_max, bool logarithmic);
-
-  //! Score a fission event to the appropriate time bin
-  //! \param time Absolute time of fission event [s]
-  //! \param nu_weight ν × weight contribution
-  void score(double time, double nu_weight);
-
-  //! Reset all bin counts
-  void reset();
-
-  //! Find the bin index for a given time
-  //! \param time Time value [s]
-  //! \return Bin index, or -1 if outside range
-  int find_bin(double time) const;
-};
-
-//==============================================================================
 // Global variables
 //==============================================================================
 
@@ -69,31 +36,16 @@ extern double keff_prompt_std;        //!< Standard deviation of k_prompt
 extern double beta_eff;               //!< Effective delayed neutron fraction
 extern double beta_eff_std;           //!< Standard deviation of beta_eff
 
-// Alpha eigenvalue from direct flux-weighted method
-extern double alpha;           //!< α = (ρ - β) / Λ
-extern double alpha_std;       //!< Standard deviation of alpha
-
 // IFP-weighted alpha eigenvalue
-extern double alpha_ifp;              //!< α from IFP-weighted Λ_eff
+// Computed from existing IFP scores: α = (k - 1) / Λ_eff
+// where Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+extern double alpha_ifp;              //!< α from IFP-weighted Λ_eff [/s]
 extern double alpha_ifp_std;          //!< Standard deviation of α_ifp
 extern double lambda_eff_ifp;         //!< IFP-weighted generation time Λ_eff [s]
 extern double lambda_eff_ifp_std;     //!< Standard deviation of Λ_eff
 
-// Time-dependent alpha eigenvalue
-extern double alpha_time_dependent;       //!< α from time-dependent fit
-extern double alpha_time_dependent_std;   //!< Standard deviation
-extern double lambda_eff_time;            //!< Λ_eff derived from time-dep α [s]
-extern double lambda_eff_time_std;        //!< Standard deviation
-
-// Time-dependent fission tally
-extern TimeFissionTally time_fission_tally;
-
-// Neutron timing parameters
-extern double prompt_neutron_lifetime;     //!< Prompt neutron lifetime ℓ (time to any removal) [s]
-extern double prompt_neutron_lifetime_std; //!< Std dev of prompt neutron lifetime
-extern double mean_generation_time;        //!< Mean generation time Λ (time to fission) [s]
-extern double mean_generation_time_std;    //!< Std dev of mean generation time
-extern int kinetics_tally_index;   //!< Index of internal kinetics tally
+// Index of internal kinetics tally (for alpha calculations using IFP scores)
+extern int kinetics_tally_index;
 
 } // namespace simulation
 
@@ -116,26 +68,14 @@ void calculate_average_keff();
 
 //! Calculate delayed neutron kinetics parameters
 //!
-//! This function calculates k_prompt, beta_eff, and alpha eigenvalues
+//! This function calculates k_prompt, beta_eff, and alpha eigenvalue
 //! over active generations. Results are stored in simulation namespace.
 void calculate_kinetics_parameters();
 
 //! Setup internal tallies for alpha eigenvalue calculations
 //!
-//! Creates tallies with prompt chain scores needed for alpha calculations
+//! Creates a tally with IFP scores needed for alpha calculation
 void setup_kinetics_tallies();
-
-//! Initialize time-dependent alpha tally
-//!
-//! Sets up time bins for fission event accumulation
-void initialize_time_alpha_tally();
-
-//! Extract alpha eigenvalue from time-dependent fission rate
-//!
-//! Performs weighted linear regression on ln(F) vs t to extract α
-//! \param tally The time fission tally with accumulated data
-//! \return The alpha eigenvalue [/s]
-double extract_alpha_from_time_tally(const TimeFissionTally& tally);
 
 //! Calculates a minimum variance estimate of k-effective
 //!

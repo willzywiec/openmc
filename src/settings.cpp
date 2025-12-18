@@ -58,12 +58,6 @@ bool event_based {false};
 bool ifp_on {false};
 bool calculate_prompt_k {false};
 bool calculate_alpha {false};
-bool alpha_use_ifp {true};           // Use IFP-weighted method for alpha
-bool alpha_use_time_dependent {true}; // Use time-dependent method for alpha
-int alpha_time_bins {100};           // Number of time bins
-double alpha_time_min {1.0e-9};      // 1 ns minimum time
-double alpha_time_max {1.0e-3};      // 1 ms maximum time
-bool alpha_time_log_bins {true};     // Logarithmic binning
 bool legendre_to_tabular {true};
 bool material_cell_offsets {true};
 bool output_summary {true};

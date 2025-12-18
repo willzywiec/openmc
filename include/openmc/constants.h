@@ -326,19 +326,7 @@ enum TallyScore {
   SCORE_PULSE_HEIGHT = -17,                  // pulse-height
   SCORE_IFP_TIME_NUM = -18,                  // IFP lifetime numerator
   SCORE_IFP_BETA_NUM = -19,                  // IFP delayed fraction numerator
-  SCORE_IFP_DENOM = -20,                     // IFP common denominator
-  SCORE_PROMPT_CHAIN_FLUX = -21,             // flux from prompt chains
-  SCORE_DELAYED_CHAIN_FLUX = -22,            // flux from delayed chains
-  SCORE_PROMPT_CHAIN_NU_FISSION = -23,       // nu-fission from prompt chains
-  SCORE_DELAYED_CHAIN_NU_FISSION = -24,      // nu-fission from delayed chains
-  SCORE_PROMPT_CHAIN_GEN_TIME_NUM = -25,     // prompt gen time numerator
-  SCORE_PROMPT_CHAIN_GEN_TIME_DENOM = -26,   // prompt gen time denominator
-  SCORE_PROMPT_CHAIN_NU_FISSION_RATE = -27,  // prompt nu-fission rate
-  SCORE_PROMPT_CHAIN_ABSORPTION_RATE = -28,  // prompt absorption rate
-  SCORE_PROMPT_CHAIN_POPULATION = -29,       // prompt neutron population
-  SCORE_PROMPT_CHAIN_LEAKAGE_RATE = -30,     // prompt leakage rate
-  SCORE_PROMPT_CHAIN_FISSION_TIME_NUM = -31, // direct gen time numerator (fission only)
-  SCORE_PROMPT_CHAIN_FISSION_TIME_DENOM = -32  // direct gen time denominator (fission only)
+  SCORE_IFP_DENOM = -20                      // IFP common denominator
 };
 
 // Global tally parameters
