@@ -4,15 +4,16 @@ This guide explains how to use OpenMC's alpha eigenvalue calculation capability 
 
 ## Overview
 
-The alpha eigenvalue (α) describes the time-dependent behavior of the prompt neutron population in a nuclear system. It is calculated using the formula:
+The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. It is calculated using the inhour equation:
 
 ```
-α = (k_prompt - 1) / l_prompt
+α = (ρ - β_eff) / Λ
 ```
 
 Where:
-- **k_prompt**: Prompt multiplication factor (excluding delayed neutrons)
-- **l_prompt**: Prompt neutron generation time (lifetime)
+- **ρ**: Reactivity, ρ = (k - 1) / k
+- **β_eff**: Effective delayed neutron fraction
+- **Λ**: Mean generation time (mean time from neutron birth to fission)
 
 ### Physical Interpretation
 
@@ -52,8 +53,8 @@ sp = openmc.StatePoint('statepoint.150.h5')
 print(f"k-effective:           {sp.keff}")
 print(f"k-prompt:              {sp.k_prompt}")
 print(f"Beta-effective:        {sp.beta_eff}")
-print(f"Prompt lifetime:       {sp.prompt_gen_time} seconds")
-print(f"Alpha eigenvalue:      {sp.alpha_k_based} 1/seconds")
+print(f"Mean generation time:  {sp.mean_generation_time} seconds")
+print(f"Alpha eigenvalue:      {sp.alpha} 1/seconds")
 ```
 
 ## Detailed Usage
@@ -97,16 +98,13 @@ print(f"k-prompt = {k_prompt.nominal_value:.5f} +/- {k_prompt.std_dev:.5f}")
 beta = sp.beta_eff
 print(f"beta-eff = {beta.nominal_value:.5f} +/- {beta.std_dev:.5f}")
 
-# Prompt neutron generation time (in seconds)
-lifetime = sp.prompt_gen_time
-print(f"l-prompt = {lifetime.nominal_value:.3e} +/- {lifetime.std_dev:.3e} s")
+# Mean generation time (in seconds)
+gen_time = sp.mean_generation_time
+print(f"Λ = {gen_time.nominal_value:.3e} +/- {gen_time.std_dev:.3e} s")
 
 # Alpha eigenvalue (in 1/seconds)
-alpha = sp.alpha_k_based
+alpha = sp.alpha
 print(f"alpha = {alpha.nominal_value:.3e} +/- {alpha.std_dev:.3e} 1/s")
-
-# Alternative name for alpha (same value)
-alpha_static = sp.alpha_static
 ```
 
 ### Converting Units
@@ -117,7 +115,7 @@ Alpha eigenvalue is often reported in different units:
 sp = openmc.StatePoint('statepoint.150.h5')
 
 # Alpha in 1/seconds (default)
-alpha_per_sec = sp.alpha_k_based.nominal_value
+alpha_per_sec = sp.alpha.nominal_value
 
 # Alpha in generations per microsecond
 alpha_per_us = alpha_per_sec / 1e6
@@ -125,11 +123,11 @@ alpha_per_us = alpha_per_sec / 1e6
 # Alpha in generations per millisecond
 alpha_per_ms = alpha_per_sec / 1e3
 
-# Prompt lifetime in microseconds
-lifetime_us = sp.prompt_gen_time.nominal_value * 1e6
+# Mean generation time in microseconds
+gen_time_us = sp.mean_generation_time.nominal_value * 1e6
 
 print(f"Alpha: {alpha_per_us:.4f} gen/us")
-print(f"Prompt lifetime: {lifetime_us:.2f} us")
+print(f"Mean generation time: {gen_time_us:.2f} us")
 ```
 
 ## Complete Example: Godiva Benchmark
@@ -181,8 +179,8 @@ print("=" * 50)
 print(f"k-effective:        {sp.keff.nominal_value:.5f} +/- {sp.keff.std_dev:.5f}")
 print(f"k-prompt:           {sp.k_prompt.nominal_value:.5f} +/- {sp.k_prompt.std_dev:.5f}")
 print(f"Beta-effective:     {sp.beta_eff.nominal_value:.5f} +/- {sp.beta_eff.std_dev:.5f}")
-print(f"Prompt lifetime:    {sp.prompt_gen_time.nominal_value*1e9:.2f} +/- {sp.prompt_gen_time.std_dev*1e9:.2f} ns")
-print(f"Alpha eigenvalue:   {sp.alpha_k_based.nominal_value/1e6:.4f} +/- {sp.alpha_k_based.std_dev/1e6:.4f} gen/us")
+print(f"Mean gen time:      {sp.mean_generation_time.nominal_value*1e9:.2f} +/- {sp.mean_generation_time.std_dev*1e9:.2f} ns")
+print(f"Alpha eigenvalue:   {sp.alpha.nominal_value/1e6:.4f} +/- {sp.alpha.std_dev/1e6:.4f} gen/us")
 ```
 
 ## Output Format
@@ -190,22 +188,21 @@ print(f"Alpha eigenvalue:   {sp.alpha_k_based.nominal_value/1e6:.4f} +/- {sp.alp
 When running OpenMC with alpha calculations enabled, the output will include a kinetics parameters section:
 
 ```
- ====================>     DELAYED NEUTRON KINETICS     <====================
+ ====================>     RESULTS     <====================
 
- Delayed Neutron Kinetics Parameters:
-  k-effective                = 1.00012 +/- 0.00045
-  k-prompt                   = 0.99312 +/- 0.00044
-  Beta-effective             = 0.00700 +/- 0.00012
-  Prompt Neutron Lifetime    = 5.66000e-09 +/- 2.50000e-11 seconds
-  Alpha Eigenvalue           = -1.21500e+06 +/- 1.80000e+04 1/seconds
+  k-effective (Combined)      = 1.00012 +/- 0.00045
+  k-prompt                    = 0.99312 +/- 0.00044
+  Beta-effective              = 0.00700 +/- 0.00012
+  Mean Generation Time        = 5.70000e-09 +/- 2.50000e-11 seconds
+  Alpha                       = -1.21500e+06 +/- 1.80000e+04 1/seconds
 ```
 
 ## Internal Tallies
 
 When `calculate_alpha = True`, OpenMC automatically creates internal tallies to track:
 
-- `prompt-chain-gen-time-num`: Numerator for lifetime calculation (Σ lifetime × weight)
-- `prompt-chain-gen-time-denom`: Denominator for lifetime calculation (Σ weight)
+- `prompt-chain-fission-time-num`: Numerator for mean generation time (Σ time × ν × weight at fission)
+- `prompt-chain-fission-time-denom`: Denominator for mean generation time (Σ ν × weight at fission)
 - `prompt-chain-nu-fission-rate`: Fission production rate (diagnostic)
 - `prompt-chain-absorption-rate`: Absorption rate (diagnostic)
 - `prompt-chain-leakage-rate`: Leakage rate (diagnostic)

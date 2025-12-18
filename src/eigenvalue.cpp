@@ -54,10 +54,10 @@ double beta_eff_std {0.0};
 double alpha {0.0};
 double alpha_std {0.0};
 
-// Prompt neutron lifetime ℓ: time from birth to ANY removal (absorption or leakage)
+// Prompt neutron lifetime ℓ: time from birth to any removal (absorption or leakage)
 double prompt_neutron_lifetime {0.0};
 double prompt_neutron_lifetime_std {0.0};
-// Mean generation time Λ: direct measurement from fission events
+// Mean generation time Λ: time from birth to fission (used in alpha calculation)
 double mean_generation_time {0.0};
 double mean_generation_time_std {0.0};
 
@@ -1042,9 +1042,12 @@ void setup_kinetics_tallies()
 void run_alpha_iterations()
 {
   // Alpha is now calculated during normal eigenvalue batches in
-  // calculate_kinetics_parameters() using two methods:
-  //   alpha_k_based: α = (k_p - 1) / ℓ  (prompt lifetime)
-  //   alpha_static:  α = (ρ - β_eff) / Λ  (generation time)
+  // calculate_kinetics_parameters() using the inhour equation:
+  //   α = (ρ - β_eff) / Λ
+  // where:
+  //   ρ = (k - 1) / k is reactivity
+  //   β_eff = effective delayed neutron fraction
+  //   Λ = mean generation time (time from birth to fission)
   // No separate iterations are needed.
 }
 
