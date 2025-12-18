@@ -52,11 +52,9 @@ double keff_prompt_std {0.0};
 double beta_eff {0.0};
 double beta_eff_std {0.0};
 
-// Alpha eigenvalues (two methods)
-double alpha_static {0.0};          // α = (ρ - β) / Λ
-double alpha_static_std {0.0};
-double alpha_griesheimer {0.0};     // From iterative pseudo-absorption
-double alpha_griesheimer_std {0.0};
+// Alpha eigenvalue: α = (ρ - β) / Λ
+double alpha {0.0};
+double alpha_std {0.0};
 
 // Prompt neutron lifetime ℓ: time from birth to any removal (absorption or leakage)
 double prompt_neutron_lifetime {0.0};
@@ -67,12 +65,6 @@ double mean_generation_time_std {0.0};
 
 // Index of internal kinetics tally (for alpha calculations)
 int kinetics_tally_index {-1};
-
-// Griesheimer method state variables
-double alpha_current {0.0};         // Current α estimate for iteration
-double pseudo_absorption_sigma {0.0};
-int alpha_iteration {0};
-bool alpha_converged {false};
 
 } // namespace simulation
 
@@ -636,15 +628,15 @@ void calculate_kinetics_parameters()
         }
       }
 
-      // Calculate static alpha: α = (ρ - β) / Λ
+      // Calculate alpha: α = (ρ - β) / Λ
       // Inhour equation using reactivity and delayed neutron fraction
       // where ρ = (k - 1) / k is reactivity and Λ is mean generation time
       if (simulation::mean_generation_time > 0.0 && simulation::keff > 0.0) {
         double rho = (simulation::keff - 1.0) / simulation::keff;  // reactivity
-        simulation::alpha_static =
+        simulation::alpha =
           (rho - simulation::beta_eff) / simulation::mean_generation_time;
 
-        // Error propagation for static alpha
+        // Error propagation for alpha
         // For α = (ρ - β) / Λ where ρ = (k-1)/k:
         // ∂α/∂k = 1/(k²Λ), ∂α/∂β = -1/Λ, ∂α/∂Λ = -(ρ-β)/Λ²
         if (n > 1) {
@@ -662,7 +654,7 @@ void calculate_kinetics_parameters()
             dAlpha_dLambda * dAlpha_dLambda * simulation::mean_generation_time_std *
               simulation::mean_generation_time_std;
 
-          simulation::alpha_static_std = std::sqrt(var_alpha);
+          simulation::alpha_std = std::sqrt(var_alpha);
         }
       }
     }
@@ -951,12 +943,8 @@ void write_eigenvalue_hdf5(hid_t group)
       array<double, 2> gen_time_vals {
         simulation::mean_generation_time, simulation::mean_generation_time_std};
       write_dataset(group, "mean_generation_time", gen_time_vals);
-      array<double, 2> alpha_static_vals {
-        simulation::alpha_static, simulation::alpha_static_std};
-      write_dataset(group, "alpha_static", alpha_static_vals);
-      array<double, 2> alpha_griesheimer_vals {
-        simulation::alpha_griesheimer, simulation::alpha_griesheimer_std};
-      write_dataset(group, "alpha_griesheimer", alpha_griesheimer_vals);
+      array<double, 2> alpha_vals {simulation::alpha, simulation::alpha_std};
+      write_dataset(group, "alpha", alpha_vals);
     }
   }
 }
@@ -1001,17 +989,11 @@ void read_eigenvalue_hdf5(hid_t group)
         simulation::mean_generation_time = gen_time_vals[0];
         simulation::mean_generation_time_std = gen_time_vals[1];
       }
-      if (object_exists(group, "alpha_static")) {
-        array<double, 2> alpha_static_vals;
-        read_dataset(group, "alpha_static", alpha_static_vals);
-        simulation::alpha_static = alpha_static_vals[0];
-        simulation::alpha_static_std = alpha_static_vals[1];
-      }
-      if (object_exists(group, "alpha_griesheimer")) {
-        array<double, 2> alpha_griesheimer_vals;
-        read_dataset(group, "alpha_griesheimer", alpha_griesheimer_vals);
-        simulation::alpha_griesheimer = alpha_griesheimer_vals[0];
-        simulation::alpha_griesheimer_std = alpha_griesheimer_vals[1];
+      if (object_exists(group, "alpha")) {
+        array<double, 2> alpha_vals;
+        read_dataset(group, "alpha", alpha_vals);
+        simulation::alpha = alpha_vals[0];
+        simulation::alpha_std = alpha_vals[1];
       }
     }
   }
@@ -1050,144 +1032,6 @@ void setup_kinetics_tallies()
 
   // No filters - tally over entire geometry
   tally->set_filters({});
-}
-
-void run_alpha_iterations()
-{
-  // Both static and Griesheimer methods use the same fundamental equation:
-  //   α = (ρ - β_eff) / Λ
-  //
-  // The difference is HOW the alpha is obtained:
-  // - Static: Derive α directly from k-eigenvalue results
-  // - Griesheimer: Iteratively add pseudo-absorption α/v to cross sections
-  //   until k converges to 1.0
-
-  if (!settings::calculate_alpha || simulation::mean_generation_time <= 0.0) {
-    return;
-  }
-
-  // Configuration for Griesheimer iterations
-  const int max_iterations = 20;
-  const int batches_per_iteration = 50;
-  const int inactive_batches = 10;
-  const double k_tolerance = 0.001;  // Converge when |k - 1| < tolerance
-
-  // Initialize with static alpha as first guess
-  simulation::alpha_current = simulation::alpha_static;
-  simulation::alpha_iteration = 1;
-  simulation::alpha_converged = false;
-
-  if (mpi::master) {
-    fmt::print("\n");
-    fmt::print(" ====================>     GRIESHEIMER ALPHA ITERATIONS     <====================\n\n");
-    fmt::print(" Starting iterative pseudo-absorption method\n");
-    fmt::print(" Initial alpha guess (from static): {:.5e} 1/s\n", simulation::alpha_current);
-    fmt::print(" Convergence tolerance: |k - 1| < {:.4f}\n\n", k_tolerance);
-  }
-
-  // Store original settings
-  int original_n_batches = settings::n_batches;
-  int original_n_max_batches = settings::n_max_batches;
-  int original_n_inactive = settings::n_inactive;
-
-  // Griesheimer iteration loop
-  for (int iter = 1; iter <= max_iterations; ++iter) {
-    simulation::alpha_iteration = iter;
-
-    // Reset simulation state for new iteration
-    simulation::k_generation.clear();
-    simulation::k_sum = {0.0, 0.0};
-    simulation::k_col_abs = 0.0;
-    simulation::k_col_tra = 0.0;
-    simulation::k_abs_tra = 0.0;
-    simulation::n_realizations = 0;
-    simulation::current_batch = 0;
-    simulation::keff = 1.0;
-    simulation::keff_std = 0.0;
-
-    // Configure for this iteration's batches
-    settings::n_inactive = inactive_batches;
-    settings::n_batches = inactive_batches + batches_per_iteration;
-    settings::n_max_batches = settings::n_batches;
-
-    if (mpi::master) {
-      fmt::print(" Iteration {:2d}: alpha = {:.5e} 1/s\n", iter, simulation::alpha_current);
-    }
-
-    // Run batches with pseudo-absorption enabled
-    int status = 0;
-    while (status == 0 && simulation::current_batch < settings::n_max_batches) {
-      initialize_batch();
-
-      for (simulation::current_gen = 1;
-           simulation::current_gen <= settings::gen_per_batch;
-           ++simulation::current_gen) {
-        initialize_generation();
-        simulation::time_transport.start();
-        if (settings::event_based) {
-          transport_event_based();
-        } else {
-          transport_history_based();
-        }
-        simulation::time_transport.stop();
-        finalize_generation();
-      }
-
-      finalize_batch();
-
-      if (simulation::current_batch >= settings::n_max_batches) {
-        status = STATUS_EXIT_MAX_BATCH;
-      }
-    }
-
-    // Calculate average k-effective for this iteration
-    calculate_average_keff();
-
-    double k_iter = simulation::keff;
-    double k_deviation = std::abs(k_iter - 1.0);
-
-    if (mpi::master) {
-      fmt::print("             k = {:.5f} +/- {:.5f}, |k-1| = {:.5f}\n",
-        k_iter, simulation::keff_std, k_deviation);
-    }
-
-    // Check convergence
-    if (k_deviation < k_tolerance) {
-      simulation::alpha_converged = true;
-      simulation::alpha_griesheimer = simulation::alpha_current;
-      simulation::alpha_griesheimer_std = simulation::alpha_static_std;  // Approximate
-
-      if (mpi::master) {
-        fmt::print("\n Griesheimer method converged after {} iterations\n", iter);
-        fmt::print(" Final alpha (Griesheimer) = {:.5e} 1/s\n\n", simulation::alpha_griesheimer);
-      }
-      break;
-    }
-
-    // Update alpha using Griesheimer formula: α_new = α_old + (k - 1) / (k × Λ)
-    double delta_alpha = (k_iter - 1.0) / (k_iter * simulation::mean_generation_time);
-    simulation::alpha_current += delta_alpha;
-
-    if (iter == max_iterations) {
-      // Did not converge, use last value
-      simulation::alpha_griesheimer = simulation::alpha_current;
-      simulation::alpha_griesheimer_std = simulation::alpha_static_std;
-
-      if (mpi::master) {
-        fmt::print("\n WARNING: Griesheimer method did not converge after {} iterations\n", max_iterations);
-        fmt::print(" Final alpha (Griesheimer) = {:.5e} 1/s\n\n", simulation::alpha_griesheimer);
-      }
-    }
-  }
-
-  // Restore original settings
-  settings::n_batches = original_n_batches;
-  settings::n_max_batches = original_n_max_batches;
-  settings::n_inactive = original_n_inactive;
-
-  // Disable pseudo-absorption for any future transport
-  simulation::alpha_iteration = 0;
-  simulation::alpha_converged = true;
 }
 
 } // namespace openmc

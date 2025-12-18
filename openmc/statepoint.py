@@ -359,26 +359,15 @@ class StatePoint:
             return None
 
     @property
-    def alpha_static(self):
-        """Static alpha eigenvalue with uncertainty.
+    def alpha(self):
+        """Alpha eigenvalue with uncertainty.
 
         Calculated as: α = (ρ - β) / Λ
         where ρ = (k-1)/k is reactivity, β is effective delayed neutron
         fraction, and Λ is the mean generation time.
         """
-        if self.run_mode == 'eigenvalue' and 'alpha_static' in self._f:
-            return ufloat(*self._f['alpha_static'][()])
-        else:
-            return None
-
-    @property
-    def alpha_griesheimer(self):
-        """Griesheimer alpha eigenvalue with uncertainty.
-
-        Calculated using iterative pseudo-absorption method.
-        """
-        if self.run_mode == 'eigenvalue' and 'alpha_griesheimer' in self._f:
-            return ufloat(*self._f['alpha_griesheimer'][()])
+        if self.run_mode == 'eigenvalue' and 'alpha' in self._f:
+            return ufloat(*self._f['alpha'][()])
         else:
             return None
 
