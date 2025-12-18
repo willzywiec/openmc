@@ -56,15 +56,10 @@ surf99 = openmc.model.RectangularParallelepiped(-499.5, 499.5, -499.5, 499.5, -4
 u1_cell0 = openmc.Cell(fill=mat1)
 u1_cell0.region = -surf1
 u1_cell1 = openmc.Cell(fill=mat1)
-u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat1)
-u1_cell2.region = 
 u1_cell3 = openmc.Cell(fill=mat1)
-u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat1)
-u1_cell4.region = 
 u1_cell5 = openmc.Cell(fill=mat1)
-u1_cell5.region = 
 u1_cell6 = openmc.Cell()
 u1_cell6.region = +surf91 & -surf99 & +surf1
 u1_cell7 = openmc.Cell(fill=mat2)

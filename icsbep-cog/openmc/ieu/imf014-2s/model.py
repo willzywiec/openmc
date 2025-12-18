@@ -95,24 +95,14 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 
 # CORE
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # AR1
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = 
-
 # AR2
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = 
-
 # RR
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = 
-
 # MTX
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
-cell5.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)
 

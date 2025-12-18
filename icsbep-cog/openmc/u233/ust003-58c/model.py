@@ -54,20 +54,12 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = 
-
 # Soln
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = 
-
 # Al2S
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = 
-
 # Prffn
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4])
 geometry = openmc.Geometry(root_universe)
 

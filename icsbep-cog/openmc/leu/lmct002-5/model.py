@@ -134,13 +134,9 @@ u1_cell1.region = -surf2
 u1_cell2 = openmc.Cell(fill=mat4)
 u1_cell2.region = -surf3
 u1_cell3 = openmc.Cell(fill=mat4)
-u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = 
 u1_cell5 = openmc.Cell(fill=mat4)
-u1_cell5.region = 
 u1_cell6 = openmc.Cell(fill=mat4)
-u1_cell6.region = 
 u1_cell7 = openmc.Cell(fill=mat1)
 u1_cell7.region = +surf1 & +surf2 & +surf3 & -surf4 & -surf10
 u1_cell8 = openmc.Cell(fill=mat6)

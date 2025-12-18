@@ -81,29 +81,18 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat3)
-u1_cell0.region = 
 u1_cell1 = openmc.Cell(fill=mat1)
-u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = 
 u1_cell3 = openmc.Cell(fill=mat4)
-u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat2)
-u1_cell4.region = 
 u1_cell5 = openmc.Cell(fill=mat6)
-u1_cell5.region = 
 u1_cell6 = openmc.Cell(fill=mat5)
-u1_cell6.region = 
 u1_cell7 = openmc.Cell(fill=mat5)
-u1_cell7.region = 
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7])
 
 u2_cell0 = openmc.Cell(fill=mat5)
-u2_cell0.region = 
 u2_cell1 = openmc.Cell(fill=mat6)
-u2_cell1.region = 
 u2_cell2 = openmc.Cell(fill=mat5)
-u2_cell2.region = 
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2])
 
 # Lattice 3: 34x18 array
@@ -139,20 +128,12 @@ universe3.add_cell(openmc.Cell(fill=lattice3))
 
 # CORE
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = 
-
 # H2O
 cell2 = openmc.Cell(cell_id=2, fill=mat5)
-cell2.region = 
-
 # Water
 cell11 = openmc.Cell(cell_id=11, fill=mat5)
-cell11.region = 
-
 # Water
 cell15 = openmc.Cell(cell_id=15, fill=mat5)
-cell15.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell11, cell15])
 geometry = openmc.Geometry(root_universe)
 

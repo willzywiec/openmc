@@ -58,20 +58,12 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # SOL
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = 
-
 # GAP
 cell3 = openmc.Cell(cell_id=3)
-cell3.region = 
-
 # BEO
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4])
 geometry = openmc.Geometry(root_universe)
 

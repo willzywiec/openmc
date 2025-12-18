@@ -81,32 +81,18 @@ materials = openmc.Materials([mat11, mat12, mat13, mat14, mat15, mat21, mat22])
 
 # dPu
 cell1 = openmc.Cell(cell_id=1, fill=mat11)
-cell1.region = 
-
 # dPu
 cell2 = openmc.Cell(cell_id=2, fill=mat12)
-cell2.region = 
-
 # dPu
 cell3 = openmc.Cell(cell_id=3, fill=mat13)
-cell3.region = 
-
 # dPu
 cell4 = openmc.Cell(cell_id=4, fill=mat14)
-cell4.region = 
-
 # dPu
 cell5 = openmc.Cell(cell_id=5, fill=mat15)
-cell5.region = 
-
 # CH2
 cell6 = openmc.Cell(cell_id=6, fill=mat21)
-cell6.region = 
-
 # CH2
 cell7 = openmc.Cell(cell_id=7, fill=mat22)
-cell7.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7])
 geometry = openmc.Geometry(root_universe)
 

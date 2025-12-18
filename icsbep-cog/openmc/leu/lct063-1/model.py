@@ -299,21 +299,13 @@ u3_cell7.region = +surf23 & +surf24 & +surf25 & +surf26 & +surf2
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2, u3_cell3, u3_cell4, u3_cell5, u3_cell6, u3_cell7])
 
 u4_cell0 = openmc.Cell(fill=mat12)
-u4_cell0.region = 
 u4_cell1 = openmc.Cell(fill=mat12)
-u4_cell1.region = 
 u4_cell2 = openmc.Cell(fill=mat12)
-u4_cell2.region = 
 u4_cell3 = openmc.Cell(fill=mat12)
-u4_cell3.region = 
 u4_cell4 = openmc.Cell()
-u4_cell4.region = 
 u4_cell5 = openmc.Cell()
-u4_cell5.region = 
 u4_cell6 = openmc.Cell()
-u4_cell6.region = 
 u4_cell7 = openmc.Cell()
-u4_cell7.region = 
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4, u4_cell5, u4_cell6, u4_cell7])
 
 u5_cell0 = openmc.Cell()
@@ -321,21 +313,13 @@ u5_cell0.region = +surf2
 u5_cell1 = openmc.Cell(fill=mat12)
 u5_cell1.region = -surf2
 u5_cell2 = openmc.Cell(fill=mat12)
-u5_cell2.region = 
 u5_cell3 = openmc.Cell(fill=mat12)
-u5_cell3.region = 
 u5_cell4 = openmc.Cell(fill=mat12)
-u5_cell4.region = 
 u5_cell5 = openmc.Cell(fill=mat12)
-u5_cell5.region = 
 u5_cell6 = openmc.Cell()
-u5_cell6.region = 
 u5_cell7 = openmc.Cell()
-u5_cell7.region = 
 u5_cell8 = openmc.Cell()
-u5_cell8.region = 
 u5_cell9 = openmc.Cell()
-u5_cell9.region = 
 universe5 = openmc.Universe(universe_id=5, cells=[u5_cell0, u5_cell1, u5_cell2, u5_cell3, u5_cell4, u5_cell5, u5_cell6, u5_cell7, u5_cell8, u5_cell9])
 
 u6_cell0 = openmc.Cell()

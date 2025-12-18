@@ -125,132 +125,68 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 
 # VOID
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = 
-
 # VOID
 cell2 = openmc.Cell(cell_id=2)
-cell2.region = 
-
 # VOID
 cell3 = openmc.Cell(cell_id=3)
-cell3.region = 
-
 # VOID
 cell4 = openmc.Cell(cell_id=4)
-cell4.region = 
-
 # VOID
 cell5 = openmc.Cell(cell_id=5)
-cell5.region = 
-
 # VOID
 cell6 = openmc.Cell(cell_id=6)
-cell6.region = 
-
 # VOID
 cell7 = openmc.Cell(cell_id=7)
-cell7.region = 
-
 # VOID
 cell8 = openmc.Cell(cell_id=8)
-cell8.region = 
-
 # REG01
 cell9 = openmc.Cell(cell_id=9, fill=mat1)
-cell9.region = 
-
 # REG02
 cell10 = openmc.Cell(cell_id=10, fill=mat2)
-cell10.region = 
-
 # REG03
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
-cell11.region = 
-
 # REG03
 cell12 = openmc.Cell(cell_id=12, fill=mat3)
-cell12.region = 
-
 # REG04
 cell13 = openmc.Cell(cell_id=13, fill=mat4)
-cell13.region = 
-
 # REG05
 cell14 = openmc.Cell(cell_id=14, fill=mat5)
-cell14.region = 
-
 # REG05
 cell15 = openmc.Cell(cell_id=15, fill=mat5)
-cell15.region = 
-
 # REG06
 cell16 = openmc.Cell(cell_id=16, fill=mat6)
-cell16.region = 
-
 # REG07
 cell17 = openmc.Cell(cell_id=17, fill=mat7)
-cell17.region = 
-
 # REG08
 cell18 = openmc.Cell(cell_id=18, fill=mat8)
-cell18.region = 
-
 # REG08
 cell19 = openmc.Cell(cell_id=19, fill=mat8)
-cell19.region = 
-
 # REG09
 cell20 = openmc.Cell(cell_id=20, fill=mat9)
-cell20.region = 
-
 # REG09
 cell21 = openmc.Cell(cell_id=21, fill=mat9)
-cell21.region = 
-
 # REG10
 cell22 = openmc.Cell(cell_id=22, fill=mat10)
-cell22.region = 
-
 # REG11
 cell23 = openmc.Cell(cell_id=23, fill=mat11)
-cell23.region = 
-
 # REG11
 cell24 = openmc.Cell(cell_id=24, fill=mat11)
-cell24.region = 
-
 # REGll
 cell25 = openmc.Cell(cell_id=25, fill=mat11)
-cell25.region = 
-
 # REG12
 cell26 = openmc.Cell(cell_id=26, fill=mat12)
-cell26.region = 
-
 # REG12
 cell27 = openmc.Cell(cell_id=27, fill=mat12)
-cell27.region = 
-
 # REG12
 cell28 = openmc.Cell(cell_id=28, fill=mat12)
-cell28.region = 
-
 # REG12
 cell29 = openmc.Cell(cell_id=29, fill=mat12)
-cell29.region = 
-
 # REG12
 cell30 = openmc.Cell(cell_id=30, fill=mat12)
-cell30.region = 
-
 # REG13
 cell31 = openmc.Cell(cell_id=31, fill=mat13)
-cell31.region = 
-
 # REG14
 cell32 = openmc.Cell(cell_id=32, fill=mat14)
-cell32.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30, cell31, cell32])
 geometry = openmc.Geometry(root_universe)
 

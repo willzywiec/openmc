@@ -263,43 +263,27 @@ universe8 = openmc.Universe(universe_id=8, cells=[u8_cell0, u8_cell1, u8_cell2])
 # Pin
 cell1 = openmc.Cell(cell_id=1, fill=universe8)
 cell1.translation = (-15.903539, -10.602359, 0.0)
-cell1.region = 
-
 # Pin
 cell2 = openmc.Cell(cell_id=2, fill=universe8)
 cell2.translation = (15.903539, -10.602359, 0.0)
-cell2.region = 
-
 # Pin
 cell3 = openmc.Cell(cell_id=3, fill=universe8)
 cell3.translation = (-17.670598, -8.835299, 0.0)
-cell3.region = 
-
 # Pin
 cell4 = openmc.Cell(cell_id=4, fill=universe8)
 cell4.translation = (17.670598, -8.835299, 0.0)
-cell4.region = 
-
 # Pin
 cell5 = openmc.Cell(cell_id=5, fill=universe8)
 cell5.translation = (-17.670598, 8.835299, 0.0)
-cell5.region = 
-
 # Pin
 cell6 = openmc.Cell(cell_id=6, fill=universe8)
 cell6.translation = (17.670598, 8.835299, 0.0)
-cell6.region = 
-
 # Pin
 cell7 = openmc.Cell(cell_id=7, fill=universe8)
 cell7.translation = (-15.903539, 10.602359, 0.0)
-cell7.region = 
-
 # Pin
 cell8 = openmc.Cell(cell_id=8, fill=universe8)
 cell8.translation = (15.903539, 10.602359, 0.0)
-cell8.region = 
-
 # Slit
 cell9 = openmc.Cell(cell_id=9, fill=universe7)
 cell9.translation = (0.0, 0.0, 0.0)

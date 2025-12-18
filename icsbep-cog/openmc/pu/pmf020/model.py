@@ -53,40 +53,22 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 
 # Pu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # Pu
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = 
-
 # D38
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = 
-
 # D38
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
-cell4.region = 
-
 # D38
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = 
-
 # D38
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
-cell6.region = 
-
 # Al
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
-cell7.region = 
-
 # A1
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = 
-
 # STL
 cell9 = openmc.Cell(cell_id=9, fill=mat4)
-cell9.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9])
 geometry = openmc.Geometry(root_universe)
 

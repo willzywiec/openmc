@@ -32,8 +32,6 @@ materials = openmc.Materials([mat1])
 
 # aPu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 root_universe = openmc.Universe(cells=[cell1])
 geometry = openmc.Geometry(root_universe)
 

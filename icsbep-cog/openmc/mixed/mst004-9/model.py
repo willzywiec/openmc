@@ -162,8 +162,6 @@ cell5.region = -surf10
 
 # SS304L
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
-cell6.region = 
-
 # CSTEEL
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
 cell7.region = +surf10 & -surf11

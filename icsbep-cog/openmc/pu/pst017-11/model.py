@@ -80,8 +80,6 @@ cell4.region = -surf4
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)
 

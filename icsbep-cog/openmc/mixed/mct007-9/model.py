@@ -167,17 +167,11 @@ universe3 = openmc.Universe(universe_id=3, cells=[])
 u4_cell0 = openmc.Cell(fill=mat4)
 u4_cell0.region = -surf3
 u4_cell1 = openmc.Cell(fill=mat4)
-u4_cell1.region = 
 u4_cell2 = openmc.Cell(fill=mat4)
-u4_cell2.region = 
 u4_cell3 = openmc.Cell(fill=mat4)
-u4_cell3.region = 
 u4_cell4 = openmc.Cell(fill=mat4)
-u4_cell4.region = 
 u4_cell5 = openmc.Cell(fill=mat4)
-u4_cell5.region = 
 u4_cell6 = openmc.Cell(fill=mat4)
-u4_cell6.region = 
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4, u4_cell5, u4_cell6])
 
 # Lattice 5: 9x11 array

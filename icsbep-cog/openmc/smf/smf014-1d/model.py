@@ -98,160 +98,82 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 
 # Al
 cell1 = openmc.Cell(cell_id=1, fill=mat8)
-cell1.region = 
-
 # SS304
 cell2 = openmc.Cell(cell_id=2, fill=mat5)
-cell2.region = 
-
 # SS304
 cell3 = openmc.Cell(cell_id=3, fill=mat5)
-cell3.region = 
-
 # SS304
 cell4 = openmc.Cell(cell_id=4, fill=mat5)
-cell4.region = 
-
 # Al
 cell5 = openmc.Cell(cell_id=5, fill=mat8)
-cell5.region = 
-
 # Al
 cell6 = openmc.Cell(cell_id=6, fill=mat8)
-cell6.region = 
-
 # Al
 cell7 = openmc.Cell(cell_id=7, fill=mat8)
-cell7.region = 
-
 # Al
 cell8 = openmc.Cell(cell_id=8, fill=mat8)
-cell8.region = 
-
 # Al
 cell9 = openmc.Cell(cell_id=9, fill=mat7)
-cell9.region = 
-
 # Np
 cell10 = openmc.Cell(cell_id=10, fill=mat1)
-cell10.region = 
-
 # W
 cell11 = openmc.Cell(cell_id=11, fill=mat2)
-cell11.region = 
-
 # Ni
 cell12 = openmc.Cell(cell_id=12, fill=mat3)
-cell12.region = 
-
 # Ni
 cell13 = openmc.Cell(cell_id=13, fill=mat3)
-cell13.region = 
-
 # Al
 cell14 = openmc.Cell(cell_id=14, fill=mat8)
-cell14.region = 
-
 # Al
 cell15 = openmc.Cell(cell_id=15, fill=mat8)
-cell15.region = 
-
 # Al
 cell16 = openmc.Cell(cell_id=16, fill=mat8)
-cell16.region = 
-
 # Al
 cell17 = openmc.Cell(cell_id=17, fill=mat8)
-cell17.region = 
-
 # HEU
 cell18 = openmc.Cell(cell_id=18, fill=mat11)
-cell18.region = 
-
 # HEU
 cell19 = openmc.Cell(cell_id=19, fill=mat11)
-cell19.region = 
-
 # HEU
 cell20 = openmc.Cell(cell_id=20, fill=mat11)
-cell20.region = 
-
 # HEU
 cell21 = openmc.Cell(cell_id=21, fill=mat11)
-cell21.region = 
-
 # HEU
 cell22 = openmc.Cell(cell_id=22, fill=mat11)
-cell22.region = 
-
 # HEU
 cell23 = openmc.Cell(cell_id=23, fill=mat11)
-cell23.region = 
-
 # HEU
 cell24 = openmc.Cell(cell_id=24, fill=mat11)
-cell24.region = 
-
 # HEU
 cell25 = openmc.Cell(cell_id=25, fill=mat11)
-cell25.region = 
-
 # HEU
 cell26 = openmc.Cell(cell_id=26, fill=mat11)
-cell26.region = 
-
 # HEU
 cell27 = openmc.Cell(cell_id=27, fill=mat11)
-cell27.region = 
-
 # Fe
 cell28 = openmc.Cell(cell_id=28, fill=mat9)
-cell28.region = 
-
 # HEU
 cell29 = openmc.Cell(cell_id=29, fill=mat11)
-cell29.region = 
-
 # HEU
 cell30 = openmc.Cell(cell_id=30, fill=mat11)
-cell30.region = 
-
 # HEU
 cell31 = openmc.Cell(cell_id=31, fill=mat11)
-cell31.region = 
-
 # HEU
 cell32 = openmc.Cell(cell_id=32, fill=mat11)
-cell32.region = 
-
 # HEU
 cell33 = openmc.Cell(cell_id=33, fill=mat11)
-cell33.region = 
-
 # HEU
 cell34 = openmc.Cell(cell_id=34, fill=mat11)
-cell34.region = 
-
 # HEU
 cell35 = openmc.Cell(cell_id=35, fill=mat11)
-cell35.region = 
-
 # HEU
 cell36 = openmc.Cell(cell_id=36, fill=mat11)
-cell36.region = 
-
 # HEU
 cell37 = openmc.Cell(cell_id=37, fill=mat11)
-cell37.region = 
-
 # HEU
 cell38 = openmc.Cell(cell_id=38, fill=mat11)
-cell38.region = 
-
 # Fe
 cell39 = openmc.Cell(cell_id=39, fill=mat10)
-cell39.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30, cell31, cell32, cell33, cell34, cell35, cell36, cell37, cell38, cell39])
 geometry = openmc.Geometry(root_universe)
 

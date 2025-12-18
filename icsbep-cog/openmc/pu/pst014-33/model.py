@@ -60,11 +60,8 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell()
-u1_cell0.region = 
 u1_cell1 = openmc.Cell(fill=mat1)
-u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat3)
-u1_cell2.region = 
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 # ------------------------------------------------------------------------------
@@ -73,12 +70,8 @@ universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = 
-
 # Conc
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2])
 geometry = openmc.Geometry(root_universe)
 

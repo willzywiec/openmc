@@ -72,28 +72,16 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 
 # SOLNI
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = 
-
 # SOLND
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = 
-
 # SST
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = 
-
 # WATER
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = 
-
 # SST
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
-cell6.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)
 
