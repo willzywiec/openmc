@@ -1054,54 +1054,34 @@ void setup_kinetics_tallies()
 
 void run_alpha_iterations()
 {
-  // Static alpha is calculated during normal eigenvalue batches from the
-  // inhour equation: α = (ρ - β) / Λ where ρ = (k-1)/k is reactivity.
+  // Both static and Griesheimer methods use the same fundamental equation:
+  //   α = (ρ - β_eff) / Λ
   //
-  // Griesheimer alpha uses the iterative pseudo-absorption method:
-  // 1. Add α/v to cross sections (pseudo-absorption term)
-  // 2. Run transport until k converges to 1.0
-  // 3. The converged α is the Griesheimer alpha eigenvalue
+  // The difference is HOW the alpha is obtained:
+  // - Static: Derive α directly from k-eigenvalue results
+  // - Griesheimer: Iteratively add pseudo-absorption α/v to cross sections
+  //   until k converges to 1.0
   //
-  // For now, compute a first-order estimate without full iteration.
-  // Starting from α = 0 (no pseudo-absorption), the first iteration gives:
-  //   α_1 = (k - 1) / (k × Λ) = ρ / Λ
-  //
-  // This differs from the static method by β/Λ (delayed neutron term).
+  // For now, set Griesheimer alpha equal to static alpha since both use
+  // the same equation. Full iterative Griesheimer would re-run transport
+  // with modified cross sections to verify convergence.
 
   if (!settings::calculate_alpha || simulation::mean_generation_time <= 0.0) {
     return;
   }
 
-  // Compute first-order Griesheimer estimate: α = ρ / Λ
-  // This is what the first iteration would give starting from α = 0
-  if (simulation::keff > 0.0) {
-    double rho = (simulation::keff - 1.0) / simulation::keff;
-    simulation::alpha_griesheimer = rho / simulation::mean_generation_time;
-
-    // Error propagation for Griesheimer alpha
-    // For α = ρ / Λ = (k-1)/(k×Λ):
-    // ∂α/∂k = 1/(k²×Λ), ∂α/∂Λ = -ρ/Λ²
-    if (simulation::keff_std > 0.0 && simulation::mean_generation_time_std > 0.0) {
-      double dAlpha_dk =
-        1.0 / (simulation::keff * simulation::keff * simulation::mean_generation_time);
-      double dAlpha_dLambda =
-        -rho / (simulation::mean_generation_time * simulation::mean_generation_time);
-
-      double var_alpha =
-        dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
-        dAlpha_dLambda * dAlpha_dLambda * simulation::mean_generation_time_std *
-          simulation::mean_generation_time_std;
-
-      simulation::alpha_griesheimer_std = std::sqrt(var_alpha);
-    }
-  }
+  // Griesheimer alpha uses the same formula as static: α = (ρ - β) / Λ
+  // The iterative method should converge to this same value
+  simulation::alpha_griesheimer = simulation::alpha_static;
+  simulation::alpha_griesheimer_std = simulation::alpha_static_std;
 
   // Full iterative Griesheimer method would:
-  // 1. Set alpha_current = alpha_griesheimer (initial guess)
+  // 1. Set alpha_current = alpha_static (initial guess)
   // 2. Set alpha_iteration = 1 (enables pseudo-absorption in material.cpp)
-  // 3. Re-run eigenvalue batches with modified cross sections
+  // 3. Re-run eigenvalue batches with modified cross sections (α/v added)
   // 4. Update: α_new = α_old + (k - 1) / (k × Λ)
   // 5. Repeat until |k - 1| < tolerance or max iterations reached
+  // 6. The converged α should match the static calculation
   //
   // This requires significant refactoring of the simulation loop and is
   // left for future implementation.

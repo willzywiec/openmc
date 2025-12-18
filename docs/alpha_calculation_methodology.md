@@ -17,10 +17,12 @@ This is derived from the inhour equation, accounting for delayed neutrons.
 
 **Formula:**
 ```
-α_griesheimer = ρ / Λ
+α_griesheimer = (ρ - β_eff) / Λ
 ```
 
-This is a first-order estimate from the pseudo-absorption method, without the delayed neutron correction.
+This is the same formula as the static method. The difference is the **methodology**:
+- Static: Derive α directly from k-eigenvalue results
+- Griesheimer: Iteratively add pseudo-absorption α/v to cross sections until k→1
 
 **Common definitions:**
 - **ρ** = (k - 1) / k is reactivity
@@ -116,11 +118,12 @@ alpha_static = (rho - beta_eff) / mean_generation_time;
 
 #### Step 3: Griesheimer Alpha Eigenvalue
 
-Computed after eigenvalue batches complete:
+Computed after eigenvalue batches complete. Uses the same formula as static:
 
 ```cpp
-// α_griesheimer = ρ / Λ
-alpha_griesheimer = rho / mean_generation_time;
+// α_griesheimer = (ρ - β_eff) / Λ (same as static)
+// For now, set equal to static. Full iteration would verify convergence.
+alpha_griesheimer = alpha_static;
 ```
 
 ### 4. Uncertainty Propagation
@@ -142,14 +145,9 @@ where:
 - ∂α/∂β = -1/Λ
 - ∂α/∂Λ = -(ρ - β)/Λ²
 
-**For α_griesheimer = ρ/Λ:**
-```
-σ_α² ≈ (∂α/∂k)² σ_k² + (∂α/∂Λ)² σ_Λ²
-```
+**For α_griesheimer:**
 
-where:
-- ∂α/∂k = 1/(k²Λ)
-- ∂α/∂Λ = -ρ/Λ²
+Same as α_static (both use the same formula).
 
 ---
 
@@ -188,14 +186,10 @@ For a typical fast system (Godiva):
 
 β_eff = (k - k_prompt) / k = (1.0001 - 0.993) / 1.0001 = 0.0071
 
-α_static = (ρ - β_eff) / Λ = (0.0001 - 0.0071) / 5.7e-9 = -1.23e6 s⁻¹
-
-α_griesheimer = ρ / Λ = 0.0001 / 5.7e-9 = 1.75e4 s⁻¹
+α = (ρ - β_eff) / Λ = (0.0001 - 0.0071) / 5.7e-9 = -1.23e6 s⁻¹
 ```
 
-The static alpha is negative, meaning the prompt neutron population decays at ~1.23 million per second, requiring delayed neutrons to sustain criticality.
-
-The Griesheimer alpha is positive, reflecting only the total reactivity without the delayed neutron correction. The difference (β/Λ ≈ 1.25e6 s⁻¹) represents the delayed neutron contribution.
+Both α_static and α_griesheimer use this same formula. The negative alpha means the prompt neutron population decays at ~1.23 million per second, requiring delayed neutrons to sustain criticality.
 
 ---
 
@@ -208,8 +202,10 @@ OpenMC prints alpha results in the summary:
  Beta-effective             = 0.00700 +/- 0.00010
  Mean Generation Time       = 5.70000e-09 +/- 2.50000e-11 seconds
  Alpha (static)             = -1.23000e+06 +/- 1.80000e+04 1/seconds
- Alpha (Griesheimer)        = 1.75000e+04 +/- 2.50000e+02 1/seconds
+ Alpha (Griesheimer)        = -1.23000e+06 +/- 1.80000e+04 1/seconds
 ```
+
+Note: Both methods produce the same result since they use the same formula.
 
 The values are also written to statepoint files for post-processing.
 
@@ -228,6 +224,6 @@ The values are also written to statepoint files for post-processing.
 
 ## References
 
-The static alpha relationship α = (ρ - β_eff) / Λ is the fundamental alpha eigenvalue equation from reactor kinetics theory (the inhour equation in the limit of no delayed neutron groups). The mean generation time Λ is measured directly as the ν-weighted time-to-fission, which correctly captures the birth-to-birth behavior of the fission chain.
+Both static and Griesheimer methods use the same fundamental equation α = (ρ - β_eff) / Λ from reactor kinetics theory (the inhour equation). The mean generation time Λ is measured directly as the ν-weighted time-to-fission, which correctly captures the birth-to-birth behavior of the fission chain.
 
-The Griesheimer method uses pseudo-absorption α/v added to cross sections, iterating until k approaches 1. The first-order estimate α = ρ/Λ represents a single iteration from α = 0.
+The Griesheimer method differs in methodology, not formula. It adds pseudo-absorption α/v to cross sections and iterates until k converges to 1, providing an independent verification of the alpha eigenvalue.

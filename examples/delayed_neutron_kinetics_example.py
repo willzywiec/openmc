@@ -7,7 +7,7 @@ This example shows how to enable calculation of:
 - prompt_neutron_lifetime (ℓ): time from neutron birth to absorption or leakage
 - mean_generation_time (Λ): time from neutron birth to next-generation fission
 - alpha_static: α = (ρ - β_eff) / Λ (from inhour equation)
-- alpha_griesheimer: α = ρ / Λ (first-order pseudo-absorption estimate)
+- alpha_griesheimer: α = (ρ - β_eff) / Λ (same formula, iterative method)
 
 The kinetics parameters are automatically calculated during an eigenvalue
 simulation when enabled in the settings.

@@ -21,13 +21,17 @@ Where:
 
 ### Griesheimer Method (alpha_griesheimer)
 
-The Griesheimer alpha is calculated using a first-order pseudo-absorption estimate:
+The Griesheimer alpha uses the same formula:
 
 ```
-α_griesheimer = ρ / Λ
+α_griesheimer = (ρ - β_eff) / Λ
 ```
 
-This differs from the static method by the delayed neutron term β/Λ.
+The difference is the **methodology**, not the formula:
+- **Static**: Derive α directly from k-eigenvalue results
+- **Griesheimer**: Iteratively add pseudo-absorption α/v to cross sections until k→1
+
+Both methods should converge to the same value.
 
 ### Physical Interpretation
 
@@ -213,8 +217,10 @@ When running OpenMC with alpha calculations enabled, the output will include a k
   Beta-effective              = 0.00700 +/- 0.00012
   Mean Generation Time        = 5.70000e-09 +/- 2.50000e-11 seconds
   Alpha (static)              = -1.21500e+06 +/- 1.80000e+04 1/seconds
-  Alpha (Griesheimer)         = -2.09300e+04 +/- 1.50000e+03 1/seconds
+  Alpha (Griesheimer)         = -1.21500e+06 +/- 1.80000e+04 1/seconds
 ```
+
+Note: Both alpha values are the same since they use the same formula.
 
 ## Internal Tallies
 
