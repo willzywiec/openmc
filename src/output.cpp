@@ -572,8 +572,12 @@ void print_results()
           simulation::prompt_neutron_lifetime, t_n1 * simulation::prompt_neutron_lifetime_std);
         fmt::print(" Mean Generation Time       = {:.5e} +/- {:.5e} seconds\n",
           simulation::mean_generation_time, t_n1 * simulation::mean_generation_time_std);
-        fmt::print(" Alpha                      = {:.5e} +/- {:.5e} 1/seconds\n",
-          simulation::alpha, t_n1 * simulation::alpha_std);
+        fmt::print(" Alpha (static)             = {:.5e} +/- {:.5e} 1/seconds\n",
+          simulation::alpha_static, t_n1 * simulation::alpha_static_std);
+        if (simulation::alpha_griesheimer != 0.0) {
+          fmt::print(" Alpha (Griesheimer)        = {:.5e} +/- {:.5e} 1/seconds\n",
+            simulation::alpha_griesheimer, t_n1 * simulation::alpha_griesheimer_std);
+        }
       }
     }
   } else {
@@ -605,7 +609,11 @@ void print_results()
         fmt::print(
           " Mean Generation Time       = {:.5e} seconds\n", simulation::mean_generation_time);
         fmt::print(
-          " Alpha                      = {:.5e} 1/seconds\n", simulation::alpha);
+          " Alpha (static)             = {:.5e} 1/seconds\n", simulation::alpha_static);
+        if (simulation::alpha_griesheimer != 0.0) {
+          fmt::print(
+            " Alpha (Griesheimer)        = {:.5e} 1/seconds\n", simulation::alpha_griesheimer);
+        }
       }
     }
   }
