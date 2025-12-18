@@ -74,6 +74,12 @@ extern bool ifp_on; //!< Use IFP for kinetics parameters?
 extern bool
   calculate_prompt_k; //!< calculate k_prompt for delayed neutron kinetics?
 extern bool calculate_alpha; //!< calculate alpha eigenvalue?
+extern bool alpha_use_ifp;         //!< Use IFP-weighted method for alpha?
+extern bool alpha_use_time_dependent; //!< Use time-dependent method for alpha?
+extern int alpha_time_bins;        //!< Number of time bins for time-dep method
+extern double alpha_time_min;      //!< Minimum time for time-dep bins [s]
+extern double alpha_time_max;      //!< Maximum time for time-dep bins [s]
+extern bool alpha_time_log_bins;   //!< Use logarithmic time binning?
 extern bool legendre_to_tabular; //!< convert Legendre distributions to tabular?
 extern bool material_cell_offsets;   //!< create material cells offsets?
 extern "C" bool output_summary;      //!< write summary.h5?

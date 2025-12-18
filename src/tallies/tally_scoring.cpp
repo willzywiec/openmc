@@ -1190,6 +1190,45 @@ void score_general_ce_nonanalog(Particle& p, int i_tally, int start_index,
       // This score is handled in surface crossing, not here
       continue;
 
+    case SCORE_IFP_GEN_TIME_NUM:
+      // IFP-weighted generation time numerator: Σ(lifetime × ν × weight × IFP_weight)
+      // For tracklength estimator, score at each collision weighted by nu-fission xs
+      if (settings::ifp_on && !p.is_delayed()) {
+        if (p.macro_xs().fission == 0)
+          continue;
+        // Use ancestral lifetime as IFP weight proxy (from M generations ago)
+        const auto& lifetimes =
+          simulation::ifp_source_lifetime_bank[p.current_work() - 1];
+        if (lifetimes.size() == static_cast<size_t>(settings::ifp_n_generation)) {
+          double ifp_weight = lifetimes[0];  // Ancestral lifetime as importance proxy
+          if (i_nuclide >= 0) {
+            score = p.lifetime() * p.neutron_xs(i_nuclide).nu_fission *
+                    atom_density * flux * ifp_weight;
+          } else {
+            score = p.lifetime() * p.macro_xs().nu_fission * flux * ifp_weight;
+          }
+        }
+      }
+      break;
+
+    case SCORE_IFP_GEN_TIME_DENOM:
+      // IFP-weighted generation time denominator: Σ(ν × weight × IFP_weight)
+      if (settings::ifp_on && !p.is_delayed()) {
+        if (p.macro_xs().fission == 0)
+          continue;
+        const auto& lifetimes =
+          simulation::ifp_source_lifetime_bank[p.current_work() - 1];
+        if (lifetimes.size() == static_cast<size_t>(settings::ifp_n_generation)) {
+          double ifp_weight = lifetimes[0];
+          if (i_nuclide >= 0) {
+            score = p.neutron_xs(i_nuclide).nu_fission * atom_density * flux * ifp_weight;
+          } else {
+            score = p.macro_xs().nu_fission * flux * ifp_weight;
+          }
+        }
+      }
+      break;
+
     default:
     default_case:
 
@@ -1745,6 +1784,31 @@ void score_general_ce_analog(Particle& p, int i_tally, int start_index,
     case SCORE_PROMPT_CHAIN_LEAKAGE_RATE:
       // This score is handled in surface crossing, not here
       continue;
+
+    case SCORE_IFP_GEN_TIME_NUM:
+      // IFP-weighted generation time numerator for analog estimator
+      // Score at fission events weighted by ancestral lifetime
+      if (settings::ifp_on && !p.is_delayed() && p.fission()) {
+        const auto& lifetimes =
+          simulation::ifp_source_lifetime_bank[p.current_work() - 1];
+        if (lifetimes.size() == static_cast<size_t>(settings::ifp_n_generation)) {
+          double ifp_weight = lifetimes[0];
+          score = p.lifetime() * p.wgt_bank() * ifp_weight;
+        }
+      }
+      break;
+
+    case SCORE_IFP_GEN_TIME_DENOM:
+      // IFP-weighted generation time denominator for analog estimator
+      if (settings::ifp_on && !p.is_delayed() && p.fission()) {
+        const auto& lifetimes =
+          simulation::ifp_source_lifetime_bank[p.current_work() - 1];
+        if (lifetimes.size() == static_cast<size_t>(settings::ifp_n_generation)) {
+          double ifp_weight = lifetimes[0];
+          score = p.wgt_bank() * ifp_weight;
+        }
+      }
+      break;
 
     case N_2N:
     case N_3N:
@@ -2671,6 +2735,54 @@ void score_general_mg(Particle& p, int i_tally, int start_index,
     case SCORE_PROMPT_CHAIN_LEAKAGE_RATE:
       // This score is handled in surface crossing, not here
       continue;
+
+    case SCORE_IFP_GEN_TIME_NUM:
+      // IFP-weighted generation time numerator (MGXS)
+      if (settings::ifp_on && !p.is_delayed()) {
+        const auto& lifetimes =
+          simulation::ifp_source_lifetime_bank[p.current_work() - 1];
+        if (lifetimes.size() == static_cast<size_t>(settings::ifp_n_generation)) {
+          double ifp_weight = lifetimes[0];
+          if (tally.estimator_ == TallyEstimator::ANALOG) {
+            if (p.fission()) {
+              score = p.lifetime() * p.wgt_bank() * ifp_weight;
+            }
+          } else {
+            if (i_nuclide >= 0) {
+              score = p.lifetime() * atom_density * flux *
+                      nuc_xs.get_xs(MgxsType::NU_FISSION, p_g, nuc_t, nuc_a) * ifp_weight;
+            } else {
+              score = p.lifetime() * flux *
+                      macro_xs.get_xs(MgxsType::NU_FISSION, p_g, macro_t, macro_a) * ifp_weight;
+            }
+          }
+        }
+      }
+      break;
+
+    case SCORE_IFP_GEN_TIME_DENOM:
+      // IFP-weighted generation time denominator (MGXS)
+      if (settings::ifp_on && !p.is_delayed()) {
+        const auto& lifetimes =
+          simulation::ifp_source_lifetime_bank[p.current_work() - 1];
+        if (lifetimes.size() == static_cast<size_t>(settings::ifp_n_generation)) {
+          double ifp_weight = lifetimes[0];
+          if (tally.estimator_ == TallyEstimator::ANALOG) {
+            if (p.fission()) {
+              score = p.wgt_bank() * ifp_weight;
+            }
+          } else {
+            if (i_nuclide >= 0) {
+              score = atom_density * flux *
+                      nuc_xs.get_xs(MgxsType::NU_FISSION, p_g, nuc_t, nuc_a) * ifp_weight;
+            } else {
+              score = flux *
+                      macro_xs.get_xs(MgxsType::NU_FISSION, p_g, macro_t, macro_a) * ifp_weight;
+            }
+          }
+        }
+      }
+      break;
 
     default:
       continue;

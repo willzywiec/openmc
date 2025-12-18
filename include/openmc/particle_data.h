@@ -55,6 +55,7 @@ struct SourceSite {
   int parent_nuclide {-1};
   int64_t parent_id;
   int64_t progeny_id;
+  double time_absolute {0.0};  //!< Absolute time since batch start [s]
 };
 
 struct CollisionTrackSite {
@@ -530,6 +531,9 @@ private:
   // Iterated Fission Probability
   double lifetime_ {0.0}; //!< neutron lifetime [s]
 
+  // Time-dependent alpha eigenvalue tracking
+  double time_absolute_ {0.0}; //!< Absolute time since batch start [s]
+
   int n_collision_ {0};
 
   bool write_track_ {false};
@@ -646,6 +650,10 @@ public:
   // Particle lifetime
   double& lifetime() { return lifetime_; }
   const double& lifetime() const { return lifetime_; }
+
+  // Absolute time since batch start (for time-dependent alpha calculations)
+  double& time_absolute() { return time_absolute_; }
+  const double& time_absolute() const { return time_absolute_; }
 
   // What event took place, described in greater detail below
   TallyEvent& event() { return event_; }

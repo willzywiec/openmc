@@ -230,6 +230,18 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
     site.parent_id = p.id();
     site.progeny_id = p.n_progeny()++;
 
+    // Set absolute time for time-dependent alpha calculations
+    // Fission time = parent's absolute time + parent's lifetime since birth
+    site.time_absolute = p.time_absolute() + p.lifetime();
+
+    // Score to time-dependent fission tally (if enabled and in active batches)
+    if (settings::calculate_alpha && settings::alpha_use_time_dependent &&
+        simulation::current_batch > settings::n_inactive) {
+      simulation::time_fission_tally.score(site.time_absolute, site.wgt);
+      #pragma omp atomic
+      simulation::time_fission_tally.n_samples += 1;
+    }
+
     // Store fission site in bank
     if (use_fission_bank) {
       int64_t idx = simulation::fission_bank.thread_safe_append(site);

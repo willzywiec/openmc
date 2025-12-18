@@ -52,9 +52,24 @@ double keff_prompt_std {0.0};
 double beta_eff {0.0};
 double beta_eff_std {0.0};
 
-// Alpha eigenvalue: α = (ρ - β) / Λ
+// Alpha eigenvalue: α = (ρ - β) / Λ (direct flux-weighted)
 double alpha {0.0};
 double alpha_std {0.0};
+
+// IFP-weighted alpha eigenvalue
+double alpha_ifp {0.0};
+double alpha_ifp_std {0.0};
+double lambda_eff_ifp {0.0};
+double lambda_eff_ifp_std {0.0};
+
+// Time-dependent alpha eigenvalue
+double alpha_time_dependent {0.0};
+double alpha_time_dependent_std {0.0};
+double lambda_eff_time {0.0};
+double lambda_eff_time_std {0.0};
+
+// Time-dependent fission tally
+TimeFissionTally time_fission_tally;
 
 // Prompt neutron lifetime ℓ: time from birth to any removal (absorption or leakage)
 double prompt_neutron_lifetime {0.0};
@@ -657,6 +672,75 @@ void calculate_kinetics_parameters()
           simulation::alpha_std = std::sqrt(var_alpha);
         }
       }
+
+      // IFP-weighted alpha calculation (if enabled and IFP scores present)
+      if (settings::alpha_use_ifp && settings::ifp_on) {
+        // IFP scores are at indices 8 and 9 if present
+        int n_base_scores = 8;  // 0-7 are the base scores
+        if (results.shape()[1] > n_base_scores) {
+          double ifp_num = results(0, n_base_scores, sum_idx) / n;
+          double ifp_denom = results(0, n_base_scores + 1, sum_idx) / n;
+
+          if (ifp_denom > 0.0) {
+            simulation::lambda_eff_ifp = ifp_num / ifp_denom;
+
+            // Calculate α = (k - 1) / Λ_eff
+            if (simulation::lambda_eff_ifp > 0.0) {
+              simulation::alpha_ifp =
+                (simulation::keff - 1.0) / simulation::lambda_eff_ifp;
+
+              // Error propagation for IFP-weighted alpha
+              if (n > 1) {
+                double ifp_num_std = 0.0;
+                double ifp_denom_std = 0.0;
+
+                auto calc_std = [&](int score_idx) {
+                  double mean = results(0, score_idx, sum_idx) / n;
+                  double sum_sq = results(0, score_idx, sum_sq_idx) / n;
+                  double variance = (sum_sq - mean * mean) / (n - 1);
+                  return (variance > 0.0) ? std::sqrt(variance) : 0.0;
+                };
+
+                ifp_num_std = calc_std(n_base_scores);
+                ifp_denom_std = calc_std(n_base_scores + 1);
+
+                // Error propagation for Λ_eff = num/denom
+                double dL_dnum = 1.0 / ifp_denom;
+                double dL_ddenom = -ifp_num / (ifp_denom * ifp_denom);
+                double var_L = dL_dnum * dL_dnum * ifp_num_std * ifp_num_std +
+                               dL_ddenom * dL_ddenom * ifp_denom_std * ifp_denom_std;
+                simulation::lambda_eff_ifp_std = std::sqrt(var_L);
+
+                // Error propagation for α = (k-1)/Λ
+                double dAlpha_dk = 1.0 / simulation::lambda_eff_ifp;
+                double dAlpha_dLambda =
+                  -(simulation::keff - 1.0) /
+                  (simulation::lambda_eff_ifp * simulation::lambda_eff_ifp);
+
+                double var_alpha_ifp =
+                  dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
+                  dAlpha_dLambda * dAlpha_dLambda * simulation::lambda_eff_ifp_std *
+                    simulation::lambda_eff_ifp_std;
+
+                simulation::alpha_ifp_std = std::sqrt(var_alpha_ifp);
+              }
+            }
+          }
+        }
+      }
+
+      // Time-dependent alpha calculation
+      if (settings::alpha_use_time_dependent &&
+          simulation::time_fission_tally.n_samples > 0) {
+        simulation::alpha_time_dependent =
+          extract_alpha_from_time_tally(simulation::time_fission_tally);
+
+        // Derive Λ_eff from time-dependent α and k
+        if (std::abs(simulation::alpha_time_dependent) > 1e-20) {
+          simulation::lambda_eff_time =
+            (simulation::keff - 1.0) / simulation::alpha_time_dependent;
+        }
+      }
     }
   }
 }
@@ -945,6 +1029,26 @@ void write_eigenvalue_hdf5(hid_t group)
       write_dataset(group, "mean_generation_time", gen_time_vals);
       array<double, 2> alpha_vals {simulation::alpha, simulation::alpha_std};
       write_dataset(group, "alpha", alpha_vals);
+
+      // IFP-weighted alpha eigenvalue
+      if (settings::alpha_use_ifp && settings::ifp_on) {
+        array<double, 2> lambda_eff_ifp_vals {
+          simulation::lambda_eff_ifp, simulation::lambda_eff_ifp_std};
+        write_dataset(group, "lambda_eff_ifp", lambda_eff_ifp_vals);
+        array<double, 2> alpha_ifp_vals {
+          simulation::alpha_ifp, simulation::alpha_ifp_std};
+        write_dataset(group, "alpha_ifp", alpha_ifp_vals);
+      }
+
+      // Time-dependent alpha eigenvalue
+      if (settings::alpha_use_time_dependent) {
+        array<double, 2> alpha_time_vals {
+          simulation::alpha_time_dependent, simulation::alpha_time_dependent_std};
+        write_dataset(group, "alpha_time_dependent", alpha_time_vals);
+        array<double, 2> lambda_time_vals {
+          simulation::lambda_eff_time, simulation::lambda_eff_time_std};
+        write_dataset(group, "lambda_eff_time", lambda_time_vals);
+      }
     }
   }
 }
@@ -1028,10 +1132,140 @@ void setup_kinetics_tallies()
   scores.push_back("prompt-chain-leakage-rate");       // Index 6
   scores.push_back("prompt-chain-population");         // Index 7
 
+  // IFP-weighted generation time scores (uses existing IFP infrastructure)
+  if (settings::alpha_use_ifp && settings::ifp_on) {
+    scores.push_back("ifp-gen-time-num");   // Index 8: Σ(lifetime × ν × weight × IFP)
+    scores.push_back("ifp-gen-time-denom"); // Index 9: Σ(ν × weight × IFP)
+  }
+
   tally->set_scores(scores);
 
   // No filters - tally over entire geometry
   tally->set_filters({});
+}
+
+//==============================================================================
+// TimeFissionTally implementation
+//==============================================================================
+
+void TimeFissionTally::initialize(int n_bins, double t_min, double t_max, bool logarithmic)
+{
+  bin_edges.resize(n_bins + 1);
+  bin_counts.assign(n_bins, 0.0);
+  bin_counts_sq.assign(n_bins, 0.0);
+  n_samples = 0;
+
+  if (logarithmic && t_min > 0.0) {
+    double log_min = std::log10(t_min);
+    double log_max = std::log10(t_max);
+    double log_step = (log_max - log_min) / n_bins;
+    for (int i = 0; i <= n_bins; i++) {
+      bin_edges[i] = std::pow(10.0, log_min + i * log_step);
+    }
+  } else {
+    double step = (t_max - t_min) / n_bins;
+    for (int i = 0; i <= n_bins; i++) {
+      bin_edges[i] = t_min + i * step;
+    }
+  }
+}
+
+void TimeFissionTally::score(double time, double nu_weight)
+{
+  int bin = find_bin(time);
+  if (bin >= 0 && bin < static_cast<int>(bin_counts.size())) {
+#pragma omp atomic
+    bin_counts[bin] += nu_weight;
+#pragma omp atomic
+    bin_counts_sq[bin] += nu_weight * nu_weight;
+  }
+}
+
+int TimeFissionTally::find_bin(double time) const
+{
+  if (bin_edges.empty() || time < bin_edges.front() || time >= bin_edges.back())
+    return -1;
+
+  // Binary search
+  auto it = std::upper_bound(bin_edges.begin(), bin_edges.end(), time);
+  return std::distance(bin_edges.begin(), it) - 1;
+}
+
+void TimeFissionTally::reset()
+{
+  std::fill(bin_counts.begin(), bin_counts.end(), 0.0);
+  std::fill(bin_counts_sq.begin(), bin_counts_sq.end(), 0.0);
+  n_samples = 0;
+}
+
+//==============================================================================
+// Alpha eigenvalue extraction functions
+//==============================================================================
+
+void initialize_time_alpha_tally()
+{
+  if (!settings::calculate_alpha || !settings::alpha_use_time_dependent)
+    return;
+
+  simulation::time_fission_tally.initialize(
+    settings::alpha_time_bins,
+    settings::alpha_time_min,
+    settings::alpha_time_max,
+    settings::alpha_time_log_bins
+  );
+}
+
+double extract_alpha_from_time_tally(const TimeFissionTally& tally)
+{
+  // Weighted linear regression: ln(F) = ln(F0) + α*t
+  // Only use bins with sufficient counts
+
+  double sum_w = 0.0;
+  double sum_wt = 0.0;
+  double sum_wt2 = 0.0;
+  double sum_wy = 0.0;
+  double sum_wty = 0.0;
+
+  int n_valid = 0;
+  const double min_count = 10.0;  // Minimum counts for valid bin
+
+  for (size_t i = 0; i < tally.bin_counts.size(); i++) {
+    double count = tally.bin_counts[i];
+    if (count < min_count) continue;  // Skip low-statistics bins
+
+    // Bin center time
+    double t = 0.5 * (tally.bin_edges[i] + tally.bin_edges[i+1]);
+    double dt = tally.bin_edges[i+1] - tally.bin_edges[i];
+
+    // Fission rate (counts per unit time)
+    double F = count / dt;
+    double y = std::log(F);
+
+    // Weight by counts (Poisson statistics)
+    double w = count;
+
+    sum_w += w;
+    sum_wt += w * t;
+    sum_wt2 += w * t * t;
+    sum_wy += w * y;
+    sum_wty += w * t * y;
+
+    n_valid++;
+  }
+
+  if (n_valid < 3) {
+    return 0.0;  // Insufficient data
+  }
+
+  // Weighted least squares slope
+  double denom = sum_w * sum_wt2 - sum_wt * sum_wt;
+  if (std::abs(denom) < 1e-30) {
+    return 0.0;
+  }
+
+  double alpha_val = (sum_w * sum_wty - sum_wt * sum_wy) / denom;
+
+  return alpha_val;
 }
 
 } // namespace openmc

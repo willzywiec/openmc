@@ -295,6 +295,10 @@ void Particle::from_source(const SourceSite* src)
   // Track whether this neutron itself is delayed (not genealogy)
   is_delayed() = (src->delayed_group > 0);
 
+  // Initialize absolute time for time-dependent alpha calculations
+  // Inherit absolute time from parent fission event
+  time_absolute() = src->time_absolute;
+
   // Convert signed surface ID to signed index
   if (src->surf_id != SURFACE_NONE) {
     int index_plus_one = model::surface_map[std::abs(src->surf_id)] + 1;

@@ -455,6 +455,7 @@ bool read_model_xml()
 
   // Setup internal tallies for kinetics calculations
   setup_kinetics_tallies();
+  initialize_time_alpha_tally();
 
   // Initialize distribcell_filters
   prepare_distribcell();
@@ -502,6 +503,7 @@ void read_separate_xml_files()
 
   // Setup internal tallies for kinetics calculations
   setup_kinetics_tallies();
+  initialize_time_alpha_tally();
 
   // Initialize distribcell_filters
   prepare_distribcell();

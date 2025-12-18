@@ -568,8 +568,30 @@ void print_results()
           simulation::prompt_neutron_lifetime, t_n1 * simulation::prompt_neutron_lifetime_std);
         fmt::print(" Mean Generation Time       = {:.5e} +/- {:.5e} seconds\n",
           simulation::mean_generation_time, t_n1 * simulation::mean_generation_time_std);
-        fmt::print(" Alpha                      = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (flux-weighted)      = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha, t_n1 * simulation::alpha_std);
+
+        // IFP-weighted alpha eigenvalue
+        if (settings::alpha_use_ifp && settings::ifp_on &&
+            simulation::lambda_eff_ifp > 0.0) {
+          fmt::print("\n IFP-Weighted Method:\n");
+          fmt::print("   Lambda_eff (IFP)         = {:.5e} +/- {:.5e} seconds\n",
+            simulation::lambda_eff_ifp, t_n1 * simulation::lambda_eff_ifp_std);
+          fmt::print("   Alpha (IFP)              = {:.5e} +/- {:.5e} 1/seconds\n",
+            simulation::alpha_ifp, t_n1 * simulation::alpha_ifp_std);
+        }
+
+        // Time-dependent alpha eigenvalue
+        if (settings::alpha_use_time_dependent &&
+            std::abs(simulation::alpha_time_dependent) > 1e-30) {
+          fmt::print("\n Time-Dependent Method:\n");
+          fmt::print("   Alpha (time-dep)         = {:.5e} 1/seconds\n",
+            simulation::alpha_time_dependent);
+          if (simulation::lambda_eff_time > 0.0) {
+            fmt::print("   Lambda_eff (from alpha)  = {:.5e} seconds\n",
+              simulation::lambda_eff_time);
+          }
+        }
       }
     }
   } else {
@@ -601,7 +623,29 @@ void print_results()
         fmt::print(
           " Mean Generation Time       = {:.5e} seconds\n", simulation::mean_generation_time);
         fmt::print(
-          " Alpha                      = {:.5e} 1/seconds\n", simulation::alpha);
+          " Alpha (flux-weighted)      = {:.5e} 1/seconds\n", simulation::alpha);
+
+        // IFP-weighted alpha eigenvalue
+        if (settings::alpha_use_ifp && settings::ifp_on &&
+            simulation::lambda_eff_ifp > 0.0) {
+          fmt::print("\n IFP-Weighted Method:\n");
+          fmt::print("   Lambda_eff (IFP)         = {:.5e} seconds\n",
+            simulation::lambda_eff_ifp);
+          fmt::print("   Alpha (IFP)              = {:.5e} 1/seconds\n",
+            simulation::alpha_ifp);
+        }
+
+        // Time-dependent alpha eigenvalue
+        if (settings::alpha_use_time_dependent &&
+            std::abs(simulation::alpha_time_dependent) > 1e-30) {
+          fmt::print("\n Time-Dependent Method:\n");
+          fmt::print("   Alpha (time-dep)         = {:.5e} 1/seconds\n",
+            simulation::alpha_time_dependent);
+          if (simulation::lambda_eff_time > 0.0) {
+            fmt::print("   Lambda_eff (from alpha)  = {:.5e} seconds\n",
+              simulation::lambda_eff_time);
+          }
+        }
       }
     }
   }
