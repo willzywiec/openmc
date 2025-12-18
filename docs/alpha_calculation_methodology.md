@@ -2,14 +2,27 @@
 
 ## Overview
 
-The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates alpha using kinetics parameters derived from prompt neutron chain tallies during normal eigenvalue iterations.
+The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates alpha using two methods:
+
+### Static Method (alpha_static)
 
 **Formula:**
 ```
-α = (ρ - β_eff) / Λ
+α_static = (ρ - β_eff) / Λ
 ```
 
-where:
+This is derived from the inhour equation, accounting for delayed neutrons.
+
+### Griesheimer Method (alpha_griesheimer)
+
+**Formula:**
+```
+α_griesheimer = ρ / Λ
+```
+
+This is a first-order estimate from the pseudo-absorption method, without the delayed neutron correction.
+
+**Common definitions:**
 - **ρ** = (k - 1) / k is reactivity
 - **β_eff** = effective delayed neutron fraction = (k - k_prompt) / k
 - **Λ** = mean generation time (mean time from neutron birth to fission)
@@ -91,14 +104,23 @@ double fission_time_denom = results(0, 1, SUM) / n_active;
 mean_generation_time = fission_time_num / fission_time_denom;
 ```
 
-#### Step 2: Alpha Eigenvalue
+#### Step 2: Static Alpha Eigenvalue
 
 ```cpp
 // Calculate reactivity
 double rho = (keff - 1.0) / keff;
 
-// α = (ρ - β_eff) / Λ
-alpha = (rho - beta_eff) / mean_generation_time;
+// α_static = (ρ - β_eff) / Λ
+alpha_static = (rho - beta_eff) / mean_generation_time;
+```
+
+#### Step 3: Griesheimer Alpha Eigenvalue
+
+Computed after eigenvalue batches complete:
+
+```cpp
+// α_griesheimer = ρ / Λ
+alpha_griesheimer = rho / mean_generation_time;
 ```
 
 ### 4. Uncertainty Propagation
@@ -110,7 +132,7 @@ Standard deviations are calculated using error propagation:
 σ_Λ² ≈ (∂Λ/∂num)² σ_num² + (∂Λ/∂denom)² σ_denom²
 ```
 
-**For α = (ρ - β)/Λ:**
+**For α_static = (ρ - β)/Λ:**
 ```
 σ_α² ≈ (∂α/∂k)² σ_k² + (∂α/∂β)² σ_β² + (∂α/∂Λ)² σ_Λ²
 ```
@@ -119,6 +141,15 @@ where:
 - ∂α/∂k = 1/(k²Λ)
 - ∂α/∂β = -1/Λ
 - ∂α/∂Λ = -(ρ - β)/Λ²
+
+**For α_griesheimer = ρ/Λ:**
+```
+σ_α² ≈ (∂α/∂k)² σ_k² + (∂α/∂Λ)² σ_Λ²
+```
+
+where:
+- ∂α/∂k = 1/(k²Λ)
+- ∂α/∂Λ = -ρ/Λ²
 
 ---
 
@@ -157,10 +188,14 @@ For a typical fast system (Godiva):
 
 β_eff = (k - k_prompt) / k = (1.0001 - 0.993) / 1.0001 = 0.0071
 
-α = (ρ - β_eff) / Λ = (0.0001 - 0.0071) / 5.7e-9 = -1.23e6 s⁻¹
+α_static = (ρ - β_eff) / Λ = (0.0001 - 0.0071) / 5.7e-9 = -1.23e6 s⁻¹
+
+α_griesheimer = ρ / Λ = 0.0001 / 5.7e-9 = 1.75e4 s⁻¹
 ```
 
-This negative alpha means the prompt neutron population decays at ~1.23 million per second, requiring delayed neutrons to sustain criticality.
+The static alpha is negative, meaning the prompt neutron population decays at ~1.23 million per second, requiring delayed neutrons to sustain criticality.
+
+The Griesheimer alpha is positive, reflecting only the total reactivity without the delayed neutron correction. The difference (β/Λ ≈ 1.25e6 s⁻¹) represents the delayed neutron contribution.
 
 ---
 
@@ -172,7 +207,8 @@ OpenMC prints alpha results in the summary:
  k-prompt                   = 0.99300 +/- 0.00045
  Beta-effective             = 0.00700 +/- 0.00010
  Mean Generation Time       = 5.70000e-09 +/- 2.50000e-11 seconds
- Alpha                      = -1.23000e+06 +/- 1.80000e+04 1/seconds
+ Alpha (static)             = -1.23000e+06 +/- 1.80000e+04 1/seconds
+ Alpha (Griesheimer)        = 1.75000e+04 +/- 2.50000e+02 1/seconds
 ```
 
 The values are also written to statepoint files for post-processing.
@@ -183,11 +219,15 @@ The values are also written to statepoint files for post-processing.
 
 - **Setup**: `openmc/src/eigenvalue.cpp::setup_kinetics_tallies()`
 - **Scoring (Fission)**: `openmc/src/tallies/tally_scoring.cpp::score_analog_tally_ce()`
-- **Calculation**: `openmc/src/eigenvalue.cpp::calculate_kinetics_parameters()`
+- **Static Alpha Calculation**: `openmc/src/eigenvalue.cpp::calculate_kinetics_parameters()`
+- **Griesheimer Alpha Calculation**: `openmc/src/eigenvalue.cpp::run_alpha_iterations()`
+- **Pseudo-absorption**: `openmc/src/material.cpp::calculate_neutron_xs()`
 - **Output**: `openmc/src/output.cpp::print_results()`
 
 ---
 
 ## References
 
-The relationship α = (ρ - β_eff) / Λ is the fundamental alpha eigenvalue equation from reactor kinetics theory (the inhour equation in the limit of no delayed neutron groups). The mean generation time Λ is measured directly as the ν-weighted time-to-fission, which correctly captures the birth-to-birth behavior of the fission chain.
+The static alpha relationship α = (ρ - β_eff) / Λ is the fundamental alpha eigenvalue equation from reactor kinetics theory (the inhour equation in the limit of no delayed neutron groups). The mean generation time Λ is measured directly as the ν-weighted time-to-fission, which correctly captures the birth-to-birth behavior of the fission chain.
+
+The Griesheimer method uses pseudo-absorption α/v added to cross sections, iterating until k approaches 1. The first-order estimate α = ρ/Λ represents a single iteration from α = 0.
