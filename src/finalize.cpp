@@ -1,7 +1,5 @@
 #include "openmc/finalize.h"
 
-#include <iostream>
-
 #include "openmc/bank.h"
 #include "openmc/capi.h"
 #include "openmc/cmfd_solver.h"
@@ -37,47 +35,28 @@ namespace openmc {
 
 void free_memory()
 {
-  std::cerr << "[DEBUG] free_memory: geometry" << std::endl;
   free_memory_geometry();
-  std::cerr << "[DEBUG] free_memory: surfaces" << std::endl;
   free_memory_surfaces();
-  std::cerr << "[DEBUG] free_memory: material" << std::endl;
   free_memory_material();
-  std::cerr << "[DEBUG] free_memory: volume" << std::endl;
   free_memory_volume();
-  std::cerr << "[DEBUG] free_memory: simulation" << std::endl;
   free_memory_simulation();
-  std::cerr << "[DEBUG] free_memory: photon" << std::endl;
   free_memory_photon();
-  std::cerr << "[DEBUG] free_memory: settings" << std::endl;
   free_memory_settings();
-  std::cerr << "[DEBUG] free_memory: thermal" << std::endl;
   free_memory_thermal();
-  std::cerr << "[DEBUG] free_memory: library_clear" << std::endl;
   library_clear();
-  std::cerr << "[DEBUG] free_memory: nuclides_clear" << std::endl;
   nuclides_clear();
-  std::cerr << "[DEBUG] free_memory: source" << std::endl;
   free_memory_source();
-  std::cerr << "[DEBUG] free_memory: mesh" << std::endl;
   free_memory_mesh();
-  std::cerr << "[DEBUG] free_memory: tally" << std::endl;
   free_memory_tally();
-  std::cerr << "[DEBUG] free_memory: bank" << std::endl;
   free_memory_bank();
-  std::cerr << "[DEBUG] free_memory: plot" << std::endl;
   free_memory_plot();
-  std::cerr << "[DEBUG] free_memory: weight_windows" << std::endl;
   free_memory_weight_windows();
   if (mpi::master) {
-    std::cerr << "[DEBUG] free_memory: cmfd" << std::endl;
     free_memory_cmfd();
   }
   if (settings::event_based) {
-    std::cerr << "[DEBUG] free_memory: event_queues" << std::endl;
     free_event_queues();
   }
-  std::cerr << "[DEBUG] free_memory: done" << std::endl;
 }
 
 } // namespace openmc
@@ -86,15 +65,11 @@ using namespace openmc;
 
 int openmc_finalize()
 {
-  std::cerr << "[DEBUG] openmc_finalize() starting" << std::endl;
-
   if (simulation::initialized)
     openmc_simulation_finalize();
 
-  std::cerr << "[DEBUG] calling openmc_reset()" << std::endl;
   // Clear results
   openmc_reset();
-  std::cerr << "[DEBUG] openmc_reset() completed" << std::endl;
 
   // Reset timers
   reset_timers();
@@ -112,6 +87,11 @@ int openmc_finalize()
   settings::time_cutoff = {INFTY, INFTY, INFTY, INFTY};
   settings::entropy_on = false;
   settings::event_based = false;
+  settings::ifp_on = false;
+  settings::ifp_n_generation = -1;
+  settings::ifp_parameter = IFPParameter::None;
+  settings::calculate_prompt_k = false;
+  settings::calculate_alpha = false;
   settings::free_gas_threshold = 400.0;
   settings::gen_per_batch = 1;
   settings::legendre_to_tabular = true;
@@ -193,9 +173,7 @@ int openmc_finalize()
   openmc::openmc_set_stride(DEFAULT_STRIDE);
 
   // Deallocate arrays
-  std::cerr << "[DEBUG] calling free_memory()" << std::endl;
   free_memory();
-  std::cerr << "[DEBUG] free_memory() completed" << std::endl;
 
   // Reset kinetics tally index (tally was freed in free_memory_tally)
   simulation::kinetics_tally_index = -1;
@@ -203,8 +181,6 @@ int openmc_finalize()
   // Reset k_prompt accumulators
   simulation::k_prompt_sum = 0.0;
   simulation::k_prompt_sum_sq = 0.0;
-
-  std::cerr << "[DEBUG] openmc_finalize() completing" << std::endl;
 
 #ifdef OPENMC_LIBMESH_ENABLED
   settings::libmesh_init.reset();
