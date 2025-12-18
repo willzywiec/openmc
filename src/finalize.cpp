@@ -1,5 +1,7 @@
 #include "openmc/finalize.h"
 
+#include <iostream>
+
 #include "openmc/bank.h"
 #include "openmc/capi.h"
 #include "openmc/cmfd_solver.h"
@@ -65,11 +67,15 @@ using namespace openmc;
 
 int openmc_finalize()
 {
+  std::cerr << "[DEBUG] openmc_finalize() starting" << std::endl;
+
   if (simulation::initialized)
     openmc_simulation_finalize();
 
+  std::cerr << "[DEBUG] calling openmc_reset()" << std::endl;
   // Clear results
   openmc_reset();
+  std::cerr << "[DEBUG] openmc_reset() completed" << std::endl;
 
   // Reset timers
   reset_timers();
@@ -168,7 +174,9 @@ int openmc_finalize()
   openmc::openmc_set_stride(DEFAULT_STRIDE);
 
   // Deallocate arrays
+  std::cerr << "[DEBUG] calling free_memory()" << std::endl;
   free_memory();
+  std::cerr << "[DEBUG] free_memory() completed" << std::endl;
 
   // Reset kinetics tally index (tally was freed in free_memory_tally)
   simulation::kinetics_tally_index = -1;
@@ -176,6 +184,8 @@ int openmc_finalize()
   // Reset k_prompt accumulators
   simulation::k_prompt_sum = 0.0;
   simulation::k_prompt_sum_sq = 0.0;
+
+  std::cerr << "[DEBUG] openmc_finalize() completing" << std::endl;
 
 #ifdef OPENMC_LIBMESH_ENABLED
   settings::libmesh_init.reset();
