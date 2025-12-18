@@ -37,28 +37,47 @@ namespace openmc {
 
 void free_memory()
 {
+  std::cerr << "[DEBUG] free_memory: geometry" << std::endl;
   free_memory_geometry();
+  std::cerr << "[DEBUG] free_memory: surfaces" << std::endl;
   free_memory_surfaces();
+  std::cerr << "[DEBUG] free_memory: material" << std::endl;
   free_memory_material();
+  std::cerr << "[DEBUG] free_memory: volume" << std::endl;
   free_memory_volume();
+  std::cerr << "[DEBUG] free_memory: simulation" << std::endl;
   free_memory_simulation();
+  std::cerr << "[DEBUG] free_memory: photon" << std::endl;
   free_memory_photon();
+  std::cerr << "[DEBUG] free_memory: settings" << std::endl;
   free_memory_settings();
+  std::cerr << "[DEBUG] free_memory: thermal" << std::endl;
   free_memory_thermal();
+  std::cerr << "[DEBUG] free_memory: library_clear" << std::endl;
   library_clear();
+  std::cerr << "[DEBUG] free_memory: nuclides_clear" << std::endl;
   nuclides_clear();
+  std::cerr << "[DEBUG] free_memory: source" << std::endl;
   free_memory_source();
+  std::cerr << "[DEBUG] free_memory: mesh" << std::endl;
   free_memory_mesh();
+  std::cerr << "[DEBUG] free_memory: tally" << std::endl;
   free_memory_tally();
+  std::cerr << "[DEBUG] free_memory: bank" << std::endl;
   free_memory_bank();
+  std::cerr << "[DEBUG] free_memory: plot" << std::endl;
   free_memory_plot();
+  std::cerr << "[DEBUG] free_memory: weight_windows" << std::endl;
   free_memory_weight_windows();
   if (mpi::master) {
+    std::cerr << "[DEBUG] free_memory: cmfd" << std::endl;
     free_memory_cmfd();
   }
   if (settings::event_based) {
+    std::cerr << "[DEBUG] free_memory: event_queues" << std::endl;
     free_event_queues();
   }
+  std::cerr << "[DEBUG] free_memory: done" << std::endl;
 }
 
 } // namespace openmc
