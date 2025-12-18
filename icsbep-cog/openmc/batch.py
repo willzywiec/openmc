@@ -216,17 +216,6 @@ def parse_openmc_output(output: str, statepoint_path: Path = None) -> Dict[str, 
                 results['keff'] = sp.keff.nominal_value
                 results['keff_std'] = sp.keff.std_dev
 
-            # Get kinetics data from statepoint
-            # OpenMC stores delayed neutron data when create_delayed_neutron_data=true
-
-            # Try to get beta-effective (sum of delayed neutron fractions)
-            if hasattr(sp, 'k_combined') and hasattr(sp.k_combined, 'nominal_value'):
-                k_eff = sp.k_combined.nominal_value
-            elif results['keff']:
-                k_eff = results['keff']
-            else:
-                k_eff = None
-
             # Check for kinetics tallies to extract beta-effective
             if hasattr(sp, 'tallies'):
                 for tally_id, tally in sp.tallies.items():
