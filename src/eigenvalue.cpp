@@ -960,6 +960,10 @@ void setup_kinetics_tallies()
 
   tally->set_scores(scores);
 
+  // Set nuclides to "total" (required for results array allocation)
+  // -1 represents "total" in the nuclides array
+  tally->set_nuclides({"total"});
+
   // No filters - tally over entire geometry
   tally->set_filters({});
 
