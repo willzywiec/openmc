@@ -2,7 +2,7 @@ PU-SOL-THERM-033-25: 355.6 gPu(3.13)/L at H/X=60.5 with 7 (3x40) pyrex tubes at 
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4
  -3 -3 10.70
  -3  3 10.70
   3 -3 10.70

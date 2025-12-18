@@ -2,7 +2,7 @@ IEU-MET-FAST-009-1: Spherical assembly of 140.344 kg U(36) reflected by 14.560 k
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=6  4 0 0  -4 0 0  0 4 0  0 -4 0  0 0 4  0 0 -4
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 1.5922-4 u235 1.7440-2 u238 2.9990-2  c 4.7009-4 fe 1.6176-4 w 1.2284-5 $ 1st U(36) layer

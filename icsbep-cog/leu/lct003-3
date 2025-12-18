@@ -2,7 +2,7 @@ LCT003-3: 23x22 + 18 array of U(2.35)O2 fuel rods with 1.684 cm square pitch in 
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=1
    0 0 45.72
 assign-mc
   1 red 2 green 3 lime 4 yellow 5 sky 6 blue

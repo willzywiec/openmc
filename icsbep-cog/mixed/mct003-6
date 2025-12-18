@@ -2,7 +2,7 @@ MIX-COMP-THERM-003-6: 11x11 lattice of MOX pins with 2 x 1.3208 = 2.6416 cm pitc
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1
   0 0 85.625
 dump 1400 2400 3400 4400
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0     

@@ -2,7 +2,7 @@ U233-SOL-THERM-016-7: 3.642 kg 233U @ H/X=120.8 and N/U=2.15 (Exp't No. 100)
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 7.72175
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0                         $
   mat=1 bunches u233 5.1416-4 u234 5.4954-6 u235 1.3588-7 u236 5.2040-9 u238 7.1522-6 $ Sol'n No. 11

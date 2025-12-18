@@ -2,7 +2,7 @@ MIX-SOL-THERM-002-3: Experiment No. 061
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 40.86
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches (h.h2o) 6.4831-2     n 6.5896-4  o16 3.4438-2 pu238 8.6346-9 pu239 2.7976-5 pu240 2.5418-6  $ Experiment

@@ -2,7 +2,7 @@ LCT061-6: 762 U(4.5)O2 rods, 7 Hf tubes, 1.27 cm trianglur pitch, Hc=77.66cm, wa
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
   -0.635  1.09985 38.83  0.635  1.09985 38.83
   -1.270  0.0     38.83  1.270  0.0     38.83
   -0.635 -1.09985 38.83  0.635 -1.09985 38.83

@@ -2,7 +2,7 @@ IEU-MET-FAST-019-2: Type 2 Assembly: U(45.5) metal cylinder on an aluminum suppo
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 6.9469
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 3.6350-4 u235 2.1114-2 u238 2.4613-2 c 7.9769-4 h 2.5637-4 o16 1.2097-4 al 1.2127-4 si 1.1650-4 fe 7.8120-5 $ U(45.5)

@@ -2,7 +2,7 @@ LCT003-11: 17x17 (two) + 17x3-3 + 17x4-2 arrays of U(2.35)O2 fuel rods with 1.68
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=4
    -16.449 -5.503 45.72  -16.449 15.607 45.72
     16.449 -5.503 45.72   16.449 15.607 45.72
 assign-mc

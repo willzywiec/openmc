@@ -2,7 +2,7 @@ LCT033-22: U(3)F4-2, Polyethylene reflected on top and sides; Plexiglas on botto
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u235 1.6705-4 u238 5.3320-3 u234 1.1184-6 $ U(3)F4-2
              (h.ch2) 4.6308-2    c 2.2263-2    f 2.2001-2 $  with polythene stops

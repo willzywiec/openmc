@@ -2,7 +2,7 @@ PU-SOL-THERM-014 (Case 28) Four cylinders with 120 cm s-to-s
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=4 -75 -75 19.7  75 -75 19.7
             -75  75 19.7  75  75 19.7
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 10, 11 and 12

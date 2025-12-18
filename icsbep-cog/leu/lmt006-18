@@ -2,7 +2,7 @@ LMT006-18: Case 18; Bugey 23; detailed; 46 type 1 and 6 type 2 tubes; 12.7cm pit
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=3
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=3
    -2.7 -8.25 29.5
    -2.7  4.45 29.5
    -0.3 -1.90 29.5  

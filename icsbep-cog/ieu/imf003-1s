@@ -2,7 +2,7 @@ IEU-MET-FAST-003-1S: Bare spherical assembly of 277.312 kg U(36) [Simplified Mod
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 1.5272-4 u235 1.7118-2 u238 2.9211-2 c 7.7389-4 fe 1.2058-4 w 1.0087-5 cu 3.8133-4 ni 4.1288-4 $ U(36)

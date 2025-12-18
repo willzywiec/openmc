@@ -2,7 +2,7 @@ IEU-MET-FAST-020-6s: Rev. 2: FR0 T5-S; simplified homogeous cylindrical benchmar
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 8.5135-5 u235 8.4983-3 u238 3.3376-2  c 4.3545-5  f 8.7090-5 fe 3.9671-3 $ U20

@@ -2,7 +2,7 @@ PMF004-9: LLNL Pu Array Phase II - bare - 2x2x2 - 6kg - case 215
 basic 
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=16
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=16
   -4.88 -4.88 109.5067  -4.88  4.88 109.5067   4.88 -4.88 109.5067   4.88  4.88 109.5067
   -4.88 -4.88 114.6033  -4.88  4.88 114.6033   4.88 -4.88 114.6033   4.88  4.88 114.6033
   -4.88 -4.88 121.4867  -4.88  4.88 121.4867   4.88 -4.88 121.4867   4.88  4.88 121.4867

@@ -2,7 +2,7 @@ LST001-1: SHEBA-II
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. 
   nsource=4 -5 0 22.4  0 -5 22.4  5 0 22.4  0 5 22.4
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 6.7855-7 u235 1.2377-4 u236 1.2085-6 u238 2.3508-3 $ Fuel

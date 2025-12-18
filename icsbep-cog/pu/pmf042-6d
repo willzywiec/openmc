@@ -2,7 +2,7 @@ PMF042-6D: Pu hemisphere reflected by 5x0.3228cm steel shells and infinite oil; 
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 
   0 0 -6.333
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches   pu238 4.9085-6 pu239 4.5741-2 pu240 2.8718-3 pu241 2.3752-4 pu242 9.6544-6 $ Pu

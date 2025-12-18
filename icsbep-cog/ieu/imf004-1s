@@ -2,7 +2,7 @@ IEU-MET-FAST-004-1S: 15.222 kg graphite reflected spherical assembly of 212.080 
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=6  3 0 0  -3 0 0  0 3 0  0 -3 0  0 0 3  0 0 -3
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 1.5652-4 u235 1.7384-2 u238 2.9662-2 c 6.5752-4 fe 1.2098-4 w 1.0121-5 $ U(36)

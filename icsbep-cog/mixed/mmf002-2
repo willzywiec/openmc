@@ -2,7 +2,7 @@ MIX-MET-FAST-002-2: Composite core of Ni-clad a-Pu(4.73) and HEU reflected by Na
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1  bunches pu239 4.6451-2 pu240 2.3135-3 pu241 1.4673-4 $ a-Pu(4.73)

@@ -2,7 +2,7 @@ LST010-3: Polyethylene (P100) reflected 60-cm-diameter cylindrical tank with 10%
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1  0 0 38.46
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1  0 0 38.46
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 4.9980-7 u235 6.2022-5 u236 6.1944-8 u238 5.5243-4 (h.h2o) 5.8526-2  n 2.4887-3 o16 3.7330-2             $ Solution: Run 86
   mat=2 bunches    c 4.3736-5   si 1.0627-3   mn 1.1561-3    p 4.3170-5       s 2.9782-6 ni 8.3403-3  cr 1.6775-2 fe 5.9421-2 $ Stainless Steel [1] Core Tank

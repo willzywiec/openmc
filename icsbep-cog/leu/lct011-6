@@ -2,7 +2,7 @@ LCT011-6: B&W CX-10 Core IIID
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=4
   -0.818 -0.818 65.66 -0.818  0.818 65.66
    0.818 -0.818 65.66  0.818  0.818 65.66
 assign-mc

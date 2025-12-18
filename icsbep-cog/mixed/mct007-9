@@ -2,7 +2,7 @@ MCT007-9: Central B3 absorber rod and 193+4=197 MOX pins with 2.6670 cm pitch
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=500 nbatch=520 sdt=0.0001 nfirst=21 norm=1. nsource=6 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=6 
    -1.7602  3.04879 48.5735   1.7602  3.04879 48.5735
    -3.5204  0.0     48.5735   3.5204  0.0     48.5735
    -1.7602 -3.04879 48.5735   1.7602 -3.04879 48.5735

@@ -2,7 +2,7 @@ PMF038-1S: Simplified model of the BeRP ball reflected by 8.5cm of beryllium
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 0
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 0
 assign-mc
   1 purple 2 gray 3 pink 4 red 
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

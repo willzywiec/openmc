@@ -2,7 +2,7 @@ LT003-2: ZED-2 with 20.00 cm triangular pitch and Hc = 155.849 cm
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1
    0 0 85.4245
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1  bunches u234 2.6201-6 u235 3.4299-4 u238 4.7292-2                                       $ Uranium metal fuel

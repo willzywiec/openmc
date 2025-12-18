@@ -2,7 +2,7 @@ PMF032-1S: 0.700cm cavity; 7.9716 kg alpha-239Pu(88%); 4.49cm Steel reflected; s
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=6
   -2  0  0  2 0 0
    0 -2  0  0 2 0
    0  0 -2  0 0 2

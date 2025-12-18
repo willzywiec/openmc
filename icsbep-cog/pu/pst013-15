@@ -2,7 +2,7 @@ PU-SOL-THERM-013 (Case 15) Six cylinders with 0 cm surface-to-surface
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=6 -12.794  25.588 12 12.794  25.588 12
             -12.794   0     12 12.794   0     12
             -12.794 -25.588 12 12.794 -25.588 12

@@ -2,7 +2,7 @@ IEU-SOL-THERM-004: 564.8 grams U-235 in U(14.67) @ H/X = 646 (Lopo)
 basic
   neutron delayedn CENTIMETERS
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0                           $
   mat=1 bunches  u235 9.6795-5 u234 7.4257-7    u238 5.5518-4 $ Uranly Sulfate Solution

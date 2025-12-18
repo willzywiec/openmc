@@ -2,7 +2,7 @@ FALSTAFF; Sol'n No. 2; Sphere No. 6; 1.78 cm Be
 basic
   neutron  delayedn  CENTIMETERS
 criticality
- npart=15000 nbatch=4400 sdt=0.0001 nfirst=1000 norm=1.
+ npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches 

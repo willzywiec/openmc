@@ -2,7 +2,7 @@ U233-SOL-THERM-004 (Exp't 20 in 6"-Diam. Vessel) 1514 g U-233 @ H/X = 84
 basic
   neutron  delayedn CENTIMETERS
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 15.394
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0      
   mat=1 bunches u233 7.0771-4 u234 3.2856-6 u238 6.1796-6  $  H/U-233 = 83.896

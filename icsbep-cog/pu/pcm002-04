@@ -2,7 +2,7 @@ PU-COMP-MIXED-002 (Case 4) 49.939 kg Pu @ H/X = 0.047 with 18.35 wt-% Pu-240 and
 basic
 neutron delayedn CM URRPT
 criticality
-npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
 nsource=1 0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Compositions per Tables 17 and 18
 mat=1 bunches pu238 3.3807-5 pu239 1.0919-2 pu240 2.6529-3 pu241 7.2657-4 pu242 1.6312-4

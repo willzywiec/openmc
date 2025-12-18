@@ -2,7 +2,7 @@ PMF026-1S: 11.9cm steel reflected spherical assembly of 9.7602 kg delta-239Pu(98
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6 -1 0 0 1 0 0 0 -1 0 0 1 0 0 0 -1 0 0 1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=6 -1 0 0 1 0 0 0 -1 0 0 1 0 0 0 -1 0 0 1
 assign-mc
   1 purple 2 gray 3 brown
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

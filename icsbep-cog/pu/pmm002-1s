@@ -28,7 +28,7 @@ $
 $ 
 BASIC neutron delayedn cm
 Criticality
-  npart=80000 nbatch=9000  sdt=0.00001 nfirst=97  norm=1.0 nsource=1 0 0 0
+  npart=10000 nbatch=150  sdt=0.00001 nfirst=10  norm=1.0 nsource=1 0 0 0
    mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
 $ --------- 105.376  grams of alloy (sum)
 mat=1  w-p 15.1434  94239  98.8640   

@@ -2,7 +2,7 @@ PU-SOL-THERM-029 (Case 9; No. 162) Hc=54.00cm; D=1.0cm; 40.6 gPu/l; H/X=632; 2.9
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=2  -5.5 0 27.0  +5.5 0 27.0 $ Xo = 5 + D/2; Zo = Hc/2
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0                                     $ 
   mat=1 bunches   pu239 9.92290-5 pu240 3.03516-6 (h.h2o) 6.26922-2 $ Solution

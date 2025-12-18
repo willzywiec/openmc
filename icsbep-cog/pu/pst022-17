@@ -2,7 +2,7 @@ PU-SOL-THERM-022 (Case 17) Hc = 92.09 @ H/X=576; 18.88 wt-% Pu-240; Paraffin + C
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=4  -17 -17 46  -17 17 46  17 -17 46  17 17 46
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 7a, 7b and 8        
   mat=1 bunches   pu239 1.0041-4 pu240 2.5443-5 pu241 7.7102-6   pu242 1.5236-6 $ 53.7 gPu/L

@@ -2,7 +2,7 @@ PMF003-3: LLNL Pu Array - Bare - 3x3x3 - case 103
 basic 
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=27 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=27 
   -9.6  9.6 32.9  0  9.6 32.9  9.6  9.6 32.9  
   -9.6  0   32.9  0  0   32.9  9.6  0   32.9
   -9.6 -9.6 32.9  0 -9.6 32.9  9.6 -9.6 32.9

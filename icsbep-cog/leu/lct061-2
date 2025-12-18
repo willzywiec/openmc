@@ -2,7 +2,7 @@ LCT061-2: 762 U(4.5)O2 rods, 7 B4C rods, 1.27 cm trianglur pitch, Hc=96.27cm, wa
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
   -0.635  1.09985 48.135  0.635  1.09985 48.135
   -1.270  0.0     48.135  1.270  0.0     48.135
   -0.635 -1.09985 48.135  0.635 -1.09985 48.135

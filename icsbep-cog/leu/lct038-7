@@ -2,7 +2,7 @@ LCT038-7: Two pairs of (18x13-2) arrays of U(4.738)O2 rods, 1.60 cm pitch, betwe
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=16
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=16
     -3.35  0.8 21.7  -3.35 -0.8 21.7  3.35  0.8 21.7  3.35 -0.8 21.7 
     -4.95  0.8 21.7  -4.95 -0.8 21.7  4.95  0.8 21.7  4.95 -0.8 21.7 
     -6.55  0.8 21.7  -6.55 -0.8 21.7  6.55  0.8 21.7  6.55 -0.8 21.7 

@@ -2,7 +2,7 @@ MIX-MET-FAST-004-2: Pu sphere surrounded by HEU reflected by BeO
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=6
   0 0  2.8   2.0 0 -0.75  0  2.0 -0.75
   0 0 -2.0  -2.0 0 -0.75  0 -2.0 -0.75
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

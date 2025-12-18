@@ -2,7 +2,7 @@ MIX-COMP-THERM-002-6: PNL-35
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1 0.1 -0.1 79.526
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches   pu238 3.8836-8   pu239 3.9462-4 pu240 3.3206-5   pu241 1.6081-6   pu242 1.1882-7   am241 1.4954-6 $ PuO2-UO2

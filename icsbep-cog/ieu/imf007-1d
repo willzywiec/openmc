@@ -2,7 +2,7 @@ IEU-MET-FAST-007 (Rev. 2): Big Ten Detailed Benchmark Model (translated)
 basic
   neutron delayedn CENTIMETERS
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=107
     0.00   0.00 -39.60   0.00   0.00 -33.50   0.00   0.00 -27.00   0.00   0.00 -21.00   0.00   0.00 -15.00 
     0.00   0.00  -9.00   0.00   0.00  -3.00   0.00   0.00  -0.68   0.00   0.00   6.00   0.00   0.00  15.00 

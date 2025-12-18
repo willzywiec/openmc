@@ -2,7 +2,7 @@ PU-SOL-THERM-033-61: 140.8 gPu(4.23)/L at H/X=176.9 with raschig rings (model 4)
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 29.25
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 29.25
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches    u235 1.3387-10 u238 1.8750-8 pu238 2.6002-8 pu239 3.3858-4 pu240 1.4939-5 pu241 1.0199-6 pu242 5.6047-8 am241 1.2241-7 $ Plutonium 
                 (h.h2o) 6.0068-2   o16 3.7573-2     n 2.7287-3    fe 2.8575-6    cr 1.1415-7    ni 3.0050-7    mn 1.2347-7    ca 1.6925-6 $  nitrate

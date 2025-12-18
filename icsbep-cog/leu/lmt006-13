@@ -2,7 +2,7 @@ LMT006-13: Case 13; Bugey 14; detailed; 36 type 1 tubes; 11.7cm pitch; Hw=56.44c
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4
   -15.7  -4.9  28.22  -13.6   0.95 28.22
   -15.7 -16.6  28.22  -13.6 -10.75 28.22
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

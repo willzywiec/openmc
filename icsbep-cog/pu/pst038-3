@@ -2,7 +2,7 @@ PU-SOL-THERM-038-3: Experiment 3003
 basic
   neutron delayedn URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1 0 0 42.5955
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches   pu238 7.3182-8 pu239 2.9053-5  pu240 7.8155-6 pu241 4.0533-7 pu242 4.1045-7 $ Plutonium

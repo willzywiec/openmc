@@ -2,7 +2,7 @@ LST016-5: Water reflected 28-cm-thick slab tank with 10% enriched uranyl nitrate
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1  0 0 33.195
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1  0 0 33.195
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 6.7703-7 u235 8.4015-5 u236 8.3910-8 u238 7.4833-4 (h.h2o) 5.8738-2  n 2.1480-3 o16 3.7238-2             $ Solution: Run 131
   mat=2 bunches    c 7.1567-5   si 7.1415-4   mn 9.9095-4    p 5.0879-5       s 1.0424-5 ni 8.5600-3  cr 1.6725-2 fe 5.9560-2 $ Stainless Steel

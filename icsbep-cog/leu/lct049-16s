@@ -2,7 +2,7 @@ LCT049-16S: Simplified model of R1-2R(5,5) with H/U=2 & 3 (checkerboard) and d=1
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=3
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=3
   -21.195 0 0  0.675 0 0   21.195 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 3.4097-6 u235 3.6865-4 u236 2.8024-6 u238 6.9422-3 o16 2.6441-2 $ U(5)O2+H2O

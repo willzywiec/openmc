@@ -2,7 +2,7 @@ LEU-COMP-THERM-010-25: (12x16)-16.233cm-(12x16)-16.233cm-(12x16) array of U(4.30
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=8
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=8
   -37.991 -1.27 46.0375 -37.991 1.27 46.0375
    -0.946 -1.27 46.0375  -0.946 1.27 46.0375
     0.946 -1.27 46.0375   0.946 1.27 46.0375

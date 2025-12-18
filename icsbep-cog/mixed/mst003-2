@@ -2,7 +2,7 @@ MIX-SOL-THERM-003-2: AWRE SCAMP
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1
   0 0 14.945
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches pu239 2.3960-4 pu240 1.4400-5 pu241 1.1000-6 u235 4.2000-6 u238 5.7390-4 $ Solution A

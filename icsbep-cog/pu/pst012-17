@@ -2,7 +2,7 @@ PU-SOL-THERM-012 (Case 17) Hc = 28.80 @ H/X=1457; 18.91 wt-% Pu-240; no close wa
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 14.4
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 8, 9a and 9b
   mat=1 bunches   pu239 4.06270-5 pu240 1.02943-5 pu241 3.05154-6   pu242 6.16420-7 $ 21.7 gPu/L

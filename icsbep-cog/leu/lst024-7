@@ -2,7 +2,7 @@ LST024-7: STACY two slabs of 10% 235U uranyl nitrate with polyethylene (P150,P50
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=2 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=2 
   -37.0805 0 34.48
    37.0805 0 34.48
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

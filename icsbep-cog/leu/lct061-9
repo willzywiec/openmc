@@ -2,7 +2,7 @@ LCT061-9: 1309 U(4.5)O2 rods, 342 Al displacer rods, 1.27 cm trianglur pitch, Hc
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
   -0.635  1.09985 22.61  0.635  1.09985 22.61
   -1.270  0.0     22.61  1.270  0.0     22.61
   -0.635 -1.09985 22.61  0.635 -1.09985 22.61

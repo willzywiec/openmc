@@ -2,7 +2,7 @@ PU-SOL-THERM-001 (Case 4) 1.696 kg Pu(95.3) @ H/X = 190 in a water reflected l1.
 basic
 neutron delayedn CM URRPT
 criticality
-npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
 nsource=1 0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 6, 7 and 8
 mat=1 bunches pu238 2.0036-8 pu239 3.1594-4 pu240 1.5458-5 pu241 1.0058-6 pu242 2.9556-8

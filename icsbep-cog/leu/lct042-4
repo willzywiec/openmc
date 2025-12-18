@@ -2,7 +2,7 @@ LCT042-4: (20x18)-2.566cm-BoroflexPlex(25x18)PlexBoroflex-2.566cm-(20x18) array 
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=6
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=6
   -39.614 -0.842 45.72 -39.614 0.842 45.72
     0     -0.842 45.72   0     0.842 45.72
    39.614 -0.842 45.72  39.614 0.842 45.72

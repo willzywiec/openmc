@@ -2,7 +2,7 @@ PU-SOL-THERM-041-32: Experiment 461 with 30.25 gPu(3.11)/L at H/X=866; Hc=44.39;
 basic
   neutron delayedn URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4
   -17.5 0 22.945 17.5 0 22.945 0 -17.5 22.945 0 17.5 22.945
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches   pu239 7.37431-5 pu240 2.36007-6 pu241 9.06849-8 n 1.27730-3 o16 3.53292-2 (h.h2o) 6.39581-2 fe 2.99773-6              $ Pu solution

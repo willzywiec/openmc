@@ -2,7 +2,7 @@ PU-SOL-THERM-020 (Case 9) 1.081 kg Pu(95.43) @ H/X = 567 in a 14" SS304L sphere 
 basic
   neutron delayedn
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0. 0. 0.
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 $ Atom densities per Tables 6 and 7
   mat=1 bunches   pu238 7.1188-9   pu239 1.1225-4 pu240 5.4910-6 pu241 3.6440-7 pu242 1.0501-8

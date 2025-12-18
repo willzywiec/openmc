@@ -2,7 +2,7 @@ LEU-COMP-THERM-002-1: 10x11.51 = 10x11 + 5 array of U(4.31)O2 rods in water; 2.5
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=4 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=4 
   -1.27  1.27 46.0375  1.27  1.27 46.0375
   -1.27 -1.27 46.0375  1.27 -1.27 46.0375
 assign-mc

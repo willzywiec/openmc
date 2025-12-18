@@ -2,7 +2,7 @@ LCT064-4: Lattice of 1,081 U(2.4)O2 rods with 1.27 cm (triangular) pitch
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 44.27
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 44.27
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches o16 4.5995-2 u234 4.6769-6 u235 5.5883-4 u238 2.2434-2 $ U(2.4)O2
   mat=2 bunches  zr 4.2794-2   nb 4.2456-4   hf 6.6297-6               $ Zr-1Nb clad & plugs

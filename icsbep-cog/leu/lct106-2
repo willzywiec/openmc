@@ -2,7 +2,7 @@ LEU-COMP-THERM-101-2: MIRTE-2.2 Experiment 2A-NaCl(300)-050-Al010; 9x40; Hc=87.4
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=36
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=36
   -0.8  4.3 43.7385  0.8  4.3 43.7385  -0.8  -4.3 43.7385  0.8  -4.3 43.7385
   -0.8  5.9 43.7385  0.8  5.9 43.7385  -0.8  -5.9 43.7385  0.8  -5.9 43.7385
   -0.8  7.5 43.7385  0.8  7.5 43.7385  -0.8  -7.5 43.7385  0.8  -7.5 43.7385

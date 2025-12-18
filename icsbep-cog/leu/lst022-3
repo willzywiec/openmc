@@ -2,7 +2,7 @@ LST022-3: STACY 28cm thick slab tank with 10% enriched uranyl nitrate solution @
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 37.39
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 37.39
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 6.3525-7 u235 7.8830-5 u236 7.8731-8 u238 7.0215-4 (h.h2o) 5.9107-2  n 2.0451-3 o16 3.7011-2             $ Solution: Run 134
   mat=2 bunches    c 7.1567-5   si 7.1415-4   mn 9.9095-4    p 5.0879-5       s 1.0424-5 ni 8.5600-3  cr 1.6725-2 fe 5.9560-2 $ Stainless Steel [1] Core Tank

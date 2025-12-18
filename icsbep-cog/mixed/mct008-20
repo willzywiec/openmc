@@ -2,7 +2,7 @@ MIX-COMP-THERM-008-20: Central H3Cd absorber rod and 232 + 14 MOX pins with 2.66
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=2
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=2
   -2.667 0 48.5735  2.667 0 48.5735
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0     
   mat=1  bunches   pu239 3.0307-4 pu240 9.9248-5 pu241 1.6957-5 pu242 2.7874-6 am241 1.6389-6 $ MOX

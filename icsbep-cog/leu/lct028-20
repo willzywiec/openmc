@@ -2,7 +2,7 @@ LCT028-20: 317 U(4.31)O2 rods with 3.302 cm triangular pitch in water with 0.044
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.0 nsource=1 0 0 41.5825
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.0 nsource=1 0 0 41.5825
 assign-mc
   1 red 2 gray 3 yellow 4 lime 5 sky
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

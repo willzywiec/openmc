@@ -2,7 +2,7 @@ IEU-MET-FAST-022-5: FR0 8-S; simplified homogeous cylindrical benchmark; C/X=5.1
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 4.9663-5 u235 4.9575-3 u238 1.9470-2  c 2.8179-5  f 5.6358-5  c 2.4474-2 $ U20

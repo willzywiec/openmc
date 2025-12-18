@@ -2,7 +2,7 @@ LEU-COMP-THERM-096-9: 45x45 array of 1525 fuel rods with 0.8001 cm square pitch;
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 24.34
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 24.34
 assign-mc
   1 purple 2 yellow 3 sky 4 yellow 5 gray 6 lime
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

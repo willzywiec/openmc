@@ -2,7 +2,7 @@ PU-MET-FAST-045: LAMPRE Assembly II (Simplified Model)
 basic
 neutron delayedn CM URRPT
 criticality
-npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
 nsource=1 0. 0. 6.4
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0 sablib=COGSAB $ per Table 16
 mat=1 bunches pu239 2.76-2 ni 6.53-3 ta 3.85-3 al 4.40-3

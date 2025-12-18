@@ -2,7 +2,7 @@ SMF008-1: Np-237 sphere surrounded by HEU shells (detailed model)
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=500 nbatch=55 sdt=0.0001 nfirst=6 norm=1. nsource=1 0 0 -0.3175
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 -0.3175
 assign-mc
   1 purple 2 green 3 blue 4 sky 5 brown 6 black 7 orange 8 yellow
  21 red 22 red 23 red 24 red 25 red 26 red 27 red 28 red 29 red 30 red

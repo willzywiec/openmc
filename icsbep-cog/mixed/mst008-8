@@ -2,7 +2,7 @@ MIX-SOL-THERM-008-8: Raschig rings in 79.4 gPu/l with 182 gU/l and 3.4 solution 
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 42.85
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 42.85
 assign-mc
   1 purple 2 yellow 3 lime 4 gray 5 sky
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0

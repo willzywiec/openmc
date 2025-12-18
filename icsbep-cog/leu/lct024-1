@@ -2,7 +2,7 @@ LCT024-2: Uniform 57x46 + 3 lattice of 2,625 fuel rods with 0.62 cm pitch
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4 
   -0.62 -0.62 42.8
   -0.62  0.62 42.8
    0.62 -0.62 42.8

@@ -2,7 +2,7 @@ MCT011-1: 169 Rapsodie pins with 1.9 cm pitch and Hc = 30.43 cm
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=1 0 0 15.215
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=1 0 0 15.215
 mix nlib=ENDFB7R1 ptlib=PT.ENDFB7R1.BNL sablib=T.ENDFB7R1
   mat=1 bunches  u234 1.2214-4   u235 1.0451-2  u238 6.8362-3 pu239 5.2865-3 pu240 5.7495-4 $ Rapsodie
                 pu241 5.1268-5  pu242 4.1063-6 am241 2.0006-5   o16 4.6331-2                $  MOX fuel

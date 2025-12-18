@@ -2,7 +2,7 @@ MIX-MET-FAST-001: 8.471 kg d-Pu-1Ga sphere in 1.6337 cm of U(93.2)
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 0
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1  bunches pu239 3.7291-2 pu240 1.9277-3 pu241 1.2196-4 ga 1.3628-3 $ d-Pu-1Ga

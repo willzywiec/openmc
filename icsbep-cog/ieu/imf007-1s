@@ -2,7 +2,7 @@ IEU-MET-FAST-007-1: Big Ten [Rev. 2]
 basic
   neutron delayedn CENTIMETERS URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1.
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1.
   nsource=1  0 0 -9
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1 bunches u234 2.4761-5 u235 4.8461-3 u236 4.3348-5 u238 4.2695-2 $ U(10)

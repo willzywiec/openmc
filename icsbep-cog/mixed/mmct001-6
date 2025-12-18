@@ -2,7 +2,7 @@ MMCT001-6: Experiment 112 with 996 FFTF rods immersed in 103.18 gPu/l, 360.62 gU
 basic
   neutron delayedn CM URRPT
 criticality
-  npart=15000 nbatch=4400 sdt=0.0001 nfirst=100 norm=1. nsource=4 
+  npart=10000 nbatch=150 sdt=0.0001 nfirst=10 norm=1. nsource=4 
    -0.7 -0.7 37.246 -0.7  0.7 37.246  0.7 -0.7 37.246  0.7  0.7 37.246
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
   mat=1  bunches    u235 1.2223-4   u238 1.6876-2 pu238 2.7603-6 pu239 4.2407-3 pu240 5.7088-4  $ Fuel

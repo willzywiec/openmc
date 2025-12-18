@@ -2,7 +2,7 @@ PU-MET-INTER-004 (ZPR-3/59) Benchmark (R-Z) Model
 basic 
   neutron delayedn CENTIMETERS
 criticality
-  npart=500 nbatch=505 sdt=0.00001 nfirst=6 norm=1. nsource=1 0 0 0
+  npart=10000 nbatch=150 sdt=0.00001 nfirst=10 norm=1. nsource=1 0 0 0
 assign-mc
   1 orange 2 yellow 3 blue 4 sky 5 lime 6 gray
 mix nlib=ENDFB8R0 ptlib=PT.ENDFB8R0.ACE sablib=T.ENDFB8R0
