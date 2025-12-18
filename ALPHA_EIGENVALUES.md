@@ -31,7 +31,7 @@ The difference is the **methodology**, not the formula:
 - **Static**: Derive α directly from k-eigenvalue results
 - **Griesheimer**: Iteratively add pseudo-absorption α/v to cross sections until k→1
 
-Both methods should converge to the same value.
+Both methods should converge to the same value. The Griesheimer method runs additional iterations after the main calculation to verify convergence.
 
 ### Physical Interpretation
 
@@ -218,9 +218,21 @@ When running OpenMC with alpha calculations enabled, the output will include a k
   Mean Generation Time        = 5.70000e-09 +/- 2.50000e-11 seconds
   Alpha (static)              = -1.21500e+06 +/- 1.80000e+04 1/seconds
   Alpha (Griesheimer)         = -1.21500e+06 +/- 1.80000e+04 1/seconds
+
+ ====================>     GRIESHEIMER ALPHA ITERATIONS     <====================
+
+ Starting iterative pseudo-absorption method
+ Initial alpha guess (from static): -1.21500e+06 1/s
+ Convergence tolerance: |k - 1| < 0.0010
+
+ Iteration  1: alpha = -1.21500e+06 1/s
+             k = 1.00001 +/- 0.00045, |k-1| = 0.00001
+
+ Griesheimer method converged after 1 iterations
+ Final alpha (Griesheimer) = -1.21500e+06 1/s
 ```
 
-Note: Both alpha values are the same since they use the same formula.
+Both methods should converge to the same value, verifying the calculation through independent methodology.
 
 ## Internal Tallies
 

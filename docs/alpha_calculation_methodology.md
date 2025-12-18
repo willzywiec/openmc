@@ -116,14 +116,28 @@ double rho = (keff - 1.0) / keff;
 alpha_static = (rho - beta_eff) / mean_generation_time;
 ```
 
-#### Step 3: Griesheimer Alpha Eigenvalue
+#### Step 3: Griesheimer Alpha Eigenvalue (Iterative Method)
 
-Computed after eigenvalue batches complete. Uses the same formula as static:
+After main eigenvalue batches complete, runs additional iterations with pseudo-absorption:
 
 ```cpp
-// α_griesheimer = (ρ - β_eff) / Λ (same as static)
-// For now, set equal to static. Full iteration would verify convergence.
-alpha_griesheimer = alpha_static;
+// Initialize with static alpha as guess
+alpha_current = alpha_static;
+
+// Iteration loop
+for (int iter = 1; iter <= max_iterations; ++iter) {
+  // Run batches with pseudo-absorption α/v added to cross sections
+  // ... transport with modified cross sections ...
+
+  // Check convergence
+  if (|k - 1| < tolerance) {
+    alpha_griesheimer = alpha_current;
+    break;
+  }
+
+  // Update alpha: α_new = α_old + (k - 1) / (k × Λ)
+  alpha_current += (k - 1.0) / (k * mean_generation_time);
+}
 ```
 
 ### 4. Uncertainty Propagation
@@ -147,7 +161,7 @@ where:
 
 **For α_griesheimer:**
 
-Same as α_static (both use the same formula).
+Uncertainty is estimated from the iterative convergence. Currently uses the same uncertainty as α_static as an approximation.
 
 ---
 
@@ -205,7 +219,21 @@ OpenMC prints alpha results in the summary:
  Alpha (Griesheimer)        = -1.23000e+06 +/- 1.80000e+04 1/seconds
 ```
 
-Note: Both methods produce the same result since they use the same formula.
+After the main results, Griesheimer iterations are shown:
+
+```
+ ====================>     GRIESHEIMER ALPHA ITERATIONS     <====================
+
+ Starting iterative pseudo-absorption method
+ Initial alpha guess (from static): -1.23000e+06 1/s
+ Convergence tolerance: |k - 1| < 0.0010
+
+ Iteration  1: alpha = -1.23000e+06 1/s
+             k = 1.00012 +/- 0.00045, |k-1| = 0.00012
+
+ Griesheimer method converged after 1 iterations
+ Final alpha (Griesheimer) = -1.23000e+06 1/s
+```
 
 The values are also written to statepoint files for post-processing.
 
