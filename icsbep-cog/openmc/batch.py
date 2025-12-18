@@ -627,8 +627,8 @@ def main():
                        help='Additional arguments to pass to OpenMC (e.g., "-s 4")')
     parser.add_argument('--no-kinetics', action='store_true',
                        help='Disable point kinetics calculations')
-    parser.add_argument('--continue-on-error', action='store_true',
-                       help='Continue running even if a benchmark fails')
+    parser.add_argument('--stop-on-error', action='store_true',
+                       help='Stop running if a benchmark fails (default: continue)')
 
     args = parser.parse_args()
 
@@ -681,7 +681,7 @@ def main():
 
                 print(f"{status} {result.category}/{result.name}: {keff_str} {beta_str} {alpha_str}")
 
-                if not result.success and not args.continue_on_error:
+                if not result.success and args.stop_on_error:
                     executor.shutdown(wait=False)
                     break
     else:
@@ -698,7 +698,7 @@ def main():
 
             print(f"{progress} {status} {result.category}/{result.name}: {keff_str} {beta_str} {alpha_str}")
 
-            if not result.success and not args.continue_on_error:
+            if not result.success and args.stop_on_error:
                 print(f"Error: {result.error_message}")
                 break
 
