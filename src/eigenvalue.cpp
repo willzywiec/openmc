@@ -674,15 +674,18 @@ void calculate_kinetics_parameters()
       }
 
       // IFP-weighted alpha calculation (if enabled and IFP scores present)
+      // Uses existing IFP scores: ifp-time-numerator and ifp-denominator
+      // Formula from documentation: Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
       if (settings::alpha_use_ifp && settings::ifp_on) {
         // IFP scores are at indices 8 and 9 if present
         int n_base_scores = 8;  // 0-7 are the base scores
         if (results.shape()[1] > n_base_scores) {
-          double ifp_num = results(0, n_base_scores, sum_idx) / n;
+          double ifp_time_num = results(0, n_base_scores, sum_idx) / n;
           double ifp_denom = results(0, n_base_scores + 1, sum_idx) / n;
 
-          if (ifp_denom > 0.0) {
-            simulation::lambda_eff_ifp = ifp_num / ifp_denom;
+          if (ifp_denom > 0.0 && simulation::keff > 0.0) {
+            // Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+            simulation::lambda_eff_ifp = ifp_time_num / (ifp_denom * simulation::keff);
 
             // Calculate α = (k - 1) / Λ_eff
             if (simulation::lambda_eff_ifp > 0.0) {
@@ -691,7 +694,7 @@ void calculate_kinetics_parameters()
 
               // Error propagation for IFP-weighted alpha
               if (n > 1) {
-                double ifp_num_std = 0.0;
+                double ifp_time_num_std = 0.0;
                 double ifp_denom_std = 0.0;
 
                 auto calc_std = [&](int score_idx) {
@@ -701,14 +704,18 @@ void calculate_kinetics_parameters()
                   return (variance > 0.0) ? std::sqrt(variance) : 0.0;
                 };
 
-                ifp_num_std = calc_std(n_base_scores);
+                ifp_time_num_std = calc_std(n_base_scores);
                 ifp_denom_std = calc_std(n_base_scores + 1);
 
-                // Error propagation for Λ_eff = num/denom
-                double dL_dnum = 1.0 / ifp_denom;
-                double dL_ddenom = -ifp_num / (ifp_denom * ifp_denom);
-                double var_L = dL_dnum * dL_dnum * ifp_num_std * ifp_num_std +
-                               dL_ddenom * dL_ddenom * ifp_denom_std * ifp_denom_std;
+                // Error propagation for Λ_eff = num / (denom × k)
+                // ∂Λ/∂num = 1/(denom×k), ∂Λ/∂denom = -num/(denom²×k), ∂Λ/∂k = -num/(denom×k²)
+                double dL_dnum = 1.0 / (ifp_denom * simulation::keff);
+                double dL_ddenom = -ifp_time_num / (ifp_denom * ifp_denom * simulation::keff);
+                double dL_dk = -ifp_time_num / (ifp_denom * simulation::keff * simulation::keff);
+
+                double var_L = dL_dnum * dL_dnum * ifp_time_num_std * ifp_time_num_std +
+                               dL_ddenom * dL_ddenom * ifp_denom_std * ifp_denom_std +
+                               dL_dk * dL_dk * simulation::keff_std * simulation::keff_std;
                 simulation::lambda_eff_ifp_std = std::sqrt(var_L);
 
                 // Error propagation for α = (k-1)/Λ
@@ -1132,10 +1139,12 @@ void setup_kinetics_tallies()
   scores.push_back("prompt-chain-leakage-rate");       // Index 6
   scores.push_back("prompt-chain-population");         // Index 7
 
-  // IFP-weighted generation time scores (uses existing IFP infrastructure)
+  // IFP-weighted generation time scores (uses existing IFP scores)
+  // The existing IFP scores compute:
+  //   Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
   if (settings::alpha_use_ifp && settings::ifp_on) {
-    scores.push_back("ifp-gen-time-num");   // Index 8: Σ(lifetime × ν × weight × IFP)
-    scores.push_back("ifp-gen-time-denom"); // Index 9: Σ(ν × weight × IFP)
+    scores.push_back("ifp-time-numerator");  // Index 8: IFP-weighted lifetime numerator
+    scores.push_back("ifp-denominator");     // Index 9: IFP common denominator
   }
 
   tally->set_scores(scores);
