@@ -22,7 +22,6 @@
 
 #include <algorithm> // for sort, min_element
 #include <cassert>
-#include <iostream>
 #include <string> // for to_string, stoi
 
 namespace openmc {
@@ -1224,15 +1223,8 @@ extern "C" int openmc_nuclide_collapse_rate(int index, int MT,
 
 void nuclides_clear()
 {
-  std::cerr << "[DEBUG] nuclides_clear: clearing " << data::nuclides.size() << " nuclides" << std::endl;
-  // Clear one by one to identify which nuclide causes the crash
-  while (!data::nuclides.empty()) {
-    std::cerr << "[DEBUG] nuclides_clear: destroying nuclide " << data::nuclides.size() << std::endl;
-    data::nuclides.pop_back();
-  }
-  std::cerr << "[DEBUG] nuclides_clear: clearing nuclide_map" << std::endl;
+  data::nuclides.clear();
   data::nuclide_map.clear();
-  std::cerr << "[DEBUG] nuclides_clear: done" << std::endl;
 }
 
 bool multipole_in_range(const Nuclide& nuc, double E)
