@@ -44,7 +44,9 @@ settings.inactive = 50
 settings.particles = 10000
 settings.calculate_alpha = True  # Enable alpha eigenvalue calculation
 
-# Note: calculate_alpha automatically enables calculate_prompt_k and IFP
+# Note: calculate_alpha automatically enables:
+# - calculate_prompt_k (for beta-effective calculation)
+# - IFP (Iterated Fission Probability) with 10 generations by default
 settings.export_to_xml()
 
 # Run OpenMC
