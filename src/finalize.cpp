@@ -220,6 +220,9 @@ int openmc_reset()
   simulation::k_sum = {0.0, 0.0};
   simulation::satisfy_triggers = false;
 
+  // Reset prompt k-effective global tally
+  global_tally_prompt_tracklength = 0.0;
+
   settings::cmfd_run = false;
 
   simulation::n_lost_particles = 0;

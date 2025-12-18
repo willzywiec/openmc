@@ -806,6 +806,7 @@ void free_memory_simulation()
 {
   simulation::k_generation.clear();
   simulation::entropy.clear();
+  simulation::k_prompt.clear();
 }
 
 void transport_history_based_single_particle(Particle& p)
