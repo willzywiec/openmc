@@ -4,34 +4,16 @@ This guide explains how to use OpenMC's alpha eigenvalue calculation capability 
 
 ## Overview
 
-The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates two alpha values using different methods:
-
-### Static Method (alpha_static)
-
-The static alpha is calculated from the inhour equation:
+The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates alpha using the inhour equation:
 
 ```
-α_static = (ρ - β_eff) / Λ
+α = (ρ - β_eff) / Λ
 ```
 
 Where:
 - **ρ**: Reactivity, ρ = (k - 1) / k
 - **β_eff**: Effective delayed neutron fraction
 - **Λ**: Mean generation time (mean time from neutron birth to fission)
-
-### Griesheimer Method (alpha_griesheimer)
-
-The Griesheimer alpha uses the same formula:
-
-```
-α_griesheimer = (ρ - β_eff) / Λ
-```
-
-The difference is the **methodology**, not the formula:
-- **Static**: Derive α directly from k-eigenvalue results
-- **Griesheimer**: Iteratively add pseudo-absorption α/v to cross sections until k→1
-
-Both methods should converge to the same value. The Griesheimer method runs additional iterations after the main calculation to verify convergence.
 
 ### Physical Interpretation
 
@@ -72,8 +54,7 @@ print(f"k-effective:           {sp.keff}")
 print(f"k-prompt:              {sp.k_prompt}")
 print(f"Beta-effective:        {sp.beta_eff}")
 print(f"Mean generation time:  {sp.mean_generation_time} seconds")
-print(f"Alpha (static):        {sp.alpha_static} 1/seconds")
-print(f"Alpha (Griesheimer):   {sp.alpha_griesheimer} 1/seconds")
+print(f"Alpha:                 {sp.alpha} 1/seconds")
 ```
 
 ## Detailed Usage
@@ -121,11 +102,9 @@ print(f"beta-eff = {beta.nominal_value:.5f} +/- {beta.std_dev:.5f}")
 gen_time = sp.mean_generation_time
 print(f"Λ = {gen_time.nominal_value:.3e} +/- {gen_time.std_dev:.3e} s")
 
-# Alpha eigenvalues (in 1/seconds)
-alpha_s = sp.alpha_static
-print(f"alpha (static) = {alpha_s.nominal_value:.3e} +/- {alpha_s.std_dev:.3e} 1/s")
-alpha_g = sp.alpha_griesheimer
-print(f"alpha (Griesheimer) = {alpha_g.nominal_value:.3e} +/- {alpha_g.std_dev:.3e} 1/s")
+# Alpha eigenvalue (in 1/seconds)
+alpha = sp.alpha
+print(f"alpha = {alpha.nominal_value:.3e} +/- {alpha.std_dev:.3e} 1/s")
 ```
 
 ### Converting Units
@@ -135,8 +114,8 @@ Alpha eigenvalue is often reported in different units:
 ```python
 sp = openmc.StatePoint('statepoint.150.h5')
 
-# Alpha (static) in 1/seconds (default)
-alpha_per_sec = sp.alpha_static.nominal_value
+# Alpha in 1/seconds (default)
+alpha_per_sec = sp.alpha.nominal_value
 
 # Alpha in generations per microsecond
 alpha_per_us = alpha_per_sec / 1e6
@@ -147,7 +126,7 @@ alpha_per_ms = alpha_per_sec / 1e3
 # Mean generation time in microseconds
 gen_time_us = sp.mean_generation_time.nominal_value * 1e6
 
-print(f"Alpha (static): {alpha_per_us:.4f} gen/us")
+print(f"Alpha: {alpha_per_us:.4f} gen/us")
 print(f"Mean generation time: {gen_time_us:.2f} us")
 ```
 
@@ -201,8 +180,7 @@ print(f"k-effective:        {sp.keff.nominal_value:.5f} +/- {sp.keff.std_dev:.5f
 print(f"k-prompt:           {sp.k_prompt.nominal_value:.5f} +/- {sp.k_prompt.std_dev:.5f}")
 print(f"Beta-effective:     {sp.beta_eff.nominal_value:.5f} +/- {sp.beta_eff.std_dev:.5f}")
 print(f"Mean gen time:      {sp.mean_generation_time.nominal_value*1e9:.2f} +/- {sp.mean_generation_time.std_dev*1e9:.2f} ns")
-print(f"Alpha (static):     {sp.alpha_static.nominal_value/1e6:.4f} +/- {sp.alpha_static.std_dev/1e6:.4f} gen/us")
-print(f"Alpha (Griesheimer):{sp.alpha_griesheimer.nominal_value/1e6:.4f} +/- {sp.alpha_griesheimer.std_dev/1e6:.4f} gen/us")
+print(f"Alpha:              {sp.alpha.nominal_value/1e6:.4f} +/- {sp.alpha.std_dev/1e6:.4f} gen/us")
 ```
 
 ## Output Format
@@ -216,23 +194,8 @@ When running OpenMC with alpha calculations enabled, the output will include a k
   k-prompt                    = 0.99312 +/- 0.00044
   Beta-effective              = 0.00700 +/- 0.00012
   Mean Generation Time        = 5.70000e-09 +/- 2.50000e-11 seconds
-  Alpha (static)              = -1.21500e+06 +/- 1.80000e+04 1/seconds
-  Alpha (Griesheimer)         = -1.21500e+06 +/- 1.80000e+04 1/seconds
-
- ====================>     GRIESHEIMER ALPHA ITERATIONS     <====================
-
- Starting iterative pseudo-absorption method
- Initial alpha guess (from static): -1.21500e+06 1/s
- Convergence tolerance: |k - 1| < 0.0010
-
- Iteration  1: alpha = -1.21500e+06 1/s
-             k = 1.00001 +/- 0.00045, |k-1| = 0.00001
-
- Griesheimer method converged after 1 iterations
- Final alpha (Griesheimer) = -1.21500e+06 1/s
+  Alpha                       = -1.21500e+06 +/- 1.80000e+04 1/seconds
 ```
-
-Both methods should converge to the same value, verifying the calculation through independent methodology.
 
 ## Internal Tallies
 

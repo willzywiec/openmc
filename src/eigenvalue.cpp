@@ -52,11 +52,9 @@ double keff_prompt_std {0.0};
 double beta_eff {0.0};
 double beta_eff_std {0.0};
 
-// Alpha eigenvalues (two methods)
-double alpha_static {0.0};          // α = (ρ - β) / Λ
-double alpha_static_std {0.0};
-double alpha_griesheimer {0.0};     // From iterative pseudo-absorption
-double alpha_griesheimer_std {0.0};
+// Alpha eigenvalue: α = (ρ - β) / Λ
+double alpha {0.0};
+double alpha_std {0.0};
 
 // Prompt neutron lifetime ℓ: time from birth to any removal (absorption or leakage)
 double prompt_neutron_lifetime {0.0};
@@ -67,12 +65,6 @@ double mean_generation_time_std {0.0};
 
 // Index of internal kinetics tally (for alpha calculations)
 int kinetics_tally_index {-1};
-
-// Griesheimer method state variables
-double alpha_current {0.0};         // Current α estimate for iteration
-double pseudo_absorption_sigma {0.0};
-int alpha_iteration {0};
-bool alpha_converged {false};
 
 } // namespace simulation
 
@@ -636,15 +628,15 @@ void calculate_kinetics_parameters()
         }
       }
 
-      // Calculate static alpha: α = (ρ - β) / Λ
+      // Calculate alpha: α = (ρ - β) / Λ
       // Inhour equation using reactivity and delayed neutron fraction
       // where ρ = (k - 1) / k is reactivity and Λ is mean generation time
       if (simulation::mean_generation_time > 0.0 && simulation::keff > 0.0) {
         double rho = (simulation::keff - 1.0) / simulation::keff;  // reactivity
-        simulation::alpha_static =
+        simulation::alpha =
           (rho - simulation::beta_eff) / simulation::mean_generation_time;
 
-        // Error propagation for static alpha
+        // Error propagation for alpha
         // For α = (ρ - β) / Λ where ρ = (k-1)/k:
         // ∂α/∂k = 1/(k²Λ), ∂α/∂β = -1/Λ, ∂α/∂Λ = -(ρ-β)/Λ²
         if (n > 1) {
@@ -662,7 +654,7 @@ void calculate_kinetics_parameters()
             dAlpha_dLambda * dAlpha_dLambda * simulation::mean_generation_time_std *
               simulation::mean_generation_time_std;
 
-          simulation::alpha_static_std = std::sqrt(var_alpha);
+          simulation::alpha_std = std::sqrt(var_alpha);
         }
       }
     }
@@ -951,12 +943,8 @@ void write_eigenvalue_hdf5(hid_t group)
       array<double, 2> gen_time_vals {
         simulation::mean_generation_time, simulation::mean_generation_time_std};
       write_dataset(group, "mean_generation_time", gen_time_vals);
-      array<double, 2> alpha_static_vals {
-        simulation::alpha_static, simulation::alpha_static_std};
-      write_dataset(group, "alpha_static", alpha_static_vals);
-      array<double, 2> alpha_griesheimer_vals {
-        simulation::alpha_griesheimer, simulation::alpha_griesheimer_std};
-      write_dataset(group, "alpha_griesheimer", alpha_griesheimer_vals);
+      array<double, 2> alpha_vals {simulation::alpha, simulation::alpha_std};
+      write_dataset(group, "alpha", alpha_vals);
     }
   }
 }
@@ -1001,17 +989,11 @@ void read_eigenvalue_hdf5(hid_t group)
         simulation::mean_generation_time = gen_time_vals[0];
         simulation::mean_generation_time_std = gen_time_vals[1];
       }
-      if (object_exists(group, "alpha_static")) {
-        array<double, 2> alpha_static_vals;
-        read_dataset(group, "alpha_static", alpha_static_vals);
-        simulation::alpha_static = alpha_static_vals[0];
-        simulation::alpha_static_std = alpha_static_vals[1];
-      }
-      if (object_exists(group, "alpha_griesheimer")) {
-        array<double, 2> alpha_griesheimer_vals;
-        read_dataset(group, "alpha_griesheimer", alpha_griesheimer_vals);
-        simulation::alpha_griesheimer = alpha_griesheimer_vals[0];
-        simulation::alpha_griesheimer_std = alpha_griesheimer_vals[1];
+      if (object_exists(group, "alpha")) {
+        array<double, 2> alpha_vals;
+        read_dataset(group, "alpha", alpha_vals);
+        simulation::alpha = alpha_vals[0];
+        simulation::alpha_std = alpha_vals[1];
       }
     }
   }
@@ -1050,30 +1032,6 @@ void setup_kinetics_tallies()
 
   // No filters - tally over entire geometry
   tally->set_filters({});
-}
-
-void run_alpha_iterations()
-{
-  // Griesheimer alpha eigenvalue method:
-  // Iteratively add pseudo-absorption α/v to cross sections until k→1
-  //
-  // LIMITATION: This method only works for FAST spectrum systems.
-  // For thermal systems, the α/v term becomes very large for slow neutrons
-  // (v ~ 2200 m/s), causing cross sections to become negative and the
-  // iteration to diverge. For thermal systems, use alpha_static instead.
-  //
-  // For now, we set alpha_griesheimer = alpha_static since both methods
-  // use the same formula α = (ρ - β) / Λ. The Griesheimer iteration
-  // would provide independent verification for fast systems.
-
-  if (!settings::calculate_alpha || simulation::mean_generation_time <= 0.0) {
-    return;
-  }
-
-  // Set Griesheimer alpha equal to static alpha
-  // Both use the same formula; iteration would verify but is unstable for thermal systems
-  simulation::alpha_griesheimer = simulation::alpha_static;
-  simulation::alpha_griesheimer_std = simulation::alpha_static_std;
 }
 
 } // namespace openmc
