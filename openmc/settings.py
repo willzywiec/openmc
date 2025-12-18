@@ -1232,9 +1232,12 @@ class Settings:
         cv.check_type('Whether to calculate alpha eigenvalue',
                       calculate_alpha, bool)
         self._calculate_alpha = calculate_alpha
-        # Alpha calculation requires k_prompt
+        # Alpha calculation requires k_prompt and IFP
         if calculate_alpha:
             self._calculate_prompt_k = True
+            # Enable IFP with default of 10 generations if not already set
+            if self._ifp_n_generation is None:
+                self._ifp_n_generation = 10
 
     @property
     def delayed_photon_scaling(self) -> bool:

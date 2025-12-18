@@ -863,9 +863,16 @@ void read_settings_xml(pugi::xml_node root)
     }
     if (check_for_node(node_kinetics, "calculate_alpha")) {
       calculate_alpha = get_node_value_bool(node_kinetics, "calculate_alpha");
-      // Alpha calculation requires k_prompt
+      // Alpha calculation requires k_prompt and IFP
       if (calculate_alpha) {
         calculate_prompt_k = true;
+        // Enable IFP with default generations if not already set
+        if (ifp_n_generation <= 0) {
+          // Use 10 generations or half of inactive batches, whichever is smaller
+          ifp_n_generation = std::min(10, n_inactive > 0 ? n_inactive / 2 : 10);
+          if (ifp_n_generation < 1) ifp_n_generation = 1;
+        }
+        ifp_on = true;
       }
     }
   }
