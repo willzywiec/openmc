@@ -45,6 +45,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # 300-mm Tank/Hc-0.326 from Table 1
 surf1 = openmc.ZPlane(surface_id=1, z0=29.674)
 # 300-mm Tank/Inner per Figure 5

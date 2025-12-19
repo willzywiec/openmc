@@ -131,6 +131,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.ZCylinder(surface_id=1, r=0.5933)
 surf2 = openmc.ZCylinder(surface_id=2, r=6.0504)
 surf3 = openmc.ZCylinder(surface_id=3, r=6.55)

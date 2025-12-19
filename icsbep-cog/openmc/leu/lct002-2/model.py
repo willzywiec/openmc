@@ -63,6 +63,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Boundary of 9x14 Array
 surf1 = openmc.model.RectangularParallelepiped(-11.43, 11.43, -17.78, 17.78, -499.995, 499.995)
 # Entire Problem (BCD)

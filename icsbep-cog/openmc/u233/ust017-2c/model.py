@@ -51,6 +51,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Al-2S/Fill-Pipe/Inner
 surf1 = openmc.ZCylinder(surface_id=1, x0=5.08, y0=0.0, r=2.62509)
 # Al-2S/Fill-Pipe/Outer

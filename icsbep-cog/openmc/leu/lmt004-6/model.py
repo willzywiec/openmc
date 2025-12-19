@@ -29,6 +29,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # U (fuel)
 surf1 = openmc.ZCylinder(surface_id=1, r=1.2475)
 surf2 = openmc.ZCylinder(surface_id=2, x0=5.22, y0=0.0, r=1.2475)

@@ -85,6 +85,9 @@ materials = openmc.Materials([mat5, mat6, mat7, mat8, mat9, mat10])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Polyethylene spacer
 surf1 = openmc.ZCylinder(surface_id=1, r=26.503)
 # SS304L middle lattice spacer

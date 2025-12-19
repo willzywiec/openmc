@@ -51,6 +51,9 @@ materials = openmc.Materials([mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # surf3: Unsupported surface type "revolution" with params ['3']
 # 2nd Tank/Outer
 surf4 = openmc.XCylinder(surface_id=4, r=18.3)

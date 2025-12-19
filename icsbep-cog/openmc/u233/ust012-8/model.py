@@ -46,6 +46,9 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Vessel/Inner; Zo = B + 18 cm
 surf1 = openmc.Sphere(surface_id=1, x0=14.6232, y0=tr, z0=0., r=0.)
 # Vessel/Outer; THK = 0.127 cm

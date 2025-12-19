@@ -849,6 +849,10 @@ class OpenMCPythonGenerator:
         lines.append('# Geometry')
         lines.append('# ' + '=' * 78)
         lines.append('')
+        # Reset OpenMC's auto-ID counter to avoid conflicts with explicit IDs
+        lines.append('# Reset surface ID counter to avoid conflicts with composite surfaces')
+        lines.append('openmc.Surface.next_id = 10000')
+        lines.append('')
         lines.extend(self._generate_surfaces())
         lines.append('')
         lines.extend(self._generate_universes())

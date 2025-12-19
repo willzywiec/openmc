@@ -69,6 +69,9 @@ materials = openmc.Materials([mat1, mat2, mat10, mat11, mat12, mat20, mat21])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # SST tube/inner
 surf1 = openmc.ZCylinder(surface_id=1, r=2.4)
 # SST tube/outer

@@ -81,6 +81,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Concrete walls, floor and ceiling, inner
 surf1 = openmc.model.RectangularParallelepiped(-425.285, 847.715, -380.0, 420.0, -150.75, 649.25)
 # Concrete walls, floor and ceiling, outer

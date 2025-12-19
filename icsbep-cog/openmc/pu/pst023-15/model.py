@@ -65,6 +65,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # 1st Tank/Inner
 surf1 = openmc.XCylinder(surface_id=1, r=7.0)
 # 1st Tank/Outer

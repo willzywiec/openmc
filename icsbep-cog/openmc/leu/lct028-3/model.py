@@ -63,6 +63,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Lexan  lattice plate
 surf1 = openmc.ZCylinder(surface_id=1, r=30.0)
 # SS304L lattice plate

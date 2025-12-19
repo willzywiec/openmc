@@ -72,6 +72,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Hemi
 surf1 = openmc.XPlane(surface_id=1, x0=-2.37375)
 # Hc

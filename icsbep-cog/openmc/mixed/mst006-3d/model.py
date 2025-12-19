@@ -70,6 +70,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Tank, inner
 # surf1: Unsupported surface type "rev" with params ['3', '0.0', '0.0', '1.2', '35.03', '103.8', '35.03', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
 # Tank, outer

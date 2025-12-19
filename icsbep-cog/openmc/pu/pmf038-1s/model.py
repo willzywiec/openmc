@@ -42,6 +42,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Pu,    OR
 surf1 = openmc.Sphere(surface_id=1, r=3.7938)
 # SS304, IR

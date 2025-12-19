@@ -161,6 +161,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # surf1: Unsupported surface type "analytic" with params ['1.', 'z', '121.920', 'constant']
 # surf2: Unsupported surface type "analytic" with params ['1.', 'z', '120.975', 'constant']
 # surf3: Unsupported surface type "analytic" with params ['1.', 'z', '120.461', 'constant']

@@ -54,6 +54,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Entire problem (BCD)
 surf1 = openmc.model.RectangularParallelepiped(-60.0, 60.0, -60.0, 60.0, -20.0, 100.0, boundary_type="vacuum")
 # Support plate

@@ -74,6 +74,9 @@ materials = openmc.Materials([mat11, mat12, mat13, mat14, mat15, mat21, mat22])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.Sphere(surface_id=1, r=0.985)
 surf2 = openmc.Sphere(surface_id=2, r=1.400)
 surf3 = openmc.Sphere(surface_id=3, r=3.150)

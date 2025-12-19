@@ -26,6 +26,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # per Section 3.2
 surf1 = openmc.Sphere(surface_id=1, r=5.310)
 # THK = 24.57 cm

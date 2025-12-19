@@ -46,6 +46,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Water/OR
 surf1 = openmc.ZCylinder(surface_id=1, r=91.44, boundary_type="vacuum")
 # Z-Lo = -200/2 + 116.05 = 16.05 cm

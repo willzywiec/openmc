@@ -37,6 +37,9 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Pipe/Inner
 surf1 = openmc.ZCylinder(surface_id=1, r=1.0465)
 # Pipe/Outer

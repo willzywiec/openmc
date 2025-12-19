@@ -72,6 +72,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # top of C6, CV, CL, R5, R4, R3
 surf1 = openmc.ZPlane(surface_id=1, z0=39.05250)
 # top of C8, R6

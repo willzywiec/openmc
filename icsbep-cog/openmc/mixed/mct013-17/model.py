@@ -54,6 +54,9 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Height of lower fuel + absorber + upper fuel = 14.6714 + 2.02 + 14.2948 = 30.9862 cm
 surf1 = openmc.model.RectangularParallelepiped(-20.36, 20.36, -20.38, 20.38, -14.6714, 16.3148)
 # Absorber, lower

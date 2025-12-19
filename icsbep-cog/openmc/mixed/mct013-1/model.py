@@ -36,6 +36,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Height of lower fuel + absorber + upper fuel = 14.6714 + 0 + 9.3946 = 24.0660 cm
 surf1 = openmc.model.RectangularParallelepiped(-20.36, 20.36, -20.38, 20.38, -12.033, 12.033)
 # Lucite reflector, 15.24 cm thick

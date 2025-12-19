@@ -128,6 +128,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Inconel 600 reflector
 surf1 = openmc.ZCylinder(surface_id=1, r=0.240665)
 # Natural UO2 isolator

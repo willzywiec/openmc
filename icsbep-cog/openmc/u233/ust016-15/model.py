@@ -58,6 +58,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Concrete/Inner (w/Origin on the Tank C/L)
 surf1 = openmc.model.RectangularParallelepiped(-775.7414, 138.65859999999998, -470.9414, 443.4586, -257.2005, 657.5297)
 # Concrete/Outer (w/Origin on the Tank C/L)

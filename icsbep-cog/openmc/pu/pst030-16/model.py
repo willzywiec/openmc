@@ -58,6 +58,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Hc
 surf1 = openmc.ZPlane(surface_id=1, z0=50.04)
 # Cavity, bottom

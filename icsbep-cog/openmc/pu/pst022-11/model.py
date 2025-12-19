@@ -63,6 +63,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Tank/Sloped Bottom
 surf1 = openmc.Plane(surface_id=1, a=-25.0, b=0.0, c=-0.22, d=0.0)
 # = Hc per Table 1

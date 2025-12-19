@@ -64,6 +64,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Critical solution height, Hc
 surf1 = openmc.ZPlane(surface_id=1, z0=18.78)
 # SST solution tank, inner
