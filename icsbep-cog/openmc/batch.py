@@ -8,7 +8,9 @@ collects k-effective and point kinetics results, and exports to CSV.
 Usage:
     python batch.py                    # Generate XML files only (default)
     python batch.py --run              # Generate XML and run OpenMC
-    python batch.py --run --parallel 4 # Run with 4 parallel processes
+    python batch.py --run --threads 8  # Run OpenMC with 8 threads per benchmark
+    python batch.py --run --parallel 4 # Run 4 benchmarks in parallel
+    python batch.py --run -p 4 -t 8    # Run 4 parallel benchmarks, 8 threads each
     python batch.py --category pu      # Run only plutonium benchmarks
     python batch.py --benchmark pmf001 # Run specific benchmark
     python batch.py --list             # List all available benchmarks
@@ -544,6 +546,8 @@ def main():
                        help='Output file for results (default: benchmark_results.csv)')
     parser.add_argument('--openmc-args', type=str, default='',
                        help='Additional arguments to pass to OpenMC (e.g., "-s 4")')
+    parser.add_argument('--threads', '-t', type=int, default=None,
+                       help='Number of OpenMP threads for each OpenMC run (default: all available)')
     parser.add_argument('--no-kinetics', action='store_true',
                        help='Disable point kinetics calculations')
     parser.add_argument('--stop-on-error', action='store_true',
@@ -571,11 +575,20 @@ def main():
     print(f"Point Kinetics: {'Disabled' if args.no_kinetics else 'Enabled'}")
     if args.parallel > 1:
         print(f"Parallel processes: {args.parallel}")
+    if args.threads:
+        print(f"OpenMC threads per run: {args.threads}")
     print(f"Output file: {args.output}")
     print("-" * 60)
 
     # Parse OpenMC arguments
-    openmc_args = args.openmc_args.split() if args.openmc_args else None
+    openmc_args = args.openmc_args.split() if args.openmc_args else []
+
+    # Add threads argument if specified
+    if args.threads:
+        openmc_args.extend(['-s', str(args.threads)])
+
+    # Convert empty list to None for compatibility
+    openmc_args = openmc_args if openmc_args else None
     enable_kinetics = not args.no_kinetics
 
     # Set up output paths
