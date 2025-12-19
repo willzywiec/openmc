@@ -48,16 +48,10 @@ materials = openmc.Materials([mat1, mat2])
 
 # FUEL
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # VOID
 cell2 = openmc.Cell(cell_id=2)
-cell2.region = 
-
 # CONC
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3])
 geometry = openmc.Geometry(root_universe)
 

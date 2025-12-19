@@ -119,18 +119,18 @@ surf22 = openmc.model.RectangularParallelepiped(-20.995, 20.995, 9.452, 10.048, 
 surf31 = openmc.ZCylinder(surface_id=31, x0=0.0, y0=149.52, r=0.585)
 # Hole
 surf32 = openmc.ZCylinder(surface_id=32, x0=0.0, y0=149.52, r=0.591)
-# surf41: Error converting surface type "c": could not convert string to float: 'tr'
-# surf42: Error converting surface type "c": could not convert string to float: 'tr'
-# surf43: Error converting surface type "c": could not convert string to float: 'tr'
-# surf44: Error converting surface type "c": could not convert string to float: 'tr'
-# surf45: Error converting surface type "c": could not convert string to float: 'tr'
-# surf46: Error converting surface type "c": could not convert string to float: 'tr'
-# surf47: Error converting surface type "c": could not convert string to float: 'tr'
-# surf48: Error converting surface type "c": could not convert string to float: 'tr'
-# surf51: Error converting surface type "c": could not convert string to float: 'tr'
-# surf52: Error converting surface type "c": could not convert string to float: 'tr'
-# surf53: Error converting surface type "c": could not convert string to float: 'tr'
-# surf54: Error converting surface type "c": could not convert string to float: 'tr'
+surf41 = openmc.ZCylinder(surface_id=41, x0=-18.0, y0=10.5, r=0.585)
+surf42 = openmc.ZCylinder(surface_id=42, x0=-18.0, y0=9.0, r=0.585)
+surf43 = openmc.ZCylinder(surface_id=43, x0=-18.0, y0=-10.5, r=0.585)
+surf44 = openmc.ZCylinder(surface_id=44, x0=-18.0, y0=-9.0, r=0.585)
+surf45 = openmc.ZCylinder(surface_id=45, x0=18.0, y0=10.5, r=0.585)
+surf46 = openmc.ZCylinder(surface_id=46, x0=18.0, y0=9.0, r=0.585)
+surf47 = openmc.ZCylinder(surface_id=47, x0=18.0, y0=-10.5, r=0.585)
+surf48 = openmc.ZCylinder(surface_id=48, x0=18.0, y0=-9.0, r=0.585)
+surf51 = openmc.ZCylinder(surface_id=51, x0=-24.02087, y0=-9.94977, r=1.53)
+surf52 = openmc.ZCylinder(surface_id=52, x0=24.02087, y0=-9.94977, r=1.53)
+surf53 = openmc.ZCylinder(surface_id=53, x0=-24.02087, y0=9.94977, r=1.53)
+surf54 = openmc.ZCylinder(surface_id=54, x0=24.02087, y0=9.94977, r=1.53)
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -304,19 +304,19 @@ cell2.region = -surf22
 
 # Core
 cell3 = openmc.Cell(cell_id=3, fill=universe5)
-cell3.region = -surf4 & -surf7 & -surf20 & +surf21 & +surf22
+cell3.region = -surf4 & -surf7 & -surf20 & +surf21 & +surf22 & +surf51 & +surf52 & +surf53 & +surf54
 
 # Alles
 cell4 = openmc.Cell(cell_id=4, fill=universe1)
-cell4.region = -surf4 & -surf7 & +surf20
+cell4.region = -surf4 & -surf7 & +surf20 & +surf51 & +surf52 & +surf53 & +surf54
 
 # Alles
 cell5 = openmc.Cell(cell_id=5, fill=universe1)
-cell5.region = +surf4 & -surf7
+cell5.region = +surf4 & -surf7 & +surf51 & +surf52 & +surf53 & +surf54
 
 # Zr4
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = +surf4
+cell6.region = -surf51 & +surf4 & -surf52 & -surf53 & -surf54
 
 # H2O
 cell15 = openmc.Cell(cell_id=15, fill=mat6)

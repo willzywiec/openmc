@@ -187,39 +187,23 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat5)
-u1_cell0.region = 
 u1_cell1 = openmc.Cell(fill=mat10)
-u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat1)
-u1_cell2.region = 
 u1_cell3 = openmc.Cell(fill=mat4)
-u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = 
 u1_cell5 = openmc.Cell(fill=mat6)
-u1_cell5.region = 
 u1_cell6 = openmc.Cell(fill=mat10)
-u1_cell6.region = 
 u1_cell7 = openmc.Cell(fill=mat1)
-u1_cell7.region = 
 u1_cell8 = openmc.Cell(fill=mat4)
-u1_cell8.region = 
 u1_cell9 = openmc.Cell(fill=mat4)
-u1_cell9.region = 
 u1_cell10 = openmc.Cell(fill=mat7)
-u1_cell10.region = 
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7, u1_cell8, u1_cell9, u1_cell10])
 
 u2_cell0 = openmc.Cell(fill=mat11)
-u2_cell0.region = 
 u2_cell1 = openmc.Cell(fill=mat3)
-u2_cell1.region = 
 u2_cell2 = openmc.Cell(fill=mat3)
-u2_cell2.region = 
 u2_cell3 = openmc.Cell(fill=mat5)
-u2_cell3.region = 
 u2_cell4 = openmc.Cell(fill=mat5)
-u2_cell4.region = 
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, u2_cell3, u2_cell4])
 
 # ------------------------------------------------------------------------------
@@ -229,68 +213,38 @@ universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, 
 # Tube
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
 cell1.translation = (-4.88, -4.88, 0.0)
-cell1.region = 
-
 # Tube
 cell2 = openmc.Cell(cell_id=2, fill=universe2)
 cell2.translation = (-4.88, 4.88, 0.0)
-cell2.region = 
-
 # Tube
 cell3 = openmc.Cell(cell_id=3, fill=universe2)
 cell3.translation = (4.88, -4.88, 0.0)
-cell3.region = 
-
 # Tube
 cell4 = openmc.Cell(cell_id=4, fill=universe2)
 cell4.translation = (4.88, 4.88, 0.0)
-cell4.region = 
-
 # I-beam
 cell5 = openmc.Cell(cell_id=5, fill=mat8)
-cell5.region = 
-
 # I-beam
 cell6 = openmc.Cell(cell_id=6, fill=mat8)
-cell6.region = 
-
 # I-beam
 cell7 = openmc.Cell(cell_id=7, fill=mat8)
-cell7.region = 
-
 # I-beam
 cell8 = openmc.Cell(cell_id=8, fill=mat8)
-cell8.region = 
-
 # O-beam
 cell9 = openmc.Cell(cell_id=9, fill=mat8)
-cell9.region = 
-
 # O-beam
 cell10 = openmc.Cell(cell_id=10, fill=mat8)
-cell10.region = 
-
 # Table
 cell11 = openmc.Cell(cell_id=11, fill=mat2)
-cell11.region = 
-
 # Frame
 cell12 = openmc.Cell(cell_id=12, fill=mat9)
-cell12.region = 
-
 # Cncrt
 cell13 = openmc.Cell(cell_id=13, fill=mat12)
-cell13.region = 
-
 # THS
 cell25 = openmc.Cell(cell_id=25, fill=mat7)
-cell25.region = 
-
 # Part
 cell31 = openmc.Cell(cell_id=31, fill=universe1)
 cell31.translation = (0.0, 0.0, 118.5142)
-cell31.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell25, cell31])
 geometry = openmc.Geometry(root_universe)
 

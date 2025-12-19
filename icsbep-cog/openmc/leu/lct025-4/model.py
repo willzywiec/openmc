@@ -79,10 +79,10 @@ surf12 = openmc.ZCylinder(surface_id=12, x0=0.5, y0=0.8, r=99.9)
 surf13 = openmc.ZCylinder(surface_id=13, x0=81.9, y0=82.2, r=99.9)
 # Water and boundary condition
 surf14 = openmc.ZCylinder(surface_id=14, x0=-19.9, y0=105.6, r=46.5, boundary_type="vacuum")
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
-# surf24: Error converting surface type "c": could not convert string to float: 'tr'
+surf21 = openmc.ZCylinder(surface_id=21, x0=-0.61, y0=1.056551, r=0.26)
+surf22 = openmc.ZCylinder(surface_id=22, x0=0.61, y0=1.056551, r=0.26)
+surf23 = openmc.ZCylinder(surface_id=23, x0=-0.61, y0=-1.056551, r=0.26)
+surf24 = openmc.ZCylinder(surface_id=24, x0=0.61, y0=-1.056551, r=0.26)
 # Prism 31: 12-sided polygon
 surf31_0 = openmc.Plane(a=0.8662983840, b=0.4995268860, c=0, d=16.3743722252)
 surf31_1 = openmc.Plane(a=0.5000000026, b=0.8660254023, c=0, d=16.1650000847)
@@ -177,7 +177,7 @@ cell14.region = +surf5 & +surf6 & +surf7 & -surf8
 
 # ALLES
 cell15 = openmc.Cell(cell_id=15, fill=universe1)
-cell15.region = +surf8 & -surf14
+cell15.region = +surf8 & +surf21 & +surf22 & +surf23 & +surf24 & -surf14
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell8, cell14, cell15])
 geometry = openmc.Geometry(root_universe)

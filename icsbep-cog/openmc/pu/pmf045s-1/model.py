@@ -57,48 +57,26 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 
 # Core
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # Ta
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = 
-
 # Al
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
-cell3.region = 
-
 # Gap
 cell4 = openmc.Cell(cell_id=4)
-cell4.region = 
-
 # Ni
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = 
-
 # Al
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = 
-
 # CH2
 cell7 = openmc.Cell(cell_id=7, fill=mat7)
-cell7.region = 
-
 # Gap
 cell8 = openmc.Cell(cell_id=8)
-cell8.region = 
-
 # Gap
 cell9 = openmc.Cell(cell_id=9)
-cell9.region = 
-
 # Fe
 cell10 = openmc.Cell(cell_id=10, fill=mat5)
-cell10.region = 
-
 # H2O
 cell11 = openmc.Cell(cell_id=11, fill=mat6)
-cell11.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11])
 geometry = openmc.Geometry(root_universe)
 

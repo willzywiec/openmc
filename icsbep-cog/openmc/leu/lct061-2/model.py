@@ -324,37 +324,37 @@ cell8.region = -surf1
 # B4C
 cell9 = openmc.Cell(cell_id=9, fill=universe7)
 cell9.translation = (0.0, 0.0, 0.0)
-cell9.region = 
+
 
 # B4C
 cell10 = openmc.Cell(cell_id=10, fill=universe7)
 cell10.translation = (0.0, 6.5991, 0.0)
-cell10.region = 
+
 
 # B4C
 cell11 = openmc.Cell(cell_id=11, fill=universe7)
 cell11.translation = (0.0, -6.5991, 0.0)
-cell11.region = 
+
 
 # B4C
 cell12 = openmc.Cell(cell_id=12, fill=universe7)
 cell12.translation = (5.715, 3.29955, 0.0)
-cell12.region = 
+
 
 # B4C
 cell13 = openmc.Cell(cell_id=13, fill=universe7)
 cell13.translation = (-5.715, 3.29955, 0.0)
-cell13.region = 
+
 
 # B4C
 cell14 = openmc.Cell(cell_id=14, fill=universe7)
 cell14.translation = (5.715, -3.29955, 0.0)
-cell14.region = 
+
 
 # B4C
 cell15 = openmc.Cell(cell_id=15, fill=universe7)
 cell15.translation = (-5.715, -3.29955, 0.0)
-cell15.region = 
+
 
 # Holes
 cell16 = openmc.Cell(cell_id=16, fill=universe6)

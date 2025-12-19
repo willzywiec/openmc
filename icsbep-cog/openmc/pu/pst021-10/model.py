@@ -40,12 +40,8 @@ materials = openmc.Materials([mat1, mat2])
 
 # SOLN
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # H2O
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2])
 geometry = openmc.Geometry(root_universe)
 

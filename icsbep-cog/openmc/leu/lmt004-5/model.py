@@ -31,11 +31,11 @@ materials = openmc.Materials([mat1, mat2])
 
 # U (fuel)
 surf1 = openmc.ZCylinder(surface_id=1, x0=0.0, y0=60.0, r=1.2475)
-# surf2: Error converting surface type "c": could not convert string to float: 'tr'
-# surf3: Error converting surface type "c": could not convert string to float: 'tr'
-# surf4: Error converting surface type "c": could not convert string to float: 'tr'
-# surf5: Error converting surface type "c": could not convert string to float: 'tr'
-# surf6: Error converting surface type "c": could not convert string to float: 'tr'
+surf2 = openmc.ZCylinder(surface_id=2, x0=5.22, y0=0.0, r=1.2475)
+surf3 = openmc.ZCylinder(surface_id=3, x0=10.44, y0=0.0, r=1.2475)
+surf4 = openmc.ZCylinder(surface_id=4, x0=15.66, y0=0.0, r=1.2475)
+surf5 = openmc.ZCylinder(surface_id=5, x0=20.88, y0=0.0, r=1.2475)
+surf6 = openmc.ZCylinder(surface_id=6, x0=26.1, y0=0.0, r=1.2475)
 surf11 = openmc.YPlane(surface_id=11, y0=-11.30163)
 surf12 = openmc.YPlane(surface_id=12, y0=-6.78098)
 surf13 = openmc.YPlane(surface_id=13, y0=-2.26033)
@@ -56,19 +56,19 @@ surf99 = openmc.model.RectangularParallelepiped(-499.5, 499.5, -499.5, 499.5, -4
 u1_cell0 = openmc.Cell(fill=mat1)
 u1_cell0.region = -surf1
 u1_cell1 = openmc.Cell(fill=mat1)
-u1_cell1.region = 
+u1_cell1.region = -surf2
 u1_cell2 = openmc.Cell(fill=mat1)
-u1_cell2.region = 
+u1_cell2.region = -surf3
 u1_cell3 = openmc.Cell(fill=mat1)
-u1_cell3.region = 
+u1_cell3.region = -surf4
 u1_cell4 = openmc.Cell(fill=mat1)
-u1_cell4.region = 
+u1_cell4.region = -surf5
 u1_cell5 = openmc.Cell(fill=mat1)
-u1_cell5.region = 
+u1_cell5.region = -surf6
 u1_cell6 = openmc.Cell()
-u1_cell6.region = +surf91 & -surf99 & +surf1
+u1_cell6.region = +surf91 & -surf99 & +surf1 & +surf2 & +surf3 & +surf4 & +surf5 & +surf6
 u1_cell7 = openmc.Cell(fill=mat2)
-u1_cell7.region = -surf91 & -surf99 & +surf1
+u1_cell7.region = -surf91 & -surf99 & +surf1 & +surf2 & +surf3 & +surf4 & +surf5 & +surf6
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7])
 
 u2_cell0 = openmc.Cell()
@@ -118,7 +118,7 @@ cell7.region = -surf90 & -surf11
 
 # H2O
 cell16 = openmc.Cell(cell_id=16, fill=mat2)
-cell16.region = -surf91 & -surf99 & +surf1
+cell16.region = -surf91 & -surf99 & +surf1 & +surf2 & +surf3 & +surf4 & +surf5 & +surf6
 
 # H2O
 cell19 = openmc.Cell(cell_id=19, fill=mat2)

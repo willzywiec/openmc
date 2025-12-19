@@ -44,36 +44,20 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # VOID
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = 
-
 # SS347
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = 
-
 # WATER
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = 
-
 # SS347
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
-cell4.region = 
-
 # VOID
 cell5 = openmc.Cell(cell_id=5)
-cell5.region = 
-
 # SOLN
 cell6 = openmc.Cell(cell_id=6, fill=mat1)
-cell6.region = 
-
 # SS347
 cell7 = openmc.Cell(cell_id=7, fill=mat2)
-cell7.region = 
-
 # WATER
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8])
 geometry = openmc.Geometry(root_universe)
 

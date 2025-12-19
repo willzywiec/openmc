@@ -70,32 +70,18 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 
 # VOID
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = 
-
 # LAYER1
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = 
-
 # LAYER2
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = 
-
 # LAYER3
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = 
-
 # LAYER4
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = 
-
 # LAYER5
 cell6 = openmc.Cell(cell_id=6, fill=mat5)
-cell6.region = 
-
 # RFLCTR
 cell7 = openmc.Cell(cell_id=7, fill=mat6)
-cell7.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7])
 geometry = openmc.Geometry(root_universe)
 

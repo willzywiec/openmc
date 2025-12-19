@@ -986,10 +986,29 @@ class OpenMCPythonGenerator:
 
         radius = float(remaining[0])
 
+        # Check for 'tr' translation keyword in remaining params
+        # COG format: c z radius tr tx ty tz OR c z radius x0 y0 [z_min z_max]
+        tr_idx = None
+        for i, p in enumerate(remaining):
+            if str(p).lower() == 'tr':
+                tr_idx = i
+                break
+
+        if tr_idx is not None:
+            # Translation specified: radius tr tx ty tz
+            # Extract translation values (tx, ty are used as center offsets)
+            if tr_idx + 3 <= len(remaining):
+                x0 = float(remaining[tr_idx + 1])
+                y0 = float(remaining[tr_idx + 2])
+                # tz is ignored for cylinder center (only x,y matter for ZCylinder)
+                return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius}{bc})'
+            else:
+                return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={radius}{bc})'
+
         # Check for center offset and z-bounds (COG format: radius [center_x center_y] [z_min z_max])
         if len(remaining) >= 5:
             # Has center and z-bounds: radius x0 y0 z_min z_max
-            x0, y0 = remaining[1], remaining[2]
+            x0, y0 = float(remaining[1]), float(remaining[2])
             z_min, z_max = float(remaining[3]), float(remaining[4])
             self._composite_surfaces[surf_id] = 'bounded_cylinder'
             lines = []
@@ -1000,7 +1019,7 @@ class OpenMCPythonGenerator:
             return '\n'.join(lines)
         elif len(remaining) >= 3:
             # Has center only: radius x0 y0
-            x0, y0 = remaining[1], remaining[2]
+            x0, y0 = float(remaining[1]), float(remaining[2])
             return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius}{bc})'
         else:
             return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={radius}{bc})'
@@ -1009,9 +1028,30 @@ class OpenMCPythonGenerator:
         """Generate axial cylinder (c/x, c/y, c/z)."""
         cyl_class = {'x': 'XCylinder', 'y': 'YCylinder', 'z': 'ZCylinder'}[axis]
 
+        if not params:
+            return f'# {var_name}: No params for axial cylinder'
+
+        # Check for 'tr' translation keyword in params
+        # COG format: radius tr tx ty tz OR x0 y0 radius [z_min z_max]
+        tr_idx = None
+        for i, p in enumerate(params):
+            if str(p).lower() == 'tr':
+                tr_idx = i
+                break
+
+        if tr_idx is not None:
+            # Translation specified: radius tr tx ty tz
+            radius = float(params[0])
+            if tr_idx + 3 <= len(params):
+                x0 = float(params[tr_idx + 1])
+                y0 = float(params[tr_idx + 2])
+                return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius}{bc})'
+            else:
+                return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={radius}{bc})'
+
         if len(params) >= 5:
             # Has center and z-bounds
-            x0, y0, radius = params[0], params[1], params[2]
+            x0, y0, radius = float(params[0]), float(params[1]), float(params[2])
             z_min, z_max = float(params[3]), float(params[4])
             self._composite_surfaces[surf_id] = 'bounded_cylinder'
             lines = []
@@ -1021,9 +1061,9 @@ class OpenMCPythonGenerator:
             lines.append(f'{var_name} = ({var_name}_cyl, {var_name}_zmin, {var_name}_zmax)')
             return '\n'.join(lines)
         elif len(params) >= 3:
-            return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={params[0]}, y0={params[1]}, r={params[2]}{bc})'
+            return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={float(params[0])}, y0={float(params[1])}, r={float(params[2])}{bc})'
         elif params:
-            return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={params[0]}{bc})'
+            return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={float(params[0])}{bc})'
         return f'# {var_name}: No params for axial cylinder'
 
     def _gen_plane(self, var_name: str, surf_id: int, surf_type: str, params: List[str], bc: str) -> str:

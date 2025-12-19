@@ -73,17 +73,17 @@ surf12 = openmc.ZCylinder(surface_id=12, x0=0.0, y0=96.9, r=0.41)
 # Hole
 surf20 = openmc.ZCylinder(surface_id=20, x0=-1.8, y0=98.2, r=0.5)
 # Hole
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
+surf21 = openmc.ZCylinder(surface_id=21, x0=-0.86, y0=1.489564, r=0.5)
 # Hole
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
+surf22 = openmc.ZCylinder(surface_id=22, x0=0.86, y0=1.489564, r=0.5)
 # Hole
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
+surf23 = openmc.ZCylinder(surface_id=23, x0=-1.72, y0=0.0, r=0.5)
 # Hole
-# surf24: Error converting surface type "c": could not convert string to float: 'tr'
+surf24 = openmc.ZCylinder(surface_id=24, x0=1.72, y0=0.0, r=0.5)
 # Hole
-# surf25: Error converting surface type "c": could not convert string to float: 'tr'
+surf25 = openmc.ZCylinder(surface_id=25, x0=-0.86, y0=-1.489564, r=0.5)
 # Hole
-# surf26: Error converting surface type "c": could not convert string to float: 'tr'
+surf26 = openmc.ZCylinder(surface_id=26, x0=0.86, y0=-1.489564, r=0.5)
 # Lattice
 # Prism 99: 6-sided polygon
 surf99_0 = openmc.Plane(a=0.8660253631, b=0.5000000705, c=0, d=30.5360543031)
@@ -169,7 +169,7 @@ cell6.region = -surf5 & -surf20
 
 # Refl
 cell7 = openmc.Cell(cell_id=7, fill=universe4)
-cell7.region = -surf1 & +surf20
+cell7.region = -surf1 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
 
 # Grid
 cell12 = openmc.Cell(cell_id=12, fill=mat3)

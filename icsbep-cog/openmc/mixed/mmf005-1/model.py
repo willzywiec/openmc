@@ -117,8 +117,6 @@ cell4.region = +surf3
 
 # Pu
 cell5 = openmc.Cell(cell_id=5, fill=mat1)
-cell5.region = 
-
 # Pu
 cell6 = openmc.Cell(cell_id=6, fill=mat1)
 cell6.region = -surf10

@@ -101,8 +101,8 @@ def fix_model_file(filepath: Path) -> tuple:
     # Find and fix region assignments
     num_fixes = 0
 
-    # Pattern to match region assignments
-    region_pattern = r'(\.region\s*=\s*)([^#\n]+)'
+    # Pattern to match full region assignment lines
+    region_pattern = r'^(\s*\w+\.region\s*=\s*)([^#\n]*)$'
 
     def fix_region_match(match):
         nonlocal num_fixes
@@ -113,11 +113,14 @@ def fix_model_file(filepath: Path) -> tuple:
         fixed_expr = fix_region_expression(region_expr, defined_surfaces)
         if fixed_expr != region_expr:
             num_fixes += 1
+            # If fixed expression is empty, remove the entire line
+            if not fixed_expr:
+                return ''
             return prefix + fixed_expr
 
         return match.group(0)
 
-    content = re.sub(region_pattern, fix_region_match, content)
+    content = re.sub(region_pattern, fix_region_match, content, flags=re.MULTILINE)
 
     if content != original_content:
         with open(filepath, 'w') as f:

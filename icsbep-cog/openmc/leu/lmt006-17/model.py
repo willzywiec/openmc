@@ -82,107 +82,107 @@ surf50 = openmc.ZCylinder(surface_id=50, x0=0.0, y0=50.0, r=4.75)
 # Type 2 steel disk
 surf60 = openmc.ZCylinder(surface_id=60, x0=50.0, y0=50.5, r=4.75)
 # Basic fuel tube and disk
-# surf101: Error converting surface type "c": could not convert string to float: 'tr'
+surf101 = openmc.ZCylinder(surface_id=101, x0=-40.0, y0=-40.0, r=4.85)
 # fuel tube and disk
-# surf102: Error converting surface type "c": could not convert string to float: 'tr'
+surf102 = openmc.ZCylinder(surface_id=102, x0=-40.0, y0=-27.3, r=4.85)
 # fuel tube and disk
-# surf103: Error converting surface type "c": could not convert string to float: 'tr'
+surf103 = openmc.ZCylinder(surface_id=103, x0=-40.0, y0=-14.6, r=4.85)
 # fuel tube and disk
-# surf104: Error converting surface type "c": could not convert string to float: 'tr'
+surf104 = openmc.ZCylinder(surface_id=104, x0=-40.0, y0=-1.9, r=4.85)
 # fuel tube and disk
-# surf105: Error converting surface type "c": could not convert string to float: 'tr'
+surf105 = openmc.ZCylinder(surface_id=105, x0=-40.0, y0=10.8, r=4.85)
 # fuel tube and disk
-# surf106: Error converting surface type "c": could not convert string to float: 'tr'
+surf106 = openmc.ZCylinder(surface_id=106, x0=-40.0, y0=23.5, r=4.85)
 # fuel tube and disk
-# surf107: Error converting surface type "c": could not convert string to float: 'tr'
+surf107 = openmc.ZCylinder(surface_id=107, x0=-40.0, y0=36.2, r=4.85)
 # Second row
-# surf111: Error converting surface type "c": could not convert string to float: 'tr'
+surf111 = openmc.ZCylinder(surface_id=111, x0=-29.00148, y0=-33.65, r=4.85)
 # ditto
-# surf112: Error converting surface type "c": could not convert string to float: 'tr'
+surf112 = openmc.ZCylinder(surface_id=112, x0=-29.00148, y0=-20.95, r=4.85)
 # ditto
-# surf113: Error converting surface type "c": could not convert string to float: 'tr'
+surf113 = openmc.ZCylinder(surface_id=113, x0=-29.00148, y0=-8.25, r=4.85)
 # ditto
-# surf114: Error converting surface type "c": could not convert string to float: 'tr'
+surf114 = openmc.ZCylinder(surface_id=114, x0=-29.00148, y0=4.45, r=4.85)
 # ditto
-# surf115: Error converting surface type "c": could not convert string to float: 'tr'
+surf115 = openmc.ZCylinder(surface_id=115, x0=-29.00148, y0=17.15, r=4.85)
 # ditto
-# surf116: Error converting surface type "c": could not convert string to float: 'tr'
+surf116 = openmc.ZCylinder(surface_id=116, x0=-29.00148, y0=29.85, r=4.85)
 # Third row
-# surf121: Error converting surface type "c": could not convert string to float: 'tr'
+surf121 = openmc.ZCylinder(surface_id=121, x0=-18.00295, y0=-40.0, r=4.85)
 # ditto
-# surf122: Error converting surface type "c": could not convert string to float: 'tr'
+surf122 = openmc.ZCylinder(surface_id=122, x0=-18.00295, y0=-27.3, r=4.85)
 # ditto
-# surf123: Error converting surface type "c": could not convert string to float: 'tr'
+surf123 = openmc.ZCylinder(surface_id=123, x0=-18.00295, y0=-14.6, r=4.85)
 # ditto
-# surf124: Error converting surface type "c": could not convert string to float: 'tr'
+surf124 = openmc.ZCylinder(surface_id=124, x0=-18.00295, y0=-1.9, r=4.85)
 # ditto
-# surf125: Error converting surface type "c": could not convert string to float: 'tr'
+surf125 = openmc.ZCylinder(surface_id=125, x0=-18.00295, y0=10.8, r=4.85)
 # ditto
-# surf126: Error converting surface type "c": could not convert string to float: 'tr'
+surf126 = openmc.ZCylinder(surface_id=126, x0=-18.00295, y0=23.5, r=4.85)
 # ditto
-# surf127: Error converting surface type "c": could not convert string to float: 'tr'
+surf127 = openmc.ZCylinder(surface_id=127, x0=-18.00295, y0=36.2, r=4.85)
 # Fourth row
-# surf131: Error converting surface type "c": could not convert string to float: 'tr'
+surf131 = openmc.ZCylinder(surface_id=131, x0=-7.00443, y0=-33.65, r=4.85)
 # ditto
-# surf132: Error converting surface type "c": could not convert string to float: 'tr'
+surf132 = openmc.ZCylinder(surface_id=132, x0=-7.00443, y0=-20.95, r=4.85)
 # ditto
-# surf133: Error converting surface type "c": could not convert string to float: 'tr'
+surf133 = openmc.ZCylinder(surface_id=133, x0=-7.00443, y0=-8.25, r=4.85)
 # ditto
-# surf134: Error converting surface type "c": could not convert string to float: 'tr'
+surf134 = openmc.ZCylinder(surface_id=134, x0=-7.00443, y0=4.45, r=4.85)
 # ditto
-# surf135: Error converting surface type "c": could not convert string to float: 'tr'
+surf135 = openmc.ZCylinder(surface_id=135, x0=-7.00443, y0=17.15, r=4.85)
 # ditto
-# surf136: Error converting surface type "c": could not convert string to float: 'tr'
+surf136 = openmc.ZCylinder(surface_id=136, x0=-7.00443, y0=29.85, r=4.85)
 # Fifth row
-# surf141: Error converting surface type "c": could not convert string to float: 'tr'
+surf141 = openmc.ZCylinder(surface_id=141, x0=3.99409, y0=-40.0, r=4.85)
 # ditto
-# surf142: Error converting surface type "c": could not convert string to float: 'tr'
+surf142 = openmc.ZCylinder(surface_id=142, x0=3.99409, y0=-27.3, r=4.85)
 # ditto
-# surf143: Error converting surface type "c": could not convert string to float: 'tr'
+surf143 = openmc.ZCylinder(surface_id=143, x0=3.99409, y0=-14.6, r=4.85)
 # ditto
-# surf144: Error converting surface type "c": could not convert string to float: 'tr'
+surf144 = openmc.ZCylinder(surface_id=144, x0=3.99409, y0=-1.9, r=4.85)
 # ditto
-# surf145: Error converting surface type "c": could not convert string to float: 'tr'
+surf145 = openmc.ZCylinder(surface_id=145, x0=3.99409, y0=10.8, r=4.85)
 # ditto
-# surf146: Error converting surface type "c": could not convert string to float: 'tr'
+surf146 = openmc.ZCylinder(surface_id=146, x0=3.99409, y0=23.5, r=4.85)
 # ditto
-# surf147: Error converting surface type "c": could not convert string to float: 'tr'
+surf147 = openmc.ZCylinder(surface_id=147, x0=3.99409, y0=36.2, r=4.85)
 # Sixth row
-# surf151: Error converting surface type "c": could not convert string to float: 'tr'
+surf151 = openmc.ZCylinder(surface_id=151, x0=14.99261, y0=-33.65, r=4.85)
 # ditto
-# surf152: Error converting surface type "c": could not convert string to float: 'tr'
+surf152 = openmc.ZCylinder(surface_id=152, x0=14.99261, y0=-20.95, r=4.85)
 # ditto
-# surf153: Error converting surface type "c": could not convert string to float: 'tr'
+surf153 = openmc.ZCylinder(surface_id=153, x0=14.99261, y0=-8.25, r=4.85)
 # ditto
-# surf154: Error converting surface type "c": could not convert string to float: 'tr'
+surf154 = openmc.ZCylinder(surface_id=154, x0=14.99261, y0=4.45, r=4.85)
 # ditto
-# surf155: Error converting surface type "c": could not convert string to float: 'tr'
+surf155 = openmc.ZCylinder(surface_id=155, x0=14.99261, y0=17.15, r=4.85)
 # ditto
-# surf156: Error converting surface type "c": could not convert string to float: 'tr'
+surf156 = openmc.ZCylinder(surface_id=156, x0=14.99261, y0=29.85, r=4.85)
 # Seventh row
-# surf161: Error converting surface type "c": could not convert string to float: 'tr'
+surf161 = openmc.ZCylinder(surface_id=161, x0=25.99114, y0=-40.0, r=4.85)
 # ditto
-# surf162: Error converting surface type "c": could not convert string to float: 'tr'
+surf162 = openmc.ZCylinder(surface_id=162, x0=25.99114, y0=-27.3, r=4.85)
 # ditto
-# surf163: Error converting surface type "c": could not convert string to float: 'tr'
+surf163 = openmc.ZCylinder(surface_id=163, x0=25.99114, y0=-14.6, r=4.85)
 # ditto
-# surf164: Error converting surface type "c": could not convert string to float: 'tr'
+surf164 = openmc.ZCylinder(surface_id=164, x0=25.99114, y0=-1.9, r=4.85)
 # ditto
-# surf165: Error converting surface type "c": could not convert string to float: 'tr'
+surf165 = openmc.ZCylinder(surface_id=165, x0=25.99114, y0=10.8, r=4.85)
 # ditto
-# surf166: Error converting surface type "c": could not convert string to float: 'tr'
+surf166 = openmc.ZCylinder(surface_id=166, x0=25.99114, y0=23.5, r=4.85)
 # ditto
-# surf167: Error converting surface type "c": could not convert string to float: 'tr'
+surf167 = openmc.ZCylinder(surface_id=167, x0=25.99114, y0=36.2, r=4.85)
 # Sixth row
-# surf171: Error converting surface type "c": could not convert string to float: 'tr'
+surf171 = openmc.ZCylinder(surface_id=171, x0=36.98966, y0=-33.65, r=4.85)
 # ditto
-# surf172: Error converting surface type "c": could not convert string to float: 'tr'
+surf172 = openmc.ZCylinder(surface_id=172, x0=36.98966, y0=-20.95, r=4.85)
 # ditto
-# surf173: Error converting surface type "c": could not convert string to float: 'tr'
+surf173 = openmc.ZCylinder(surface_id=173, x0=36.98966, y0=-8.25, r=4.85)
 # ditto
-# surf174: Error converting surface type "c": could not convert string to float: 'tr'
+surf174 = openmc.ZCylinder(surface_id=174, x0=36.98966, y0=4.45, r=4.85)
 # ditto
-# surf175: Error converting surface type "c": could not convert string to float: 'tr'
+surf175 = openmc.ZCylinder(surface_id=175, x0=36.98966, y0=17.15, r=4.85)
 surf901 = openmc.ZPlane(surface_id=901, z0=-4.4)
 surf902 = openmc.ZPlane(surface_id=902, z0=-0.4)
 surf903 = openmc.ZPlane(surface_id=903, z0=0.0)

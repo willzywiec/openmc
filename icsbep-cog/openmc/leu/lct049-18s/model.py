@@ -208,7 +208,6 @@ universe7 = openmc.Universe(universe_id=7, cells=[])
 
 # lttc
 cell1 = openmc.Cell(cell_id=1, fill=universe7)
-cell1.region = 
 
 # Air
 cell31 = openmc.Cell(cell_id=31, fill=mat5)

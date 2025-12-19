@@ -79,10 +79,10 @@ surf12 = openmc.ZCylinder(surface_id=12, x0=0.5, y0=0.8, r=99.9)
 surf13 = openmc.ZCylinder(surface_id=13, x0=81.9, y0=82.2, r=99.9)
 # Water and boundary condition
 surf14 = openmc.ZCylinder(surface_id=14, x0=-19.9, y0=105.6, r=47.0, boundary_type="vacuum")
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
-# surf24: Error converting surface type "c": could not convert string to float: 'tr'
+surf21 = openmc.ZCylinder(surface_id=21, x0=-0.4, y0=0.69282, r=0.26)
+surf22 = openmc.ZCylinder(surface_id=22, x0=0.4, y0=0.69282, r=0.26)
+surf23 = openmc.ZCylinder(surface_id=23, x0=-0.4, y0=-0.69282, r=0.26)
+surf24 = openmc.ZCylinder(surface_id=24, x0=0.4, y0=-0.69282, r=0.26)
 # Prism 31: 12-sided polygon
 surf31_0 = openmc.Plane(a=0.8660253028, b=0.5000001748, c=0, d=15.9348655722)
 surf31_1 = openmc.Plane(a=0.4999998252, b=0.8660255047, c=0, d=15.9999944050)
@@ -103,108 +103,108 @@ surf32_2 = openmc.Plane(a=-0.8660253028, b=0.5000001748, c=0, d=16.6276858145)
 surf32_3 = openmc.Plane(a=-0.8660253028, b=-0.5000001748, c=0, d=16.6276858145)
 surf32_4 = openmc.Plane(a=0.0000000000, b=-1.0000000000, c=0, d=16.6276800000)
 surf32_5 = openmc.Plane(a=0.8660253028, b=-0.5000001748, c=0, d=16.6276858145)
-# surf101: Error converting surface type "c": could not convert string to float: 'tr'
-# surf102: Error converting surface type "c": could not convert string to float: 'tr'
-# surf103: Error converting surface type "c": could not convert string to float: 'tr'
-# surf104: Error converting surface type "c": could not convert string to float: 'tr'
-# surf105: Error converting surface type "c": could not convert string to float: 'tr'
-# surf106: Error converting surface type "c": could not convert string to float: 'tr'
-# surf107: Error converting surface type "c": could not convert string to float: 'tr'
-# surf108: Error converting surface type "c": could not convert string to float: 'tr'
-# surf109: Error converting surface type "c": could not convert string to float: 'tr'
-# surf110: Error converting surface type "c": could not convert string to float: 'tr'
-# surf111: Error converting surface type "c": could not convert string to float: 'tr'
-# surf112: Error converting surface type "c": could not convert string to float: 'tr'
-# surf113: Error converting surface type "c": could not convert string to float: 'tr'
-# surf114: Error converting surface type "c": could not convert string to float: 'tr'
-# surf115: Error converting surface type "c": could not convert string to float: 'tr'
-# surf116: Error converting surface type "c": could not convert string to float: 'tr'
-# surf117: Error converting surface type "c": could not convert string to float: 'tr'
-# surf118: Error converting surface type "c": could not convert string to float: 'tr'
-# surf119: Error converting surface type "c": could not convert string to float: 'tr'
-# surf120: Error converting surface type "c": could not convert string to float: 'tr'
-# surf121: Error converting surface type "c": could not convert string to float: 'tr'
-# surf122: Error converting surface type "c": could not convert string to float: 'tr'
-# surf123: Error converting surface type "c": could not convert string to float: 'tr'
-# surf124: Error converting surface type "c": could not convert string to float: 'tr'
-# surf125: Error converting surface type "c": could not convert string to float: 'tr'
-# surf126: Error converting surface type "c": could not convert string to float: 'tr'
-# surf127: Error converting surface type "c": could not convert string to float: 'tr'
-# surf128: Error converting surface type "c": could not convert string to float: 'tr'
-# surf129: Error converting surface type "c": could not convert string to float: 'tr'
-# surf130: Error converting surface type "c": could not convert string to float: 'tr'
-# surf131: Error converting surface type "c": could not convert string to float: 'tr'
-# surf132: Error converting surface type "c": could not convert string to float: 'tr'
-# surf133: Error converting surface type "c": could not convert string to float: 'tr'
-# surf134: Error converting surface type "c": could not convert string to float: 'tr'
-# surf135: Error converting surface type "c": could not convert string to float: 'tr'
-# surf136: Error converting surface type "c": could not convert string to float: 'tr'
-# surf137: Error converting surface type "c": could not convert string to float: 'tr'
-# surf138: Error converting surface type "c": could not convert string to float: 'tr'
-# surf139: Error converting surface type "c": could not convert string to float: 'tr'
-# surf140: Error converting surface type "c": could not convert string to float: 'tr'
-# surf141: Error converting surface type "c": could not convert string to float: 'tr'
-# surf142: Error converting surface type "c": could not convert string to float: 'tr'
-# surf143: Error converting surface type "c": could not convert string to float: 'tr'
-# surf144: Error converting surface type "c": could not convert string to float: 'tr'
-# surf145: Error converting surface type "c": could not convert string to float: 'tr'
-# surf146: Error converting surface type "c": could not convert string to float: 'tr'
-# surf147: Error converting surface type "c": could not convert string to float: 'tr'
-# surf148: Error converting surface type "c": could not convert string to float: 'tr'
-# surf149: Error converting surface type "c": could not convert string to float: 'tr'
-# surf150: Error converting surface type "c": could not convert string to float: 'tr'
-# surf151: Error converting surface type "c": could not convert string to float: 'tr'
-# surf152: Error converting surface type "c": could not convert string to float: 'tr'
-# surf153: Error converting surface type "c": could not convert string to float: 'tr'
-# surf154: Error converting surface type "c": could not convert string to float: 'tr'
-# surf155: Error converting surface type "c": could not convert string to float: 'tr'
-# surf156: Error converting surface type "c": could not convert string to float: 'tr'
-# surf157: Error converting surface type "c": could not convert string to float: 'tr'
-# surf158: Error converting surface type "c": could not convert string to float: 'tr'
-# surf159: Error converting surface type "c": could not convert string to float: 'tr'
-# surf160: Error converting surface type "c": could not convert string to float: 'tr'
-# surf161: Error converting surface type "c": could not convert string to float: 'tr'
-# surf162: Error converting surface type "c": could not convert string to float: 'tr'
-# surf163: Error converting surface type "c": could not convert string to float: 'tr'
-# surf164: Error converting surface type "c": could not convert string to float: 'tr'
-# surf165: Error converting surface type "c": could not convert string to float: 'tr'
-# surf166: Error converting surface type "c": could not convert string to float: 'tr'
-# surf167: Error converting surface type "c": could not convert string to float: 'tr'
-# surf168: Error converting surface type "c": could not convert string to float: 'tr'
-# surf169: Error converting surface type "c": could not convert string to float: 'tr'
-# surf170: Error converting surface type "c": could not convert string to float: 'tr'
-# surf171: Error converting surface type "c": could not convert string to float: 'tr'
-# surf172: Error converting surface type "c": could not convert string to float: 'tr'
-# surf173: Error converting surface type "c": could not convert string to float: 'tr'
-# surf174: Error converting surface type "c": could not convert string to float: 'tr'
-# surf175: Error converting surface type "c": could not convert string to float: 'tr'
-# surf176: Error converting surface type "c": could not convert string to float: 'tr'
-# surf177: Error converting surface type "c": could not convert string to float: 'tr'
-# surf178: Error converting surface type "c": could not convert string to float: 'tr'
-# surf179: Error converting surface type "c": could not convert string to float: 'tr'
-# surf180: Error converting surface type "c": could not convert string to float: 'tr'
-# surf181: Error converting surface type "c": could not convert string to float: 'tr'
-# surf182: Error converting surface type "c": could not convert string to float: 'tr'
-# surf183: Error converting surface type "c": could not convert string to float: 'tr'
-# surf184: Error converting surface type "c": could not convert string to float: 'tr'
-# surf185: Error converting surface type "c": could not convert string to float: 'tr'
-# surf186: Error converting surface type "c": could not convert string to float: 'tr'
-# surf201: Error converting surface type "c": could not convert string to float: 'tr'
-# surf202: Error converting surface type "c": could not convert string to float: 'tr'
-# surf203: Error converting surface type "c": could not convert string to float: 'tr'
-# surf204: Error converting surface type "c": could not convert string to float: 'tr'
-# surf205: Error converting surface type "c": could not convert string to float: 'tr'
-# surf206: Error converting surface type "c": could not convert string to float: 'tr'
-# surf207: Error converting surface type "c": could not convert string to float: 'tr'
-# surf208: Error converting surface type "c": could not convert string to float: 'tr'
-# surf209: Error converting surface type "c": could not convert string to float: 'tr'
-# surf210: Error converting surface type "c": could not convert string to float: 'tr'
-# surf211: Error converting surface type "c": could not convert string to float: 'tr'
-# surf212: Error converting surface type "c": could not convert string to float: 'tr'
-# surf213: Error converting surface type "c": could not convert string to float: 'tr'
-# surf214: Error converting surface type "c": could not convert string to float: 'tr'
-# surf215: Error converting surface type "c": could not convert string to float: 'tr'
-# surf216: Error converting surface type "c": could not convert string to float: 'tr'
+surf101 = openmc.ZCylinder(surface_id=101, x0=-4.4, y0=15.93486, r=0.26)
+surf102 = openmc.ZCylinder(surface_id=102, x0=-3.6, y0=15.93486, r=0.26)
+surf103 = openmc.ZCylinder(surface_id=103, x0=-2.8, y0=15.93486, r=0.26)
+surf104 = openmc.ZCylinder(surface_id=104, x0=-2.0, y0=15.93486, r=0.26)
+surf105 = openmc.ZCylinder(surface_id=105, x0=-1.2, y0=15.93486, r=0.26)
+surf106 = openmc.ZCylinder(surface_id=106, x0=-0.4, y0=15.93486, r=0.26)
+surf107 = openmc.ZCylinder(surface_id=107, x0=0.4, y0=15.93486, r=0.26)
+surf108 = openmc.ZCylinder(surface_id=108, x0=1.2, y0=15.93486, r=0.26)
+surf109 = openmc.ZCylinder(surface_id=109, x0=2.0, y0=15.93486, r=0.26)
+surf110 = openmc.ZCylinder(surface_id=110, x0=2.8, y0=15.93486, r=0.26)
+surf111 = openmc.ZCylinder(surface_id=111, x0=3.6, y0=15.93486, r=0.26)
+surf112 = openmc.ZCylinder(surface_id=112, x0=4.4, y0=15.93486, r=0.26)
+surf113 = openmc.ZCylinder(surface_id=113, x0=-5.6, y0=15.24204, r=0.26)
+surf114 = openmc.ZCylinder(surface_id=114, x0=5.6, y0=15.24204, r=0.26)
+surf115 = openmc.ZCylinder(surface_id=115, x0=-6.8, y0=14.54922, r=0.26)
+surf116 = openmc.ZCylinder(surface_id=116, x0=6.8, y0=14.54922, r=0.26)
+surf117 = openmc.ZCylinder(surface_id=117, x0=-9.2, y0=13.16358, r=0.26)
+surf118 = openmc.ZCylinder(surface_id=118, x0=9.2, y0=13.16358, r=0.26)
+surf119 = openmc.ZCylinder(surface_id=119, x0=-10.4, y0=12.47076, r=0.26)
+surf120 = openmc.ZCylinder(surface_id=120, x0=10.4, y0=12.47076, r=0.26)
+surf121 = openmc.ZCylinder(surface_id=121, x0=-11.6, y0=11.77794, r=0.26)
+surf122 = openmc.ZCylinder(surface_id=122, x0=11.6, y0=11.77794, r=0.26)
+surf123 = openmc.ZCylinder(surface_id=123, x0=-12.0, y0=11.08512, r=0.26)
+surf124 = openmc.ZCylinder(surface_id=124, x0=12.0, y0=11.08512, r=0.26)
+surf125 = openmc.ZCylinder(surface_id=125, x0=-12.4, y0=10.3923, r=0.26)
+surf126 = openmc.ZCylinder(surface_id=126, x0=12.4, y0=10.3923, r=0.26)
+surf127 = openmc.ZCylinder(surface_id=127, x0=-12.8, y0=9.69948, r=0.26)
+surf128 = openmc.ZCylinder(surface_id=128, x0=12.8, y0=9.69948, r=0.26)
+surf129 = openmc.ZCylinder(surface_id=129, x0=-13.2, y0=9.00666, r=0.26)
+surf130 = openmc.ZCylinder(surface_id=130, x0=13.2, y0=9.00666, r=0.26)
+surf131 = openmc.ZCylinder(surface_id=131, x0=-14.4, y0=6.9282, r=0.26)
+surf132 = openmc.ZCylinder(surface_id=132, x0=14.4, y0=6.9282, r=0.26)
+surf133 = openmc.ZCylinder(surface_id=133, x0=-14.8, y0=6.23538, r=0.26)
+surf134 = openmc.ZCylinder(surface_id=134, x0=14.8, y0=6.23538, r=0.26)
+surf135 = openmc.ZCylinder(surface_id=135, x0=-15.2, y0=5.54256, r=0.26)
+surf136 = openmc.ZCylinder(surface_id=136, x0=15.2, y0=5.54256, r=0.26)
+surf137 = openmc.ZCylinder(surface_id=137, x0=-15.6, y0=4.84974, r=0.26)
+surf138 = openmc.ZCylinder(surface_id=138, x0=15.6, y0=4.84974, r=0.26)
+surf139 = openmc.ZCylinder(surface_id=139, x0=-16.0, y0=4.15692, r=0.26)
+surf140 = openmc.ZCylinder(surface_id=140, x0=16.0, y0=4.15692, r=0.26)
+surf141 = openmc.ZCylinder(surface_id=141, x0=-16.0, y0=2.77128, r=0.26)
+surf142 = openmc.ZCylinder(surface_id=142, x0=16.0, y0=2.77128, r=0.26)
+surf143 = openmc.ZCylinder(surface_id=143, x0=-16.0, y0=1.38564, r=0.26)
+surf144 = openmc.ZCylinder(surface_id=144, x0=16.0, y0=1.38564, r=0.26)
+surf145 = openmc.ZCylinder(surface_id=145, x0=-16.0, y0=-1.38564, r=0.26)
+surf146 = openmc.ZCylinder(surface_id=146, x0=16.0, y0=-1.38564, r=0.26)
+surf147 = openmc.ZCylinder(surface_id=147, x0=-16.0, y0=-2.77128, r=0.26)
+surf148 = openmc.ZCylinder(surface_id=148, x0=16.0, y0=-2.77128, r=0.26)
+surf149 = openmc.ZCylinder(surface_id=149, x0=-16.0, y0=-4.15692, r=0.26)
+surf150 = openmc.ZCylinder(surface_id=150, x0=16.0, y0=-4.15692, r=0.26)
+surf151 = openmc.ZCylinder(surface_id=151, x0=-15.6, y0=-4.84974, r=0.26)
+surf152 = openmc.ZCylinder(surface_id=152, x0=15.6, y0=-4.84974, r=0.26)
+surf153 = openmc.ZCylinder(surface_id=153, x0=-15.2, y0=-5.54256, r=0.26)
+surf154 = openmc.ZCylinder(surface_id=154, x0=15.2, y0=-5.54256, r=0.26)
+surf155 = openmc.ZCylinder(surface_id=155, x0=-14.8, y0=-6.23538, r=0.26)
+surf156 = openmc.ZCylinder(surface_id=156, x0=14.8, y0=-6.23538, r=0.26)
+surf157 = openmc.ZCylinder(surface_id=157, x0=-14.4, y0=-6.9282, r=0.26)
+surf158 = openmc.ZCylinder(surface_id=158, x0=14.4, y0=-6.9282, r=0.26)
+surf159 = openmc.ZCylinder(surface_id=159, x0=-13.2, y0=-9.00666, r=0.26)
+surf160 = openmc.ZCylinder(surface_id=160, x0=13.2, y0=-9.00666, r=0.26)
+surf161 = openmc.ZCylinder(surface_id=161, x0=-12.8, y0=-9.69948, r=0.26)
+surf162 = openmc.ZCylinder(surface_id=162, x0=12.8, y0=-9.69948, r=0.26)
+surf163 = openmc.ZCylinder(surface_id=163, x0=-12.4, y0=-10.3923, r=0.26)
+surf164 = openmc.ZCylinder(surface_id=164, x0=12.4, y0=-10.3923, r=0.26)
+surf165 = openmc.ZCylinder(surface_id=165, x0=-12.0, y0=-11.08512, r=0.26)
+surf166 = openmc.ZCylinder(surface_id=166, x0=12.0, y0=-11.08512, r=0.26)
+surf167 = openmc.ZCylinder(surface_id=167, x0=-11.6, y0=-11.77794, r=0.26)
+surf168 = openmc.ZCylinder(surface_id=168, x0=11.6, y0=-11.77794, r=0.26)
+surf169 = openmc.ZCylinder(surface_id=169, x0=-10.4, y0=-12.47076, r=0.26)
+surf170 = openmc.ZCylinder(surface_id=170, x0=10.4, y0=-12.47076, r=0.26)
+surf171 = openmc.ZCylinder(surface_id=171, x0=-9.2, y0=-13.16358, r=0.26)
+surf172 = openmc.ZCylinder(surface_id=172, x0=9.2, y0=-13.16358, r=0.26)
+surf173 = openmc.ZCylinder(surface_id=173, x0=-6.8, y0=-14.54922, r=0.26)
+surf174 = openmc.ZCylinder(surface_id=174, x0=6.8, y0=-14.54922, r=0.26)
+surf175 = openmc.ZCylinder(surface_id=175, x0=-5.6, y0=-15.24204, r=0.26)
+surf176 = openmc.ZCylinder(surface_id=176, x0=5.6, y0=-15.24204, r=0.26)
+surf177 = openmc.ZCylinder(surface_id=177, x0=-4.4, y0=-15.93486, r=0.26)
+surf178 = openmc.ZCylinder(surface_id=178, x0=-3.6, y0=-15.93486, r=0.26)
+surf179 = openmc.ZCylinder(surface_id=179, x0=-2.8, y0=-15.93486, r=0.26)
+surf180 = openmc.ZCylinder(surface_id=180, x0=-2.0, y0=-15.93486, r=0.26)
+surf181 = openmc.ZCylinder(surface_id=181, x0=-1.2, y0=-15.93486, r=0.26)
+surf182 = openmc.ZCylinder(surface_id=182, x0=1.2, y0=-15.93486, r=0.26)
+surf183 = openmc.ZCylinder(surface_id=183, x0=2.0, y0=-15.93486, r=0.26)
+surf184 = openmc.ZCylinder(surface_id=184, x0=2.8, y0=-15.93486, r=0.26)
+surf185 = openmc.ZCylinder(surface_id=185, x0=3.6, y0=-15.93486, r=0.26)
+surf186 = openmc.ZCylinder(surface_id=186, x0=4.4, y0=-15.93486, r=0.26)
+surf201 = openmc.ZCylinder(surface_id=201, x0=-8.0, y0=13.8564, r=0.26)
+surf202 = openmc.ZCylinder(surface_id=202, x0=8.0, y0=13.8564, r=0.26)
+surf203 = openmc.ZCylinder(surface_id=203, x0=-13.6, y0=8.31384, r=0.26)
+surf204 = openmc.ZCylinder(surface_id=204, x0=13.6, y0=8.31384, r=0.26)
+surf205 = openmc.ZCylinder(surface_id=205, x0=-14.0, y0=7.62102, r=0.26)
+surf206 = openmc.ZCylinder(surface_id=206, x0=14.0, y0=7.62102, r=0.26)
+surf207 = openmc.ZCylinder(surface_id=207, x0=-16.0, y0=0.0, r=0.26)
+surf208 = openmc.ZCylinder(surface_id=208, x0=16.0, y0=0.0, r=0.26)
+surf209 = openmc.ZCylinder(surface_id=209, x0=-14.0, y0=-7.62102, r=0.26)
+surf210 = openmc.ZCylinder(surface_id=210, x0=14.0, y0=-7.62102, r=0.26)
+surf211 = openmc.ZCylinder(surface_id=211, x0=-13.6, y0=-8.31384, r=0.26)
+surf212 = openmc.ZCylinder(surface_id=212, x0=13.6, y0=-8.31384, r=0.26)
+surf213 = openmc.ZCylinder(surface_id=213, x0=-8.0, y0=-13.8564, r=0.26)
+surf214 = openmc.ZCylinder(surface_id=214, x0=8.0, y0=-13.8564, r=0.26)
+surf215 = openmc.ZCylinder(surface_id=215, x0=-0.4, y0=-15.93486, r=0.26)
+surf216 = openmc.ZCylinder(surface_id=216, x0=0.4, y0=-15.93486, r=0.26)
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -237,13 +237,13 @@ universe3 = openmc.Universe(universe_id=3, cells=[])
 u4_cell0 = openmc.Cell(fill=mat4)
 u4_cell0.region = -surf8 & -surf14
 u4_cell1 = openmc.Cell(fill=mat4)
-u4_cell1.region = -surf14
+u4_cell1.region = -surf21 & -surf14
 u4_cell2 = openmc.Cell(fill=mat4)
-u4_cell2.region = -surf14
+u4_cell2.region = -surf22 & -surf14
 u4_cell3 = openmc.Cell(fill=mat4)
-u4_cell3.region = -surf14
+u4_cell3.region = -surf23 & -surf14
 u4_cell4 = openmc.Cell(fill=mat4)
-u4_cell4.region = -surf14
+u4_cell4.region = -surf24 & -surf14
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 # Lattice 5: 41x23 array
@@ -318,91 +318,91 @@ universe6.add_cell(openmc.Cell(fill=lattice6))
 
 # array1
 cell1 = openmc.Cell(cell_id=1, fill=universe5)
-cell1.region = -surf14 & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5 & -surf31_6 & -surf31_7 & -surf31_8 & -surf31_9 & -surf31_10 & -surf31_11)
+cell1.region = -surf14 & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5 & -surf31_6 & -surf31_7 & -surf31_8 & -surf31_9 & -surf31_10 & -surf31_11) & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110
 
 # array2
 cell2 = openmc.Cell(cell_id=2, fill=universe6)
-cell2.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell2.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & +surf201 & +surf202 & +surf203 & +surf204 & +surf205 & +surf206 & +surf207 & +surf208 & +surf209 & +surf210
 
 # FROD
 cell3 = openmc.Cell(cell_id=3, fill=universe3)
 cell3.translation = (-8.0, 13.8564, 0.0)
-cell3.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell3.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf201
 
 # FROD
 cell4 = openmc.Cell(cell_id=4, fill=universe3)
 cell4.translation = (8.0, 13.8564, 0.0)
-cell4.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell4.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf202
 
 # FROD
 cell5 = openmc.Cell(cell_id=5, fill=universe3)
 cell5.translation = (-13.6, 8.31384, 0.0)
-cell5.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell5.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf203
 
 # FROD
 cell6 = openmc.Cell(cell_id=6, fill=universe3)
 cell6.translation = (13.6, 8.31384, 0.0)
-cell6.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell6.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf204
 
 # FROD
 cell7 = openmc.Cell(cell_id=7, fill=universe3)
 cell7.translation = (-14.0, 7.62102, 0.0)
-cell7.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell7.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf205
 
 # FROD
 cell8 = openmc.Cell(cell_id=8, fill=universe3)
 cell8.translation = (14.0, 7.62102, 0.0)
-cell8.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell8.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf206
 
 # FROD
 cell9 = openmc.Cell(cell_id=9, fill=universe3)
 cell9.translation = (-16.0, 0.0, 0.0)
-cell9.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell9.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf207
 
 # FROD
 cell10 = openmc.Cell(cell_id=10, fill=universe3)
 cell10.translation = (16.0, 0.0, 0.0)
-cell10.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell10.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf208
 
 # FROD
 cell11 = openmc.Cell(cell_id=11, fill=universe3)
 cell11.translation = (-14.0, -7.62102, 0.0)
-cell11.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell11.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf209
 
 # FROD
 cell12 = openmc.Cell(cell_id=12, fill=universe3)
 cell12.translation = (14.0, -7.62102, 0.0)
-cell12.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell12.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf210
 
 # FROD
 cell13 = openmc.Cell(cell_id=13, fill=universe3)
 cell13.translation = (-13.6, -8.31384, 0.0)
-cell13.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell13.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf211
 
 # FROD
 cell14 = openmc.Cell(cell_id=14, fill=universe3)
 cell14.translation = (13.6, -8.31384, 0.0)
-cell14.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell14.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf212
 
 # FROD
 cell15 = openmc.Cell(cell_id=15, fill=universe3)
 cell15.translation = (-8.0, -13.8564, 0.0)
-cell15.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell15.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf213
 
 # FROD
 cell16 = openmc.Cell(cell_id=16, fill=universe3)
 cell16.translation = (8.0, -13.8564, 0.0)
-cell16.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell16.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf214
 
 # FROD
 cell17 = openmc.Cell(cell_id=17, fill=universe3)
 cell17.translation = (-0.4, -15.93486, 0.0)
-cell17.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell17.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf215
 
 # FROD
 cell18 = openmc.Cell(cell_id=18, fill=universe3)
 cell18.translation = (0.4, -15.93486, 0.0)
-cell18.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5)
+cell18.region = -surf14 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5 | +surf31_6 | +surf31_7 | +surf31_8 | +surf31_9 | +surf31_10 | +surf31_11) & (-surf32_0 & -surf32_1 & -surf32_2 & -surf32_3 & -surf32_4 & -surf32_5) & -surf216
 
 # D16
 cell19 = openmc.Cell(cell_id=19, fill=mat3)
@@ -422,11 +422,11 @@ cell31.region = +surf5 & +surf6 & +surf7 & -surf8
 
 # ALLES
 cell32 = openmc.Cell(cell_id=32, fill=universe1)
-cell32.region = +surf8 & -surf14
+cell32.region = +surf8 & +surf21 & +surf22 & +surf23 & +surf24 & -surf14
 
 # ALLES
 cell38 = openmc.Cell(cell_id=38, fill=universe1)
-cell38.region = +surf8 & -surf14
+cell38.region = +surf8 & +surf21 & +surf22 & +surf23 & +surf24 & -surf14
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell25, cell31, cell32, cell38])
 geometry = openmc.Geometry(root_universe)

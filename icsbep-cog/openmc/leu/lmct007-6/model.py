@@ -117,18 +117,18 @@ surf22 = openmc.model.RectangularParallelepiped(-20.995, 20.995, 9.2968289999999
 surf31 = openmc.ZCylinder(surface_id=31, x0=0.0, y0=149.52, r=0.585)
 # Hole
 surf32 = openmc.ZCylinder(surface_id=32, x0=0.0, y0=149.52, r=0.591)
-# surf41: Error converting surface type "c": could not convert string to float: 'tr'
-# surf42: Error converting surface type "c": could not convert string to float: 'tr'
-# surf43: Error converting surface type "c": could not convert string to float: 'tr'
-# surf44: Error converting surface type "c": could not convert string to float: 'tr'
-# surf45: Error converting surface type "c": could not convert string to float: 'tr'
-# surf46: Error converting surface type "c": could not convert string to float: 'tr'
-# surf47: Error converting surface type "c": could not convert string to float: 'tr'
-# surf48: Error converting surface type "c": could not convert string to float: 'tr'
-# surf51: Error converting surface type "c": could not convert string to float: 'tr'
-# surf52: Error converting surface type "c": could not convert string to float: 'tr'
-# surf53: Error converting surface type "c": could not convert string to float: 'tr'
-# surf54: Error converting surface type "c": could not convert string to float: 'tr'
+surf41 = openmc.ZCylinder(surface_id=41, x0=-15.903539, y0=-10.602359, r=0.591)
+surf42 = openmc.ZCylinder(surface_id=42, x0=15.903539, y0=-10.602359, r=0.591)
+surf43 = openmc.ZCylinder(surface_id=43, x0=-17.670598, y0=-8.835299, r=0.591)
+surf44 = openmc.ZCylinder(surface_id=44, x0=17.670598, y0=-8.835299, r=0.591)
+surf45 = openmc.ZCylinder(surface_id=45, x0=-17.670598, y0=8.835299, r=0.591)
+surf46 = openmc.ZCylinder(surface_id=46, x0=17.670598, y0=8.835299, r=0.591)
+surf47 = openmc.ZCylinder(surface_id=47, x0=-15.903539, y0=10.602359, r=0.591)
+surf48 = openmc.ZCylinder(surface_id=48, x0=15.903539, y0=10.602359, r=0.591)
+surf51 = openmc.ZCylinder(surface_id=51, x0=-24.02087, y0=-9.94977, r=1.53)
+surf52 = openmc.ZCylinder(surface_id=52, x0=24.02087, y0=-9.94977, r=1.53)
+surf53 = openmc.ZCylinder(surface_id=53, x0=-24.02087, y0=9.94977, r=1.53)
+surf54 = openmc.ZCylinder(surface_id=54, x0=24.02087, y0=9.94977, r=1.53)
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -263,68 +263,68 @@ universe8 = openmc.Universe(universe_id=8, cells=[u8_cell0, u8_cell1, u8_cell2])
 # Pin
 cell1 = openmc.Cell(cell_id=1, fill=universe8)
 cell1.translation = (-15.903539, -10.602359, 0.0)
-cell1.region = 
+cell1.region = -surf41
 
 # Pin
 cell2 = openmc.Cell(cell_id=2, fill=universe8)
 cell2.translation = (15.903539, -10.602359, 0.0)
-cell2.region = 
+cell2.region = -surf42
 
 # Pin
 cell3 = openmc.Cell(cell_id=3, fill=universe8)
 cell3.translation = (-17.670598, -8.835299, 0.0)
-cell3.region = 
+cell3.region = -surf43
 
 # Pin
 cell4 = openmc.Cell(cell_id=4, fill=universe8)
 cell4.translation = (17.670598, -8.835299, 0.0)
-cell4.region = 
+cell4.region = -surf44
 
 # Pin
 cell5 = openmc.Cell(cell_id=5, fill=universe8)
 cell5.translation = (-17.670598, 8.835299, 0.0)
-cell5.region = 
+cell5.region = -surf45
 
 # Pin
 cell6 = openmc.Cell(cell_id=6, fill=universe8)
 cell6.translation = (17.670598, 8.835299, 0.0)
-cell6.region = 
+cell6.region = -surf46
 
 # Pin
 cell7 = openmc.Cell(cell_id=7, fill=universe8)
 cell7.translation = (-15.903539, 10.602359, 0.0)
-cell7.region = 
+cell7.region = -surf47
 
 # Pin
 cell8 = openmc.Cell(cell_id=8, fill=universe8)
 cell8.translation = (15.903539, 10.602359, 0.0)
-cell8.region = 
+cell8.region = -surf48
 
 # Slit
 cell9 = openmc.Cell(cell_id=9, fill=universe7)
 cell9.translation = (0.0, 0.0, 0.0)
-cell9.region = -surf21
+cell9.region = -surf21 & +surf41 & +surf42 & +surf43 & +surf44
 
 # Slit
 cell10 = openmc.Cell(cell_id=10, fill=universe7)
 cell10.translation = (0.0, 0.0, 0.0)
-cell10.region = -surf22
+cell10.region = -surf22 & +surf45 & +surf46 & +surf47 & +surf48
 
 # Core
 cell11 = openmc.Cell(cell_id=11, fill=universe4)
-cell11.region = -surf4 & -surf7 & -surf20 & +surf21 & +surf22
+cell11.region = -surf4 & -surf7 & -surf20 & +surf21 & +surf22 & +surf41 & +surf42 & +surf43 & +surf44 & +surf45 & +surf46 & +surf47 & +surf48 & +surf51 & +surf52 & +surf53 & +surf54
 
 # Alles
 cell12 = openmc.Cell(cell_id=12, fill=universe1)
-cell12.region = -surf4 & -surf7 & +surf20
+cell12.region = -surf4 & -surf7 & +surf20 & +surf51 & +surf52 & +surf53 & +surf54
 
 # Alles
 cell13 = openmc.Cell(cell_id=13, fill=universe1)
-cell13.region = +surf4 & -surf7
+cell13.region = +surf4 & -surf7 & +surf51 & +surf52 & +surf53 & +surf54
 
 # Zr4
 cell14 = openmc.Cell(cell_id=14, fill=mat4)
-cell14.region = +surf4
+cell14.region = -surf51 & +surf4 & -surf52 & -surf53 & -surf54
 
 # H2O
 cell23 = openmc.Cell(cell_id=23, fill=mat6)

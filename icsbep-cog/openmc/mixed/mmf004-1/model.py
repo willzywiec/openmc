@@ -131,12 +131,8 @@ cell3.region = +surf3 & +surf8 & +surf9
 
 # Pu
 cell4 = openmc.Cell(cell_id=4, fill=mat1)
-cell4.region = 
-
 # HEU
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = 
-
 # HEU
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
 cell6.region = -surf10 & +surf20

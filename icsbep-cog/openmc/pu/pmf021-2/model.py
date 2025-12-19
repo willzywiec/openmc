@@ -74,76 +74,40 @@ materials = openmc.Materials([mat1, mat2, mat3, mat41, mat42, mat43])
 
 # Pu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # Pu
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = 
-
 # Pu
 cell3 = openmc.Cell(cell_id=3, fill=mat1)
-cell3.region = 
-
 # Pu
 cell4 = openmc.Cell(cell_id=4, fill=mat1)
-cell4.region = 
-
 # Pu
 cell5 = openmc.Cell(cell_id=5, fill=mat1)
-cell5.region = 
-
 # STL
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
-cell6.region = 
-
 # BeO
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
-cell7.region = 
-
 # Al
 cell8 = openmc.Cell(cell_id=8, fill=mat41)
-cell8.region = 
-
 # Al
 cell9 = openmc.Cell(cell_id=9, fill=mat42)
-cell9.region = 
-
 # Pu
 cell10 = openmc.Cell(cell_id=10, fill=mat1)
-cell10.region = 
-
 # Pu
 cell11 = openmc.Cell(cell_id=11, fill=mat1)
-cell11.region = 
-
 # Pu
 cell12 = openmc.Cell(cell_id=12, fill=mat1)
-cell12.region = 
-
 # Pu
 cell13 = openmc.Cell(cell_id=13, fill=mat1)
-cell13.region = 
-
 # Pu
 cell14 = openmc.Cell(cell_id=14, fill=mat1)
-cell14.region = 
-
 # STL
 cell15 = openmc.Cell(cell_id=15, fill=mat2)
-cell15.region = 
-
 # BeO
 cell16 = openmc.Cell(cell_id=16, fill=mat3)
-cell16.region = 
-
 # Al
 cell17 = openmc.Cell(cell_id=17, fill=mat43)
-cell17.region = 
-
 # Al
 cell18 = openmc.Cell(cell_id=18, fill=mat42)
-cell18.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18])
 geometry = openmc.Geometry(root_universe)
 

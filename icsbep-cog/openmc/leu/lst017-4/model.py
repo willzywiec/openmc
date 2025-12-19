@@ -52,10 +52,7 @@ surf2 = openmc.model.RectangularParallelepiped(-16.57, 16.57, -37.045, 37.045, -
 # Base plate
 surf3 = openmc.model.RectangularParallelepiped(-83.0, 17.0, -50.0, 50.0, -19.0, -16.0)
 # Hole in base plate
-surf4_cyl = openmc.ZCylinder(surface_id=4, x0=tr, y0=2.0, r=7.76)
-surf4_zmin = openmc.ZPlane(z0=17.0)
-surf4_zmax = openmc.ZPlane(z0=0.0)
-surf4 = (surf4_cyl, surf4_zmin, surf4_zmax)
+surf4 = openmc.ZCylinder(surface_id=4, x0=2.0, y0=17.0, r=7.76)
 # Water-reflector pool tank wall /inner
 surf6 = openmc.model.RectangularParallelepiped(-118.0, 282.0, -100.0, 100.0, -499.995, 499.995, boundary_type="vacuum")
 # Water-reflector pool tank wall /outer

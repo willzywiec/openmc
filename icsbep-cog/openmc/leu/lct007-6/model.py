@@ -98,25 +98,13 @@ surf16 = openmc.ZCylinder(surface_id=16, x0=-0.3, y0=-0.05, r=999.9)
 # SS upper grid plate
 surf17 = openmc.ZCylinder(surface_id=17, x0=96.45, y0=96.7, r=999.9)
 # Hole in grid plates
-surf21_cyl = openmc.ZCylinder(surface_id=21, x0=tr, y0=-1.489564, r=0.5)
-surf21_zmin = openmc.ZPlane(z0=0.86)
-surf21_zmax = openmc.ZPlane(z0=0.0)
-surf21 = (surf21_cyl, surf21_zmin, surf21_zmax)
+surf21 = openmc.ZCylinder(surface_id=21, x0=-1.489564, y0=0.86, r=0.5)
 # Hole in grid plates
-surf22_cyl = openmc.ZCylinder(surface_id=22, x0=tr, y0=-1.489564, r=0.5)
-surf22_zmin = openmc.ZPlane(z0=-0.86)
-surf22_zmax = openmc.ZPlane(z0=0.0)
-surf22 = (surf22_cyl, surf22_zmin, surf22_zmax)
+surf22 = openmc.ZCylinder(surface_id=22, x0=-1.489564, y0=-0.86, r=0.5)
 # Hole in grid plates
-surf23_cyl = openmc.ZCylinder(surface_id=23, x0=tr, y0=1.489564, r=0.5)
-surf23_zmin = openmc.ZPlane(z0=0.86)
-surf23_zmax = openmc.ZPlane(z0=0.0)
-surf23 = (surf23_cyl, surf23_zmin, surf23_zmax)
+surf23 = openmc.ZCylinder(surface_id=23, x0=1.489564, y0=0.86, r=0.5)
 # Hole in grid plates
-surf24_cyl = openmc.ZCylinder(surface_id=24, x0=tr, y0=1.489564, r=0.5)
-surf24_zmin = openmc.ZPlane(z0=-0.86)
-surf24_zmax = openmc.ZPlane(z0=0.0)
-surf24 = (surf24_cyl, surf24_zmin, surf24_zmax)
+surf24 = openmc.ZCylinder(surface_id=24, x0=1.489564, y0=-0.86, r=0.5)
 
 # ------------------------------------------------------------------------------
 # Universes

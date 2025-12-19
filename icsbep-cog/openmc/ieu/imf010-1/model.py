@@ -168,52 +168,28 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 
 # CORE1
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # CORE2
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = 
-
 # CORE3
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = 
-
 # CORE4
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = 
-
 # DUUAX
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
-cell5.region = 
-
 # LDLAX
 cell6 = openmc.Cell(cell_id=6, fill=mat6)
-cell6.region = 
-
 # MATRX
 cell7 = openmc.Cell(cell_id=7, fill=mat8)
-cell7.region = 
-
 # MATRX
 cell8 = openmc.Cell(cell_id=8, fill=mat8)
-cell8.region = 
-
 # DURAD
 cell9 = openmc.Cell(cell_id=9, fill=mat7)
-cell9.region = 
-
 # MATRX
 cell10 = openmc.Cell(cell_id=10, fill=mat8)
-cell10.region = 
-
 # MATRX
 cell11 = openmc.Cell(cell_id=11, fill=mat8)
-cell11.region = 
-
 # MTRIX
 cell12 = openmc.Cell(cell_id=12, fill=mat9)
-cell12.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12])
 geometry = openmc.Geometry(root_universe)
 

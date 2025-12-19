@@ -89,20 +89,14 @@ surf16 = openmc.model.RectangularParallelepiped(1.08, 29.880000000000003, -29.88
 surf18 = openmc.model.RectangularParallelepiped(-47.5, 47.5, -47.5, 47.5, -3.0, -2.2)
 # Tank & BCD
 surf19 = openmc.model.RectangularParallelepiped(-60.0, 60.0, -60.0, 60.0, -22.200000000000003, 103.8, boundary_type="vacuum")
-surf20_cyl = openmc.ZCylinder(surface_id=20, x0=tr, y0=-28.9475, r=0.7975)
-surf20_zmin = openmc.ZPlane(z0=28.9475)
-surf20_zmax = openmc.ZPlane(z0=0.0)
-surf20 = (surf20_cyl, surf20_zmin, surf20_zmax)
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
-surf25_cyl = openmc.ZCylinder(surface_id=25, x0=tr, y0=28.9475, r=0.7975)
-surf25_zmin = openmc.ZPlane(z0=28.9475)
-surf25_zmax = openmc.ZPlane(z0=0.0)
-surf25 = (surf25_cyl, surf25_zmin, surf25_zmax)
-# surf26: Error converting surface type "c": could not convert string to float: 'tr'
-# surf27: Error converting surface type "c": could not convert string to float: 'tr'
-# surf28: Error converting surface type "c": could not convert string to float: 'tr'
+surf20 = openmc.ZCylinder(surface_id=20, x0=-28.9475, y0=28.9475, r=0.7975)
+surf21 = openmc.ZCylinder(surface_id=21, x0=-28.9475, y0=28.9475, r=0.9325)
+surf22 = openmc.ZCylinder(surface_id=22, x0=-1.88, y0=29.08, r=0.5)
+surf23 = openmc.ZCylinder(surface_id=23, x0=-29.08, y0=1.88, r=0.5)
+surf25 = openmc.ZCylinder(surface_id=25, x0=28.9475, y0=28.9475, r=0.7975)
+surf26 = openmc.ZCylinder(surface_id=26, x0=28.9475, y0=28.9475, r=0.9325)
+surf27 = openmc.ZCylinder(surface_id=27, x0=1.88, y0=29.08, r=0.5)
+surf28 = openmc.ZCylinder(surface_id=28, x0=29.08, y0=1.88, r=0.5)
 # Steel,   28.8  x 0.2  x 106
 surf101 = openmc.model.RectangularParallelepiped(-29.880000000000003, -1.08, 0.8800000000000008, 30.08, -2.200000000000003, 103.8)
 # Cadmium, 28.8  x 0.05 x 106
@@ -206,11 +200,11 @@ universe2.add_cell(openmc.Cell(fill=lattice2))
 # Assy
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
 cell1.translation = (-15.48, 15.48, 0.0)
-cell1.region = +surf18 & -surf10
+cell1.region = +surf18 & -surf10 & +surf21 & +surf22 & +surf23
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = +surf18 & -surf10 & +surf20
+cell2.region = +surf18 & -surf10 & +surf20 & -surf21 & -surf22 & -surf23
 
 # Abstl
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
@@ -239,11 +233,11 @@ cell8.region = +surf18 & +surf10 & +surf111 & +surf112 & -surf113 & +surf103
 # Assy
 cell9 = openmc.Cell(cell_id=9, fill=universe2)
 cell9.translation = (15.48, 15.48, 0.0)
-cell9.region = +surf18 & -surf12
+cell9.region = +surf18 & -surf12 & +surf26 & +surf27 & +surf28
 
 # SST
 cell10 = openmc.Cell(cell_id=10, fill=mat3)
-cell10.region = +surf18 & -surf12 & +surf25
+cell10.region = +surf18 & -surf12 & +surf25 & -surf26 & -surf27 & -surf28
 
 # Abstl
 cell11 = openmc.Cell(cell_id=11, fill=mat3)

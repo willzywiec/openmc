@@ -110,41 +110,24 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8])
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = 
 u1_cell1 = openmc.Cell(fill=mat7)
-u1_cell1.region = 
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = 
 u1_cell3 = openmc.Cell(fill=mat4)
-u1_cell3.region = 
 u1_cell4 = openmc.Cell(fill=mat6)
-u1_cell4.region = 
 u1_cell5 = openmc.Cell(fill=mat3)
-u1_cell5.region = 
 u1_cell6 = openmc.Cell(fill=mat7)
-u1_cell6.region = 
 u1_cell7 = openmc.Cell(fill=mat3)
-u1_cell7.region = 
 u1_cell8 = openmc.Cell(fill=mat6)
-u1_cell8.region = 
 u1_cell9 = openmc.Cell(fill=mat7)
-u1_cell9.region = 
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7, u1_cell8, u1_cell9])
 
 u2_cell0 = openmc.Cell(fill=mat4)
-u2_cell0.region = 
 u2_cell1 = openmc.Cell(fill=mat6)
-u2_cell1.region = 
 u2_cell2 = openmc.Cell(fill=mat3)
-u2_cell2.region = 
 u2_cell3 = openmc.Cell(fill=mat7)
-u2_cell3.region = 
 u2_cell4 = openmc.Cell(fill=mat3)
-u2_cell4.region = 
 u2_cell5 = openmc.Cell(fill=mat6)
-u2_cell5.region = 
 u2_cell6 = openmc.Cell(fill=mat7)
-u2_cell6.region = 
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, u2_cell3, u2_cell4, u2_cell5, u2_cell6])
 
 universe3 = openmc.Universe(universe_id=3, cells=[])
@@ -174,39 +157,30 @@ universe4.add_cell(openmc.Cell(fill=lattice4))
 
 # core
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = 
 
 # core
 cell2 = openmc.Cell(cell_id=2, fill=universe4)
-cell2.region = 
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
-cell3.region = 
 
 # Al
 cell4 = openmc.Cell(cell_id=4, fill=mat8)
-cell4.region = 
 
 # Air
 cell5 = openmc.Cell(cell_id=5, fill=mat7)
-cell5.region = 
 
 # Air
 cell6 = openmc.Cell(cell_id=6, fill=mat7)
-cell6.region = 
 
 # H2O
 cell7 = openmc.Cell(cell_id=7, fill=mat6)
-cell7.region = 
 
 # Air
 cell18 = openmc.Cell(cell_id=18, fill=mat7)
-cell18.region = 
 
 # Air
 cell26 = openmc.Cell(cell_id=26, fill=mat7)
-cell26.region = 
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell18, cell26])
 geometry = openmc.Geometry(root_universe)

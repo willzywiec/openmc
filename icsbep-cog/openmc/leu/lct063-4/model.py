@@ -261,7 +261,7 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # ==============================================================================
 
 # BCD
-surf1 = openmc.ZCylinder(surface_id=1, x0=-32.348, y0=71.720, r=129.55, boundary_type="vacuum")
+surf1 = openmc.ZCylinder(surface_id=1, x0=-32.348, y0=71.72, r=129.55, boundary_type="vacuum")
 # Hc
 surf2 = openmc.ZPlane(surface_id=2, z0=53.80)
 # Upper lattice plate
@@ -303,17 +303,17 @@ surf24 = openmc.ZCylinder(surface_id=24, x0=-1.078, y0=0.0, r=0.5199)
 # Upper end plug
 surf25 = openmc.ZCylinder(surface_id=25, x0=69.285, y0=70.748, r=0.5199)
 # Clad
-surf26 = openmc.ZCylinder(surface_id=26, x0=-1.030, y0=70.700, r=0.54685)
+surf26 = openmc.ZCylinder(surface_id=26, x0=-1.03, y0=70.7, r=0.54685)
 # Air and water
 # surf27: Unsupported surface type "rev" with params ['4', '-2.348', '0.320', '-1.078', '0.320', '-1.078', '0.5555', '70.748', '0.5555', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
-# surf31: Error converting surface type "c": could not convert string to float: 'tr'
-# surf32: Error converting surface type "c": could not convert string to float: 'tr'
-# surf33: Error converting surface type "c": could not convert string to float: 'tr'
-# surf34: Error converting surface type "c": could not convert string to float: 'tr'
-# surf35: Error converting surface type "c": could not convert string to float: 'tr'
-# surf36: Error converting surface type "c": could not convert string to float: 'tr'
-# surf37: Error converting surface type "c": could not convert string to float: 'tr'
-# surf38: Error converting surface type "c": could not convert string to float: 'tr'
+surf31 = openmc.ZCylinder(surface_id=31, x0=-0.62535, y0=-0.62535, r=0.435)
+surf32 = openmc.ZCylinder(surface_id=32, x0=-0.62535, y0=0.62535, r=0.435)
+surf33 = openmc.ZCylinder(surface_id=33, x0=0.62535, y0=-0.62535, r=0.435)
+surf34 = openmc.ZCylinder(surface_id=34, x0=0.62535, y0=0.62535, r=0.435)
+surf35 = openmc.ZCylinder(surface_id=35, x0=-0.62535, y0=-0.62535, r=0.2)
+surf36 = openmc.ZCylinder(surface_id=36, x0=-0.62535, y0=0.62535, r=0.2)
+surf37 = openmc.ZCylinder(surface_id=37, x0=0.62535, y0=-0.62535, r=0.2)
+surf38 = openmc.ZCylinder(surface_id=38, x0=0.62535, y0=0.62535, r=0.2)
 # Inner portion with drain holes
 surf41 = openmc.model.RectangularParallelepiped(-46.90125, 46.90125, -45.65055, 45.65055, -2.348, 999.9)
 # Outer portion without drain holes
@@ -341,11 +341,11 @@ surf74 = openmc.ZCylinder(surface_id=74, x0=0.0, y0=69.326, r=0.52175)
 # Lower end plug
 surf75 = openmc.ZCylinder(surface_id=75, x0=-1.078, y0=0.0, r=0.52175)
 # Upper end plug
-surf76 = openmc.ZCylinder(surface_id=76, x0=69.326, y0=71.720, r=0.52175)
+surf76 = openmc.ZCylinder(surface_id=76, x0=69.326, y0=71.72, r=0.52175)
 # Dowel
 surf77 = openmc.ZCylinder(surface_id=77, x0=-2.078, y0=-0.678, r=0.315)
 # Outer clad
-surf78 = openmc.ZCylinder(surface_id=78, x0=-1.030, y0=70.700, r=0.54585)
+surf78 = openmc.ZCylinder(surface_id=78, x0=-1.03, y0=70.7, r=0.54585)
 # Air and water
 # surf79: Unsupported surface type "rev" with params ['4', '-2.348', '0.320', '-1.078', '0.320', '-1.078', '0.5555', '71.720', '0.5555', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
 
@@ -392,21 +392,21 @@ u3_cell7.region = +surf23 & +surf24 & +surf25 & +surf26 & +surf2
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2, u3_cell3, u3_cell4, u3_cell5, u3_cell6, u3_cell7])
 
 u4_cell0 = openmc.Cell(fill=mat12)
-u4_cell0.region = 
+u4_cell0.region = -surf31
 u4_cell1 = openmc.Cell(fill=mat12)
-u4_cell1.region = 
+u4_cell1.region = -surf32
 u4_cell2 = openmc.Cell(fill=mat12)
-u4_cell2.region = 
+u4_cell2.region = -surf33
 u4_cell3 = openmc.Cell(fill=mat12)
-u4_cell3.region = 
+u4_cell3.region = -surf34
 u4_cell4 = openmc.Cell()
-u4_cell4.region = 
+u4_cell4.region = -surf35
 u4_cell5 = openmc.Cell()
-u4_cell5.region = 
+u4_cell5.region = -surf36
 u4_cell6 = openmc.Cell()
-u4_cell6.region = 
+u4_cell6.region = -surf37
 u4_cell7 = openmc.Cell()
-u4_cell7.region = 
+u4_cell7.region = -surf38
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4, u4_cell5, u4_cell6, u4_cell7])
 
 u5_cell0 = openmc.Cell()
@@ -414,21 +414,21 @@ u5_cell0.region = +surf2
 u5_cell1 = openmc.Cell(fill=mat12)
 u5_cell1.region = -surf2
 u5_cell2 = openmc.Cell(fill=mat12)
-u5_cell2.region = 
+u5_cell2.region = -surf31
 u5_cell3 = openmc.Cell(fill=mat12)
-u5_cell3.region = 
+u5_cell3.region = -surf32
 u5_cell4 = openmc.Cell(fill=mat12)
-u5_cell4.region = 
+u5_cell4.region = -surf33
 u5_cell5 = openmc.Cell(fill=mat12)
-u5_cell5.region = 
+u5_cell5.region = -surf34
 u5_cell6 = openmc.Cell()
-u5_cell6.region = 
+u5_cell6.region = -surf35
 u5_cell7 = openmc.Cell()
-u5_cell7.region = 
+u5_cell7.region = -surf36
 u5_cell8 = openmc.Cell()
-u5_cell8.region = 
+u5_cell8.region = -surf37
 u5_cell9 = openmc.Cell()
-u5_cell9.region = 
+u5_cell9.region = -surf38
 universe5 = openmc.Universe(universe_id=5, cells=[u5_cell0, u5_cell1, u5_cell2, u5_cell3, u5_cell4, u5_cell5, u5_cell6, u5_cell7, u5_cell8, u5_cell9])
 
 u6_cell0 = openmc.Cell()
@@ -460,21 +460,21 @@ u7_cell9.region = +surf75 & +surf77 & +surf78 & -surf2
 universe7 = openmc.Universe(universe_id=7, cells=[u7_cell0, u7_cell1, u7_cell2, u7_cell3, u7_cell4, u7_cell5, u7_cell6, u7_cell7, u7_cell8, u7_cell9])
 
 u8_cell0 = openmc.Cell(fill=mat12)
-u8_cell0.region = 
+u8_cell0.region = -surf31
 u8_cell1 = openmc.Cell(fill=mat12)
-u8_cell1.region = 
+u8_cell1.region = -surf32
 u8_cell2 = openmc.Cell(fill=mat12)
-u8_cell2.region = 
+u8_cell2.region = -surf33
 u8_cell3 = openmc.Cell(fill=mat12)
-u8_cell3.region = 
+u8_cell3.region = -surf34
 u8_cell4 = openmc.Cell()
-u8_cell4.region = 
+u8_cell4.region = -surf35
 u8_cell5 = openmc.Cell()
-u8_cell5.region = 
+u8_cell5.region = -surf36
 u8_cell6 = openmc.Cell()
-u8_cell6.region = 
+u8_cell6.region = -surf37
 u8_cell7 = openmc.Cell()
-u8_cell7.region = 
+u8_cell7.region = -surf38
 universe8 = openmc.Universe(universe_id=8, cells=[u8_cell0, u8_cell1, u8_cell2, u8_cell3, u8_cell4, u8_cell5, u8_cell6, u8_cell7])
 
 # Lattice 9: 76x74 array

@@ -181,48 +181,26 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 
 # RGN1
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # RGN2
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = 
-
 # RGN3
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = 
-
 # RGN4
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = 
-
 # RGN5
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
-cell5.region = 
-
 # RGN6
 cell6 = openmc.Cell(cell_id=6, fill=mat6)
-cell6.region = 
-
 # RGN7
 cell7 = openmc.Cell(cell_id=7, fill=mat7)
-cell7.region = 
-
 # RGN8
 cell8 = openmc.Cell(cell_id=8, fill=mat8)
-cell8.region = 
-
 # RGN9
 cell9 = openmc.Cell(cell_id=9, fill=mat9)
-cell9.region = 
-
 # RGN10
 cell10 = openmc.Cell(cell_id=10, fill=mat10)
-cell10.region = 
-
 # RGN11
 cell11 = openmc.Cell(cell_id=11, fill=mat11)
-cell11.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11])
 geometry = openmc.Geometry(root_universe)
 

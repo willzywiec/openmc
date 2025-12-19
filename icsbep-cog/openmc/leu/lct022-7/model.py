@@ -76,25 +76,13 @@ surf10 = openmc.ZCylinder(surface_id=10, x0=-2.3, y0=-1.1, r=99.9)
 # Lattice plate hole - 1
 surf11 = openmc.ZCylinder(surface_id=11, r=0.26)
 # Lattice plate hole - 2
-surf12_cyl = openmc.ZCylinder(surface_id=12, x0=tr, y0=-0.926013, r=0.26)
-surf12_zmin = openmc.ZPlane(z0=1.6039)
-surf12_zmax = openmc.ZPlane(z0=0.0)
-surf12 = (surf12_cyl, surf12_zmin, surf12_zmax)
+surf12 = openmc.ZCylinder(surface_id=12, x0=-0.926013, y0=1.6039, r=0.26)
 # Lattice plate hole - 3
-surf13_cyl = openmc.ZCylinder(surface_id=13, x0=tr, y0=-0.926013, r=0.26)
-surf13_zmin = openmc.ZPlane(z0=-1.6039)
-surf13_zmax = openmc.ZPlane(z0=0.0)
-surf13 = (surf13_cyl, surf13_zmin, surf13_zmax)
+surf13 = openmc.ZCylinder(surface_id=13, x0=-0.926013, y0=-1.6039, r=0.26)
 # Lattice plate hole - 4
-surf14_cyl = openmc.ZCylinder(surface_id=14, x0=tr, y0=0.926013, r=0.26)
-surf14_zmin = openmc.ZPlane(z0=1.6039)
-surf14_zmax = openmc.ZPlane(z0=0.0)
-surf14 = (surf14_cyl, surf14_zmin, surf14_zmax)
+surf14 = openmc.ZCylinder(surface_id=14, x0=0.926013, y0=1.6039, r=0.26)
 # Lattice plate hole - 5
-surf15_cyl = openmc.ZCylinder(surface_id=15, x0=tr, y0=0.926013, r=0.26)
-surf15_zmin = openmc.ZPlane(z0=-1.6039)
-surf15_zmax = openmc.ZPlane(z0=0.0)
-surf15 = (surf15_cyl, surf15_zmin, surf15_zmax)
+surf15 = openmc.ZCylinder(surface_id=15, x0=0.926013, y0=-1.6039, r=0.26)
 # Lattice plate - lower
 surf16 = openmc.ZCylinder(surface_id=16, x0=0.4, y0=0.7, r=99.9)
 # Lattice plate - upper

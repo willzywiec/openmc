@@ -43,20 +43,12 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 
 # core
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = 
-
 # clad
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = 
-
 # refl
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = 
-
 # poly
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = 
-
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4])
 geometry = openmc.Geometry(root_universe)
 
