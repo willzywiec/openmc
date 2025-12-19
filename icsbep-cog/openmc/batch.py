@@ -304,6 +304,9 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
         original_dir = os.getcwd()
         os.chdir(bench_dir)
 
+        if verbose:
+            print(f"    Generating XML from model.py...", flush=True)
+
         # Run model.py to generate XML files
         proc_result = subprocess.run(
             [sys.executable, str(model_file)],
@@ -311,6 +314,9 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
             text=True,
             timeout=120
         )
+
+        if verbose:
+            print(f"    XML generation complete (rc={proc_result.returncode})", flush=True)
 
         if proc_result.returncode != 0:
             os.chdir(original_dir)
@@ -373,7 +379,7 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
                 cmd.extend(openmc_args)
 
             if verbose:
-                print(f"  Running: {' '.join(cmd)} in {bench_dir}", flush=True)
+                print(f"    Running OpenMC: {' '.join(cmd)}", flush=True)
 
             proc_result = subprocess.run(
                 cmd,
@@ -381,6 +387,9 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
                 text=True,
                 timeout=timeout
             )
+
+            if verbose:
+                print(f"    OpenMC complete (rc={proc_result.returncode})", flush=True)
 
             # Parse results from output
             full_output = proc_result.stdout + proc_result.stderr
