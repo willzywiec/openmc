@@ -71,6 +71,13 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # Geometry
 # ==============================================================================
 
+surf1 = openmc.Sphere(surface_id=1, r=1.176)
+surf2 = openmc.Sphere(surface_id=2, r=1.400)
+surf3 = openmc.Sphere(surface_id=3, r=3.150)
+surf4 = openmc.Sphere(surface_id=4, r=4.020)
+surf5 = openmc.Sphere(surface_id=5, r=4.660)
+surf6 = openmc.Sphere(surface_id=6, r=5.350)
+surf7 = openmc.Sphere(surface_id=7, r=25.00, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -78,16 +85,28 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 
 # dPu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = +surf1 & -surf2
+
 # dPu
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+cell2.region = +surf2 & -surf3
+
 # dPu
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
+cell3.region = +surf3 & -surf4
+
 # dPu
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
+cell4.region = +surf4 & -surf5
+
 # dPu
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
+cell5.region = +surf5 & -surf6
+
 # Steel
 cell6 = openmc.Cell(cell_id=6, fill=mat6)
+cell6.region = +surf6 & -surf7
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)
 

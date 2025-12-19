@@ -55,7 +55,11 @@ surf3 = openmc.model.RectangularParallelepiped(-450.0, 450.0, -450.0, 450.0, -45
 # Actual dimensions
 surf4 = openmc.model.RectangularParallelepiped(-66.24828, 66.24828, -66.24828, 66.24828, -81.662, 81.662)
 # Radial reflector boundary
-surf5 = openmc.ZCylinder(surface_id=5, x0=-81.662, y0=81.662, r=76.2, boundary_type="vacuum")
+surf5 = openmc.ZCylinder(surface_id=5, r=76.2)
+
+# Z-plane surfaces for bounded cylinders
+surf5_zmin = openmc.ZPlane(z0=-81.662, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(z0=81.662, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -169,11 +173,11 @@ universe3.add_cell(openmc.Cell(fill=lattice3))
 
 # lttc
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = -surf4 & -surf5
+cell1.region = -surf4 & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # H2O-B
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = +surf4 & -surf5
+cell2.region = +surf4 & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # H2O-B
 cell6 = openmc.Cell(cell_id=6, fill=mat3)

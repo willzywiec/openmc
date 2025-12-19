@@ -120,6 +120,35 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+surf1 = openmc.ZCylinder(surface_id=1, r=0.5933)
+surf2 = openmc.ZCylinder(surface_id=2, r=5.502)
+surf3 = openmc.ZCylinder(surface_id=3, r=6.55)
+surf4 = openmc.ZCylinder(surface_id=4, r=6.8)
+surf5 = openmc.ZCylinder(surface_id=5, r=6.9)
+surf6 = openmc.ZCylinder(surface_id=6, r=8.2)
+surf7 = openmc.ZCylinder(surface_id=7, r=8.35)
+surf8 = openmc.ZCylinder(surface_id=8, r=8.6)
+surf9 = openmc.ZCylinder(surface_id=9, r=8.8)
+surf10 = openmc.ZCylinder(surface_id=10, r=10.8)
+surf11 = openmc.ZCylinder(surface_id=11, r=11.0)
+surf12 = openmc.ZCylinder(surface_id=12, r=11.3)
+surf13 = openmc.ZCylinder(surface_id=13, r=11.5)
+surf14 = openmc.ZCylinder(surface_id=14, r=15.0)
+surf15 = openmc.ZCylinder(surface_id=15, r=15.25)
+surf16 = openmc.ZCylinder(surface_id=16, r=19.0063)
+surf17 = openmc.ZCylinder(surface_id=17, r=48.645, boundary_type="vacuum")
+# surf20: Unsupported surface type "analytic" with params ['1.', 'z', '0.0', 'constant']
+# surf21: Unsupported surface type "analytic" with params ['1.', 'z', '-25.5', 'constant']
+# surf22: Unsupported surface type "analytic" with params ['1.', 'z', '-26.8', 'constant']
+# surf23: Unsupported surface type "analytic" with params ['1.', 'z', '-28.98', 'constant']
+# surf24: Unsupported surface type "analytic" with params ['1.', 'z', '-41.98', 'constant']
+# surf25: Unsupported surface type "analytic" with params ['1.', 'z', '-43.5', 'constant']
+# surf26: Unsupported surface type "analytic" with params ['1.', 'z', '-44.16', 'constant']
+# surf27: Unsupported surface type "analytic" with params ['1.', 'z', '-45.0', 'constant']
+# surf28: Unsupported surface type "analytic" with params ['1.', 'z', '-47.0', 'constant']
+# surf29: Unsupported surface type "analytic" with params ['1.', 'z', '-47.16', 'constant']
+# surf30: Unsupported surface type "analytic" with params ['1.', 'z', '-68.66', 'constant']
+# surf31: Unsupported surface type "analytic" with params ['1.', 'z', '-71.0', 'constant']
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -127,74 +156,144 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 
 # VOID
 cell1 = openmc.Cell(cell_id=1)
+cell1.region = +surf4 & -surf5 & +surf20 & -surf24
+
 # VOID
 cell2 = openmc.Cell(cell_id=2)
+cell2.region = +surf4 & -surf5 & +surf28 & -surf31
+
 # VOID
 cell3 = openmc.Cell(cell_id=3)
+cell3.region = +surf6 & -surf7 & +surf20 & -surf24
+
 # VOID
 cell4 = openmc.Cell(cell_id=4)
+cell4.region = +surf4 & -surf7 & +surf24 & -surf25
+
 # VOID
 cell5 = openmc.Cell(cell_id=5)
+cell5.region = +surf8 & -surf9 & +surf20 & -surf24
+
 # VOID
 cell6 = openmc.Cell(cell_id=6)
+cell6.region = +surf10 & -surf11 & +surf20 & -surf24
+
 # VOID
 cell7 = openmc.Cell(cell_id=7)
+cell7.region = +surf8 & -surf11 & +surf24 & -surf27
+
 # VOID
 cell8 = openmc.Cell(cell_id=8)
+cell8.region = +surf12 & -surf13 & +surf20 & -surf31
+
 # VOID
 cell9 = openmc.Cell(cell_id=9)
+cell9.region = +surf14 & -surf15 & +surf20 & -surf31
+
 # REG0l
 cell10 = openmc.Cell(cell_id=10, fill=mat1)
+cell10.region = +surf1 & -surf2 & +surf23 & -surf24
+
 # REG02
 cell11 = openmc.Cell(cell_id=11, fill=mat2)
+cell11.region = +surf2 & -surf3 & +surf22 & -surf24
+
 # REG03
 cell12 = openmc.Cell(cell_id=12, fill=mat3)
+cell12.region = +surf1 & -surf2 & +surf22 & -surf23
+
 # REG03
 cell13 = openmc.Cell(cell_id=13, fill=mat3)
+cell13.region = +surf1 & -surf2 & +surf24 & -surf26
+
 # REG04
 cell14 = openmc.Cell(cell_id=14, fill=mat4)
+cell14.region = +surf1 & -surf2 & +surf21 & -surf22
+
 # REG05
 cell15 = openmc.Cell(cell_id=15, fill=mat5)
+cell15.region = +surf1 & -surf2 & +surf26 & -surf29
+
 # REG05
 cell16 = openmc.Cell(cell_id=16, fill=mat5)
+cell16.region = +surf1 & -surf2 & +surf30 & -surf31
+
 # RBG06
 cell17 = openmc.Cell(cell_id=17, fill=mat6)
+cell17.region = +surf1 & -surf2 & +surf29 & -surf30
+
 # REG07
 cell18 = openmc.Cell(cell_id=18, fill=mat7)
+cell18.region = +surf2 & -surf3 & +surf21 & -surf22
+
 # REG08
 cell19 = openmc.Cell(cell_id=19, fill=mat8)
+cell19.region = +surf2 & -surf3 & +surf24 & -surf26
+
 # REG08
 cell20 = openmc.Cell(cell_id=20, fill=mat5)
+cell20.region = +surf2 & -surf3 & +surf29 & -surf30
+
 # REG09
 cell21 = openmc.Cell(cell_id=21, fill=mat9)
+cell21.region = +surf2 & -surf3 & +surf26 & -surf29
+
 # REG09
 cell22 = openmc.Cell(cell_id=22, fill=mat9)
+cell22.region = +surf2 & -surf3 & +surf30 & -surf31
+
 # REG10
 cell23 = openmc.Cell(cell_id=23, fill=mat10)
+cell23.region = -surf1 & +surf20 & -surf31
+
 # REG11
 cell24 = openmc.Cell(cell_id=24, fill=mat11)
+cell24.region = +surf1 & -surf3 & +surf20 & -surf21
+
 # REGll
 cell25 = openmc.Cell(cell_id=25, fill=mat11)
+cell25.region = +surf5 & -surf12 & +surf28 & -surf31
+
 # REG11
 cell26 = openmc.Cell(cell_id=26, fill=mat11)
+cell26.region = +surf13 & -surf14 & +surf20 & -surf31
+
 # REG11
 cell27 = openmc.Cell(cell_id=27, fill=mat11)
+cell27.region = +surf15 & -surf16 & +surf20 & -surf31
+
 # REG12
 cell28 = openmc.Cell(cell_id=28, fill=mat12)
+cell28.region = +surf3 & -surf4 & +surf20 & -surf31
+
 # REG12
 cell29 = openmc.Cell(cell_id=29, fill=mat12)
+cell29.region = +surf4 & -surf8 & +surf25 & -surf27
+
 # REG12
 cell30 = openmc.Cell(cell_id=30, fill=mat12)
+cell30.region = +surf7 & -surf8 & +surf20 & -surf25
+
 # REG12
 cell31 = openmc.Cell(cell_id=31, fill=mat12)
+cell31.region = +surf4 & -surf12 & +surf27 & -surf28
+
 # REG12
 cell32 = openmc.Cell(cell_id=32, fill=mat12)
+cell32.region = +surf11 & -surf12 & +surf20 & -surf27
+
 # REGl3
 cell33 = openmc.Cell(cell_id=33, fill=mat13)
+cell33.region = +surf5 & -surf6 & +surf20 & -surf24
+
 # REG14
 cell34 = openmc.Cell(cell_id=34, fill=mat14)
+cell34.region = +surf9 & -surf10 & +surf20 & -surf24
+
 # REG14
 cell35 = openmc.Cell(cell_id=35, fill=mat15)
+cell35.region = +surf16 & -surf17 & +surf20 & -surf31
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29, cell30, cell31, cell32, cell33, cell34, cell35])
 geometry = openmc.Geometry(root_universe)
 

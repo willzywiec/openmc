@@ -77,13 +77,13 @@ materials = openmc.Materials([mat1, mat2, mat3, mat6])
 # ==============================================================================
 
 # Central cavity
-surf1 = openmc.ZCylinder(surface_id=1, x0=1.27, y0=128.53, r=12.7)
+surf1 = openmc.ZCylinder(surface_id=1, r=12.7)
 # SS304L central tank
-surf2 = openmc.ZCylinder(surface_id=2, x0=0.0, y0=128.53, r=12.774)
+surf2 = openmc.ZCylinder(surface_id=2, r=12.774)
 # Sol'n or void in annular tank
-surf3 = openmc.ZCylinder(surface_id=3, x0=22.005, y0=127.577, r=26.596)
+surf3 = openmc.ZCylinder(surface_id=3, r=26.596)
 # SS304L annular tank
-surf4 = openmc.ZCylinder(surface_id=4, x0=21.37, y0=128.53, r=26.67)
+surf4 = openmc.ZCylinder(surface_id=4, r=26.67)
 # Boundary condition
 surf5 = openmc.model.RectangularParallelepiped(-49.38, 49.38, -50.655, 50.655, 0.0, 137.00, boundary_type="vacuum")
 # Critical solution height (case 094)
@@ -91,11 +91,25 @@ surf6 = openmc.ZPlane(surface_id=6, z0=32.86)
 # Water reflector height (cases 087-099)
 surf7 = openmc.ZPlane(surface_id=7, z0=104.43)
 # Bottle, inner
-surf21 = openmc.ZCylinder(surface_id=21, x0=21.835, y0=136.5, r=7.28)
+surf21 = openmc.ZCylinder(surface_id=21, r=7.28)
 # Bottle, outer
-surf22 = openmc.ZCylinder(surface_id=22, x0=21.2, y0=137.0, r=7.345)
+surf22 = openmc.ZCylinder(surface_id=22, r=7.345)
 # Bottle 2, solution height
 surf23 = openmc.ZPlane(surface_id=23, z0=81.235)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=1.27)
+surf1_zmax = openmc.ZPlane(z0=128.53)
+surf2_zmin = openmc.ZPlane(z0=0.0)
+surf2_zmax = openmc.ZPlane(z0=128.53)
+surf3_zmin = openmc.ZPlane(z0=22.005)
+surf3_zmax = openmc.ZPlane(z0=127.577)
+surf4_zmin = openmc.ZPlane(z0=21.37)
+surf4_zmax = openmc.ZPlane(z0=128.53)
+surf21_zmin = openmc.ZPlane(z0=21.835)
+surf21_zmax = openmc.ZPlane(z0=136.5)
+surf22_zmin = openmc.ZPlane(z0=21.2)
+surf22_zmax = openmc.ZPlane(z0=137.0)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -103,27 +117,27 @@ surf23 = openmc.ZPlane(surface_id=23, z0=81.235)
 
 # SS304L
 cell1 = openmc.Cell(cell_id=1, fill=mat2)
-cell1.region = +surf1 & -surf2 & -surf5
+cell1.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax) & -surf5
 
 # Soln
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = +surf2 & -surf3 & -surf6
+cell2.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax) & -surf6
 
 # SS304L
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf2 & +surf3 & -surf4
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # Water
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = +surf2 & +surf4 & -surf5 & -surf7
+cell4.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & -surf5 & -surf7
 
 # Soln
 cell5 = openmc.Cell(cell_id=5, fill=mat6)
-cell5.region = -surf5 & -surf21 & -surf23
+cell5.region = -surf5 & (-surf21 & +surf21_zmin & -surf21_zmax) & -surf23
 
 # SS304L
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
-cell6.region = -surf5 & +surf21 & -surf22
+cell6.region = -surf5 & (+surf21 | -surf21_zmin | +surf21_zmax) & (-surf22 & +surf22_zmin & -surf22_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)

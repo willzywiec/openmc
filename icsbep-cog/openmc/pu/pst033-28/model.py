@@ -88,98 +88,120 @@ surf1 = openmc.ZPlane(surface_id=1, z0=21.63)
 # SST solution tank, inner
 # surf2: Unsupported surface type "rev" with params ['3', '0.0', '0.0', '0.6', '17.98', '80.7', '17.98']
 # SST solution  tank, outer
-surf3 = openmc.ZCylinder(surface_id=3, x0=-0.3, y0=80.7, r=18.28)
+surf3 = openmc.ZCylinder(surface_id=3, r=18.28)
 # SST reflector tank, inner
-surf4 = openmc.ZCylinder(surface_id=4, x0=-25.9, y0=62.8, r=54.6)
+surf4 = openmc.ZCylinder(surface_id=4, r=54.6)
 # SST refelctor tank, top
 surf5 = openmc.ZPlane(surface_id=5, z0=63.2)
 # SST reflector tank, outer, and BCD
-surf6 = openmc.ZCylinder(surface_id=6, x0=-26.3, y0=85.7, r=55.0, boundary_type="vacuum")
+surf6 = openmc.ZCylinder(surface_id=6, r=55.0)
 # Basket outer boundary
-surf10 = openmc.ZCylinder(surface_id=10, x0=1.2, y0=82.2, r=17.8)
+surf10 = openmc.ZCylinder(surface_id=10, r=17.8)
 # SST bottom plate
-surf11 = openmc.ZCylinder(surface_id=11, x0=1.2, y0=1.38, r=17.5)
+surf11 = openmc.ZCylinder(surface_id=11, r=17.5)
 # SST annular top plate, inner
 surf12 = openmc.ZCylinder(surface_id=12, r=13.75)
 # SST annular top plate, outer
-surf13 = openmc.ZCylinder(surface_id=13, x0=81.8, y0=82.2, r=17.8)
+surf13 = openmc.ZCylinder(surface_id=13, r=17.8)
 # Tie rod, inner
 surf14 = openmc.ZCylinder(surface_id=14, r=0.3)
 # Tie rod, outer
-surf15 = openmc.ZCylinder(surface_id=15, x0=1.38, y0=81.8, r=0.4)
+surf15 = openmc.ZCylinder(surface_id=15, r=0.4)
 # Tie rod #1
-# surf16: Error converting surface type "c": could not convert string to float: 'tr'
+surf16 = openmc.ZCylinder(surface_id=16, x0=0.0, y0=-16.9, r=0.4)
 # Tie rod #2
-# surf17: Error converting surface type "c": could not convert string to float: 'tr'
+surf17 = openmc.ZCylinder(surface_id=17, x0=-14.63583, y0=8.45, r=0.4)
 # Tie rod #3
-# surf18: Error converting surface type "c": could not convert string to float: 'tr'
+surf18 = openmc.ZCylinder(surface_id=18, x0=14.63583, y0=8.45, r=0.4)
 # Lower polyethylene grid plate, entire grid
-surf19 = openmc.ZCylinder(surface_id=19, x0=2.5, y0=2.576, r=17.5)
+surf19 = openmc.ZCylinder(surface_id=19, r=17.5)
 # Upper polyethylene grid plate, entire grid
-surf20 = openmc.ZCylinder(surface_id=20, x0=39.424, y0=39.5, r=17.5)
+surf20 = openmc.ZCylinder(surface_id=20, r=17.5)
 # 3x40 pyrex tube, inner
 surf23 = openmc.ZCylinder(surface_id=23, r=1.3)
 # 3x40 pyrex tube, outer
-surf24 = openmc.ZCylinder(surface_id=24, x0=1.5, y0=41.5, r=1.5)
+surf24 = openmc.ZCylinder(surface_id=24, r=1.5)
 # Pyrex tube #1
-# surf101: Error converting surface type "c": could not convert string to float: 'tr'
+surf101 = openmc.ZCylinder(surface_id=101, x0=-6.46, y0=11.189048, r=1.5)
 # Pyrex tube #2
-# surf102: Error converting surface type "c": could not convert string to float: 'tr'
+surf102 = openmc.ZCylinder(surface_id=102, x0=6.46, y0=11.189048, r=1.5)
 # Pyrex tube #3
-# surf103: Error converting surface type "c": could not convert string to float: 'tr'
+surf103 = openmc.ZCylinder(surface_id=103, x0=-12.92, y0=0.0, r=1.5)
 # Pyrex tube #4
-# surf104: Error converting surface type "c": could not convert string to float: 'tr'
+surf104 = openmc.ZCylinder(surface_id=104, x0=0.0, y0=0.0, r=1.5)
 # Pyrex tube #5
-# surf105: Error converting surface type "c": could not convert string to float: 'tr'
+surf105 = openmc.ZCylinder(surface_id=105, x0=12.92, y0=0.0, r=1.5)
 # Pyrex tube #6
-# surf106: Error converting surface type "c": could not convert string to float: 'tr'
+surf106 = openmc.ZCylinder(surface_id=106, x0=-6.46, y0=-11.189048, r=1.5)
 # Pyrex tube #7
-# surf107: Error converting surface type "c": could not convert string to float: 'tr'
+surf107 = openmc.ZCylinder(surface_id=107, x0=6.46, y0=-11.189048, r=1.5)
+
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=-0.3)
+surf3_zmax = openmc.ZPlane(z0=80.7)
+surf4_zmin = openmc.ZPlane(z0=-25.9)
+surf4_zmax = openmc.ZPlane(z0=62.8)
+surf6_zmin = openmc.ZPlane(z0=-26.3, boundary_type="vacuum")
+surf6_zmax = openmc.ZPlane(z0=85.7, boundary_type="vacuum")
+surf10_zmin = openmc.ZPlane(z0=1.2)
+surf10_zmax = openmc.ZPlane(z0=82.2)
+surf11_zmin = openmc.ZPlane(z0=1.2)
+surf11_zmax = openmc.ZPlane(z0=1.38)
+surf13_zmin = openmc.ZPlane(z0=81.8)
+surf13_zmax = openmc.ZPlane(z0=82.2)
+surf15_zmin = openmc.ZPlane(z0=1.38)
+surf15_zmax = openmc.ZPlane(z0=81.8)
+surf19_zmin = openmc.ZPlane(z0=2.5)
+surf19_zmax = openmc.ZPlane(z0=2.576)
+surf20_zmin = openmc.ZPlane(z0=39.424)
+surf20_zmax = openmc.ZPlane(z0=39.5)
+surf24_zmin = openmc.ZPlane(z0=1.5)
+surf24_zmax = openmc.ZPlane(z0=41.5)
 
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1 & -surf3
+u1_cell0.region = -surf1 & -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 u1_cell1 = openmc.Cell(fill=mat4)
-u1_cell1.region = +surf1 & -surf3
+u1_cell1.region = +surf1 & -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = -surf3
+u1_cell2.region = +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 u1_cell3 = openmc.Cell(fill=mat3)
-u1_cell3.region = -surf1 & +surf3 & -surf4
+u1_cell3.region = -surf1 & +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = +surf1 & +surf3 & -surf4
+u1_cell4.region = +surf1 & +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 u1_cell5 = openmc.Cell(fill=mat2)
-u1_cell5.region = +surf3 & +surf4 & -surf5 & -surf6
+u1_cell5.region = +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax)
 u1_cell6 = openmc.Cell(fill=mat4)
-u1_cell6.region = +surf3 & +surf4 & +surf5 & -surf6
+u1_cell6.region = +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & +surf5 & (-surf6 & +surf6_zmin & -surf6_zmax)
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6])
 
 u2_cell0 = openmc.Cell(fill=mat1)
-u2_cell0.region = -surf1 & -surf14 & -surf15
+u2_cell0.region = -surf1 & -surf14 & (-surf15 & +surf15_zmin & -surf15_zmax)
 u2_cell1 = openmc.Cell(fill=mat4)
-u2_cell1.region = +surf1 & -surf14 & -surf15
+u2_cell1.region = +surf1 & -surf14 & (-surf15 & +surf15_zmin & -surf15_zmax)
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1])
 
 u3_cell0 = openmc.Cell(fill=mat1)
-u3_cell0.region = -surf1 & -surf23 & -surf6
+u3_cell0.region = -surf1 & -surf23 & (-surf6 & +surf6_zmin & -surf6_zmax)
 u3_cell1 = openmc.Cell(fill=mat4)
-u3_cell1.region = +surf1 & -surf23 & -surf6
+u3_cell1.region = +surf1 & -surf23 & (-surf6 & +surf6_zmin & -surf6_zmax)
 u3_cell2 = openmc.Cell(fill=mat6)
-u3_cell2.region = +surf23 & -surf6
+u3_cell2.region = +surf23 & (-surf6 & +surf6_zmin & -surf6_zmax)
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2])
 
 u4_cell0 = openmc.Cell(fill=mat2)
-u4_cell0.region = -surf10 & -surf11
+u4_cell0.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (-surf11 & +surf11_zmin & -surf11_zmax) & +surf16 & +surf17 & +surf18
 u4_cell1 = openmc.Cell(fill=mat5)
-u4_cell1.region = -surf10 & -surf19
+u4_cell1.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (-surf19 & +surf19_zmin & -surf19_zmax) & +surf16 & +surf17 & +surf18 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107
 u4_cell2 = openmc.Cell(fill=mat5)
-u4_cell2.region = -surf10 & -surf20
+u4_cell2.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (-surf20 & +surf20_zmin & -surf20_zmax) & +surf16 & +surf17 & +surf18 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107
 u4_cell3 = openmc.Cell(fill=mat2)
-u4_cell3.region = -surf10 & +surf12 & -surf13
+u4_cell3.region = (-surf10 & +surf10_zmin & -surf10_zmax) & +surf12 & (-surf13 & +surf13_zmin & -surf13_zmax) & +surf16 & +surf17 & +surf18
 u4_cell4 = openmc.Cell(fill=mat1)
-u4_cell4.region = -surf10 & +surf11 & +surf19 & +surf20
+u4_cell4.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (+surf11 | -surf11_zmin | +surf11_zmax) & +surf16 & +surf17 & +surf18 & (+surf19 | -surf19_zmin | +surf19_zmax) & (+surf20 | -surf20_zmin | +surf20_zmax)
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 # ------------------------------------------------------------------------------
@@ -188,23 +210,23 @@ universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, 
 
 # inside
 cell1 = openmc.Cell(cell_id=1, fill=universe4)
-cell1.region = -surf10
+cell1.region = (-surf10 & +surf10_zmin & -surf10_zmax)
 
 # outside
 cell2 = openmc.Cell(cell_id=2, fill=universe1)
-cell2.region = -surf6 & +surf10
+cell2.region = (-surf6 & +surf6_zmin & -surf6_zmax) & (+surf10 | -surf10_zmin | +surf10_zmax)
 
 # Pyrex
 cell11 = openmc.Cell(cell_id=11, fill=mat6)
-cell11.region = +surf23 & -surf6
+cell11.region = +surf23 & (-surf6 & +surf6_zmin & -surf6_zmax)
 
 # Air
 cell14 = openmc.Cell(cell_id=14, fill=mat4)
-cell14.region = +surf1 & -surf14 & -surf15
+cell14.region = +surf1 & -surf14 & (-surf15 & +surf15_zmin & -surf15_zmax)
 
 # Air
 cell22 = openmc.Cell(cell_id=22, fill=mat4)
-cell22.region = +surf3 & +surf4 & +surf5 & -surf6
+cell22.region = +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & +surf5 & (-surf6 & +surf6_zmin & -surf6_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell11, cell14, cell22])
 geometry = openmc.Geometry(root_universe)

@@ -178,6 +178,28 @@ materials = openmc.Materials([mat101, mat102, mat103, mat104, mat201, mat202, ma
 # Geometry
 # ==============================================================================
 
+surf100 = openmc.Sphere(surface_id=100, r=0.901)
+surf101 = openmc.Sphere(surface_id=101, r=1.000)
+surf102 = openmc.Sphere(surface_id=102, r=1.400)
+surf103 = openmc.Sphere(surface_id=103, r=3.150)
+surf104 = openmc.Sphere(surface_id=104, r=4.020)
+surf201 = openmc.Sphere(surface_id=201, r=4.660)
+surf202 = openmc.Sphere(surface_id=202, r=5.350)
+surf203 = openmc.Sphere(surface_id=203, r=6.000)
+surf204 = openmc.Sphere(surface_id=204, r=6.750)
+surf205 = openmc.Sphere(surface_id=205, r=7.550)
+surf206 = openmc.Sphere(surface_id=206, r=8.350)
+surf207 = openmc.Sphere(surface_id=207, r=9.150)
+surf208 = openmc.Sphere(surface_id=208, r=11.000)
+surf209 = openmc.Sphere(surface_id=209, r=12.250)
+surf210 = openmc.Sphere(surface_id=210, r=13.250)
+surf211 = openmc.Sphere(surface_id=211, r=14.000)
+surf212 = openmc.Sphere(surface_id=212, r=15.000)
+surf213 = openmc.Sphere(surface_id=213, r=16.500)
+surf214 = openmc.Sphere(surface_id=214, r=18.000)
+surf215 = openmc.Sphere(surface_id=215, r=21.500)
+surf216 = openmc.Sphere(surface_id=216, r=23.000)
+surf217 = openmc.Sphere(surface_id=217, r=25.000, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -185,48 +207,92 @@ materials = openmc.Materials([mat101, mat102, mat103, mat104, mat201, mat202, ma
 
 # VOID
 cell1 = openmc.Cell(cell_id=1)
+cell1.region = -surf100
+
 # LAYER1
 cell2 = openmc.Cell(cell_id=2, fill=mat101)
+cell2.region = +surf100 & -surf101
+
 # LAYER2
 cell3 = openmc.Cell(cell_id=3, fill=mat102)
+cell3.region = +surf101 & -surf102
+
 # LAYER3
 cell4 = openmc.Cell(cell_id=4, fill=mat103)
+cell4.region = +surf102 & -surf103
+
 # LAYER4
 cell5 = openmc.Cell(cell_id=5, fill=mat104)
+cell5.region = +surf103 & -surf104
+
 # DU01
 cell6 = openmc.Cell(cell_id=6, fill=mat201)
+cell6.region = +surf104 & -surf201
+
 # DU02
 cell7 = openmc.Cell(cell_id=7, fill=mat202)
+cell7.region = +surf201 & -surf202
+
 # DU03
 cell8 = openmc.Cell(cell_id=8, fill=mat203)
+cell8.region = +surf202 & -surf203
+
 # DU04
 cell9 = openmc.Cell(cell_id=9, fill=mat204)
+cell9.region = +surf203 & -surf204
+
 # DU05
 cell10 = openmc.Cell(cell_id=10, fill=mat205)
+cell10.region = +surf204 & -surf205
+
 # DU06
 cell11 = openmc.Cell(cell_id=11, fill=mat206)
+cell11.region = +surf205 & -surf206
+
 # DU07
 cell12 = openmc.Cell(cell_id=12, fill=mat207)
+cell12.region = +surf206 & -surf207
+
 # DU08
 cell13 = openmc.Cell(cell_id=13, fill=mat208)
+cell13.region = +surf207 & -surf208
+
 # DU09
 cell14 = openmc.Cell(cell_id=14, fill=mat209)
+cell14.region = +surf208 & -surf209
+
 # DU10
 cell15 = openmc.Cell(cell_id=15, fill=mat210)
+cell15.region = +surf209 & -surf210
+
 # DU11
 cell16 = openmc.Cell(cell_id=16, fill=mat211)
+cell16.region = +surf210 & -surf211
+
 # DU12
 cell17 = openmc.Cell(cell_id=17, fill=mat212)
+cell17.region = +surf211 & -surf212
+
 # DU13
 cell18 = openmc.Cell(cell_id=18, fill=mat213)
+cell18.region = +surf212 & -surf213
+
 # DU14
 cell19 = openmc.Cell(cell_id=19, fill=mat214)
+cell19.region = +surf213 & -surf214
+
 # DU15
 cell20 = openmc.Cell(cell_id=20, fill=mat215)
+cell20.region = +surf214 & -surf215
+
 # DU16
 cell21 = openmc.Cell(cell_id=21, fill=mat216)
+cell21.region = +surf215 & -surf216
+
 # DU17
 cell22 = openmc.Cell(cell_id=22, fill=mat217)
+cell22.region = +surf216 & -surf217
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22])
 geometry = openmc.Geometry(root_universe)
 

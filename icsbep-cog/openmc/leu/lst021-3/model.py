@@ -46,17 +46,25 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # ==============================================================================
 
 # Tank/inner
-surf1 = openmc.ZCylinder(surface_id=1, x0=0.0, y0=149.71, r=39.505)
+surf1 = openmc.ZCylinder(surface_id=1, r=39.505)
 # Tank/outer
-surf2 = openmc.ZCylinder(surface_id=2, x0=-2.06, y0=152.64, r=39.815)
+surf2 = openmc.ZCylinder(surface_id=2, r=39.815)
 # Base plate
 surf3 = openmc.model.RectangularParallelepiped(-60.2, 39.8, -50.0, 50.0, -19.0, -16.0)
 # Hole in base plate
 surf4 = openmc.ZCylinder(surface_id=4, x0=24.8, y0=17.0, r=7.76)
 # boundary condition
-surf5 = openmc.ZCylinder(surface_id=5, x0=-34.5, y0=169.71, r=79.815, boundary_type="vacuum")
+surf5 = openmc.ZCylinder(surface_id=5, r=79.815)
 # Hc
 surf6 = openmc.ZPlane(surface_id=6, z0=69.09)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=0.0)
+surf1_zmax = openmc.ZPlane(z0=149.71)
+surf2_zmin = openmc.ZPlane(z0=-2.06)
+surf2_zmax = openmc.ZPlane(z0=152.64)
+surf5_zmin = openmc.ZPlane(z0=-34.5, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(z0=169.71, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -64,11 +72,11 @@ surf6 = openmc.ZPlane(surface_id=6, z0=69.09)
 
 # Soln
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1 & -surf6
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax) & -surf6
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2
+cell2.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat2)

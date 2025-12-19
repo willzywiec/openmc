@@ -42,6 +42,12 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Fuel/Outer (Zo = Hc/2 - 223.52)
+surf1 = openmc.model.RectangularParallelepiped(226.02999999999997, 256.81, 212.89, 243.67000000000002, -223.52, -202.53)
+# Room/Inner
+surf2 = openmc.model.RectangularParallelepiped(-533.4, 533.4, -533.4, 533.4, -304.8, 304.8)
+# Room/Outer
+surf3 = openmc.model.RectangularParallelepiped(-685.8, 685.8, -624.84, 685.8000000000001, -365.76, 365.76, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -49,10 +55,16 @@ materials = openmc.Materials([mat1, mat2])
 
 # FUEL
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1
+
 # VOID
 cell2 = openmc.Cell(cell_id=2)
+cell2.region = +surf1 & -surf2
+
 # CONC
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
+cell3.region = +surf2 & -surf3
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3])
 geometry = openmc.Geometry(root_universe)
 

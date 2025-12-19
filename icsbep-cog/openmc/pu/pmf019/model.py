@@ -45,6 +45,42 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Pu/IR
+surf1 = openmc.Sphere(surface_id=1, r=1.4)
+# Pu/OR
+surf2 = openmc.Sphere(surface_id=2, r=5.35)
+# Be/OR/LHS
+surf3 = openmc.Sphere(surface_id=3, r=11.0)
+# Cu/OR
+surf4 = openmc.Sphere(surface_id=4, r=11.15)
+# Be/TOP/LHS
+# surf5: Unsupported surface type "analytic" with params ['1.', 'x', '0.15', 'constant']
+# Cu/SIDE
+surf6 = openmc.XCylinder(surface_id=6, r=9.7)
+# Steel
+surf7 = openmc.XCylinder(surface_id=7, r=2.5)
+# Be/IR
+surf11 = openmc.Sphere(surface_id=11, x0=5.35, y0=tr, z0=1.05, r=0.)
+# Be/OR
+surf12 = openmc.Sphere(surface_id=12, x0=11.00, y0=tr, z0=1.05, r=0.)
+# Be/Bottom
+# surf13: Unsupported surface type "analytic" with params ['1.', 'x', '-1.20', 'constant']
+# Be/Hole
+surf14 = openmc.XCylinder(surface_id=14, r=1.1)
+# STL/IR
+surf21 = openmc.XCylinder(surface_id=21, r=5.5)
+# STL/OR
+surf22 = openmc.XCylinder(surface_id=22, r=14.0)
+
+# Z-plane surfaces for bounded cylinders
+surf6_zmin = openmc.ZPlane(z0=-12.0)
+surf6_zmax = openmc.ZPlane(z0=-3.0)
+surf7_zmin = openmc.ZPlane(z0=-14.15)
+surf7_zmax = openmc.ZPlane(z0=-7.0)
+surf21_zmin = openmc.ZPlane(z0=1.0)
+surf21_zmax = openmc.ZPlane(z0=1.2)
+surf22_zmin = openmc.ZPlane(z0=1.0)
+surf22_zmax = openmc.ZPlane(z0=1.2)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -52,16 +88,28 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 
 # Pu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = +surf1 & -surf2
+
 # Be
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+cell2.region = +surf2 & -surf3 & -surf5
+
 # Be
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
+cell3.region = +surf11 & -surf12 & +surf13 & +surf14
+
 # Cu
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
+cell4.region = +surf3 & -surf4 & (-surf6 & +surf6_zmin & -surf6_zmax)
+
 # STL
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
+cell5.region = +surf4 & (-surf7 & +surf7_zmin & -surf7_zmax)
+
 # STL
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
+cell6.region = (+surf21 | -surf21_zmin | +surf21_zmax) & (-surf22 & +surf22_zmin & -surf22_zmax)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)
 

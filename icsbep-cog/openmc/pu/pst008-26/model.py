@@ -48,6 +48,30 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# = Hc ------------ Table 5b
+surf1 = openmc.ZPlane(surface_id=1, z0=15.5303)
+# Sphere/Inner ---- Table 6b
+surf2 = openmc.Sphere(surface_id=2, r=17.6955)
+# Sphere/Outer ---- Table 6b
+surf3 = openmc.Sphere(surface_id=3, r=17.8073)
+# Air/Outer ------- Table 6b
+surf4 = openmc.Sphere(surface_id=4, r=27.9673)
+# Concrete/Outer -- Table 6b
+surf5 = openmc.Sphere(surface_id=5, r=43.2073)
+# Support Tube/Inner -- Figure 7
+surf6 = openmc.ZCylinder(surface_id=6, x0=-3.811, y0=0.0, r=2.695)
+# Support Tube/Outer -- Figure 7
+surf7 = openmc.ZCylinder(surface_id=7, x0=-3.811, y0=0.0, r=2.86)
+# Inlet Tube/Inner -- Figure 7
+surf8 = openmc.ZCylinder(surface_id=8, r=2.555)
+# Inlet Tube/Outer -- Figure 7
+surf9 = openmc.ZCylinder(surface_id=9, r=2.86)
+
+# Z-plane surfaces for bounded cylinders
+surf8_zmin = openmc.ZPlane(z0=-99.0)
+surf8_zmax = openmc.ZPlane(z0=0.0)
+surf9_zmin = openmc.ZPlane(z0=-99.0)
+surf9_zmax = openmc.ZPlane(z0=0.0)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -55,16 +79,28 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # SOLN
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1 & -surf2
+
 # SOLN
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
+cell2.region = -surf1 & +surf2 & -surf6
+
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
+cell3.region = +surf2 & -surf3 & +surf6
+
 # SST
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
+cell4.region = +surf3 & -surf5 & +surf6 & -surf7
+
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
+cell5.region = +surf3 & -surf5 & (+surf8 | -surf8_zmin | +surf8_zmax) & (-surf9 & +surf9_zmin & -surf9_zmax)
+
 # CONCRETE
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
+cell6.region = +surf4 & -surf5 & +surf7 & (+surf9 | -surf9_zmin | +surf9_zmax)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)
 

@@ -66,13 +66,13 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat7])
 # ==============================================================================
 
 # Central cavity
-surf1 = openmc.ZCylinder(surface_id=1, x0=1.27, y0=128.53, r=12.7)
+surf1 = openmc.ZCylinder(surface_id=1, r=12.7)
 # SS304L central tank
-surf2 = openmc.ZCylinder(surface_id=2, x0=0.0, y0=128.53, r=12.774)
+surf2 = openmc.ZCylinder(surface_id=2, r=12.774)
 # Sol'n or void in annular tank
-surf3 = openmc.ZCylinder(surface_id=3, x0=22.005, y0=127.577, r=26.596)
+surf3 = openmc.ZCylinder(surface_id=3, r=26.596)
 # SS304L annular tank
-surf4 = openmc.ZCylinder(surface_id=4, x0=21.37, y0=128.53, r=26.67)
+surf4 = openmc.ZCylinder(surface_id=4, r=26.67)
 # Boundary condition
 surf5 = openmc.model.RectangularParallelepiped(-49.38, 49.38, -50.655, 50.655, 0.0, 137.0, boundary_type="vacuum")
 # Critical solution height (case 100)
@@ -80,11 +80,27 @@ surf6 = openmc.ZPlane(surface_id=6, z0=104.62)
 # Water reflector height (cases 100 & 108)
 surf7 = openmc.ZPlane(surface_id=7, z0=126.63)
 # Polyethylene
-surf11 = openmc.ZCylinder(surface_id=11, x0=1.344, y0=128.434, r=12.452)
+surf11 = openmc.ZCylinder(surface_id=11, r=12.452)
 # Cadmium
-surf12 = openmc.ZCylinder(surface_id=12, x0=1.27, y0=128.434, r=12.526)
+surf12 = openmc.ZCylinder(surface_id=12, r=12.526)
 # SS304L
-surf13 = openmc.ZCylinder(surface_id=13, x0=128.434, y0=128.91, r=12.526)
+surf13 = openmc.ZCylinder(surface_id=13, r=12.526)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=1.27)
+surf1_zmax = openmc.ZPlane(z0=128.53)
+surf2_zmin = openmc.ZPlane(z0=0.0)
+surf2_zmax = openmc.ZPlane(z0=128.53)
+surf3_zmin = openmc.ZPlane(z0=22.005)
+surf3_zmax = openmc.ZPlane(z0=127.577)
+surf4_zmin = openmc.ZPlane(z0=21.37)
+surf4_zmax = openmc.ZPlane(z0=128.53)
+surf11_zmin = openmc.ZPlane(z0=1.344)
+surf11_zmax = openmc.ZPlane(z0=128.434)
+surf12_zmin = openmc.ZPlane(z0=1.27)
+surf12_zmax = openmc.ZPlane(z0=128.434)
+surf13_zmin = openmc.ZPlane(z0=128.434)
+surf13_zmax = openmc.ZPlane(z0=128.91)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -92,31 +108,31 @@ surf13 = openmc.ZCylinder(surface_id=13, x0=128.434, y0=128.91, r=12.526)
 
 # SS304L
 cell1 = openmc.Cell(cell_id=1, fill=mat2)
-cell1.region = +surf1 & -surf2 & -surf5 & +surf12
+cell1.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax) & -surf5 & (+surf12 | -surf12_zmin | +surf12_zmax)
 
 # Soln
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = +surf2 & -surf3 & -surf6
+cell2.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax) & -surf6
 
 # SS304L
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf2 & +surf3 & -surf4
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # Water
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = +surf2 & +surf4 & -surf5 & -surf7
+cell4.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & -surf5 & -surf7
 
 # Poly
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = -surf11 & -surf12
+cell5.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf12 & +surf12_zmin & -surf12_zmax)
 
 # Cd
 cell6 = openmc.Cell(cell_id=6, fill=mat7)
-cell6.region = +surf11 & -surf12
+cell6.region = (+surf11 | -surf11_zmin | +surf11_zmax) & (-surf12 & +surf12_zmin & -surf12_zmax)
 
 # SS304L
 cell7 = openmc.Cell(cell_id=7, fill=mat2)
-cell7.region = +surf12 & -surf13
+cell7.region = (+surf12 | -surf12_zmin | +surf12_zmax) & (-surf13 & +surf13_zmin & -surf13_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7])
 geometry = openmc.Geometry(root_universe)

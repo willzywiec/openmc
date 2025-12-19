@@ -39,6 +39,22 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Al-2S/Inner
+surf1 = openmc.ZCylinder(surface_id=1, r=7.5589)
+# Al-2S/Outer
+surf2 = openmc.ZCylinder(surface_id=2, r=7.688)
+# Paraffin/Outer
+surf3 = openmc.ZCylinder(surface_id=3, r=22.928)
+# Hc
+# surf4: Unsupported surface type "analytic" with params ['1.', 'z', '-38.5880', 'constant']
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=0.0)
+surf1_zmax = openmc.ZPlane(z0=91.528)
+surf2_zmin = openmc.ZPlane(z0=-0.1291)
+surf2_zmax = openmc.ZPlane(z0=91.6571)
+surf3_zmin = openmc.ZPlane(z0=-15.3691, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(z0=91.6571, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -46,12 +62,20 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax) & +surf4
+
 # Soln
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
+cell2.region = (-surf1 & +surf1_zmin & -surf1_zmax) & -surf4
+
 # Al2S
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
+cell3.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
+
 # Prffn
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
+cell4.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4])
 geometry = openmc.Geometry(root_universe)
 

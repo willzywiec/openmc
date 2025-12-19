@@ -31,11 +31,11 @@ materials = openmc.Materials([mat1, mat2])
 # ==============================================================================
 
 # Fuel rod
-surf1 = openmc.ZCylinder(surface_id=1, x0=0.0, y0=30.0, r=0.38645)
+surf1 = openmc.ZCylinder(surface_id=1, r=0.38645)
 # 16x16 lattice region
 surf2 = openmc.model.RectangularParallelepiped(-19.624, 19.624, -19.624, 19.624, -499.95, 499.95)
 # Water/boundary
-surf3 = openmc.ZCylinder(surface_id=3, x0=-21.59, y0=39.4, r=50.53, boundary_type="vacuum")
+surf3 = openmc.ZCylinder(surface_id=3, r=50.53)
 surf101 = openmc.XPlane(surface_id=101, x0=-19.624)
 surf102 = openmc.XPlane(surface_id=102, x0=-17.171)
 surf103 = openmc.XPlane(surface_id=103, x0=-14.718)
@@ -73,14 +73,20 @@ surf217 = openmc.YPlane(surface_id=217, y0=19.624)
 surf301 = openmc.ZPlane(surface_id=301, z0=-999.0)
 surf302 = openmc.ZPlane(surface_id=302, z0=999.0)
 
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=0.0)
+surf1_zmax = openmc.ZPlane(z0=30.0)
+surf3_zmin = openmc.ZPlane(z0=-21.59, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(z0=39.4, boundary_type="vacuum")
+
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1
+u1_cell0.region = (-surf1 & +surf1_zmin & -surf1_zmax)
 u1_cell1 = openmc.Cell(fill=mat2)
-u1_cell1.region = +surf1 & -surf2
+u1_cell1.region = (+surf1 | -surf1_zmin | +surf1_zmax) & -surf2
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1])
 
 universe2 = openmc.Universe(universe_id=2, cells=[])
@@ -91,15 +97,15 @@ universe2 = openmc.Universe(universe_id=2, cells=[])
 
 # CORE
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
-cell1.region = -surf2 & -surf3
+cell1.region = -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # H2O
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf2 & -surf3
+cell2.region = +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # H2O
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf1 & -surf2
+cell5.region = (+surf1 | -surf1_zmin | +surf1_zmax) & -surf2
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell5])
 geometry = openmc.Geometry(root_universe)

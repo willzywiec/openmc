@@ -77,6 +77,27 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# = Hc per Table 3-2
+surf1 = openmc.ZPlane(surface_id=1, z0=38.869)
+# = Water height
+surf2 = openmc.ZPlane(surface_id=2, z0=200.0)
+surf3 = openmc.ZCylinder(surface_id=3, r=37.8)
+surf4 = openmc.ZCylinder(surface_id=4, r=38.1)
+surf5 = openmc.ZCylinder(surface_id=5, r=44.5)
+surf6 = openmc.ZCylinder(surface_id=6, r=60.1)
+surf7 = openmc.ZCylinder(surface_id=7, r=60.5)
+
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=0.0)
+surf3_zmax = openmc.ZPlane(z0=212.7)
+surf4_zmin = openmc.ZPlane(z0=-0.3)
+surf4_zmax = openmc.ZPlane(z0=212.7)
+surf5_zmin = openmc.ZPlane(z0=212.7)
+surf5_zmax = openmc.ZPlane(z0=215.2)
+surf6_zmin = openmc.ZPlane(z0=-22.3)
+surf6_zmax = openmc.ZPlane(z0=212.7)
+surf7_zmin = openmc.ZPlane(z0=-23.3, boundary_type="vacuum")
+surf7_zmax = openmc.ZPlane(z0=215.2, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -84,18 +105,32 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 
 # Soln
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1 & (-surf3 & +surf3_zmin & -surf3_zmax)
+
 # Air
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
+cell2.region = +surf1 & (-surf3 & +surf3_zmin & -surf3_zmax)
+
 # SS1712
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
+cell3.region = (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
+
 # SS1712
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
+cell4.region = (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
+
 # Water
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
+cell5.region = -surf2 & (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf6 & +surf6_zmin & -surf6_zmax)
+
 # Air
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
+cell6.region = +surf2 & (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf6 & +surf6_zmin & -surf6_zmax)
+
 # SS1810
 cell7 = openmc.Cell(cell_id=7, fill=mat5)
+cell7.region = (+surf4 | -surf4_zmin | +surf4_zmax) & (+surf5 | -surf5_zmin | +surf5_zmax) & (+surf6 | -surf6_zmin | +surf6_zmax) & (-surf7 & +surf7_zmin & -surf7_zmax)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7])
 geometry = openmc.Geometry(root_universe)
 

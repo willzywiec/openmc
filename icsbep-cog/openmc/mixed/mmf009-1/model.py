@@ -102,20 +102,36 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
+cell1.region = -surf1
+
 # Pu1
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
+cell2.region = +surf1 & -surf2
+
 # Pu2
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
+cell3.region = +surf2 & -surf3
+
 # Pu3
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
+cell4.region = +surf3 & -surf4
+
 # Pu4
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
+cell5.region = +surf4 & -surf5
+
 # Pu5
 cell6 = openmc.Cell(cell_id=6, fill=mat5)
+cell6.region = +surf5 & -surf6
+
 # Pu6
 cell7 = openmc.Cell(cell_id=7, fill=mat6)
+cell7.region = +surf6 & -surf7
+
 # HEU7
 cell8 = openmc.Cell(cell_id=8, fill=mat7)
+cell8.region = +surf7 & -surf8
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8])
 geometry = openmc.Geometry(root_universe)
 

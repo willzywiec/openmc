@@ -40,6 +40,14 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# = Hc per Table 4
+surf1 = openmc.ZPlane(surface_id=1, z0=16.2696)
+# SST/Inner/Table 5
+surf2 = openmc.Sphere(surface_id=2, r=17.6955)
+# SST/Outer/Table 5
+surf3 = openmc.Sphere(surface_id=3, r=17.8073)
+# H2O/Outer/Table 5
+surf4 = openmc.Sphere(surface_id=4, r=47.8073, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -47,12 +55,20 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # VOID
 cell1 = openmc.Cell(cell_id=1)
+cell1.region = +surf1 & -surf2
+
 # SOLN
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
+cell2.region = -surf1 & -surf2
+
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
+cell3.region = +surf2 & -surf3
+
 # H2O
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
+cell4.region = +surf3 & -surf4
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4])
 geometry = openmc.Geometry(root_universe)
 

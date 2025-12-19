@@ -86,17 +86,31 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # ==============================================================================
 
 # Core
-surf1 = openmc.ZCylinder(surface_id=1, x0=-30.5631, y0=30.5631, r=34.3564)
+surf1 = openmc.ZCylinder(surface_id=1, r=34.3564)
 # Axial Blanket
-surf2 = openmc.ZCylinder(surface_id=2, x0=-61.6781, y0=61.6781, r=34.3564)
+surf2 = openmc.ZCylinder(surface_id=2, r=34.3564)
 # Drawer Gap
-surf3 = openmc.ZCylinder(surface_id=3, x0=53.4231, y0=54.0581, r=34.3564)
+surf3 = openmc.ZCylinder(surface_id=3, r=34.3564)
 # Drawer Gap
-surf4 = openmc.ZCylinder(surface_id=4, x0=-54.0581, y0=-53.4231, r=34.3564)
+surf4 = openmc.ZCylinder(surface_id=4, r=34.3564)
 # Radial Blanket
-surf5 = openmc.ZCylinder(surface_id=5, x0=-60.9600, y0=60.9600, r=68.4995)
+surf5 = openmc.ZCylinder(surface_id=5, r=68.4995)
 # Matrix
-surf6 = openmc.ZCylinder(surface_id=6, x0=-85.0900, y0=85.0900, r=96.8226, boundary_type="vacuum")
+surf6 = openmc.ZCylinder(surface_id=6, r=96.8226)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=-30.5631)
+surf1_zmax = openmc.ZPlane(z0=30.5631)
+surf2_zmin = openmc.ZPlane(z0=-61.6781)
+surf2_zmax = openmc.ZPlane(z0=61.6781)
+surf3_zmin = openmc.ZPlane(z0=53.4231)
+surf3_zmax = openmc.ZPlane(z0=54.0581)
+surf4_zmin = openmc.ZPlane(z0=-54.0581)
+surf4_zmax = openmc.ZPlane(z0=-53.4231)
+surf5_zmin = openmc.ZPlane(z0=-60.96)
+surf5_zmax = openmc.ZPlane(z0=60.96)
+surf6_zmin = openmc.ZPlane(z0=-85.09, boundary_type="vacuum")
+surf6_zmax = openmc.ZPlane(z0=85.09, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -104,27 +118,27 @@ surf6 = openmc.ZCylinder(surface_id=6, x0=-85.0900, y0=85.0900, r=96.8226, bound
 
 # Core
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1 & -surf2
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # AxBlnkt
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2 & +surf3 & +surf4
+cell2.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax)
 
 # Gap
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
-cell3.region = -surf2 & -surf3
+cell3.region = (-surf2 & +surf2_zmin & -surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # Gap
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = -surf2 & -surf4
+cell4.region = (-surf2 & +surf2_zmin & -surf2_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # RdBlnkt
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf1 & +surf2 & +surf3 & +surf4 & -surf5
+cell5.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # Matrix
 cell6 = openmc.Cell(cell_id=6, fill=mat5)
-cell6.region = +surf2 & +surf5 & -surf6
+cell6.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf5 | -surf5_zmin | +surf5_zmax) & (-surf6 & +surf6_zmin & -surf6_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)

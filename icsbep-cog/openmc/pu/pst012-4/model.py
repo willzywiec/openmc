@@ -77,6 +77,26 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 # Geometry
 # ==============================================================================
 
+# = Hc per Table 1b
+surf1 = openmc.ZPlane(surface_id=1, z0=45.68)
+# Lucoflex/Inner; Zo = Hc + 10
+surf2 = openmc.model.RectangularParallelepiped(-64.0, 64.0, -64.0, 64.0, 46.68, 64.68)
+# Lucoflex/Outer; Zo = Hc + 10
+surf3 = openmc.model.RectangularParallelepiped(-65.0, 65.0, -65.0, 65.0, 45.68, 65.68)
+# Tank/Inner
+surf4 = openmc.model.RectangularParallelepiped(-65.0, 65.0, -65.0, 65.0, 0.0, 100.0)
+# Tank/Outer
+surf5 = openmc.model.RectangularParallelepiped(-65.5, 65.5, -65.5, 65.5, -0.5, 100.0)
+# Pool/Inner
+surf6 = openmc.model.RectangularParallelepiped(-105.0, 105.0, -160.0, 160.0, -50.5, 99.5)
+# Pool/Outer
+surf7 = openmc.model.RectangularParallelepiped(-105.4, 105.4, -160.4, 160.4, -51.300000000000004, 99.5)
+# Room/Inner
+surf8 = openmc.model.RectangularParallelepiped(-605.0, 605.0, -440.0, 440.0, -63.30000000000001, 936.7)
+# Room/Inner
+surf9 = openmc.model.RectangularParallelepiped(-655.0, 655.0, -490.0, 490.0, -103.30000000000001, 986.7, boundary_type="vacuum")
+# = Hc + 20; Water Reflector Height
+surf10 = openmc.ZPlane(surface_id=10, z0=65.68)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -84,24 +104,44 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 
 # WATER
 cell1 = openmc.Cell(cell_id=1, fill=mat2)
+cell1.region = -surf2
+
 # LCFLX
 cell2 = openmc.Cell(cell_id=2, fill=mat4)
+cell2.region = +surf2 & -surf3
+
 # SOLN
 cell3 = openmc.Cell(cell_id=3, fill=mat1)
+cell3.region = -surf1 & -surf4
+
 # AIR
 cell4 = openmc.Cell(cell_id=4, fill=mat7)
+cell4.region = +surf1 & +surf3 & -surf4
+
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
+cell5.region = +surf3 & +surf4 & -surf5
+
 # WATER
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
+cell6.region = +surf3 & +surf4 & +surf5 & -surf6 & -surf7 & -surf10
+
 # AIR
 cell7 = openmc.Cell(cell_id=7, fill=mat7)
+cell7.region = +surf3 & +surf4 & +surf5 & -surf6 & -surf7 & +surf10
+
 # STEEL
 cell8 = openmc.Cell(cell_id=8, fill=mat5)
+cell8.region = +surf6 & -surf7
+
 # AIR
 cell9 = openmc.Cell(cell_id=9, fill=mat7)
+cell9.region = +surf3 & +surf4 & +surf5 & +surf6 & +surf7 & -surf8
+
 # CNCRT
 cell10 = openmc.Cell(cell_id=10, fill=mat6)
+cell10.region = +surf8 & -surf9
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10])
 geometry = openmc.Geometry(root_universe)
 

@@ -100,29 +100,49 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 # ==============================================================================
 
 # Solution
-surf1 = openmc.ZCylinder(surface_id=1, x0=0.00, y0=149.86, r=29.5)
+surf1 = openmc.ZCylinder(surface_id=1, r=29.5)
 # 60-cm diam. tank
-surf2 = openmc.ZCylinder(surface_id=2, x0=-2.02, y0=152.80, r=29.82)
+surf2 = openmc.ZCylinder(surface_id=2, r=29.82)
 # Hc
 surf3 = openmc.ZPlane(surface_id=3, z0=77.29)
 # Steel support/inner
 surf11 = openmc.ZCylinder(surface_id=11, r=31.7)
 # Steel support/outer
-surf12 = openmc.ZCylinder(surface_id=12, x0=-4.0, y0=-1.5, r=68.5)
+surf12 = openmc.ZCylinder(surface_id=12, r=68.5)
 # Aluminum reflector bottom plate
-surf13 = openmc.ZCylinder(surface_id=13, x0=-1.5, y0=0.0, r=51.37)
+surf13 = openmc.ZCylinder(surface_id=13, r=51.37)
 # Steel reflector top plate
-surf14 = openmc.ZCylinder(surface_id=14, x0=142.0, y0=142.6, r=51.37)
+surf14 = openmc.ZCylinder(surface_id=14, r=51.37)
 # = 29.82 +  0.50 (Inner Gap)
 surf15 = openmc.ZCylinder(surface_id=15, r=30.32)
 # = 30.32 +  0.31 (Inner Wall)
-surf16 = openmc.ZCylinder(surface_id=16, x0=0.0, y0=142.0, r=30.63)
+surf16 = openmc.ZCylinder(surface_id=16, r=30.63)
 # = 30.63 + 19.94 (Concrete)
-surf17 = openmc.ZCylinder(surface_id=17, x0=0.0, y0=142.0, r=50.57)
+surf17 = openmc.ZCylinder(surface_id=17, r=50.57)
 # = 50.57 +  0.80 (Outer Wall)
-surf18 = openmc.ZCylinder(surface_id=18, x0=0.0, y0=142.0, r=51.37)
+surf18 = openmc.ZCylinder(surface_id=18, r=51.37)
 # BCD
-surf19 = openmc.ZCylinder(surface_id=19, x0=-4.00, y0=152.80, r=68.5, boundary_type="vacuum")
+surf19 = openmc.ZCylinder(surface_id=19, r=68.5)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=0.0)
+surf1_zmax = openmc.ZPlane(z0=149.86)
+surf2_zmin = openmc.ZPlane(z0=-2.02)
+surf2_zmax = openmc.ZPlane(z0=152.8)
+surf12_zmin = openmc.ZPlane(z0=-4.0)
+surf12_zmax = openmc.ZPlane(z0=-1.5)
+surf13_zmin = openmc.ZPlane(z0=-1.5)
+surf13_zmax = openmc.ZPlane(z0=0.0)
+surf14_zmin = openmc.ZPlane(z0=142.0)
+surf14_zmax = openmc.ZPlane(z0=142.6)
+surf16_zmin = openmc.ZPlane(z0=0.0)
+surf16_zmax = openmc.ZPlane(z0=142.0)
+surf17_zmin = openmc.ZPlane(z0=0.0)
+surf17_zmax = openmc.ZPlane(z0=142.0)
+surf18_zmin = openmc.ZPlane(z0=0.0)
+surf18_zmax = openmc.ZPlane(z0=142.0)
+surf19_zmin = openmc.ZPlane(z0=-4.0, boundary_type="vacuum")
+surf19_zmax = openmc.ZPlane(z0=152.8, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -130,35 +150,35 @@ surf19 = openmc.ZCylinder(surface_id=19, x0=-4.00, y0=152.80, r=68.5, boundary_t
 
 # Soln
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1 & -surf3
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax) & -surf3
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2
+cell2.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
-cell3.region = +surf11 & -surf12 & -surf19
+cell3.region = +surf11 & (-surf12 & +surf12_zmin & -surf12_zmax) & (-surf19 & +surf19_zmin & -surf19_zmax)
 
 # Alum
 cell4 = openmc.Cell(cell_id=4, fill=mat5)
-cell4.region = +surf12 & -surf13 & +surf15 & -surf19
+cell4.region = (+surf12 | -surf12_zmin | +surf12_zmax) & (-surf13 & +surf13_zmin & -surf13_zmax) & +surf15 & (-surf19 & +surf19_zmin & -surf19_zmax)
 
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf12 & -surf14 & +surf15 & -surf19
+cell5.region = (+surf12 | -surf12_zmin | +surf12_zmax) & (-surf14 & +surf14_zmin & -surf14_zmax) & +surf15 & (-surf19 & +surf19_zmin & -surf19_zmax)
 
 # Alum
 cell6 = openmc.Cell(cell_id=6, fill=mat5)
-cell6.region = +surf13 & +surf14 & +surf15 & -surf16 & -surf19
+cell6.region = (+surf13 | -surf13_zmin | +surf13_zmax) & (+surf14 | -surf14_zmin | +surf14_zmax) & +surf15 & (-surf16 & +surf16_zmin & -surf16_zmax) & (-surf19 & +surf19_zmin & -surf19_zmax)
 
 # Conc
 cell7 = openmc.Cell(cell_id=7, fill=mat6)
-cell7.region = +surf13 & +surf14 & +surf16 & -surf17 & -surf19
+cell7.region = (+surf13 | -surf13_zmin | +surf13_zmax) & (+surf14 | -surf14_zmin | +surf14_zmax) & (+surf16 | -surf16_zmin | +surf16_zmax) & (-surf17 & +surf17_zmin & -surf17_zmax) & (-surf19 & +surf19_zmin & -surf19_zmax)
 
 # Alum
 cell8 = openmc.Cell(cell_id=8, fill=mat5)
-cell8.region = +surf13 & +surf14 & +surf17 & -surf18 & -surf19
+cell8.region = (+surf13 | -surf13_zmin | +surf13_zmax) & (+surf14 | -surf14_zmin | +surf14_zmax) & (+surf17 | -surf17_zmin | +surf17_zmax) & (-surf18 & +surf18_zmin & -surf18_zmax) & (-surf19 & +surf19_zmin & -surf19_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8])
 geometry = openmc.Geometry(root_universe)

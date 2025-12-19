@@ -48,13 +48,23 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # ==============================================================================
 
 # r=a
-surf1 = openmc.ZCylinder(surface_id=1, x0=0.0, y0=91.44, r=15.2435)
+surf1 = openmc.ZCylinder(surface_id=1, r=15.2435)
 # r=c; Z1=-d; Z2=e+91.44
-surf2 = openmc.ZCylinder(surface_id=2, x0=-0.9525, y0=93.3450, r=15.4061)
+surf2 = openmc.ZCylinder(surface_id=2, r=15.4061)
 # Z2=Hc=b
-surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=22.4933, r=38.1)
+surf3 = openmc.ZCylinder(surface_id=3, r=38.1)
 # Arbitrary bcd
-surf4 = openmc.ZCylinder(surface_id=4, x0=-99.9, y0=99.9, r=99.9, boundary_type="vacuum")
+surf4 = openmc.ZCylinder(surface_id=4, r=99.9)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=0.0)
+surf1_zmax = openmc.ZPlane(z0=91.44)
+surf2_zmin = openmc.ZPlane(z0=-0.9525)
+surf2_zmax = openmc.ZPlane(z0=93.345)
+surf3_zmin = openmc.ZPlane(z0=0.0)
+surf3_zmax = openmc.ZPlane(z0=22.4933)
+surf4_zmin = openmc.ZPlane(z0=-99.9, boundary_type="vacuum")
+surf4_zmax = openmc.ZPlane(z0=99.9, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -62,15 +72,15 @@ surf4 = openmc.ZCylinder(surface_id=4, x0=-99.9, y0=99.9, r=99.9, boundary_type=
 
 # SOL
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1 & -surf2 & -surf3
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2
+cell2.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # H2O
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = +surf2 & -surf3
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3])
 geometry = openmc.Geometry(root_universe)

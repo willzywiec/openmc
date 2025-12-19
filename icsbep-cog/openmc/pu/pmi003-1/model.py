@@ -114,7 +114,11 @@ surf8 = openmc.ZPlane(surface_id=8, z0=59.1392)
 surf9 = openmc.ZPlane(surface_id=9, z0=60.8772)
 surf11 = openmc.ZCylinder(surface_id=11, r=27.5843)
 surf12 = openmc.ZCylinder(surface_id=12, r=58.3482)
-surf13 = openmc.ZCylinder(surface_id=13, x0=-85.09, y0=85.09, r=96.8226)
+surf13 = openmc.ZCylinder(surface_id=13, r=96.8226)
+
+# Z-plane surfaces for bounded cylinders
+surf13_zmin = openmc.ZPlane(z0=-85.09)
+surf13_zmax = openmc.ZPlane(z0=85.09)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -142,11 +146,11 @@ cell5.region = +surf7 & -surf8 & -surf11
 
 # Matrix
 cell6 = openmc.Cell(cell_id=6, fill=mat6)
-cell6.region = -surf1 & -surf11 & -surf13
+cell6.region = -surf1 & -surf11 & (-surf13 & +surf13_zmin & -surf13_zmax)
 
 # Matrix
 cell7 = openmc.Cell(cell_id=7, fill=mat6)
-cell7.region = +surf8 & -surf11 & -surf13
+cell7.region = +surf8 & -surf11 & (-surf13 & +surf13_zmin & -surf13_zmax)
 
 # RdReH2
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
@@ -158,15 +162,15 @@ cell9.region = +surf4 & -surf9 & +surf11 & -surf12
 
 # Matrix
 cell10 = openmc.Cell(cell_id=10, fill=mat6)
-cell10.region = -surf2 & +surf11 & -surf12 & -surf13
+cell10.region = -surf2 & +surf11 & -surf12 & (-surf13 & +surf13_zmin & -surf13_zmax)
 
 # Matrix
 cell11 = openmc.Cell(cell_id=11, fill=mat6)
-cell11.region = +surf9 & +surf11 & -surf12 & -surf13
+cell11.region = +surf9 & +surf11 & -surf12 & (-surf13 & +surf13_zmin & -surf13_zmax)
 
 # Matrix
 cell12 = openmc.Cell(cell_id=12, fill=mat6)
-cell12.region = +surf12 & -surf13
+cell12.region = +surf12 & (-surf13 & +surf13_zmin & -surf13_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12])
 geometry = openmc.Geometry(root_universe)

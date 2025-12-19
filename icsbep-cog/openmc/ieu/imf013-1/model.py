@@ -109,7 +109,7 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 
 surf1 = openmc.ZCylinder(surface_id=1, r=31.58728)
 surf2 = openmc.ZCylinder(surface_id=2, r=32.6532)
-surf3 = openmc.ZCylinder(surface_id=3, x0=-61.91504, y0=61.91504, r=66.64083, boundary_type="vacuum")
+surf3 = openmc.ZCylinder(surface_id=3, r=66.64083)
 surf11 = openmc.ZPlane(surface_id=11, z0=-56.59882)
 surf12 = openmc.ZPlane(surface_id=12, z0=-50.92573)
 surf13 = openmc.ZPlane(surface_id=13, z0=-25.48346)
@@ -117,13 +117,17 @@ surf14 = openmc.ZPlane(surface_id=14, z0=25.48346)
 surf15 = openmc.ZPlane(surface_id=15, z0=50.92573)
 surf16 = openmc.ZPlane(surface_id=16, z0=56.59882)
 
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=-61.91504, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(z0=61.91504, boundary_type="vacuum")
+
 # ------------------------------------------------------------------------------
 # Root Cells
 # ------------------------------------------------------------------------------
 
 # AR3
 cell1 = openmc.Cell(cell_id=1, fill=mat5)
-cell1.region = -surf2 & -surf3 & +surf16
+cell1.region = -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax) & +surf16
 
 # AR2
 cell2 = openmc.Cell(cell_id=2, fill=mat4)
@@ -151,11 +155,11 @@ cell7.region = -surf2 & +surf11 & -surf12
 
 # AR3
 cell8 = openmc.Cell(cell_id=8, fill=mat5)
-cell8.region = -surf2 & -surf3 & -surf11
+cell8.region = -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax) & -surf11
 
 # RR2
 cell9 = openmc.Cell(cell_id=9, fill=mat6)
-cell9.region = +surf2 & -surf3
+cell9.region = +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9])
 geometry = openmc.Geometry(root_universe)

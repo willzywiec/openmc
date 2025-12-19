@@ -54,6 +54,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+surf1 = openmc.Sphere(surface_id=1, r=60.964)
+surf2 = openmc.Sphere(surface_id=2, r=61.734, boundary_type="vacuum")
+surf3 = openmc.ZPlane(surface_id=3, z0=15.9558)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -61,8 +64,12 @@ materials = openmc.Materials([mat1, mat2])
 
 # SOLN
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1 & -surf3
+
 # ALUM
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+cell2.region = +surf1 & -surf2
+
 root_universe = openmc.Universe(cells=[cell1, cell2])
 geometry = openmc.Geometry(root_universe)
 

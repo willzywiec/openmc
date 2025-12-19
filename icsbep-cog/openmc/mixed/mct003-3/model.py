@@ -54,9 +54,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Fuel
 surf1 = openmc.ZCylinder(surface_id=1, r=0.428498)
 # Gap
-surf2 = openmc.ZCylinder(surface_id=2, x0=45.875, y0=138.389, r=0.437515)
+surf2 = openmc.ZCylinder(surface_id=2, r=0.437515)
 # Clad
-surf3 = openmc.ZCylinder(surface_id=3, x0=43.97, y0=143.159, r=0.49657)
+surf3 = openmc.ZCylinder(surface_id=3, r=0.49657)
 # Aluminum slab
 surf4 = openmc.model.RectangularParallelepiped(-499.95, 499.95, -499.95, 499.95, 30.0, 35.08)
 # Aluminum plate
@@ -70,42 +70,38 @@ surf8 = openmc.model.RectangularParallelepiped(-499.95, 499.95, -499.95, 499.95,
 # Fuel rod hole in all grid plates
 surf9 = openmc.ZCylinder(surface_id=9, r=0.50419)
 # Circulation hole in middle grid plate
-surf10_cyl = openmc.ZCylinder(surface_id=10, x0=tr, y0=-0.7112, r=0.24511)
-surf10_zmin = openmc.ZPlane(z0=0.7112)
-surf10_zmax = openmc.ZPlane(z0=0.0)
-surf10 = (surf10_cyl, surf10_zmin, surf10_zmax)
+surf10 = openmc.ZCylinder(surface_id=10, x0=-0.7112, y0=0.7112, r=0.24511)
 # Circulation hole in middle grid plate
-surf11_cyl = openmc.ZCylinder(surface_id=11, x0=tr, y0=-0.7112, r=0.24511)
-surf11_zmin = openmc.ZPlane(z0=-0.7112)
-surf11_zmax = openmc.ZPlane(z0=0.0)
-surf11 = (surf11_cyl, surf11_zmin, surf11_zmax)
+surf11 = openmc.ZCylinder(surface_id=11, x0=-0.7112, y0=-0.7112, r=0.24511)
 # Circulation hole in middle grid plate
-surf12_cyl = openmc.ZCylinder(surface_id=12, x0=tr, y0=0.7112, r=0.24511)
-surf12_zmin = openmc.ZPlane(z0=0.7112)
-surf12_zmax = openmc.ZPlane(z0=0.0)
-surf12 = (surf12_cyl, surf12_zmin, surf12_zmax)
+surf12 = openmc.ZCylinder(surface_id=12, x0=0.7112, y0=0.7112, r=0.24511)
 # Circulation hole in middle grid plate
-surf13_cyl = openmc.ZCylinder(surface_id=13, x0=tr, y0=0.7112, r=0.24511)
-surf13_zmin = openmc.ZPlane(z0=-0.7112)
-surf13_zmax = openmc.ZPlane(z0=0.0)
-surf13 = (surf13_cyl, surf13_zmin, surf13_zmax)
+surf13 = openmc.ZCylinder(surface_id=13, x0=0.7112, y0=-0.7112, r=0.24511)
 # BCD
-surf14 = openmc.ZCylinder(surface_id=14, x0=0.0, y0=143.159, r=50.0, boundary_type="vacuum")
+surf14 = openmc.ZCylinder(surface_id=14, r=50.0)
 # Hw
 surf15 = openmc.ZPlane(surface_id=15, z0=133.935)
 # Dummy
 surf99 = openmc.model.RectangularParallelepiped(-499.95, 499.95, -499.95, 499.95, -499.95, 499.95)
+
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(z0=45.875)
+surf2_zmax = openmc.ZPlane(z0=138.389)
+surf3_zmin = openmc.ZPlane(z0=43.97)
+surf3_zmax = openmc.ZPlane(z0=143.159)
+surf14_zmin = openmc.ZPlane(z0=0.0, boundary_type="vacuum")
+surf14_zmax = openmc.ZPlane(z0=143.159, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1 & -surf2
+u1_cell0.region = -surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 u1_cell1 = openmc.Cell()
-u1_cell1.region = +surf1 & -surf2
+u1_cell1.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = +surf2 & -surf99
+u1_cell2.region = (+surf2 | -surf2_zmin | +surf2_zmax) & -surf99
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 u2_cell0 = openmc.Cell(fill=mat4)
@@ -222,11 +218,11 @@ universe4.add_cell(openmc.Cell(fill=lattice4))
 
 # lttc
 cell1 = openmc.Cell(cell_id=1, fill=universe4)
-cell1.region = -surf14
+cell1.region = (-surf14 & +surf14_zmin & -surf14_zmax)
 
 # Clad
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf2 & -surf99
+cell5.region = (+surf2 | -surf2_zmin | +surf2_zmax) & -surf99
 
 # H2O
 cell18 = openmc.Cell(cell_id=18, fill=mat3)
@@ -234,7 +230,7 @@ cell18.region = +surf4 & +surf5 & +surf6 & +surf7 & +surf8 & -surf15 & -surf99
 
 # norod
 cell19 = openmc.Cell(cell_id=19, fill=universe2)
-cell19.region = +surf3 & -surf99
+cell19.region = (+surf3 | -surf3_zmin | +surf3_zmax) & -surf99
 
 root_universe = openmc.Universe(cells=[cell1, cell5, cell18, cell19])
 geometry = openmc.Geometry(root_universe)

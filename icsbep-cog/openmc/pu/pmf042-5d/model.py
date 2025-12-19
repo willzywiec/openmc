@@ -77,7 +77,7 @@ surf1 = openmc.XPlane(surface_id=1, x0=-2.37375)
 # Hc
 surf2 = openmc.ZPlane(surface_id=2, z0=0.09)
 # BCD
-surf3 = openmc.ZCylinder(surface_id=3, x0=-31.333, y0=18.667, r=25.0, boundary_type="vacuum")
+surf3 = openmc.ZCylinder(surface_id=3, r=25.0)
 # Pu1
 # surf11: Unsupported surface type "s" with params ['2.0000', 'tr', '-2.37375', '0', '-6.333']
 # Pu2
@@ -201,74 +201,78 @@ surf3 = openmc.ZCylinder(surface_id=3, x0=-31.333, y0=18.667, r=25.0, boundary_t
 # S4
 # surf71: Unsupported surface type "s" with params ['7.6614', 'tr', '-2.37375', '0', '-6.333']
 
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=-31.333, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(z0=18.667, boundary_type="vacuum")
+
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = +surf1
+u1_cell0.region = +surf1 & -surf11
 u1_cell1 = openmc.Cell(fill=mat1)
-u1_cell1.region = +surf1
+u1_cell1.region = +surf1 & +surf12 & -surf13
 u1_cell2 = openmc.Cell(fill=mat1)
-u1_cell2.region = +surf1
+u1_cell2.region = +surf1 & +surf14 & -surf15
 u1_cell3 = openmc.Cell(fill=mat1)
-u1_cell3.region = +surf1
+u1_cell3.region = +surf1 & +surf16 & -surf17
 u1_cell4 = openmc.Cell(fill=mat1)
-u1_cell4.region = +surf1
+u1_cell4.region = +surf1 & +surf18 & -surf19
 u1_cell5 = openmc.Cell(fill=mat1)
-u1_cell5.region = +surf1
+u1_cell5.region = +surf1 & +surf20 & -surf21
 u1_cell6 = openmc.Cell(fill=mat1)
-u1_cell6.region = +surf1
+u1_cell6.region = +surf1 & +surf22 & -surf23
 u1_cell7 = openmc.Cell(fill=mat1)
-u1_cell7.region = +surf1
+u1_cell7.region = +surf1 & +surf24 & -surf25
 u1_cell8 = openmc.Cell(fill=mat1)
-u1_cell8.region = +surf1
+u1_cell8.region = +surf1 & +surf26 & -surf27
 u1_cell9 = openmc.Cell(fill=mat1)
-u1_cell9.region = +surf1
+u1_cell9.region = +surf1 & +surf28 & -surf29
 u1_cell10 = openmc.Cell(fill=mat1)
-u1_cell10.region = +surf1
+u1_cell10.region = +surf1 & +surf30 & -surf31
 u1_cell11 = openmc.Cell(fill=mat1)
-u1_cell11.region = +surf1
+u1_cell11.region = +surf1 & +surf32 & -surf33
 u1_cell12 = openmc.Cell(fill=mat1)
-u1_cell12.region = +surf1
+u1_cell12.region = +surf1 & +surf34 & -surf35
 u1_cell13 = openmc.Cell(fill=mat1)
-u1_cell13.region = +surf1
+u1_cell13.region = +surf1 & +surf36 & -surf37
 u1_cell14 = openmc.Cell(fill=mat1)
-u1_cell14.region = +surf1
+u1_cell14.region = +surf1 & +surf38 & -surf39
 u1_cell15 = openmc.Cell(fill=mat1)
-u1_cell15.region = +surf1
+u1_cell15.region = +surf1 & +surf40 & -surf41
 u1_cell16 = openmc.Cell(fill=mat1)
-u1_cell16.region = +surf1
+u1_cell16.region = +surf1 & +surf42 & -surf43
 u1_cell17 = openmc.Cell(fill=mat1)
-u1_cell17.region = +surf1
+u1_cell17.region = +surf1 & +surf44 & -surf45
 u1_cell18 = openmc.Cell(fill=mat1)
-u1_cell18.region = +surf1
+u1_cell18.region = +surf1 & +surf46 & -surf47
 u1_cell19 = openmc.Cell(fill=mat1)
-u1_cell19.region = +surf1
+u1_cell19.region = +surf1 & +surf48 & -surf49
 u1_cell20 = openmc.Cell(fill=mat1)
-u1_cell20.region = +surf1
+u1_cell20.region = +surf1 & +surf50 & -surf51
 u1_cell21 = openmc.Cell(fill=mat1)
-u1_cell21.region = +surf1
+u1_cell21.region = +surf1 & +surf52 & -surf53
 u1_cell22 = openmc.Cell(fill=mat1)
-u1_cell22.region = +surf1
+u1_cell22.region = +surf1 & +surf54 & -surf55
 u1_cell23 = openmc.Cell(fill=mat1)
-u1_cell23.region = +surf1
+u1_cell23.region = +surf1 & +surf56 & -surf57
 u1_cell24 = openmc.Cell(fill=mat1)
-u1_cell24.region = +surf1
+u1_cell24.region = +surf1 & +surf58 & -surf59
 u1_cell25 = openmc.Cell(fill=mat1)
-u1_cell25.region = +surf1
+u1_cell25.region = +surf1 & +surf60 & -surf61
 u1_cell26 = openmc.Cell(fill=mat1)
-u1_cell26.region = +surf1
+u1_cell26.region = +surf1 & +surf62 & -surf63
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7, u1_cell8, u1_cell9, u1_cell10, u1_cell11, u1_cell12, u1_cell13, u1_cell14, u1_cell15, u1_cell16, u1_cell17, u1_cell18, u1_cell19, u1_cell20, u1_cell21, u1_cell22, u1_cell23, u1_cell24, u1_cell25, u1_cell26])
 
 u2_cell0 = openmc.Cell(fill=mat3)
-u2_cell0.region = +surf1
+u2_cell0.region = +surf1 & +surf64 & -surf65
 u2_cell1 = openmc.Cell(fill=mat3)
-u2_cell1.region = +surf1
+u2_cell1.region = +surf1 & +surf66 & -surf67
 u2_cell2 = openmc.Cell(fill=mat3)
-u2_cell2.region = +surf1
+u2_cell2.region = +surf1 & +surf68 & -surf69
 u2_cell3 = openmc.Cell(fill=mat3)
-u2_cell3.region = +surf1
+u2_cell3.region = +surf1 & +surf70 & -surf71
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, u2_cell3])
 
 # ------------------------------------------------------------------------------
@@ -277,27 +281,27 @@ universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, 
 
 # pshls
 cell1 = openmc.Cell(cell_id=1, fill=universe1)
-cell1.region = +surf1
+cell1.region = +surf1 & -surf64
 
 # sshls
 cell2 = openmc.Cell(cell_id=2, fill=universe2)
-cell2.region = +surf1
+cell2.region = +surf1 & +surf64 & -surf71
 
 # Oil
 cell3 = openmc.Cell(cell_id=3, fill=mat5)
-cell3.region = +surf1 & -surf2 & -surf3
+cell3.region = +surf1 & -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax) & +surf71
 
 # Oil
 cell4 = openmc.Cell(cell_id=4, fill=mat5)
-cell4.region = -surf1 & -surf2 & -surf3
+cell4.region = -surf1 & -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # Air
 cell5 = openmc.Cell(cell_id=5, fill=mat6)
-cell5.region = -surf1 & +surf2 & -surf3
+cell5.region = -surf1 & +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # Air
 cell6 = openmc.Cell(cell_id=6, fill=mat6)
-cell6.region = +surf1 & +surf2 & -surf3
+cell6.region = +surf1 & +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax) & +surf71
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)

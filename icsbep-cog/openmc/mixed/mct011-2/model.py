@@ -75,19 +75,19 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # ==============================================================================
 
 # Rapsodie MOX fuel
-surf1 = openmc.ZCylinder(surface_id=1, x0=0.0, y0=34.55, r=0.27865)
+surf1 = openmc.ZCylinder(surface_id=1, r=0.27865)
 # U(nat)O2
-surf2 = openmc.ZCylinder(surface_id=2, x0=-0.3, y0=34.85, r=0.27865)
+surf2 = openmc.ZCylinder(surface_id=2, r=0.27865)
 # Z3 CND 18-12 SST pellet
-surf3 = openmc.ZCylinder(surface_id=3, x0=34.85, y0=34.95, r=0.27865)
+surf3 = openmc.ZCylinder(surface_id=3, r=0.27865)
 # Air gaps
-surf4 = openmc.ZCylinder(surface_id=4, x0=-0.3, y0=45.6, r=0.29)
+surf4 = openmc.ZCylinder(surface_id=4, r=0.29)
 # Z3 CND 18-12 SST clad and end plugs
-surf5 = openmc.ZCylinder(surface_id=5, x0=-1.134, y0=46.763, r=0.335)
+surf5 = openmc.ZCylinder(surface_id=5, r=0.335)
 # Z2 CN  18-10 SST positioning ring, inner
 surf6 = openmc.ZCylinder(surface_id=6, r=0.335)
 # Z2 CN  18-10 SST positioning ring, outer
-surf7 = openmc.ZCylinder(surface_id=7, x0=-1.4, y0=47.1, r=0.425)
+surf7 = openmc.ZCylinder(surface_id=7, r=0.425)
 # Top of lower positioning ring
 surf8 = openmc.ZPlane(surface_id=8, z0=-0.6)
 # Critical water height
@@ -95,37 +95,37 @@ surf9 = openmc.ZPlane(surface_id=9, z0=31.59)
 # Bottom of upper positioning ring
 surf10 = openmc.ZPlane(surface_id=10, z0=46.3)
 # Boundary condition
-surf11 = openmc.ZCylinder(surface_id=11, x0=-34.0, y0=81.8, r=38.0, boundary_type="vacuum")
+surf11 = openmc.ZCylinder(surface_id=11, r=38.0)
 # Z2 CN 18-10 SST lower support plate
-surf12 = openmc.ZCylinder(surface_id=12, x0=-1.9, y0=-1.4, r=17.5)
+surf12 = openmc.ZCylinder(surface_id=12, r=17.5)
 # Z2 CN 18-10 SST bottom grid
-surf13 = openmc.ZCylinder(surface_id=13, x0=-0.9, y0=-0.8, r=17.5)
+surf13 = openmc.ZCylinder(surface_id=13, r=17.5)
 # Z2 CN 18-10 SST upper  grid
-surf14 = openmc.ZCylinder(surface_id=14, x0=46.4, y0=46.5, r=17.5)
+surf14 = openmc.ZCylinder(surface_id=14, r=17.5)
 # Z2 CN 18-10 SST upper support annular plate, inner
 surf15 = openmc.ZCylinder(surface_id=15, r=15.0)
 # Z2 CN 18-10 SST upper support annular plate, outer
-surf16 = openmc.ZCylinder(surface_id=16, x0=81.3, y0=81.8, r=17.5)
+surf16 = openmc.ZCylinder(surface_id=16, r=17.5)
 # Z2 CN 18-10 SST tie rod
-# surf17: Error converting surface type "c": could not convert string to float: 'tr'
+surf17 = openmc.ZCylinder(surface_id=17, x0=-16.6, y0=0.0, r=0.4)
 # Z2 CN 18-10 SST tie rod
-# surf18: Error converting surface type "c": could not convert string to float: 'tr'
+surf18 = openmc.ZCylinder(surface_id=18, x0=0.0, y0=16.6, r=0.4)
 # Z2 CN 18-10 SST tie rod
-# surf19: Error converting surface type "c": could not convert string to float: 'tr'
+surf19 = openmc.ZCylinder(surface_id=19, x0=0.0, y0=-16.6, r=0.4)
 # Z2 CN 18-10 SST tie rod
-# surf20: Error converting surface type "c": could not convert string to float: 'tr'
+surf20 = openmc.ZCylinder(surface_id=20, x0=16.6, y0=0.0, r=0.4)
 # Unit
-# surf21: Error converting surface type "c": could not convert string to float: 'tr'
+surf21 = openmc.ZCylinder(surface_id=21, x0=-0.95, y0=1.645448, r=0.425)
 # triangular
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
+surf22 = openmc.ZCylinder(surface_id=22, x0=0.95, y0=1.645448, r=0.425)
 # cell
-# surf23: Error converting surface type "c": could not convert string to float: 'tr'
+surf23 = openmc.ZCylinder(surface_id=23, x0=-1.9, y0=0.0, r=0.425)
 # of seven
-# surf24: Error converting surface type "c": could not convert string to float: 'tr'
+surf24 = openmc.ZCylinder(surface_id=24, x0=1.9, y0=0.0, r=0.425)
 # fuel
-# surf25: Error converting surface type "c": could not convert string to float: 'tr'
+surf25 = openmc.ZCylinder(surface_id=25, x0=-0.95, y0=-1.645448, r=0.425)
 # pins
-# surf26: Error converting surface type "c": could not convert string to float: 'tr'
+surf26 = openmc.ZCylinder(surface_id=26, x0=0.95, y0=-1.645448, r=0.425)
 # Hexagonal prism
 # Prism 30: 6-sided polygon
 surf30_0 = openmc.Plane(a=0.8660253686, b=0.5000000609, c=0, d=12.3408615029)
@@ -143,196 +143,142 @@ surf31_3 = openmc.Plane(a=-0.8660253686, b=-0.5000000609, c=0, d=13.9863097033)
 surf31_4 = openmc.Plane(a=0.0000000000, b=-1.0000000000, c=0, d=13.9863080000)
 surf31_5 = openmc.Plane(a=0.8660253686, b=-0.5000000609, c=0, d=13.9863097033)
 # No hole
-surf41_cyl = openmc.ZCylinder(surface_id=41, x0=tr, y0=-14.25, r=0.43)
-surf41_zmin = openmc.ZPlane(z0=1.645448)
-surf41_zmax = openmc.ZPlane(z0=0.0)
-surf41 = (surf41_cyl, surf41_zmin, surf41_zmax)
+surf41 = openmc.ZCylinder(surface_id=41, x0=-14.25, y0=1.645448, r=0.43)
 # No hole
-surf42_cyl = openmc.ZCylinder(surface_id=42, x0=tr, y0=-14.25, r=0.43)
-surf42_zmin = openmc.ZPlane(z0=-1.645448)
-surf42_zmax = openmc.ZPlane(z0=0.0)
-surf42 = (surf42_cyl, surf42_zmin, surf42_zmax)
+surf42 = openmc.ZCylinder(surface_id=42, x0=-14.25, y0=-1.645448, r=0.43)
 # No hole
-surf43_cyl = openmc.ZCylinder(surface_id=43, x0=tr, y0=-8.55, r=0.43)
-surf43_zmin = openmc.ZPlane(z0=11.518136)
-surf43_zmax = openmc.ZPlane(z0=0.0)
-surf43 = (surf43_cyl, surf43_zmin, surf43_zmax)
+surf43 = openmc.ZCylinder(surface_id=43, x0=-8.55, y0=11.518136, r=0.43)
 # No hole
-surf44_cyl = openmc.ZCylinder(surface_id=44, x0=tr, y0=-8.55, r=0.43)
-surf44_zmin = openmc.ZPlane(z0=-11.518136)
-surf44_zmax = openmc.ZPlane(z0=0.0)
-surf44 = (surf44_cyl, surf44_zmin, surf44_zmax)
+surf44 = openmc.ZCylinder(surface_id=44, x0=-8.55, y0=-11.518136, r=0.43)
 # No hole
-surf45_cyl = openmc.ZCylinder(surface_id=45, x0=tr, y0=-5.70, r=0.43)
-surf45_zmin = openmc.ZPlane(z0=13.163584)
-surf45_zmax = openmc.ZPlane(z0=0.0)
-surf45 = (surf45_cyl, surf45_zmin, surf45_zmax)
+surf45 = openmc.ZCylinder(surface_id=45, x0=-5.7, y0=13.163584, r=0.43)
 # No hole
-surf46_cyl = openmc.ZCylinder(surface_id=46, x0=tr, y0=-5.70, r=0.43)
-surf46_zmin = openmc.ZPlane(z0=-13.163584)
-surf46_zmax = openmc.ZPlane(z0=0.0)
-surf46 = (surf46_cyl, surf46_zmin, surf46_zmax)
+surf46 = openmc.ZCylinder(surface_id=46, x0=-5.7, y0=-13.163584, r=0.43)
 # No hole
-surf47_cyl = openmc.ZCylinder(surface_id=47, x0=tr, y0=5.70, r=0.43)
-surf47_zmin = openmc.ZPlane(z0=13.163584)
-surf47_zmax = openmc.ZPlane(z0=0.0)
-surf47 = (surf47_cyl, surf47_zmin, surf47_zmax)
+surf47 = openmc.ZCylinder(surface_id=47, x0=5.7, y0=13.163584, r=0.43)
 # No hole
-surf48_cyl = openmc.ZCylinder(surface_id=48, x0=tr, y0=5.70, r=0.43)
-surf48_zmin = openmc.ZPlane(z0=-13.163584)
-surf48_zmax = openmc.ZPlane(z0=0.0)
-surf48 = (surf48_cyl, surf48_zmin, surf48_zmax)
+surf48 = openmc.ZCylinder(surface_id=48, x0=5.7, y0=-13.163584, r=0.43)
 # No hole
-surf49_cyl = openmc.ZCylinder(surface_id=49, x0=tr, y0=8.55, r=0.43)
-surf49_zmin = openmc.ZPlane(z0=11.518136)
-surf49_zmax = openmc.ZPlane(z0=0.0)
-surf49 = (surf49_cyl, surf49_zmin, surf49_zmax)
+surf49 = openmc.ZCylinder(surface_id=49, x0=8.55, y0=11.518136, r=0.43)
 # No hole
-surf50_cyl = openmc.ZCylinder(surface_id=50, x0=tr, y0=8.55, r=0.43)
-surf50_zmin = openmc.ZPlane(z0=-11.518136)
-surf50_zmax = openmc.ZPlane(z0=0.0)
-surf50 = (surf50_cyl, surf50_zmin, surf50_zmax)
+surf50 = openmc.ZCylinder(surface_id=50, x0=8.55, y0=-11.518136, r=0.43)
 # No hole
-surf51_cyl = openmc.ZCylinder(surface_id=51, x0=tr, y0=14.25, r=0.43)
-surf51_zmin = openmc.ZPlane(z0=1.645448)
-surf51_zmax = openmc.ZPlane(z0=0.0)
-surf51 = (surf51_cyl, surf51_zmin, surf51_zmax)
+surf51 = openmc.ZCylinder(surface_id=51, x0=14.25, y0=1.645448, r=0.43)
 # No hole
-surf52_cyl = openmc.ZCylinder(surface_id=52, x0=tr, y0=14.25, r=0.43)
-surf52_zmin = openmc.ZPlane(z0=-1.645448)
-surf52_zmax = openmc.ZPlane(z0=0.0)
-surf52 = (surf52_cyl, surf52_zmin, surf52_zmax)
+surf52 = openmc.ZCylinder(surface_id=52, x0=14.25, y0=-1.645448, r=0.43)
 # No hole
-surf61_cyl = openmc.ZCylinder(surface_id=61, x0=tr, y0=-15.20, r=0.43)
-surf61_zmin = openmc.ZPlane(z0=6.581792)
-surf61_zmax = openmc.ZPlane(z0=0.0)
-surf61 = (surf61_cyl, surf61_zmin, surf61_zmax)
+surf61 = openmc.ZCylinder(surface_id=61, x0=-15.2, y0=6.581792, r=0.43)
 # No hole
-surf62_cyl = openmc.ZCylinder(surface_id=62, x0=tr, y0=-15.20, r=0.43)
-surf62_zmin = openmc.ZPlane(z0=-6.581792)
-surf62_zmax = openmc.ZPlane(z0=0.0)
-surf62 = (surf62_cyl, surf62_zmin, surf62_zmax)
+surf62 = openmc.ZCylinder(surface_id=62, x0=-15.2, y0=-6.581792, r=0.43)
 # No hole
-surf63_cyl = openmc.ZCylinder(surface_id=63, x0=tr, y0=-13.30, r=0.43)
-surf63_zmin = openmc.ZPlane(z0=9.872688)
-surf63_zmax = openmc.ZPlane(z0=0.0)
-surf63 = (surf63_cyl, surf63_zmin, surf63_zmax)
+surf63 = openmc.ZCylinder(surface_id=63, x0=-13.3, y0=9.872688, r=0.43)
 # No hole
-surf64_cyl = openmc.ZCylinder(surface_id=64, x0=tr, y0=-13.30, r=0.43)
-surf64_zmin = openmc.ZPlane(z0=-9.872688)
-surf64_zmax = openmc.ZPlane(z0=0.0)
-surf64 = (surf64_cyl, surf64_zmin, surf64_zmax)
+surf64 = openmc.ZCylinder(surface_id=64, x0=-13.3, y0=-9.872688, r=0.43)
 # No hole
-surf65_cyl = openmc.ZCylinder(surface_id=65, x0=tr, y0=15.20, r=0.43)
-surf65_zmin = openmc.ZPlane(z0=6.581792)
-surf65_zmax = openmc.ZPlane(z0=0.0)
-surf65 = (surf65_cyl, surf65_zmin, surf65_zmax)
+surf65 = openmc.ZCylinder(surface_id=65, x0=15.2, y0=6.581792, r=0.43)
 # No hole
-surf66_cyl = openmc.ZCylinder(surface_id=66, x0=tr, y0=15.20, r=0.43)
-surf66_zmin = openmc.ZPlane(z0=-6.581792)
-surf66_zmax = openmc.ZPlane(z0=0.0)
-surf66 = (surf66_cyl, surf66_zmin, surf66_zmax)
+surf66 = openmc.ZCylinder(surface_id=66, x0=15.2, y0=-6.581792, r=0.43)
 # No hole
-surf67_cyl = openmc.ZCylinder(surface_id=67, x0=tr, y0=13.30, r=0.43)
-surf67_zmin = openmc.ZPlane(z0=9.872688)
-surf67_zmax = openmc.ZPlane(z0=0.0)
-surf67 = (surf67_cyl, surf67_zmin, surf67_zmax)
+surf67 = openmc.ZCylinder(surface_id=67, x0=13.3, y0=9.872688, r=0.43)
 # No hole
-surf68_cyl = openmc.ZCylinder(surface_id=68, x0=tr, y0=13.30, r=0.43)
-surf68_zmin = openmc.ZPlane(z0=-9.872688)
-surf68_zmax = openmc.ZPlane(z0=0.0)
-surf68 = (surf68_cyl, surf68_zmin, surf68_zmax)
+surf68 = openmc.ZCylinder(surface_id=68, x0=13.3, y0=-9.872688, r=0.43)
 # Hole
-surf71_cyl = openmc.ZCylinder(surface_id=71, x0=tr, y0=-13.30, r=0.43)
-surf71_zmin = openmc.ZPlane(z0=0.0)
-surf71_zmax = openmc.ZPlane(z0=0.0)
-surf71 = (surf71_cyl, surf71_zmin, surf71_zmax)
+surf71 = openmc.ZCylinder(surface_id=71, x0=-13.3, y0=0.0, r=0.43)
 # Hole
-surf72_cyl = openmc.ZCylinder(surface_id=72, x0=tr, y0=-6.65, r=0.43)
-surf72_zmin = openmc.ZPlane(z0=11.58136)
-surf72_zmax = openmc.ZPlane(z0=0.0)
-surf72 = (surf72_cyl, surf72_zmin, surf72_zmax)
+surf72 = openmc.ZCylinder(surface_id=72, x0=-6.65, y0=11.58136, r=0.43)
 # Hole
-surf73_cyl = openmc.ZCylinder(surface_id=73, x0=tr, y0=-6.65, r=0.43)
-surf73_zmin = openmc.ZPlane(z0=-11.58136)
-surf73_zmax = openmc.ZPlane(z0=0.0)
-surf73 = (surf73_cyl, surf73_zmin, surf73_zmax)
+surf73 = openmc.ZCylinder(surface_id=73, x0=-6.65, y0=-11.58136, r=0.43)
 # Hole
-surf74_cyl = openmc.ZCylinder(surface_id=74, x0=tr, y0=6.65, r=0.43)
-surf74_zmin = openmc.ZPlane(z0=11.58136)
-surf74_zmax = openmc.ZPlane(z0=0.0)
-surf74 = (surf74_cyl, surf74_zmin, surf74_zmax)
+surf74 = openmc.ZCylinder(surface_id=74, x0=6.65, y0=11.58136, r=0.43)
 # Hole
-surf75_cyl = openmc.ZCylinder(surface_id=75, x0=tr, y0=6.65, r=0.43)
-surf75_zmin = openmc.ZPlane(z0=-11.58136)
-surf75_zmax = openmc.ZPlane(z0=0.0)
-surf75 = (surf75_cyl, surf75_zmin, surf75_zmax)
+surf75 = openmc.ZCylinder(surface_id=75, x0=6.65, y0=-11.58136, r=0.43)
 # Hole
-surf76_cyl = openmc.ZCylinder(surface_id=76, x0=tr, y0=13.30, r=0.43)
-surf76_zmin = openmc.ZPlane(z0=0.0)
-surf76_zmax = openmc.ZPlane(z0=0.0)
-surf76 = (surf76_cyl, surf76_zmin, surf76_zmax)
+surf76 = openmc.ZCylinder(surface_id=76, x0=13.3, y0=0.0, r=0.43)
 # Z3 CND 18-12 SST fin
 surf99 = openmc.model.RectangularParallelepiped(-0.4144, 0, -0.0238, 0.0238, -0.3, 45.6)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=0.0)
+surf1_zmax = openmc.ZPlane(z0=34.55)
+surf2_zmin = openmc.ZPlane(z0=-0.3)
+surf2_zmax = openmc.ZPlane(z0=34.85)
+surf3_zmin = openmc.ZPlane(z0=34.85)
+surf3_zmax = openmc.ZPlane(z0=34.95)
+surf4_zmin = openmc.ZPlane(z0=-0.3)
+surf4_zmax = openmc.ZPlane(z0=45.6)
+surf5_zmin = openmc.ZPlane(z0=-1.134)
+surf5_zmax = openmc.ZPlane(z0=46.763)
+surf7_zmin = openmc.ZPlane(z0=-1.4)
+surf7_zmax = openmc.ZPlane(z0=47.1)
+surf11_zmin = openmc.ZPlane(z0=-34.0, boundary_type="vacuum")
+surf11_zmax = openmc.ZPlane(z0=81.8, boundary_type="vacuum")
+surf12_zmin = openmc.ZPlane(z0=-1.9)
+surf12_zmax = openmc.ZPlane(z0=-1.4)
+surf13_zmin = openmc.ZPlane(z0=-0.9)
+surf13_zmax = openmc.ZPlane(z0=-0.8)
+surf14_zmin = openmc.ZPlane(z0=46.4)
+surf14_zmax = openmc.ZPlane(z0=46.5)
+surf16_zmin = openmc.ZPlane(z0=81.3)
+surf16_zmax = openmc.ZPlane(z0=81.8)
 
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1
+u1_cell0.region = (-surf1 & +surf1_zmin & -surf1_zmax)
 u1_cell1 = openmc.Cell(fill=mat2)
-u1_cell1.region = +surf1 & -surf2
+u1_cell1.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
 u1_cell2 = openmc.Cell(fill=mat6)
-u1_cell2.region = +surf2 & -surf3
+u1_cell2.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 u1_cell3 = openmc.Cell(fill=mat3)
-u1_cell3.region = +surf1 & +surf2 & +surf3 & -surf4
+u1_cell3.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 u1_cell4 = openmc.Cell(fill=mat6)
-u1_cell4.region = +surf4 & -surf5
+u1_cell4.region = (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 u1_cell5 = openmc.Cell(fill=mat6)
-u1_cell5.region = +surf5 & +surf6 & -surf99
+u1_cell5.region = (+surf5 | -surf5_zmin | +surf5_zmax) & +surf6 & -surf99
 u1_cell6 = openmc.Cell(fill=mat5)
-u1_cell6.region = +surf5 & +surf6 & -surf7 & -surf8
+u1_cell6.region = (+surf5 | -surf5_zmin | +surf5_zmax) & +surf6 & (-surf7 & +surf7_zmin & -surf7_zmax) & -surf8
 u1_cell7 = openmc.Cell(fill=mat5)
-u1_cell7.region = +surf5 & +surf6 & -surf7 & +surf10
+u1_cell7.region = (+surf5 | -surf5_zmin | +surf5_zmax) & +surf6 & (-surf7 & +surf7_zmin & -surf7_zmax) & +surf10
 u1_cell8 = openmc.Cell(fill=mat3)
-u1_cell8.region = +surf5 & -surf6 & -surf7 & +surf9
+u1_cell8.region = (+surf5 | -surf5_zmin | +surf5_zmax) & -surf6 & (-surf7 & +surf7_zmin & -surf7_zmax) & +surf9
 u1_cell9 = openmc.Cell(fill=mat4)
-u1_cell9.region = +surf5 & -surf6 & -surf7 & -surf9
+u1_cell9.region = (+surf5 | -surf5_zmin | +surf5_zmax) & -surf6 & (-surf7 & +surf7_zmin & -surf7_zmax) & -surf9
 u1_cell10 = openmc.Cell(fill=mat3)
-u1_cell10.region = +surf5 & +surf6 & -surf7 & +surf9 & -surf10 & +surf99
+u1_cell10.region = (+surf5 | -surf5_zmin | +surf5_zmax) & +surf6 & (-surf7 & +surf7_zmin & -surf7_zmax) & +surf9 & -surf10 & +surf99
 u1_cell11 = openmc.Cell(fill=mat4)
-u1_cell11.region = +surf5 & +surf6 & -surf7 & +surf8 & -surf9 & +surf99
+u1_cell11.region = (+surf5 | -surf5_zmin | +surf5_zmax) & +surf6 & (-surf7 & +surf7_zmin & -surf7_zmax) & +surf8 & -surf9 & +surf99
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6, u1_cell7, u1_cell8, u1_cell9, u1_cell10, u1_cell11])
 
 u2_cell0 = openmc.Cell(fill=mat3)
-u2_cell0.region = +surf9 & -surf11
+u2_cell0.region = +surf9 & (-surf11 & +surf11_zmin & -surf11_zmax)
 u2_cell1 = openmc.Cell(fill=mat4)
-u2_cell1.region = -surf9 & -surf11
+u2_cell1.region = -surf9 & (-surf11 & +surf11_zmin & -surf11_zmax)
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1])
 
 u3_cell0 = openmc.Cell(fill=mat5)
-u3_cell0.region = -surf12
+u3_cell0.region = (-surf12 & +surf12_zmin & -surf12_zmax)
 u3_cell1 = openmc.Cell(fill=mat5)
-u3_cell1.region = -surf13
+u3_cell1.region = (-surf13 & +surf13_zmin & -surf13_zmax)
 u3_cell2 = openmc.Cell(fill=mat5)
-u3_cell2.region = -surf14
+u3_cell2.region = (-surf14 & +surf14_zmin & -surf14_zmax)
 u3_cell3 = openmc.Cell(fill=mat5)
-u3_cell3.region = +surf15 & -surf16
+u3_cell3.region = +surf15 & (-surf16 & +surf16_zmin & -surf16_zmax)
 u3_cell4 = openmc.Cell(fill=mat5)
-u3_cell4.region = +surf12 & +surf16
+u3_cell4.region = (+surf12 | -surf12_zmin | +surf12_zmax) & (+surf16 | -surf16_zmin | +surf16_zmax) & -surf17
 u3_cell5 = openmc.Cell(fill=mat5)
-u3_cell5.region = +surf12 & +surf16
+u3_cell5.region = (+surf12 | -surf12_zmin | +surf12_zmax) & (+surf16 | -surf16_zmin | +surf16_zmax) & -surf18
 u3_cell6 = openmc.Cell(fill=mat5)
-u3_cell6.region = +surf12 & +surf16
+u3_cell6.region = (+surf12 | -surf12_zmin | +surf12_zmax) & (+surf16 | -surf16_zmin | +surf16_zmax) & -surf19
 u3_cell7 = openmc.Cell(fill=mat5)
-u3_cell7.region = +surf12 & +surf16
+u3_cell7.region = (+surf12 | -surf12_zmin | +surf12_zmax) & (+surf16 | -surf16_zmin | +surf16_zmax) & -surf20
 u3_cell8 = openmc.Cell(fill=mat3)
-u3_cell8.region = -surf15 & -surf16
+u3_cell8.region = -surf15 & (-surf16 & +surf16_zmin & -surf16_zmax)
 u3_cell9 = openmc.Cell(fill=mat3)
-u3_cell9.region = +surf9 & -surf11 & +surf14 & +surf16
+u3_cell9.region = +surf9 & (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf14 | -surf14_zmin | +surf14_zmax) & (+surf16 | -surf16_zmin | +surf16_zmax) & +surf17 & +surf18 & +surf19 & +surf20
 u3_cell10 = openmc.Cell(fill=mat4)
-u3_cell10.region = -surf9 & -surf11 & +surf12 & +surf13
+u3_cell10.region = -surf9 & (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf12 | -surf12_zmin | +surf12_zmax) & (+surf13 | -surf13_zmin | +surf13_zmax) & +surf17 & +surf18 & +surf19 & +surf20
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2, u3_cell3, u3_cell4, u3_cell5, u3_cell6, u3_cell7, u3_cell8, u3_cell9, u3_cell10])
 
 universe4 = openmc.Universe(universe_id=4, cells=[])
@@ -385,119 +331,119 @@ universe7.add_cell(openmc.Cell(fill=lattice7))
 
 # Farray
 cell1 = openmc.Cell(cell_id=1, fill=universe6)
-cell1.region = -surf11 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & +surf71 & +surf72 & +surf73 & +surf74 & +surf75 & +surf76
+cell1.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & +surf71 & +surf72 & +surf73 & +surf74 & +surf75 & +surf76
 
 # Hole
 cell2 = openmc.Cell(cell_id=2, fill=universe7)
-cell2.region = -surf11 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf71
+cell2.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf71
 
 # Hole
 cell3 = openmc.Cell(cell_id=3, fill=universe7)
-cell3.region = -surf11 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf72
+cell3.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf72
 
 # Hole
 cell4 = openmc.Cell(cell_id=4, fill=universe7)
-cell4.region = -surf11 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf73
+cell4.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf73
 
 # Hole
 cell5 = openmc.Cell(cell_id=5, fill=universe7)
-cell5.region = -surf11 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf74
+cell5.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf74
 
 # Hole
 cell6 = openmc.Cell(cell_id=6, fill=universe7)
-cell6.region = -surf11 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf75
+cell6.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf75
 
 # Hole
 cell7 = openmc.Cell(cell_id=7, fill=universe7)
-cell7.region = -surf11 & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf76
+cell7.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf30_0 & -surf30_1 & -surf30_2 & -surf30_3 & -surf30_4 & -surf30_5) & -surf76
 
 # Harray
 cell8 = openmc.Cell(cell_id=8, fill=universe7)
-cell8.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & +surf41 & +surf42 & +surf43 & +surf44 & +surf45 & +surf46 & +surf47 & +surf48 & +surf49 & +surf50 & +surf51 & +surf52
+cell8.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & +surf41 & +surf42 & +surf43 & +surf44 & +surf45 & +surf46 & +surf47 & +surf48 & +surf49 & +surf50 & +surf51 & +surf52
 
 # NoHole
 cell9 = openmc.Cell(cell_id=9, fill=universe3)
-cell9.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf41
+cell9.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf41
 
 # NoHole
 cell10 = openmc.Cell(cell_id=10, fill=universe3)
-cell10.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf42
+cell10.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf42
 
 # NoHole
 cell11 = openmc.Cell(cell_id=11, fill=universe3)
-cell11.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf43
+cell11.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf43
 
 # NoHole
 cell12 = openmc.Cell(cell_id=12, fill=universe3)
-cell12.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf44
+cell12.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf44
 
 # NoHole
 cell13 = openmc.Cell(cell_id=13, fill=universe3)
-cell13.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf45
+cell13.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf45
 
 # NoHole
 cell14 = openmc.Cell(cell_id=14, fill=universe3)
-cell14.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf46
+cell14.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf46
 
 # NoHole
 cell15 = openmc.Cell(cell_id=15, fill=universe3)
-cell15.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf47
+cell15.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf47
 
 # NoHole
 cell16 = openmc.Cell(cell_id=16, fill=universe3)
-cell16.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf48
+cell16.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf48
 
 # NoHole
 cell17 = openmc.Cell(cell_id=17, fill=universe3)
-cell17.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf49
+cell17.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf49
 
 # NoHole
 cell18 = openmc.Cell(cell_id=18, fill=universe3)
-cell18.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf50
+cell18.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf50
 
 # NoHole
 cell19 = openmc.Cell(cell_id=19, fill=universe3)
-cell19.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf51
+cell19.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf51
 
 # NoHole
 cell20 = openmc.Cell(cell_id=20, fill=universe3)
-cell20.region = -surf11 & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf52
+cell20.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf30_0 | +surf30_1 | +surf30_2 | +surf30_3 | +surf30_4 | +surf30_5) & (-surf31_0 & -surf31_1 & -surf31_2 & -surf31_3 & -surf31_4 & -surf31_5) & -surf52
 
 # Alles
 cell21 = openmc.Cell(cell_id=21, fill=universe3)
-cell21.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & +surf61 & +surf62 & +surf63 & +surf64 & +surf65 & +surf66 & +surf67 & +surf68
+cell21.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & +surf61 & +surf62 & +surf63 & +surf64 & +surf65 & +surf66 & +surf67 & +surf68
 
 # Hole
 cell22 = openmc.Cell(cell_id=22, fill=universe7)
-cell22.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf61
+cell22.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf61
 
 # Hole
 cell23 = openmc.Cell(cell_id=23, fill=universe7)
-cell23.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf62
+cell23.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf62
 
 # Hole
 cell24 = openmc.Cell(cell_id=24, fill=universe7)
-cell24.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf63
+cell24.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf63
 
 # Hole
 cell25 = openmc.Cell(cell_id=25, fill=universe7)
-cell25.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf64
+cell25.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf64
 
 # Hole
 cell26 = openmc.Cell(cell_id=26, fill=universe7)
-cell26.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf65
+cell26.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf65
 
 # Hole
 cell27 = openmc.Cell(cell_id=27, fill=universe7)
-cell27.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf66
+cell27.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf66
 
 # Hole
 cell28 = openmc.Cell(cell_id=28, fill=universe7)
-cell28.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf67
+cell28.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf67
 
 # Hole
 cell29 = openmc.Cell(cell_id=29, fill=universe7)
-cell29.region = -surf11 & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf68
+cell29.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (+surf31_0 | +surf31_1 | +surf31_2 | +surf31_3 | +surf31_4 | +surf31_5) & -surf68
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16, cell17, cell18, cell19, cell20, cell21, cell22, cell23, cell24, cell25, cell26, cell27, cell28, cell29])
 geometry = openmc.Geometry(root_universe)
