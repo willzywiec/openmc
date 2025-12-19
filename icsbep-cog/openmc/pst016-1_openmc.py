@@ -1,0 +1,147 @@
+"""
+PU-SOL-THERM-016 (Case 1) 300 and 256 mm cylinders with 152.5 gPu/L at 0 cm s-to-s
+Converted from COG to OpenMC
+"""
+
+import openmc
+
+# ==============================================================================
+# Materials
+# ==============================================================================
+
+# 152.5 gPu/L Sol'n
+mat1 = openmc.Material(material_id=1)
+mat1.set_density("sum")
+mat1.add_nuclide("Pu238", 2.777700e-08)
+mat1.add_nuclide("Pu239", 3.666200e-04)
+mat1.add_nuclide("Pu240", 1.617600e-05)
+mat1.add_nuclide("Pu241", 1.206800e-06)
+mat1.add_nuclide("Pu242", 6.070400e-08)
+mat1.add_nuclide("Am241", 1.356300e-07)
+mat1.add_element("N", 2.903000e-03)
+mat1.add_nuclide("H1", 5.963600e-02)
+mat1.add_element("Fe", 3.213400e-06)
+mat1.add_element("Cr", 8.535800e-07)
+mat1.add_element("Ni", 6.854300e-07)
+mat1.add_element("Ca", 1.833200e-06)
+mat1.add_nuclide("O16", 3.785200e-02)
+mat1.add_s_alpha_beta("c_H_in_H2O")
+
+# 115.1 gPu/L Sol'n
+mat2 = openmc.Material(material_id=2)
+mat2.set_density("sum")
+mat2.add_nuclide("Pu238", 2.096500e-08)
+mat2.add_nuclide("Pu239", 2.767100e-04)
+mat2.add_nuclide("Pu240", 1.220900e-05)
+mat2.add_nuclide("Pu241", 9.108200e-07)
+mat2.add_nuclide("Pu242", 4.581700e-08)
+mat2.add_nuclide("Am241", 1.023700e-07)
+mat2.add_element("N", 2.383700e-03)
+mat2.add_nuclide("H1", 6.093100e-02)
+mat2.add_element("Fe", 2.512500e-06)
+mat2.add_element("Cr", 6.671100e-07)
+mat2.add_element("Ni", 5.315100e-07)
+mat2.add_element("Ca", 1.383900e-06)
+mat2.add_nuclide("O16", 3.701100e-02)
+mat2.add_s_alpha_beta("c_H_in_H2O")
+
+# Nitric Acid
+mat3 = openmc.Material(material_id=3)
+mat3.set_density("sum")
+mat3.add_nuclide("H1", 6.378100e-02)
+mat3.add_element("N", 1.204400e-03)
+mat3.add_nuclide("O16", 3.490200e-02)
+mat3.add_s_alpha_beta("c_H_in_H2O")
+
+# Z3 CN 18-10 SST
+mat4 = openmc.Material(material_id=4)
+mat4.set_density("sum")
+mat4.add_element("Fe", 5.868600e-02)
+mat4.add_element("Cr", 1.646900e-02)
+mat4.add_element("Ni", 8.106100e-03)
+mat4.add_element("Mn", 1.731900e-03)
+mat4.add_element("Si", 1.693900e-03)
+mat4.add_element("C", 1.585700e-04)
+mat4.add_element("P", 6.143900e-05)
+mat4.add_element("S", 4.451800e-05)
+
+materials = openmc.Materials([mat1, mat2, mat3, mat4])
+
+# ==============================================================================
+# Geometry
+# ==============================================================================
+
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
+# 256-mm Tank/Hc'   per Table 12
+surf1 = openmc.ZPlane(surface_id=1, z0=34.534)
+# 256-mm Tank/Inner per Section 3.1
+surf2 = openmc.ZCylinder(surface_id=2, r=12.49)
+# 256-mm Tank/Outer per Section 3.1
+surf3 = openmc.ZCylinder(surface_id=3, r=12.8)
+# 300-mm Tank/Hc-0.325 per Table 12
+surf4 = openmc.ZPlane(surface_id=4, z0=34.534)
+# 300-mm Tank/Inner per Figure 5
+surf5 = openmc.ZCylinder(surface_id=5, x0=27.79, y0=0.0, r=14.7)
+# 300-mm Tank/Outer per Figure 5
+surf6 = openmc.ZCylinder(surface_id=6, x0=27.79, y0=0.0, r=15.0)
+
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(surface_id=1006, z0=0.0)
+surf2_zmax = openmc.ZPlane(surface_id=1007, z0=101.145)
+surf3_zmin = openmc.ZPlane(surface_id=1008, z0=-1.355)
+surf3_zmax = openmc.ZPlane(surface_id=1009, z0=102.345)
+
+# ------------------------------------------------------------------------------
+# Root Cells
+# ------------------------------------------------------------------------------
+
+# Void
+cell1 = openmc.Cell(cell_id=1)
+cell1.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
+
+# Soln
+cell2 = openmc.Cell(cell_id=2, fill=mat1)
+cell2.region = -surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
+
+# SST
+cell3 = openmc.Cell(cell_id=3, fill=mat4)
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
+
+# Void
+cell4 = openmc.Cell(cell_id=4)
+cell4.region = (+surf3 | -surf3_zmin | +surf3_zmax) & +surf4 & -surf5
+
+# Soln
+cell5 = openmc.Cell(cell_id=5, fill=mat1)
+cell5.region = (+surf3 | -surf3_zmin | +surf3_zmax) & -surf4 & -surf5
+
+# SST
+cell6 = openmc.Cell(cell_id=6, fill=mat4)
+cell6.region = (+surf3 | -surf3_zmin | +surf3_zmax) & +surf5 & -surf6
+
+root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
+geometry = openmc.Geometry(root_universe)
+
+# ==============================================================================
+# Settings
+# ==============================================================================
+
+settings = openmc.Settings()
+settings.particles = 10000
+settings.batches = 150
+settings.inactive = 10
+settings.run_mode = "eigenvalue"
+
+source = openmc.IndependentSource()
+source.space = openmc.stats.Box((-1.0, -1.0, 16.3), (28.79, 1.0, 18.3))
+settings.source = source
+
+# ==============================================================================
+# Export
+# ==============================================================================
+
+materials.export_to_xml()
+geometry.export_to_xml()
+settings.export_to_xml()

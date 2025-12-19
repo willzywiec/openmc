@@ -783,12 +783,38 @@ class COGParser:
                 if next_parts and next_parts[0].isdigit() and len(next_parts) > 1:
                     if next_parts[1].lower() in ['sphere', 'sph', 'so', 'c', 'cyl', 'cylinder',
                                                    'px', 'py', 'pz', 'p', 'plane', 'pla',
-                                                   'box', 'rpp', 'c/x', 'c/y', 'c/z', 'prism']:
+                                                   'box', 'rpp', 'c/x', 'c/y', 'c/z', 'prism', 'revolution', 'rev']:
                         self._line_idx -= 1
                         break
                 all_params.extend(next_line.split())
 
             params = [str(n_vertices)] + all_params
+
+        # Handle multi-line revolution definitions
+        if surf_type in ['revolution', 'rev'] and len(params) > 0:
+            n_points = int(params[0])
+            needed_coords = n_points * 2  # r, z pairs
+            all_params = params[1:]
+
+            while len([p for p in all_params if self._is_number(p)]) < needed_coords:
+                self._line_idx += 1
+                if self._line_idx >= len(self._lines):
+                    break
+                next_line = self._lines[self._line_idx].strip()
+                if not next_line or next_line.startswith('$'):
+                    continue
+                if '$' in next_line:
+                    next_line = next_line.split('$')[0].strip()
+                next_parts = next_line.split()
+                if next_parts and next_parts[0].isdigit() and len(next_parts) > 1:
+                    if next_parts[1].lower() in ['sphere', 'sph', 'so', 'c', 'cyl', 'cylinder',
+                                                   'px', 'py', 'pz', 'p', 'plane', 'pla',
+                                                   'box', 'rpp', 'c/x', 'c/y', 'c/z', 'prism', 'revolution', 'rev']:
+                        self._line_idx -= 1
+                        break
+                all_params.extend(next_line.split())
+
+            params = [str(n_points)] + all_params
 
         surface = Surface(
             surf_id=surf_id,
@@ -1054,6 +1080,8 @@ class OpenMCPythonGenerator:
                 return self._gen_analytic(var_name, surf_id, params, bc)
             elif surf_type == 'sameas':
                 return self._gen_sameas(var_name, surf_id, params, bc)
+            elif surf_type in ['revolution', 'rev']:
+                return self._gen_revolution(var_name, surf_id, params, bc)
             else:
                 return f'# {var_name}: Unsupported surface type "{surf_type}" with params {params}'
         except (ValueError, IndexError) as e:
@@ -1346,6 +1374,55 @@ class OpenMCPythonGenerator:
                 return f'# {var_name}: Unknown axis "{axis}" in analytic surface'
         except (ValueError, IndexError) as e:
             return f'# {var_name}: Error parsing analytic surface: {e}'
+
+    def _gen_revolution(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate a revolution (solid of revolution) surface.
+
+        COG format: revolution n_points r1 z1 r2 z2 ... [axis]
+        OpenMC format: openmc.Revolution(rz=[(r1,z1), (r2,z2), ...], axis='z')
+
+        Note: COG revolution surfaces appear to use the x-axis based on context
+        of surrounding cylinder definitions.
+        """
+        if len(params) < 1:
+            return f'# {var_name}: Revolution surface needs n_points'
+
+        try:
+            n_points = int(params[0])
+            if n_points < 2:
+                return f'# {var_name}: Revolution needs at least 2 points'
+
+            # Extract r, z coordinate pairs
+            coords = []
+            i = 1
+            while i < len(params) and len(coords) < n_points * 2:
+                try:
+                    coords.append(float(params[i]))
+                    i += 1
+                except ValueError:
+                    break
+
+            if len(coords) < n_points * 2:
+                return f'# {var_name}: Revolution has insufficient coordinates ({len(coords)} for {n_points} points)'
+
+            # Build (r, z) pairs
+            rz_pairs = []
+            for j in range(n_points):
+                r = coords[j * 2]
+                z = coords[j * 2 + 1]
+                rz_pairs.append((r, z))
+
+            # Determine axis - default to 'x' for COG compatibility
+            # (most COG revolution surfaces are around the x-axis based on cylinder context)
+            axis = 'x'
+
+            # Format rz list for Python
+            rz_str = '[' + ', '.join(f'({r}, {z})' for r, z in rz_pairs) + ']'
+
+            return f'{var_name} = openmc.Revolution(surface_id={surf_id}, rz={rz_str}, axis="{axis}"{bc})'
+
+        except (ValueError, IndexError) as e:
+            return f'# {var_name}: Error parsing revolution surface: {e}'
 
     def _gen_sameas(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
         """Generate a 'sameas' surface (copy of another surface with translation).
