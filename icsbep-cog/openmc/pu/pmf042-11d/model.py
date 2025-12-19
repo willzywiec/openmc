@@ -82,151 +82,151 @@ surf2 = openmc.ZPlane(surface_id=2, z0=1.49)
 # BCD
 surf3 = openmc.ZCylinder(surface_id=3, r=25.0, boundary_type="vacuum")
 # Pu1
-# surf11: Unsupported surface type "s" with params ['2.0000', 'tr', '-2.37375', '0', '-6.333']
+surf11 = openmc.Sphere(surface_id=11, x0=2.0000, y0=tr, z0=-2.37375, r=0)
 # Pu2
-# surf12: Unsupported surface type "s" with params ['2.0100', 'tr', '-2.37375', '0', '-6.333']
+surf12 = openmc.Sphere(surface_id=12, x0=2.0100, y0=tr, z0=-2.37375, r=0)
 # Pu2
-# surf13: Unsupported surface type "s" with params ['2.1542', 'tr', '-2.37375', '0', '-6.333']
+surf13 = openmc.Sphere(surface_id=13, x0=2.1542, y0=tr, z0=-2.37375, r=0)
 # Pu3
-# surf14: Unsupported surface type "s" with params ['2.1764', 'tr', '-2.37375', '0', '-6.333']
+surf14 = openmc.Sphere(surface_id=14, x0=2.1764, y0=tr, z0=-2.37375, r=0)
 # Pu3
-# surf15: Unsupported surface type "s" with params ['2.3206', 'tr', '-2.37375', '0', '-6.333']
+surf15 = openmc.Sphere(surface_id=15, x0=2.3206, y0=tr, z0=-2.37375, r=0)
 # Pu4
-# surf16: Unsupported surface type "s" with params ['2.3428', 'tr', '-2.37375', '0', '-6.333']
+surf16 = openmc.Sphere(surface_id=16, x0=2.3428, y0=tr, z0=-2.37375, r=0)
 # Pu4
-# surf17: Unsupported surface type "s" with params ['2.4870', 'tr', '-2.37375', '0', '-6.333']
+surf17 = openmc.Sphere(surface_id=17, x0=2.4870, y0=tr, z0=-2.37375, r=0)
 # Pu5
-# surf18: Unsupported surface type "s" with params ['2.5092', 'tr', '-2.37375', '0', '-6.333']
+surf18 = openmc.Sphere(surface_id=18, x0=2.5092, y0=tr, z0=-2.37375, r=0)
 # Pu5
-# surf19: Unsupported surface type "s" with params ['2.6534', 'tr', '-2.37375', '0', '-6.333']
+surf19 = openmc.Sphere(surface_id=19, x0=2.6534, y0=tr, z0=-2.37375, r=0)
 # Pu6
-# surf20: Unsupported surface type "s" with params ['2.6756', 'tr', '-2.37375', '0', '-6.333']
+surf20 = openmc.Sphere(surface_id=20, x0=2.6756, y0=tr, z0=-2.37375, r=0)
 # Pu6
-# surf21: Unsupported surface type "s" with params ['2.8198', 'tr', '-2.37375', '0', '-6.333']
+surf21 = openmc.Sphere(surface_id=21, x0=2.8198, y0=tr, z0=-2.37375, r=0)
 # Pu7
-# surf22: Unsupported surface type "s" with params ['2.8420', 'tr', '-2.37375', '0', '-6.333']
+surf22 = openmc.Sphere(surface_id=22, x0=2.8420, y0=tr, z0=-2.37375, r=0)
 # Pu7
-# surf23: Unsupported surface type "s" with params ['2.9862', 'tr', '-2.37375', '0', '-6.333']
+surf23 = openmc.Sphere(surface_id=23, x0=2.9862, y0=tr, z0=-2.37375, r=0)
 # Pu8
-# surf24: Unsupported surface type "s" with params ['3.0084', 'tr', '-2.37375', '0', '-6.333']
+surf24 = openmc.Sphere(surface_id=24, x0=3.0084, y0=tr, z0=-2.37375, r=0)
 # Pu8
-# surf25: Unsupported surface type "s" with params ['3.1526', 'tr', '-2.37375', '0', '-6.333']
+surf25 = openmc.Sphere(surface_id=25, x0=3.1526, y0=tr, z0=-2.37375, r=0)
 # Pu9
-# surf26: Unsupported surface type "s" with params ['3.1748', 'tr', '-2.37375', '0', '-6.333']
+surf26 = openmc.Sphere(surface_id=26, x0=3.1748, y0=tr, z0=-2.37375, r=0)
 # Pu9
-# surf27: Unsupported surface type "s" with params ['3.3190', 'tr', '-2.37375', '0', '-6.333']
+surf27 = openmc.Sphere(surface_id=27, x0=3.3190, y0=tr, z0=-2.37375, r=0)
 # Pu10
-# surf28: Unsupported surface type "s" with params ['3.3412', 'tr', '-2.37375', '0', '-6.333']
+surf28 = openmc.Sphere(surface_id=28, x0=3.3412, y0=tr, z0=-2.37375, r=0)
 # Pu10
-# surf29: Unsupported surface type "s" with params ['3.4854', 'tr', '-2.37375', '0', '-6.333']
+surf29 = openmc.Sphere(surface_id=29, x0=3.4854, y0=tr, z0=-2.37375, r=0)
 # Pu11
-# surf30: Unsupported surface type "s" with params ['3.5076', 'tr', '-2.37375', '0', '-6.333']
+surf30 = openmc.Sphere(surface_id=30, x0=3.5076, y0=tr, z0=-2.37375, r=0)
 # Pu11
-# surf31: Unsupported surface type "s" with params ['3.6518', 'tr', '-2.37375', '0', '-6.333']
+surf31 = openmc.Sphere(surface_id=31, x0=3.6518, y0=tr, z0=-2.37375, r=0)
 # Pu12
-# surf32: Unsupported surface type "s" with params ['3.6740', 'tr', '-2.37375', '0', '-6.333']
+surf32 = openmc.Sphere(surface_id=32, x0=3.6740, y0=tr, z0=-2.37375, r=0)
 # Pu12
-# surf33: Unsupported surface type "s" with params ['3.8182', 'tr', '-2.37375', '0', '-6.333']
+surf33 = openmc.Sphere(surface_id=33, x0=3.8182, y0=tr, z0=-2.37375, r=0)
 # Pu13
-# surf34: Unsupported surface type "s" with params ['3.8404', 'tr', '-2.37375', '0', '-6.333']
+surf34 = openmc.Sphere(surface_id=34, x0=3.8404, y0=tr, z0=-2.37375, r=0)
 # Pu13
-# surf35: Unsupported surface type "s" with params ['3.9846', 'tr', '-2.37375', '0', '-6.333']
+surf35 = openmc.Sphere(surface_id=35, x0=3.9846, y0=tr, z0=-2.37375, r=0)
 # Pu14
-# surf36: Unsupported surface type "s" with params ['4.0068', 'tr', '-2.37375', '0', '-6.333']
+surf36 = openmc.Sphere(surface_id=36, x0=4.0068, y0=tr, z0=-2.37375, r=0)
 # Pu14
-# surf37: Unsupported surface type "s" with params ['4.1510', 'tr', '-2.37375', '0', '-6.333']
+surf37 = openmc.Sphere(surface_id=37, x0=4.1510, y0=tr, z0=-2.37375, r=0)
 # Pu15
-# surf38: Unsupported surface type "s" with params ['4.1732', 'tr', '-2.37375', '0', '-6.333']
+surf38 = openmc.Sphere(surface_id=38, x0=4.1732, y0=tr, z0=-2.37375, r=0)
 # Pu15
-# surf39: Unsupported surface type "s" with params ['4.3174', 'tr', '-2.37375', '0', '-6.333']
+surf39 = openmc.Sphere(surface_id=39, x0=4.3174, y0=tr, z0=-2.37375, r=0)
 # Pu16
-# surf40: Unsupported surface type "s" with params ['4.3396', 'tr', '-2.37375', '0', '-6.333']
+surf40 = openmc.Sphere(surface_id=40, x0=4.3396, y0=tr, z0=-2.37375, r=0)
 # Pu16
-# surf41: Unsupported surface type "s" with params ['4.4838', 'tr', '-2.37375', '0', '-6.333']
+surf41 = openmc.Sphere(surface_id=41, x0=4.4838, y0=tr, z0=-2.37375, r=0)
 # Pu17
-# surf42: Unsupported surface type "s" with params ['4.5060', 'tr', '-2.37375', '0', '-6.333']
+surf42 = openmc.Sphere(surface_id=42, x0=4.5060, y0=tr, z0=-2.37375, r=0)
 # Pu17
-# surf43: Unsupported surface type "s" with params ['4.6502', 'tr', '-2.37375', '0', '-6.333']
+surf43 = openmc.Sphere(surface_id=43, x0=4.6502, y0=tr, z0=-2.37375, r=0)
 # Pu18
-# surf44: Unsupported surface type "s" with params ['4.6724', 'tr', '-2.37375', '0', '-6.333']
+surf44 = openmc.Sphere(surface_id=44, x0=4.6724, y0=tr, z0=-2.37375, r=0)
 # Pu18
-# surf45: Unsupported surface type "s" with params ['4.8166', 'tr', '-2.37375', '0', '-6.333']
+surf45 = openmc.Sphere(surface_id=45, x0=4.8166, y0=tr, z0=-2.37375, r=0)
 # Pu19
-# surf46: Unsupported surface type "s" with params ['4.8388', 'tr', '-2.37375', '0', '-6.333']
+surf46 = openmc.Sphere(surface_id=46, x0=4.8388, y0=tr, z0=-2.37375, r=0)
 # Pu19
-# surf47: Unsupported surface type "s" with params ['4.9830', 'tr', '-2.37375', '0', '-6.333']
+surf47 = openmc.Sphere(surface_id=47, x0=4.9830, y0=tr, z0=-2.37375, r=0)
 # Pu20
-# surf48: Unsupported surface type "s" with params ['5.0052', 'tr', '-2.37375', '0', '-6.333']
+surf48 = openmc.Sphere(surface_id=48, x0=5.0052, y0=tr, z0=-2.37375, r=0)
 # Pu20
-# surf49: Unsupported surface type "s" with params ['5.1494', 'tr', '-2.37375', '0', '-6.333']
+surf49 = openmc.Sphere(surface_id=49, x0=5.1494, y0=tr, z0=-2.37375, r=0)
 # Pu21
-# surf50: Unsupported surface type "s" with params ['5.1716', 'tr', '-2.37375', '0', '-6.333']
+surf50 = openmc.Sphere(surface_id=50, x0=5.1716, y0=tr, z0=-2.37375, r=0)
 # Pu21
-# surf51: Unsupported surface type "s" with params ['5.3158', 'tr', '-2.37375', '0', '-6.333']
+surf51 = openmc.Sphere(surface_id=51, x0=5.3158, y0=tr, z0=-2.37375, r=0)
 # Pu22
-# surf52: Unsupported surface type "s" with params ['5.3380', 'tr', '-2.37375', '0', '-6.333']
+surf52 = openmc.Sphere(surface_id=52, x0=5.3380, y0=tr, z0=-2.37375, r=0)
 # Pu22
-# surf53: Unsupported surface type "s" with params ['5.4822', 'tr', '-2.37375', '0', '-6.333']
+surf53 = openmc.Sphere(surface_id=53, x0=5.4822, y0=tr, z0=-2.37375, r=0)
 # Pu23
-# surf54: Unsupported surface type "s" with params ['5.5044', 'tr', '-2.37375', '0', '-6.333']
+surf54 = openmc.Sphere(surface_id=54, x0=5.5044, y0=tr, z0=-2.37375, r=0)
 # Pu23
-# surf55: Unsupported surface type "s" with params ['5.6486', 'tr', '-2.37375', '0', '-6.333']
+surf55 = openmc.Sphere(surface_id=55, x0=5.6486, y0=tr, z0=-2.37375, r=0)
 # Pu24
-# surf56: Unsupported surface type "s" with params ['5.6708', 'tr', '-2.37375', '0', '-6.333']
+surf56 = openmc.Sphere(surface_id=56, x0=5.6708, y0=tr, z0=-2.37375, r=0)
 # Pu24
-# surf57: Unsupported surface type "s" with params ['5.8150', 'tr', '-2.37375', '0', '-6.333']
+surf57 = openmc.Sphere(surface_id=57, x0=5.8150, y0=tr, z0=-2.37375, r=0)
 # Pu25
-# surf58: Unsupported surface type "s" with params ['5.8372', 'tr', '-2.37375', '0', '-6.333']
+surf58 = openmc.Sphere(surface_id=58, x0=5.8372, y0=tr, z0=-2.37375, r=0)
 # Pu25
-# surf59: Unsupported surface type "s" with params ['5.9814', 'tr', '-2.37375', '0', '-6.333']
+surf59 = openmc.Sphere(surface_id=59, x0=5.9814, y0=tr, z0=-2.37375, r=0)
 # Pu26
-# surf60: Unsupported surface type "s" with params ['6.0036', 'tr', '-2.37375', '0', '-6.333']
+surf60 = openmc.Sphere(surface_id=60, x0=6.0036, y0=tr, z0=-2.37375, r=0)
 # Pu26
-# surf61: Unsupported surface type "s" with params ['6.1478', 'tr', '-2.37375', '0', '-6.333']
+surf61 = openmc.Sphere(surface_id=61, x0=6.1478, y0=tr, z0=-2.37375, r=0)
 # Pu27
-# surf62: Unsupported surface type "s" with params ['6.1700', 'tr', '-2.37375', '0', '-6.333']
+surf62 = openmc.Sphere(surface_id=62, x0=6.1700, y0=tr, z0=-2.37375, r=0)
 # Pu27
-# surf63: Unsupported surface type "s" with params ['6.3142', 'tr', '-2.37375', '0', '-6.333']
+surf63 = openmc.Sphere(surface_id=63, x0=6.3142, y0=tr, z0=-2.37375, r=0)
 # S1
-# surf64: Unsupported surface type "s" with params ['6.3386', 'tr', '-2.37375', '0', '-6.333']
+surf64 = openmc.Sphere(surface_id=64, x0=6.3386, y0=tr, z0=-2.37375, r=0)
 # S1
-# surf65: Unsupported surface type "s" with params ['6.6614', 'tr', '-2.37375', '0', '-6.333']
+surf65 = openmc.Sphere(surface_id=65, x0=6.6614, y0=tr, z0=-2.37375, r=0)
 # S2
-# surf66: Unsupported surface type "s" with params ['6.6720', 'tr', '-2.37375', '0', '-6.333']
+surf66 = openmc.Sphere(surface_id=66, x0=6.6720, y0=tr, z0=-2.37375, r=0)
 # S2
-# surf67: Unsupported surface type "s" with params ['6.9947', 'tr', '-2.37375', '0', '-6.333']
+surf67 = openmc.Sphere(surface_id=67, x0=6.9947, y0=tr, z0=-2.37375, r=0)
 # S3
-# surf68: Unsupported surface type "s" with params ['7.0053', 'tr', '-2.37375', '0', '-6.333']
+surf68 = openmc.Sphere(surface_id=68, x0=7.0053, y0=tr, z0=-2.37375, r=0)
 # S3
-# surf69: Unsupported surface type "s" with params ['7.3280', 'tr', '-2.37375', '0', '-6.333']
+surf69 = openmc.Sphere(surface_id=69, x0=7.3280, y0=tr, z0=-2.37375, r=0)
 # S4
-# surf70: Unsupported surface type "s" with params ['7.3386', 'tr', '-2.37375', '0', '-6.333']
+surf70 = openmc.Sphere(surface_id=70, x0=7.3386, y0=tr, z0=-2.37375, r=0)
 # S4
-# surf71: Unsupported surface type "s" with params ['7.6614', 'tr', '-2.37375', '0', '-6.333']
+surf71 = openmc.Sphere(surface_id=71, x0=7.6614, y0=tr, z0=-2.37375, r=0)
 # S5
-# surf72: Unsupported surface type "s" with params ['7.6720', 'tr', '-2.37375', '0', '-6.333']
+surf72 = openmc.Sphere(surface_id=72, x0=7.6720, y0=tr, z0=-2.37375, r=0)
 # S5
-# surf73: Unsupported surface type "s" with params ['7.9947', 'tr', '-2.37375', '0', '-6.333']
+surf73 = openmc.Sphere(surface_id=73, x0=7.9947, y0=tr, z0=-2.37375, r=0)
 # S6
-# surf74: Unsupported surface type "s" with params ['8.0053', 'tr', '-2.37375', '0', '-6.333']
+surf74 = openmc.Sphere(surface_id=74, x0=8.0053, y0=tr, z0=-2.37375, r=0)
 # S6
-# surf75: Unsupported surface type "s" with params ['8.3280', 'tr', '-2.37375', '0', '-6.333']
+surf75 = openmc.Sphere(surface_id=75, x0=8.3280, y0=tr, z0=-2.37375, r=0)
 # S7
-# surf76: Unsupported surface type "s" with params ['8.3386', 'tr', '-2.37375', '0', '-6.333']
+surf76 = openmc.Sphere(surface_id=76, x0=8.3386, y0=tr, z0=-2.37375, r=0)
 # S7
-# surf77: Unsupported surface type "s" with params ['8.6614', 'tr', '-2.37375', '0', '-6.333']
+surf77 = openmc.Sphere(surface_id=77, x0=8.6614, y0=tr, z0=-2.37375, r=0)
 # S8
-# surf78: Unsupported surface type "s" with params ['8.6720', 'tr', '-2.37375', '0', '-6.333']
+surf78 = openmc.Sphere(surface_id=78, x0=8.6720, y0=tr, z0=-2.37375, r=0)
 # S8
-# surf79: Unsupported surface type "s" with params ['8.9947', 'tr', '-2.37375', '0', '-6.333']
+surf79 = openmc.Sphere(surface_id=79, x0=8.9947, y0=tr, z0=-2.37375, r=0)
 # S9
-# surf80: Unsupported surface type "s" with params ['9.0053', 'tr', '-2.37375', '0', '-6.333']
+surf80 = openmc.Sphere(surface_id=80, x0=9.0053, y0=tr, z0=-2.37375, r=0)
 # S9
-# surf81: Unsupported surface type "s" with params ['9.3280', 'tr', '-2.37375', '0', '-6.333']
+surf81 = openmc.Sphere(surface_id=81, x0=9.3280, y0=tr, z0=-2.37375, r=0)
 # S10
-# surf82: Unsupported surface type "s" with params ['9.3386', 'tr', '-2.37375', '0', '-6.333']
+surf82 = openmc.Sphere(surface_id=82, x0=9.3386, y0=tr, z0=-2.37375, r=0)
 # S10
-# surf83: Unsupported surface type "s" with params ['9.6614', 'tr', '-2.37375', '0', '-6.333']
+surf83 = openmc.Sphere(surface_id=83, x0=9.6614, y0=tr, z0=-2.37375, r=0)
 
 # Z-plane surfaces for bounded cylinders
 surf3_zmin = openmc.ZPlane(surface_id=1083, z0=-31.333, boundary_type="vacuum")

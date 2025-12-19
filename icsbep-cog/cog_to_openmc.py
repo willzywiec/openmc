@@ -781,7 +781,7 @@ class COGParser:
                     next_line = next_line.split('$')[0].strip()
                 next_parts = next_line.split()
                 if next_parts and next_parts[0].isdigit() and len(next_parts) > 1:
-                    if next_parts[1].lower() in ['sphere', 'sph', 'so', 'c', 'cyl', 'cylinder',
+                    if next_parts[1].lower() in ['sphere', 'sph', 'so', 's', 'c', 'cyl', 'cylinder',
                                                    'px', 'py', 'pz', 'p', 'plane', 'pla',
                                                    'box', 'rpp', 'c/x', 'c/y', 'c/z', 'prism', 'revolution', 'rev']:
                         self._line_idx -= 1
@@ -807,7 +807,7 @@ class COGParser:
                     next_line = next_line.split('$')[0].strip()
                 next_parts = next_line.split()
                 if next_parts and next_parts[0].isdigit() and len(next_parts) > 1:
-                    if next_parts[1].lower() in ['sphere', 'sph', 'so', 'c', 'cyl', 'cylinder',
+                    if next_parts[1].lower() in ['sphere', 'sph', 'so', 's', 'c', 'cyl', 'cylinder',
                                                    'px', 'py', 'pz', 'p', 'plane', 'pla',
                                                    'box', 'rpp', 'c/x', 'c/y', 'c/z', 'prism', 'revolution', 'rev']:
                         self._line_idx -= 1
@@ -1052,7 +1052,7 @@ class OpenMCPythonGenerator:
                 bc = f', boundary_type="{surface.boundary}"'
 
         try:
-            if surf_type in ['sphere', 'sph', 'so']:
+            if surf_type in ['sphere', 'sph', 'so', 's']:
                 return self._gen_sphere(var_name, surf_id, params, bc)
             elif surf_type in ['c', 'cyl', 'cylinder']:
                 return self._gen_cylinder(var_name, surf_id, params, bc)
@@ -1486,7 +1486,7 @@ class OpenMCPythonGenerator:
             cyl_class = {'x': 'XCylinder', 'y': 'YCylinder', 'z': 'ZCylinder'}[axis]
             return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={new_x0}, y0={new_y0}, r={radius}{bc})'
 
-        elif ref_type in ['sphere', 'sph', 'so']:
+        elif ref_type in ['sphere', 'sph', 'so', 's']:
             # Sphere - apply translation to center
             if len(ref_params) == 1:
                 # Centered at origin

@@ -76,11 +76,11 @@ surf2 = openmc.ZCylinder(surface_id=2, r=14.0)
 # interface
 surf3 = openmc.ZPlane(surface_id=3, z0=0.0)
 # HEU, inner
-# surf4: Unsupported surface type "s" with params ['6.75']
+surf4 = openmc.Sphere(surface_id=4, r=6.75)
 # HEU, outer; Be, inner
-# surf5: Unsupported surface type "s" with params ['8.35']
+surf5 = openmc.Sphere(surface_id=5, r=8.35)
 # Be, outer
-# surf6: Unsupported surface type "s" with params ['9.15']
+surf6 = openmc.Sphere(surface_id=6, r=9.15)
 # Hole in HEU
 surf7 = openmc.XCylinder(surface_id=7, r=0.6)
 # Hole in Be
@@ -90,17 +90,17 @@ surf9 = openmc.ZCylinder(surface_id=9, r=1.1)
 # top
 surf10 = openmc.ZPlane(surface_id=10, z0=-0.4)
 # Cavity
-# surf11: Unsupported surface type "s" with params ['1.40', 'tr', '0', '0', '-0.4']
+surf11 = openmc.Sphere(surface_id=11, x0=1.40, y0=tr, z0=0, r=0)
 # Pu
-# surf12: Unsupported surface type "s" with params ['3.15', 'tr', '0', '0', '-0.4']
+surf12 = openmc.Sphere(surface_id=12, x0=3.15, y0=tr, z0=0, r=0)
 # HEU, full shell
-# surf13: Unsupported surface type "s" with params ['6.75', 'tr', '0', '0', '-0.4']
+surf13 = openmc.Sphere(surface_id=13, x0=6.75, y0=tr, z0=0, r=0)
 # HEU, half shell
-# surf14: Unsupported surface type "s" with params ['8.35', 'tr', '0', '0', '-0.4']
+surf14 = openmc.Sphere(surface_id=14, x0=8.35, y0=tr, z0=0, r=0)
 # Be
-# surf15: Unsupported surface type "s" with params ['9.15', 'tr', '0', '0', '-0.4']
+surf15 = openmc.Sphere(surface_id=15, x0=9.15, y0=tr, z0=0, r=0)
 # Cu
-# surf16: Unsupported surface type "s" with params ['9.30', 'tr', '0', '0', '-0.4']
+surf16 = openmc.Sphere(surface_id=16, x0=9.30, y0=tr, z0=0, r=0)
 # Steel (Fe)
 surf17 = openmc.ZCylinder(surface_id=17, r=2.5)
 # Hole in HEU

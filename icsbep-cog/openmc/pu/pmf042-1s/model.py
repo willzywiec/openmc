@@ -69,7 +69,7 @@ openmc.Surface.next_id = 10000
 # Pu, plane
 surf1 = openmc.XPlane(surface_id=1, x0=-2.37375)
 # Pu, radius
-# surf2: Unsupported surface type "s" with params ['6.333', 'tr', '-2.37375', '0', '-6.333']
+surf2 = openmc.Sphere(surface_id=2, x0=6.333, y0=tr, z0=-2.37375, r=0)
 # Hc
 surf3 = openmc.ZPlane(surface_id=3, z0=-1.17)
 # BCD

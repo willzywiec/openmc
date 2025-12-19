@@ -37,11 +37,11 @@ materials = openmc.Materials([mat1, mat2, mat3])
 openmc.Surface.next_id = 10000
 
 # alpha-Pu
-# surf1: Unsupported surface type "s" with params ['3.4170']
+surf1 = openmc.Sphere(surface_id=1, r=3.4170)
 # HEU
-# surf2: Unsupported surface type "s" with params ['3.6611']
+surf2 = openmc.Sphere(surface_id=2, r=3.6611)
 # Be
-# surf3: Unsupported surface type "s" with params ['20.9211']
+surf3 = openmc.Sphere(surface_id=3, r=20.9211, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

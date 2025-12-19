@@ -69,9 +69,9 @@ openmc.Surface.next_id = 10000
 # Hemi
 surf1 = openmc.XPlane(surface_id=1, x0=-2.37375)
 # Pu
-# surf2: Unsupported surface type "s" with params ['6.333', 'tr', '-2.37375', '0', '-6.333']
+surf2 = openmc.Sphere(surface_id=2, x0=6.333, y0=tr, z0=-2.37375, r=0)
 # Steel
-# surf3: Unsupported surface type "s" with params ['8.333', 'tr', '-2.37375', '0', '-6.333']
+surf3 = openmc.Sphere(surface_id=3, x0=8.333, y0=tr, z0=-2.37375, r=0)
 # Hc
 surf4 = openmc.ZPlane(surface_id=4, z0=0.47)
 # BCD

@@ -83,21 +83,21 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 openmc.Surface.next_id = 10000
 
 # Cavity
-# surf1: Unsupported surface type "s" with params ['1.084']
+surf1 = openmc.Sphere(surface_id=1, r=1.084)
 # Pu -- 1st layer
-# surf2: Unsupported surface type "s" with params ['1.400']
+surf2 = openmc.Sphere(surface_id=2, r=1.400)
 # Pu -- 2nd layer
-# surf3: Unsupported surface type "s" with params ['3.150']
+surf3 = openmc.Sphere(surface_id=3, r=3.150)
 # Pu -- 3rd layer
-# surf4: Unsupported surface type "s" with params ['4.020']
+surf4 = openmc.Sphere(surface_id=4, r=4.020)
 # Pu -- 4th layer
-# surf5: Unsupported surface type "s" with params ['4.660']
+surf5 = openmc.Sphere(surface_id=5, r=4.660)
 # Pu -- 5th layer
-# surf6: Unsupported surface type "s" with params ['5.350']
+surf6 = openmc.Sphere(surface_id=6, r=5.350)
 # Pu -- 6th layer
-# surf7: Unsupported surface type "s" with params ['6.000']
+surf7 = openmc.Sphere(surface_id=7, r=6.000)
 # HEU - 7th layer
-# surf8: Unsupported surface type "s" with params ['6.750']
+surf8 = openmc.Sphere(surface_id=8, r=6.750, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

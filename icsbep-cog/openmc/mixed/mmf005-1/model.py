@@ -65,29 +65,29 @@ surf2 = openmc.ZCylinder(surface_id=2, r=13.9)
 # interface
 surf3 = openmc.ZPlane(surface_id=3, z0=0.0)
 # Pu, inner
-# surf4: Unsupported surface type "s" with params ['4.66']
+surf4 = openmc.Sphere(surface_id=4, r=4.66)
 # Pu, outer; HEU, inner
-# surf5: Unsupported surface type "s" with params ['5.35']
+surf5 = openmc.Sphere(surface_id=5, r=5.35)
 # HEU, outer; Al, inner
-# surf6: Unsupported surface type "s" with params ['6.75']
+surf6 = openmc.Sphere(surface_id=6, r=6.75)
 # Al, outer
-# surf7: Unsupported surface type "s" with params ['10.00']
+surf7 = openmc.Sphere(surface_id=7, r=10.00)
 # Hole in upper HEU
 surf8 = openmc.XCylinder(surface_id=8, r=0.6)
 # top
 surf10 = openmc.ZPlane(surface_id=10, z0=-0.4)
 # Cavity
-# surf11: Unsupported surface type "s" with params ['1.40', 'tr', '0', '0', '-0.4']
+surf11 = openmc.Sphere(surface_id=11, x0=1.40, y0=tr, z0=0, r=0)
 # Pu, 1st shell
-# surf12: Unsupported surface type "s" with params ['4.66', 'tr', '0', '0', '-0.4']
+surf12 = openmc.Sphere(surface_id=12, x0=4.66, y0=tr, z0=0, r=0)
 # Pu, 2nd shell
-# surf13: Unsupported surface type "s" with params ['5.35', 'tr', '0', '0', '-0.4']
+surf13 = openmc.Sphere(surface_id=13, x0=5.35, y0=tr, z0=0, r=0)
 # HEU
-# surf14: Unsupported surface type "s" with params ['6.75', 'tr', '0', '0', '-0.4']
+surf14 = openmc.Sphere(surface_id=14, x0=6.75, y0=tr, z0=0, r=0)
 # Al
-# surf15: Unsupported surface type "s" with params ['10.00', 'tr', '0', '0', '-0.4']
+surf15 = openmc.Sphere(surface_id=15, x0=10.00, y0=tr, z0=0, r=0)
 # Cu
-# surf16: Unsupported surface type "s" with params ['10.15', 'tr', '0', '0', '-0.4']
+surf16 = openmc.Sphere(surface_id=16, x0=10.15, y0=tr, z0=0, r=0)
 # Steel (Fe)
 surf17 = openmc.ZCylinder(surface_id=17, r=2.5)
 # Hole in lower HEU

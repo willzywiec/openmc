@@ -171,7 +171,7 @@ surf19 = openmc.ZCylinder(surface_id=19, r=0.2921)
 surf20 = openmc.ZCylinder(surface_id=20, r=0.30415)
 # SS304L guide tube, outer
 surf21 = openmc.ZCylinder(surface_id=21, r=0.32315)
-# surf22: Unsupported surface type "rev" with params ['4', '0.922', '0.3505', '29.999', '0.3505', '30.999', '0.3231', '239.276', '0.3231']
+surf22 = openmc.Revolution(surface_id=22, rz=[(0.922, 0.3505), (29.999, 0.3505), (30.999, 0.3231), (239.276, 0.3231)], axis="x")
 surf98 = openmc.ZCylinder(surface_id=98, r=26.503)
 # Array outer x-y boundaries
 surf99 = openmc.model.RectangularParallelepiped(-25.2, 25.2, -25.2, 25.2, -499.95, 499.95)
