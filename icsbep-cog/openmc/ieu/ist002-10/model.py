@@ -52,9 +52,13 @@ surf1 = openmc.Sphere(surface_id=1, r=20.2747)
 # r=b
 surf2 = openmc.Sphere(surface_id=2, r=20.5998)
 # r=d/2; Z1=c; Z2=-Z1 (bcd)
-surf3 = openmc.ZCylinder(surface_id=3, x0=-38.3798, y0=38.3798, r=45.72, boundary_type="vacuum")
+surf3 = openmc.ZCylinder(surface_id=3, r=45.72)
 # Z2=c+e
 surf4 = openmc.ZPlane(surface_id=4, z0=20.2747)
+
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=-38.3798, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(z0=38.3798, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -70,7 +74,7 @@ cell2.region = +surf1 & -surf2
 
 # H2O
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = +surf2 & -surf3 & -surf4
+cell3.region = +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax) & -surf4
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3])
 geometry = openmc.Geometry(root_universe)

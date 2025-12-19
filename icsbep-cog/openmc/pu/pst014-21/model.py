@@ -57,28 +57,34 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Hc per Table 1
 surf1 = openmc.ZPlane(surface_id=1, z0=38.88)
 # Tank/Inner per Figure 6
-surf2 = openmc.ZCylinder(surface_id=2, x0=0.000, y0=101.171, r=14.7)
+surf2 = openmc.ZCylinder(surface_id=2, r=14.7)
 # Tank/Outer per Figure 6
-surf3 = openmc.ZCylinder(surface_id=3, x0=-1.329, y0=102.371, r=15.0)
+surf3 = openmc.ZCylinder(surface_id=3, r=15.0)
 # Room/Inner per Figure 5
 surf4 = openmc.model.RectangularParallelepiped(-370.0, 840.0, -460.0, 420.0, -105.32900000000001, 894.671)
 # Room/Outer per Figure 5
 surf5 = openmc.model.RectangularParallelepiped(-515.0, 985.0, -605.0, 565.0, -145.329, 964.671, boundary_type="vacuum")
 # Array dimensions per
-# surf11: Error converting surface type "cylinder": could not convert string to float: 'tr'
+surf11 = openmc.ZCylinder(surface_id=11, x0=90.0, y0=0.0, r=15.0)
 # Table 1 and Figure 7
-# surf12: Error converting surface type "cylinder": could not convert string to float: 'tr'
+surf12 = openmc.ZCylinder(surface_id=12, x0=0.0, y0=-90.0, r=15.0)
+
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(z0=0.0)
+surf2_zmax = openmc.ZPlane(z0=101.171)
+surf3_zmin = openmc.ZPlane(z0=-1.329)
+surf3_zmax = openmc.ZPlane(z0=102.371)
 
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell()
-u1_cell0.region = +surf1 & -surf2
+u1_cell0.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 u1_cell1 = openmc.Cell(fill=mat1)
-u1_cell1.region = -surf1 & -surf2
+u1_cell1.region = -surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 u1_cell2 = openmc.Cell(fill=mat3)
-u1_cell2.region = +surf2 & -surf3
+u1_cell2.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 # ------------------------------------------------------------------------------
@@ -87,7 +93,7 @@ universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = +surf3 & -surf4
+cell1.region = (+surf3 | -surf3_zmin | +surf3_zmax) & -surf4 & +surf11 & +surf12
 
 # Conc
 cell2 = openmc.Cell(cell_id=2, fill=mat2)

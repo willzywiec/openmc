@@ -30,9 +30,15 @@ materials = openmc.Materials([mat1, mat2])
 # ==============================================================================
 
 # U(16)
-surf1 = openmc.ZCylinder(surface_id=1, x0=-15.9755, y0=15.9755, r=19.05)
+surf1 = openmc.ZCylinder(surface_id=1, r=19.05)
 # Nat-U
-surf2 = openmc.ZCylinder(surface_id=2, x0=-23.5955, y0=23.4939, r=26.6446, boundary_type="vacuum")
+surf2 = openmc.ZCylinder(surface_id=2, r=26.6446)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=-15.9755)
+surf1_zmax = openmc.ZPlane(z0=15.9755)
+surf2_zmin = openmc.ZPlane(z0=-23.5955, boundary_type="vacuum")
+surf2_zmax = openmc.ZPlane(z0=23.4939, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -40,11 +46,11 @@ surf2 = openmc.ZCylinder(surface_id=2, x0=-23.5955, y0=23.4939, r=26.6446, bound
 
 # U16
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax)
 
 # Nat-U
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2
+cell2.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2])
 geometry = openmc.Geometry(root_universe)

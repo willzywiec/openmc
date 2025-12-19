@@ -88,194 +88,216 @@ surf1 = openmc.ZPlane(surface_id=1, z0=32.95)
 # SST solution tank, inner
 # surf2: Unsupported surface type "rev" with params ['3', '0.0', '0.0', '0.6', '17.98', '80.7', '17.98']
 # SST solution  tank, outer
-surf3 = openmc.ZCylinder(surface_id=3, x0=-0.3, y0=80.7, r=18.28)
+surf3 = openmc.ZCylinder(surface_id=3, r=18.28)
 # SST reflector tank, inner
-surf4 = openmc.ZCylinder(surface_id=4, x0=-25.9, y0=62.8, r=54.6)
+surf4 = openmc.ZCylinder(surface_id=4, r=54.6)
 # SST refelctor tank, top
 surf5 = openmc.ZPlane(surface_id=5, z0=63.2)
 # SST reflector tank, outer, and BCD
-surf6 = openmc.ZCylinder(surface_id=6, x0=-26.3, y0=85.7, r=55.0, boundary_type="vacuum")
+surf6 = openmc.ZCylinder(surface_id=6, r=55.0)
 # Basket outer boundary
-surf10 = openmc.ZCylinder(surface_id=10, x0=1.2, y0=82.2, r=17.8)
+surf10 = openmc.ZCylinder(surface_id=10, r=17.8)
 # SST bottom plate
-surf11 = openmc.ZCylinder(surface_id=11, x0=1.2, y0=1.38, r=17.5)
+surf11 = openmc.ZCylinder(surface_id=11, r=17.5)
 # SST annular top plate, inner
 surf12 = openmc.ZCylinder(surface_id=12, r=13.75)
 # SST annular top plate, outer
-surf13 = openmc.ZCylinder(surface_id=13, x0=81.8, y0=82.2, r=17.8)
+surf13 = openmc.ZCylinder(surface_id=13, r=17.8)
 # Tie rod, inner
 surf14 = openmc.ZCylinder(surface_id=14, r=0.3)
 # Tie rod, outer
-surf15 = openmc.ZCylinder(surface_id=15, x0=1.38, y0=81.8, r=0.4)
+surf15 = openmc.ZCylinder(surface_id=15, r=0.4)
 # Tie rod #1
-# surf16: Error converting surface type "c": could not convert string to float: 'tr'
+surf16 = openmc.ZCylinder(surface_id=16, x0=-16.9, y0=0.0, r=0.4)
 # Tie rod #2
-# surf17: Error converting surface type "c": could not convert string to float: 'tr'
+surf17 = openmc.ZCylinder(surface_id=17, x0=8.45, y0=-14.63583, r=0.4)
 # Tie rod #3
-# surf18: Error converting surface type "c": could not convert string to float: 'tr'
+surf18 = openmc.ZCylinder(surface_id=18, x0=8.45, y0=14.63583, r=0.4)
 # Lower polyethylene grid plate, entire grid
-surf19 = openmc.ZCylinder(surface_id=19, x0=2.5, y0=2.637, r=17.5)
+surf19 = openmc.ZCylinder(surface_id=19, r=17.5)
 # Upper polyethylene grid plate, entire grid
-surf20 = openmc.ZCylinder(surface_id=20, x0=14.08, y0=14.28, r=17.5)
+surf20 = openmc.ZCylinder(surface_id=20, r=17.5)
 # 4x14.78 pyrex tube, inner
 surf23 = openmc.ZCylinder(surface_id=23, r=1.7442)
 # 4x14.78 pyrex tube, outer
-surf24 = openmc.ZCylinder(surface_id=24, x0=1.5, y0=16.28, r=2.0058)
+surf24 = openmc.ZCylinder(surface_id=24, r=2.0058)
 # Pyrex tube #1
-# surf101: Error converting surface type "c": could not convert string to float: 'tr'
+surf101 = openmc.ZCylinder(surface_id=101, x0=-4.31, y0=14.930278, r=2.0058)
 # Pyrex tube #2
-# surf102: Error converting surface type "c": could not convert string to float: 'tr'
+surf102 = openmc.ZCylinder(surface_id=102, x0=0.0, y0=14.930278, r=2.0058)
 # Pyrex tube #3
-# surf103: Error converting surface type "c": could not convert string to float: 'tr'
+surf103 = openmc.ZCylinder(surface_id=103, x0=4.31, y0=14.930278, r=2.0058)
 # Pyrex tube #4
-# surf104: Error converting surface type "c": could not convert string to float: 'tr'
+surf104 = openmc.ZCylinder(surface_id=104, x0=-10.775, y0=11.1977085, r=2.0058)
 # Pyrex tube #5
-# surf105: Error converting surface type "c": could not convert string to float: 'tr'
+surf105 = openmc.ZCylinder(surface_id=105, x0=-6.465, y0=11.1977085, r=2.0058)
 # Pyrex tube #6
-# surf106: Error converting surface type "c": could not convert string to float: 'tr'
+surf106 = openmc.ZCylinder(surface_id=106, x0=-2.115, y0=11.1977085, r=2.0058)
 # Pyrex tube #7
-# surf107: Error converting surface type "c": could not convert string to float: 'tr'
+surf107 = openmc.ZCylinder(surface_id=107, x0=2.115, y0=11.1977085, r=2.0058)
 # Pyrex tube #8
-# surf108: Error converting surface type "c": could not convert string to float: 'tr'
+surf108 = openmc.ZCylinder(surface_id=108, x0=6.465, y0=11.1977085, r=2.0058)
 # Pyrex tube #9
-# surf109: Error converting surface type "c": could not convert string to float: 'tr'
+surf109 = openmc.ZCylinder(surface_id=109, x0=10.775, y0=11.1977085, r=2.0058)
 # Pyrex tube #10
-# surf110: Error converting surface type "c": could not convert string to float: 'tr'
+surf110 = openmc.ZCylinder(surface_id=110, x0=-12.93, y0=7.465139, r=2.0058)
 # Pyrex tube #11
-# surf111: Error converting surface type "c": could not convert string to float: 'tr'
+surf111 = openmc.ZCylinder(surface_id=111, x0=-8.62, y0=7.465139, r=2.0058)
 # Pyrex tube #12
-# surf112: Error converting surface type "c": could not convert string to float: 'tr'
+surf112 = openmc.ZCylinder(surface_id=112, x0=-4.31, y0=7.465139, r=2.0058)
 # Pyrex tube #13
-# surf113: Error converting surface type "c": could not convert string to float: 'tr'
+surf113 = openmc.ZCylinder(surface_id=113, x0=0.0, y0=7.465139, r=2.0058)
 # Pyrex tube #14
-# surf114: Error converting surface type "c": could not convert string to float: 'tr'
+surf114 = openmc.ZCylinder(surface_id=114, x0=4.31, y0=7.465139, r=2.0058)
 # Pyrex tube #15
-# surf115: Error converting surface type "c": could not convert string to float: 'tr'
+surf115 = openmc.ZCylinder(surface_id=115, x0=8.62, y0=7.465139, r=2.0058)
 # Pyrex tube #16
-# surf116: Error converting surface type "c": could not convert string to float: 'tr'
+surf116 = openmc.ZCylinder(surface_id=116, x0=12.93, y0=7.465139, r=2.0058)
 # Pyrex tube #17
-# surf117: Error converting surface type "c": could not convert string to float: 'tr'
+surf117 = openmc.ZCylinder(surface_id=117, x0=-15.085, y0=3.7325695, r=2.0058)
 # Pyrex tube #18
-# surf118: Error converting surface type "c": could not convert string to float: 'tr'
+surf118 = openmc.ZCylinder(surface_id=118, x0=-10.775, y0=3.7325695, r=2.0058)
 # Pyrex tube #19
-# surf119: Error converting surface type "c": could not convert string to float: 'tr'
+surf119 = openmc.ZCylinder(surface_id=119, x0=-6.465, y0=3.7325695, r=2.0058)
 # Pyrex tube #20
-# surf120: Error converting surface type "c": could not convert string to float: 'tr'
+surf120 = openmc.ZCylinder(surface_id=120, x0=-2.155, y0=3.7325695, r=2.0058)
 # Pyrex tube #21
-# surf121: Error converting surface type "c": could not convert string to float: 'tr'
+surf121 = openmc.ZCylinder(surface_id=121, x0=2.155, y0=3.7325695, r=2.0058)
 # Pyrex tube #22
-# surf122: Error converting surface type "c": could not convert string to float: 'tr'
+surf122 = openmc.ZCylinder(surface_id=122, x0=6.465, y0=3.7325695, r=2.0058)
 # Pyrex tube #23
-# surf123: Error converting surface type "c": could not convert string to float: 'tr'
+surf123 = openmc.ZCylinder(surface_id=123, x0=10.775, y0=3.7325695, r=2.0058)
 # Pyrex tube #24
-# surf124: Error converting surface type "c": could not convert string to float: 'tr'
+surf124 = openmc.ZCylinder(surface_id=124, x0=15.085, y0=3.7325695, r=2.0058)
 # Pyrex tube #25
-# surf125: Error converting surface type "c": could not convert string to float: 'tr'
+surf125 = openmc.ZCylinder(surface_id=125, x0=-12.93, y0=0.0, r=2.0058)
 # Pyrex tube #26
-# surf126: Error converting surface type "c": could not convert string to float: 'tr'
+surf126 = openmc.ZCylinder(surface_id=126, x0=-8.62, y0=0.0, r=2.0058)
 # Pyrex tube #27
-# surf127: Error converting surface type "c": could not convert string to float: 'tr'
+surf127 = openmc.ZCylinder(surface_id=127, x0=-4.31, y0=0.0, r=2.0058)
 # Pyrex tube #28
-# surf128: Error converting surface type "c": could not convert string to float: 'tr'
+surf128 = openmc.ZCylinder(surface_id=128, x0=0.0, y0=0.0, r=2.0058)
 # Pyrex tube #29
-# surf129: Error converting surface type "c": could not convert string to float: 'tr'
+surf129 = openmc.ZCylinder(surface_id=129, x0=4.31, y0=0.0, r=2.0058)
 # Pyrex tube #30
-# surf130: Error converting surface type "c": could not convert string to float: 'tr'
+surf130 = openmc.ZCylinder(surface_id=130, x0=8.62, y0=0.0, r=2.0058)
 # Pyrex tube #31
-# surf131: Error converting surface type "c": could not convert string to float: 'tr'
+surf131 = openmc.ZCylinder(surface_id=131, x0=12.93, y0=0.0, r=2.0058)
 # Pyrex tube #32
-# surf132: Error converting surface type "c": could not convert string to float: 'tr'
+surf132 = openmc.ZCylinder(surface_id=132, x0=-15.085, y0=-3.7325695, r=2.0058)
 # Pyrex tube #33
-# surf133: Error converting surface type "c": could not convert string to float: 'tr'
+surf133 = openmc.ZCylinder(surface_id=133, x0=-10.775, y0=-3.7325695, r=2.0058)
 # Pyrex tube #34
-# surf134: Error converting surface type "c": could not convert string to float: 'tr'
+surf134 = openmc.ZCylinder(surface_id=134, x0=-6.465, y0=-3.7325695, r=2.0058)
 # Pyrex tube #35
-# surf135: Error converting surface type "c": could not convert string to float: 'tr'
+surf135 = openmc.ZCylinder(surface_id=135, x0=-2.155, y0=-3.7325695, r=2.0058)
 # Pyrex tube #36
-# surf136: Error converting surface type "c": could not convert string to float: 'tr'
+surf136 = openmc.ZCylinder(surface_id=136, x0=2.155, y0=-3.7325695, r=2.0058)
 # Pyrex tube #37
-# surf137: Error converting surface type "c": could not convert string to float: 'tr'
+surf137 = openmc.ZCylinder(surface_id=137, x0=6.465, y0=-3.7325695, r=2.0058)
 # Pyrex tube #38
-# surf138: Error converting surface type "c": could not convert string to float: 'tr'
+surf138 = openmc.ZCylinder(surface_id=138, x0=10.775, y0=-3.7325695, r=2.0058)
 # Pyrex tube #39
-# surf139: Error converting surface type "c": could not convert string to float: 'tr'
+surf139 = openmc.ZCylinder(surface_id=139, x0=15.085, y0=-3.7325695, r=2.0058)
 # Pyrex tube #40
-# surf140: Error converting surface type "c": could not convert string to float: 'tr'
+surf140 = openmc.ZCylinder(surface_id=140, x0=-12.93, y0=-7.465139, r=2.0058)
 # Pyrex tube #41
-# surf141: Error converting surface type "c": could not convert string to float: 'tr'
+surf141 = openmc.ZCylinder(surface_id=141, x0=-8.62, y0=-7.465139, r=2.0058)
 # Pyrex tube #42
-# surf142: Error converting surface type "c": could not convert string to float: 'tr'
+surf142 = openmc.ZCylinder(surface_id=142, x0=-4.31, y0=-7.465139, r=2.0058)
 # Pyrex tube #43
-# surf143: Error converting surface type "c": could not convert string to float: 'tr'
+surf143 = openmc.ZCylinder(surface_id=143, x0=0.0, y0=-7.465139, r=2.0058)
 # Pyrex tube #44
-# surf144: Error converting surface type "c": could not convert string to float: 'tr'
+surf144 = openmc.ZCylinder(surface_id=144, x0=4.31, y0=-7.465139, r=2.0058)
 # Pyrex tube #45
-# surf145: Error converting surface type "c": could not convert string to float: 'tr'
+surf145 = openmc.ZCylinder(surface_id=145, x0=8.62, y0=-7.465139, r=2.0058)
 # Pyrex tube #46
-# surf146: Error converting surface type "c": could not convert string to float: 'tr'
+surf146 = openmc.ZCylinder(surface_id=146, x0=12.93, y0=-7.465139, r=2.0058)
 # Pyrex tube #47
-# surf147: Error converting surface type "c": could not convert string to float: 'tr'
+surf147 = openmc.ZCylinder(surface_id=147, x0=-10.775, y0=-11.1977085, r=2.0058)
 # Pyrex tube #48
-# surf148: Error converting surface type "c": could not convert string to float: 'tr'
+surf148 = openmc.ZCylinder(surface_id=148, x0=-6.465, y0=-11.1977085, r=2.0058)
 # Pyrex tube #49
-# surf149: Error converting surface type "c": could not convert string to float: 'tr'
+surf149 = openmc.ZCylinder(surface_id=149, x0=-2.115, y0=-11.1977085, r=2.0058)
 # Pyrex tube #50
-# surf150: Error converting surface type "c": could not convert string to float: 'tr'
+surf150 = openmc.ZCylinder(surface_id=150, x0=2.115, y0=-11.1977085, r=2.0058)
 # Pyrex tube #51
-# surf151: Error converting surface type "c": could not convert string to float: 'tr'
+surf151 = openmc.ZCylinder(surface_id=151, x0=6.465, y0=-11.1977085, r=2.0058)
 # Pyrex tube #52
-# surf152: Error converting surface type "c": could not convert string to float: 'tr'
+surf152 = openmc.ZCylinder(surface_id=152, x0=10.775, y0=-11.1977085, r=2.0058)
 # Pyrex tube #53
-# surf153: Error converting surface type "c": could not convert string to float: 'tr'
+surf153 = openmc.ZCylinder(surface_id=153, x0=-4.31, y0=-14.930278, r=2.0058)
 # Pyrex tube #54
-# surf154: Error converting surface type "c": could not convert string to float: 'tr'
+surf154 = openmc.ZCylinder(surface_id=154, x0=0.0, y0=-14.930278, r=2.0058)
 # Pyrex tube #55
-# surf155: Error converting surface type "c": could not convert string to float: 'tr'
+surf155 = openmc.ZCylinder(surface_id=155, x0=4.31, y0=-14.930278, r=2.0058)
+
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=-0.3)
+surf3_zmax = openmc.ZPlane(z0=80.7)
+surf4_zmin = openmc.ZPlane(z0=-25.9)
+surf4_zmax = openmc.ZPlane(z0=62.8)
+surf6_zmin = openmc.ZPlane(z0=-26.3, boundary_type="vacuum")
+surf6_zmax = openmc.ZPlane(z0=85.7, boundary_type="vacuum")
+surf10_zmin = openmc.ZPlane(z0=1.2)
+surf10_zmax = openmc.ZPlane(z0=82.2)
+surf11_zmin = openmc.ZPlane(z0=1.2)
+surf11_zmax = openmc.ZPlane(z0=1.38)
+surf13_zmin = openmc.ZPlane(z0=81.8)
+surf13_zmax = openmc.ZPlane(z0=82.2)
+surf15_zmin = openmc.ZPlane(z0=1.38)
+surf15_zmax = openmc.ZPlane(z0=81.8)
+surf19_zmin = openmc.ZPlane(z0=2.5)
+surf19_zmax = openmc.ZPlane(z0=2.637)
+surf20_zmin = openmc.ZPlane(z0=14.08)
+surf20_zmax = openmc.ZPlane(z0=14.28)
+surf24_zmin = openmc.ZPlane(z0=1.5)
+surf24_zmax = openmc.ZPlane(z0=16.28)
 
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1 & -surf3
+u1_cell0.region = -surf1 & -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 u1_cell1 = openmc.Cell(fill=mat4)
-u1_cell1.region = +surf1 & -surf3
+u1_cell1.region = +surf1 & -surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 u1_cell2 = openmc.Cell(fill=mat2)
-u1_cell2.region = -surf3
+u1_cell2.region = +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax)
 u1_cell3 = openmc.Cell(fill=mat3)
-u1_cell3.region = -surf1 & +surf3 & -surf4
+u1_cell3.region = -surf1 & +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = +surf1 & +surf3 & -surf4
+u1_cell4.region = +surf1 & +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 u1_cell5 = openmc.Cell(fill=mat2)
-u1_cell5.region = +surf3 & +surf4 & -surf5 & -surf6
+u1_cell5.region = +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax)
 u1_cell6 = openmc.Cell(fill=mat4)
-u1_cell6.region = +surf3 & +surf4 & +surf5 & -surf6
+u1_cell6.region = +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & +surf5 & (-surf6 & +surf6_zmin & -surf6_zmax)
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5, u1_cell6])
 
 u2_cell0 = openmc.Cell(fill=mat1)
-u2_cell0.region = -surf1 & -surf14 & -surf15
+u2_cell0.region = -surf1 & -surf14 & (-surf15 & +surf15_zmin & -surf15_zmax)
 u2_cell1 = openmc.Cell(fill=mat4)
-u2_cell1.region = +surf1 & -surf14 & -surf15
+u2_cell1.region = +surf1 & -surf14 & (-surf15 & +surf15_zmin & -surf15_zmax)
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1])
 
 u3_cell0 = openmc.Cell(fill=mat1)
-u3_cell0.region = -surf1 & -surf23 & -surf6
+u3_cell0.region = -surf1 & -surf23 & (-surf6 & +surf6_zmin & -surf6_zmax)
 u3_cell1 = openmc.Cell(fill=mat4)
-u3_cell1.region = +surf1 & -surf23 & -surf6
+u3_cell1.region = +surf1 & -surf23 & (-surf6 & +surf6_zmin & -surf6_zmax)
 u3_cell2 = openmc.Cell(fill=mat6)
-u3_cell2.region = +surf23 & -surf6
+u3_cell2.region = +surf23 & (-surf6 & +surf6_zmin & -surf6_zmax)
 universe3 = openmc.Universe(universe_id=3, cells=[u3_cell0, u3_cell1, u3_cell2])
 
 u4_cell0 = openmc.Cell(fill=mat2)
-u4_cell0.region = -surf10 & -surf11
+u4_cell0.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (-surf11 & +surf11_zmin & -surf11_zmax) & +surf16 & +surf17 & +surf18
 u4_cell1 = openmc.Cell(fill=mat5)
-u4_cell1.region = -surf10 & -surf19
+u4_cell1.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (-surf19 & +surf19_zmin & -surf19_zmax) & +surf16 & +surf17 & +surf18 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110 & +surf111 & +surf112 & +surf113 & +surf114 & +surf115 & +surf116 & +surf117 & +surf118 & +surf119 & +surf120
 u4_cell2 = openmc.Cell(fill=mat5)
-u4_cell2.region = -surf10 & -surf20
+u4_cell2.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (-surf20 & +surf20_zmin & -surf20_zmax) & +surf16 & +surf17 & +surf18 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110 & +surf111 & +surf112 & +surf113 & +surf114 & +surf115 & +surf116 & +surf117 & +surf118 & +surf119 & +surf120
 u4_cell3 = openmc.Cell(fill=mat2)
-u4_cell3.region = -surf10 & +surf12 & -surf13
+u4_cell3.region = (-surf10 & +surf10_zmin & -surf10_zmax) & +surf12 & (-surf13 & +surf13_zmin & -surf13_zmax) & +surf16 & +surf17 & +surf18
 u4_cell4 = openmc.Cell(fill=mat1)
-u4_cell4.region = -surf10 & +surf11 & +surf19 & +surf20 & -surf1
+u4_cell4.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (+surf11 | -surf11_zmin | +surf11_zmax) & +surf16 & +surf17 & +surf18 & (+surf19 | -surf19_zmin | +surf19_zmax) & (+surf20 | -surf20_zmin | +surf20_zmax) & -surf1 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110 & +surf111 & +surf112 & +surf113 & +surf114 & +surf115 & +surf116 & +surf117 & +surf118 & +surf119 & +surf120
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 # ------------------------------------------------------------------------------
@@ -284,23 +306,23 @@ universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, 
 
 # inside
 cell1 = openmc.Cell(cell_id=1, fill=universe4)
-cell1.region = -surf10
+cell1.region = (-surf10 & +surf10_zmin & -surf10_zmax)
 
 # outside
 cell2 = openmc.Cell(cell_id=2, fill=universe1)
-cell2.region = -surf6 & +surf10
+cell2.region = (-surf6 & +surf6_zmin & -surf6_zmax) & (+surf10 | -surf10_zmin | +surf10_zmax)
 
 # Pyrex
 cell11 = openmc.Cell(cell_id=11, fill=mat6)
-cell11.region = +surf23 & -surf6
+cell11.region = +surf23 & (-surf6 & +surf6_zmin & -surf6_zmax)
 
 # Air
 cell14 = openmc.Cell(cell_id=14, fill=mat4)
-cell14.region = +surf1 & -surf14 & -surf15
+cell14.region = +surf1 & -surf14 & (-surf15 & +surf15_zmin & -surf15_zmax)
 
 # Air
 cell22 = openmc.Cell(cell_id=22, fill=mat4)
-cell22.region = +surf3 & +surf4 & +surf5 & -surf6
+cell22.region = +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & +surf5 & (-surf6 & +surf6_zmin & -surf6_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell11, cell14, cell22])
 geometry = openmc.Geometry(root_universe)

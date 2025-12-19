@@ -70,7 +70,11 @@ surf1 = openmc.XPlane(surface_id=1, x0=-2.37375)
 # Hc
 surf3 = openmc.ZPlane(surface_id=3, z0=-1.17)
 # BCD
-surf4 = openmc.ZCylinder(surface_id=4, x0=-31.333, y0=18.667, r=25.0, boundary_type="vacuum")
+surf4 = openmc.ZCylinder(surface_id=4, r=25.0)
+
+# Z-plane surfaces for bounded cylinders
+surf4_zmin = openmc.ZPlane(z0=-31.333, boundary_type="vacuum")
+surf4_zmax = openmc.ZPlane(z0=18.667, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -78,23 +82,23 @@ surf4 = openmc.ZCylinder(surface_id=4, x0=-31.333, y0=18.667, r=25.0, boundary_t
 
 # Pu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = +surf1
+cell1.region = +surf1 & -surf2
 
 # Oil
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = +surf1 & -surf3 & -surf4
+cell2.region = +surf1 & +surf2 & -surf3 & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # Oil
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = -surf1 & -surf3 & -surf4
+cell3.region = -surf1 & -surf3 & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # Air
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = -surf1 & +surf3 & -surf4
+cell4.region = -surf1 & +surf3 & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # Air
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = +surf1 & +surf3 & -surf4
+cell5.region = +surf1 & +surf2 & +surf3 & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)

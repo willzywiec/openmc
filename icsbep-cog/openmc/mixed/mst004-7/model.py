@@ -75,24 +75,21 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Dump line, inner
 surf1 = openmc.ZCylinder(surface_id=1, r=2.625)
 # Dump line, outer
-surf2 = openmc.ZCylinder(surface_id=2, x0=-16.953, y0=-0.953, r=3.016)
+surf2 = openmc.ZCylinder(surface_id=2, r=3.016)
 # Solution tank, inner
-surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=90.6, r=17.695)
+surf3 = openmc.ZCylinder(surface_id=3, r=17.695)
 # Solution tank, outer
-surf4 = openmc.ZCylinder(surface_id=4, x0=-0.953, y0=91.553, r=17.774)
+surf4 = openmc.ZCylinder(surface_id=4, r=17.774)
 # Sol'n height
 surf5 = openmc.ZPlane(surface_id=5, z0=29.36)
 # Dump line, inner
-surf6_cyl = openmc.ZCylinder(surface_id=6, x0=tr, y0=0, r=2.625)
-surf6_zmin = openmc.ZPlane(z0=80.01)
-surf6_zmax = openmc.ZPlane(z0=0.0)
-surf6 = (surf6_cyl, surf6_zmin, surf6_zmax)
+surf6 = openmc.ZCylinder(surface_id=6, x0=0.0, y0=80.01, r=2.625)
 # Dump line, outer
-# surf7: Error converting surface type "c": could not convert string to float: 'tr'
+surf7 = openmc.ZCylinder(surface_id=7, x0=0.0, y0=80.01, r=3.016)
 # Empty tank, inner
-# surf8: Error converting surface type "c": could not convert string to float: 'tr'
+surf8 = openmc.ZCylinder(surface_id=8, x0=0.0, y0=80.01, r=34.34)
 # Empty tank, outer
-# surf9: Error converting surface type "c": could not convert string to float: 'tr'
+surf9 = openmc.ZCylinder(surface_id=9, x0=0.0, y0=80.01, r=34.419)
 # Reflector tank, inner
 surf10 = openmc.model.RectangularParallelepiped(-48.745, 48.745, -46.845, 130.665, -16.953, 139.107)
 # Reflector tank, outer
@@ -102,12 +99,9 @@ surf12 = openmc.model.RectangularParallelepiped(-866.105, 200.895, -509.190, 557
 # Concrete tank, outer
 surf13 = openmc.model.RectangularParallelepiped(-1018.105, 352.895, -600.190, 709.810, -205.528, 556.442, boundary_type="vacuum")
 # Concrete, inner, upper
-surf21_cyl = openmc.ZCylinder(surface_id=21, x0=tr, y0=-0.6, r=18.415)
-surf21_zmin = openmc.ZPlane(z0=0.3)
-surf21_zmax = openmc.ZPlane(z0=0.0)
-surf21 = (surf21_cyl, surf21_zmin, surf21_zmax)
+surf21 = openmc.ZCylinder(surface_id=21, x0=-0.6, y0=0.3, r=18.415)
 # Concrete, outer, upper
-# surf22: Error converting surface type "c": could not convert string to float: 'tr'
+surf22 = openmc.ZCylinder(surface_id=22, x0=-0.6, y0=0.3, r=43.615)
 # Concrete
 surf23 = openmc.XPlane(surface_id=23, x0=-30.5)
 # female
@@ -117,12 +111,9 @@ surf25 = openmc.YPlane(surface_id=25, y0=-7.62)
 # feature
 surf26 = openmc.YPlane(surface_id=26, y0=0.0)
 # Concrete, inner, lower
-surf31_cyl = openmc.ZCylinder(surface_id=31, x0=tr, y0=-0.4, r=18.415)
-surf31_zmin = openmc.ZPlane(z0=-1.5)
-surf31_zmax = openmc.ZPlane(z0=0.0)
-surf31 = (surf31_cyl, surf31_zmin, surf31_zmax)
+surf31 = openmc.ZCylinder(surface_id=31, x0=-0.4, y0=-1.5, r=18.415)
 # Concrete, outer, lower
-# surf32: Error converting surface type "c": could not convert string to float: 'tr'
+surf32 = openmc.ZCylinder(surface_id=32, x0=-0.4, y0=-1.5, r=43.615)
 # Concrete
 surf33 = openmc.XPlane(surface_id=33, x0=-29.5)
 # male
@@ -132,29 +123,37 @@ surf35 = openmc.YPlane(surface_id=35, y0=-7.62)
 # feature
 surf36 = openmc.YPlane(surface_id=36, y0=0.0)
 
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(z0=-16.953)
+surf2_zmax = openmc.ZPlane(z0=-0.953)
+surf3_zmin = openmc.ZPlane(z0=0.0)
+surf3_zmax = openmc.ZPlane(z0=90.6)
+surf4_zmin = openmc.ZPlane(z0=-0.953)
+surf4_zmax = openmc.ZPlane(z0=91.553)
+
 # ------------------------------------------------------------------------------
 # Root Cells
 # ------------------------------------------------------------------------------
 
 # SS304L
 cell1 = openmc.Cell(cell_id=1, fill=mat2)
-cell1.region = +surf1 & -surf2 & -surf10
+cell1.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax) & -surf10
 
 # Soln
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = -surf3 & -surf5
+cell2.region = (-surf3 & +surf3_zmin & -surf3_zmax) & -surf5
 
 # SS304L
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf2 & +surf3 & -surf4 & -surf10
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax) & -surf10
 
 # SS304L
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
-cell4.region = +surf6 & -surf10
+cell4.region = +surf6 & -surf7 & -surf10
 
 # SS304L
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = -surf10
+cell5.region = +surf7 & +surf8 & -surf9 & -surf10
 
 # CSTEEL
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
@@ -166,23 +165,23 @@ cell7.region = +surf12 & -surf13
 
 # Cncrt
 cell8 = openmc.Cell(cell_id=8, fill=mat4)
-cell8.region = -surf10 & +surf21 & +surf26
+cell8.region = -surf10 & +surf21 & -surf22 & +surf26
 
 # Cncrt
 cell9 = openmc.Cell(cell_id=9, fill=mat4)
-cell9.region = -surf10 & +surf21 & -surf23 & +surf25 & -surf26
+cell9.region = -surf10 & +surf21 & -surf22 & -surf23 & +surf25 & -surf26
 
 # Cncrt
 cell10 = openmc.Cell(cell_id=10, fill=mat4)
-cell10.region = -surf10 & +surf21 & +surf24 & +surf25 & -surf26
+cell10.region = -surf10 & +surf21 & -surf22 & +surf24 & +surf25 & -surf26
 
 # Cncrt
 cell11 = openmc.Cell(cell_id=11, fill=mat4)
-cell11.region = -surf10 & +surf31 & +surf33 & -surf34 & +surf35 & -surf36
+cell11.region = -surf10 & +surf31 & -surf32 & +surf33 & -surf34 & +surf35 & -surf36
 
 # Cncrt
 cell12 = openmc.Cell(cell_id=12, fill=mat4)
-cell12.region = -surf10 & +surf31 & -surf35 & -surf36
+cell12.region = -surf10 & +surf31 & -surf32 & -surf35 & -surf36
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12])
 geometry = openmc.Geometry(root_universe)

@@ -174,6 +174,18 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+surf1 = openmc.ZCylinder(surface_id=1, r=18.9592)
+surf2 = openmc.ZCylinder(surface_id=2, r=31.75001)
+surf3 = openmc.ZCylinder(surface_id=3, r=32.541)
+surf4 = openmc.ZCylinder(surface_id=4, r=34.2855)
+surf5 = openmc.ZCylinder(surface_id=5, r=40.51925)
+surf6 = openmc.ZCylinder(surface_id=6, r=52.9867, boundary_type="vacuum")
+# surf11: Unsupported surface type "analytic" with params ['1.', 'z', '0.00000', 'constant']
+# surf12: Unsupported surface type "analytic" with params ['1.', 'z', '-20.68936', 'constant']
+# surf13: Unsupported surface type "analytic" with params ['1.', 'z', '-30.84936', 'constant']
+# surf14: Unsupported surface type "analytic" with params ['1.', 'z', '-48.62936', 'constant']
+# surf15: Unsupported surface type "analytic" with params ['1.', 'z', '-59.28505', 'constant']
+# surf16: Unsupported surface type "analytic" with params ['1.', 'z', '-126.40113', 'constant']
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -181,26 +193,48 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 
 # RGN1
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1 & +surf11 & -surf12
+
 # RGN2
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+cell2.region = -surf1 & +surf12 & -surf13
+
 # RGN3
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
+cell3.region = +surf1 & -surf2 & +surf11 & -surf13
+
 # RGN4
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
+cell4.region = +surf2 & -surf3 & +surf11 & -surf13
+
 # RGN5
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
+cell5.region = -surf3 & +surf13 & -surf14
+
 # RGN6
 cell6 = openmc.Cell(cell_id=6, fill=mat6)
+cell6.region = +surf3 & -surf4 & +surf11 & -surf14
+
 # RGN7
 cell7 = openmc.Cell(cell_id=7, fill=mat7)
+cell7.region = -surf4 & +surf14 & -surf15
+
 # RGN8
 cell8 = openmc.Cell(cell_id=8, fill=mat8)
+cell8.region = +surf4 & -surf5 & +surf11 & -surf14
+
 # RGN9
 cell9 = openmc.Cell(cell_id=9, fill=mat9)
+cell9.region = +surf4 & -surf5 & +surf14 & -surf15
+
 # RGN10
 cell10 = openmc.Cell(cell_id=10, fill=mat10)
+cell10.region = +surf5 & -surf6 & +surf11 & -surf15
+
 # RGN11
 cell11 = openmc.Cell(cell_id=11, fill=mat11)
+cell11.region = -surf6 & +surf15 & -surf16
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11])
 geometry = openmc.Geometry(root_universe)
 

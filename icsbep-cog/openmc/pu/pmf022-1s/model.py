@@ -24,6 +24,8 @@ materials = openmc.Materials([mat1])
 # Geometry
 # ==============================================================================
 
+surf1 = openmc.Sphere(surface_id=1, r=1.400)
+surf2 = openmc.Sphere(surface_id=2, r=6.670, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -31,6 +33,8 @@ materials = openmc.Materials([mat1])
 
 # dPu
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = +surf1 & -surf2
+
 root_universe = openmc.Universe(cells=[cell1])
 geometry = openmc.Geometry(root_universe)
 

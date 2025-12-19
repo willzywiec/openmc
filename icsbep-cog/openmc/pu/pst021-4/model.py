@@ -40,6 +40,28 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# = Hc per Table 5a
+surf1 = openmc.ZPlane(surface_id=1, z0=18.7540)
+# SST/Inner
+surf2 = openmc.Sphere(surface_id=2, r=19.3163)
+# SST/Outer
+surf3 = openmc.Sphere(surface_id=3, r=19.6414)
+# H2O/Outer
+surf4 = openmc.Sphere(surface_id=4, r=49.6414)
+# Support Tube/Inner
+surf5 = openmc.ZCylinder(surface_id=5, x0=-3.811, y0=0.0, r=2.695)
+# Support Tube/Outer
+surf6 = openmc.ZCylinder(surface_id=6, x0=-3.811, y0=0.0, r=2.86)
+# Inlet Tube/Inner
+surf7 = openmc.ZCylinder(surface_id=7, r=2.555)
+# Inlet Tube/Outer
+surf8 = openmc.ZCylinder(surface_id=8, r=2.86)
+
+# Z-plane surfaces for bounded cylinders
+surf7_zmin = openmc.ZPlane(z0=-99.0)
+surf7_zmax = openmc.ZPlane(z0=0.0)
+surf8_zmin = openmc.ZPlane(z0=-99.0)
+surf8_zmax = openmc.ZPlane(z0=0.0)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -47,16 +69,28 @@ materials = openmc.Materials([mat1, mat2, mat3])
 
 # SOLN
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1 & -surf2
+
 # SOLN
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
+cell2.region = -surf1 & +surf2 & -surf3 & -surf5
+
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
+cell3.region = +surf2 & -surf3 & -surf4 & +surf5
+
 # SST
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
+cell4.region = +surf3 & -surf4 & +surf5 & -surf6
+
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
+cell5.region = +surf3 & -surf4 & (+surf7 | -surf7_zmin | +surf7_zmax) & (-surf8 & +surf8_zmin & -surf8_zmax)
+
 # H2O
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
+cell6.region = +surf3 & -surf4 & +surf6 & (+surf8 | -surf8_zmin | +surf8_zmax)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)
 

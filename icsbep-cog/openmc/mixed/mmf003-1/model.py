@@ -64,19 +64,24 @@ surf3 = openmc.Sphere(surface_id=3, r=7.55)
 surf4 = openmc.Sphere(surface_id=4, r=7.70)
 surf5 = openmc.ZPlane(surface_id=5, z0=0.0)
 surf6 = openmc.XCylinder(surface_id=6, r=0.6)
-surf7 = openmc.ZCylinder(surface_id=7, x0=-14.7, y0=-6.0, r=2.5)
+surf7 = openmc.ZCylinder(surface_id=7, r=2.5)
 surf8 = openmc.ZCylinder(surface_id=8, r=6.5)
 surf9 = openmc.ZCylinder(surface_id=9, r=5.5)
-surf10 = openmc.ZCylinder(surface_id=10, x0=1.025, y0=1.225, r=14.0)
-surf11_cyl = openmc.XCylinder(surface_id=11, x0=tr, y0=0, r=0.6)
-surf11_zmin = openmc.ZPlane(z0=0.0)
-surf11_zmax = openmc.ZPlane(z0=1.225)
-surf11 = (surf11_cyl, surf11_zmin, surf11_zmax)
+surf10 = openmc.ZCylinder(surface_id=10, r=14.0)
+surf11 = openmc.XCylinder(surface_id=11, x0=0.0, y0=0.0, r=0.6)
 surf12 = openmc.ZCylinder(surface_id=12, r=1.1)
 surf13 = openmc.Sphere(surface_id=13, x0=5.35, y0=tr, z0=0, r=0)
 surf14 = openmc.Sphere(surface_id=14, x0=7.55, y0=tr, z0=0, r=0)
 surf15 = openmc.ZPlane(surface_id=15, z0=1.225)
-surf99 = openmc.ZCylinder(surface_id=99, x0=-15.0, y0=10.0, r=15.0, boundary_type="vacuum")
+surf99 = openmc.ZCylinder(surface_id=99, r=15.0)
+
+# Z-plane surfaces for bounded cylinders
+surf7_zmin = openmc.ZPlane(z0=-14.7)
+surf7_zmax = openmc.ZPlane(z0=-6.0)
+surf10_zmin = openmc.ZPlane(z0=1.025)
+surf10_zmax = openmc.ZPlane(z0=1.225)
+surf99_zmin = openmc.ZPlane(z0=-15.0, boundary_type="vacuum")
+surf99_zmax = openmc.ZPlane(z0=10.0, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -96,11 +101,11 @@ cell3.region = +surf3 & -surf4 & -surf5 & -surf8
 
 # Iron
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = +surf4 & -surf7
+cell4.region = +surf4 & (-surf7 & +surf7_zmin & -surf7_zmax)
 
 # Dural
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf9 & -surf10
+cell5.region = +surf9 & (-surf10 & +surf10_zmin & -surf10_zmax)
 
 # HEU
 cell6 = openmc.Cell(cell_id=6, fill=mat2)

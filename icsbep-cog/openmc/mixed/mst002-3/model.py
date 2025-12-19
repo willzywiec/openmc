@@ -58,9 +58,9 @@ surf1 = openmc.ZCylinder(surface_id=1, r=2.625)
 # Fill pipe, outer
 surf2 = openmc.ZCylinder(surface_id=2, r=3.016)
 # Tank, inner
-surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=106.600, r=34.34)
+surf3 = openmc.ZCylinder(surface_id=3, r=34.34)
 # Tank, outer
-surf4 = openmc.ZCylinder(surface_id=4, x0=-0.953, y0=107.553, r=34.419)
+surf4 = openmc.ZCylinder(surface_id=4, r=34.419)
 # BCD and entire problem
 surf5 = openmc.model.RectangularParallelepiped(-49.38, 49.38, -50.655, 50.655, -16.953000000000003, 107.553, boundary_type="vacuum")
 # Water reflector height
@@ -68,25 +68,31 @@ surf6 = openmc.ZPlane(surface_id=6, z0=106.283)
 # Solution critical height
 surf7 = openmc.ZPlane(surface_id=7, z0=81.72)
 
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=0.0)
+surf3_zmax = openmc.ZPlane(z0=106.6)
+surf4_zmin = openmc.ZPlane(z0=-0.953)
+surf4_zmax = openmc.ZPlane(z0=107.553)
+
 # ------------------------------------------------------------------------------
 # Root Cells
 # ------------------------------------------------------------------------------
 
 # Soln
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf3 & -surf7
+cell1.region = (-surf3 & +surf3_zmin & -surf3_zmax) & -surf7
 
 # SS3O4L
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf3 & -surf4
+cell2.region = (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # SS304L
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf1 & -surf2 & +surf4 & -surf5
+cell3.region = +surf1 & -surf2 & (+surf4 | -surf4_zmin | +surf4_zmax) & -surf5
 
 # Water
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = +surf2 & +surf4 & -surf5 & -surf6
+cell4.region = +surf2 & (+surf4 | -surf4_zmin | +surf4_zmax) & -surf5 & -surf6
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4])
 geometry = openmc.Geometry(root_universe)

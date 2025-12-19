@@ -63,17 +63,29 @@ surf1 = openmc.ZPlane(surface_id=1, z0=29.60)
 # Cavity, bottom
 surf2 = openmc.ZPlane(surface_id=2, z0=-25.3)
 # Inner tank, inner
-surf3 = openmc.ZCylinder(surface_id=3, x0=1.2, y0=120.1, r=9.6875)
+surf3 = openmc.ZCylinder(surface_id=3, r=9.6875)
 # Inner tank, outer
-surf4 = openmc.ZCylinder(surface_id=4, x0=1.2, y0=120.1, r=9.9875)
+surf4 = openmc.ZCylinder(surface_id=4, r=9.9875)
 # Outer tank, inner
-surf5 = openmc.ZCylinder(surface_id=5, x0=1.2, y0=118.3, r=25.0)
+surf5 = openmc.ZCylinder(surface_id=5, r=25.0)
 # Outer tank, outer
-surf6 = openmc.ZCylinder(surface_id=6, x0=0.0, y0=120.1, r=25.3)
+surf6 = openmc.ZCylinder(surface_id=6, r=25.3)
 # Water
-surf7 = openmc.ZCylinder(surface_id=7, x0=-31.3, y0=120.1, r=56.6, boundary_type="vacuum")
+surf7 = openmc.ZCylinder(surface_id=7, r=56.6)
 # Cadmium
 surf30 = openmc.ZCylinder(surface_id=30, r=9.6075)
+
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=1.2)
+surf3_zmax = openmc.ZPlane(z0=120.1)
+surf4_zmin = openmc.ZPlane(z0=1.2)
+surf4_zmax = openmc.ZPlane(z0=120.1)
+surf5_zmin = openmc.ZPlane(z0=1.2)
+surf5_zmax = openmc.ZPlane(z0=118.3)
+surf6_zmin = openmc.ZPlane(z0=0.0)
+surf6_zmax = openmc.ZPlane(z0=120.1)
+surf7_zmin = openmc.ZPlane(z0=-31.3, boundary_type="vacuum")
+surf7_zmax = openmc.ZPlane(z0=120.1, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -81,39 +93,39 @@ surf30 = openmc.ZCylinder(surface_id=30, r=9.6075)
 
 # Air
 cell1 = openmc.Cell(cell_id=1, fill=mat4)
-cell1.region = +surf2 & -surf3 & -surf30
+cell1.region = +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax) & -surf30
 
 # Cd
 cell2 = openmc.Cell(cell_id=2, fill=mat5)
-cell2.region = +surf2 & -surf3 & +surf30
+cell2.region = +surf2 & (-surf3 & +surf3_zmin & -surf3_zmax) & +surf30
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf2 & +surf3 & -surf4
+cell3.region = +surf2 & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # Soln
 cell4 = openmc.Cell(cell_id=4, fill=mat1)
-cell4.region = -surf1 & +surf2 & +surf4 & -surf5
+cell4.region = -surf1 & +surf2 & (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # Air
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = +surf1 & +surf2 & +surf4 & -surf5
+cell5.region = +surf1 & +surf2 & (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # SST
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
-cell6.region = +surf2 & +surf4 & +surf5 & -surf6
+cell6.region = +surf2 & (+surf4 | -surf4_zmin | +surf4_zmax) & (+surf5 | -surf5_zmin | +surf5_zmax) & (-surf6 & +surf6_zmin & -surf6_zmax)
 
 # SST
 cell7 = openmc.Cell(cell_id=7, fill=mat2)
-cell7.region = -surf2 & -surf6
+cell7.region = -surf2 & (-surf6 & +surf6_zmin & -surf6_zmax)
 
 # H2O
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = -surf1 & +surf6 & -surf7
+cell8.region = -surf1 & (+surf6 | -surf6_zmin | +surf6_zmax) & (-surf7 & +surf7_zmin & -surf7_zmax)
 
 # Air
 cell9 = openmc.Cell(cell_id=9, fill=mat4)
-cell9.region = +surf1 & +surf6 & -surf7
+cell9.region = +surf1 & (+surf6 | -surf6_zmin | +surf6_zmax) & (-surf7 & +surf7_zmin & -surf7_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9])
 geometry = openmc.Geometry(root_universe)

@@ -33,6 +33,10 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Fuel with C(Pu) = 1.0466 g/cc
+surf1 = openmc.model.RectangularParallelepiped(-25.655, 25.655, -34.125, 34.125, -5.18, 5.18)
+# 6" (15.24 cm) Plexiglas Reflector
+surf2 = openmc.model.RectangularParallelepiped(-40.895, 40.895, -49.365, 49.365, -20.42, 20.42, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -40,8 +44,12 @@ materials = openmc.Materials([mat1, mat2])
 
 # FUEL
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1
+
 # PLEX
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+cell2.region = +surf1 & -surf2
+
 root_universe = openmc.Universe(cells=[cell1, cell2])
 geometry = openmc.Geometry(root_universe)
 

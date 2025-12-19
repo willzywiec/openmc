@@ -73,11 +73,17 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Tank, inner
 # surf1: Unsupported surface type "rev" with params ['3', '0.0', '0.0', '1.2', '35.03', '103.8', '35.03', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
 # Tank, outer
-surf2 = openmc.ZCylinder(surface_id=2, x0=-0.5, y0=105.0, r=35.33)
+surf2 = openmc.ZCylinder(surface_id=2, r=35.33)
 # Reflector, outer
-surf3 = openmc.ZCylinder(surface_id=3, x0=-30.5, y0=105.0, r=65.33, boundary_type="vacuum")
+surf3 = openmc.ZCylinder(surface_id=3, r=65.33)
 # Critical height
 surf4 = openmc.ZPlane(surface_id=4, z0=33.71)
+
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(z0=-0.5)
+surf2_zmax = openmc.ZPlane(z0=105.0)
+surf3_zmin = openmc.ZPlane(z0=-30.5, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(z0=105.0, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -85,23 +91,23 @@ surf4 = openmc.ZPlane(surface_id=4, z0=33.71)
 
 # Soln
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf4
+cell1.region = -surf1 & -surf4
 
 # Air
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf4
+cell2.region = -surf1 & +surf4
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = -surf2
+cell3.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # H2O
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = +surf2 & -surf3 & -surf4
+cell4.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax) & -surf4
 
 # Air
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf2 & -surf3 & +surf4
+cell5.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax) & +surf4
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)

@@ -48,15 +48,21 @@ materials = openmc.Materials([mat1, mat2])
 # 256-mm Tank/Hc'   per Table 1
 surf1 = openmc.ZPlane(surface_id=1, z0=20.00)
 # 256-mm Tank/Inner per Section 3.2
-surf2 = openmc.ZCylinder(surface_id=2, x0=0.000, y0=101.145, r=12.49)
+surf2 = openmc.ZCylinder(surface_id=2, r=12.49)
 # 256-mm Tank/Outer per Section 3.2
-surf3 = openmc.ZCylinder(surface_id=3, x0=-1.355, y0=102.345, r=12.8)
+surf3 = openmc.ZCylinder(surface_id=3, r=12.8)
 # 300-mm Tank/Hc-0.326 from Table 1
 surf4 = openmc.ZPlane(surface_id=4, z0=39.104)
 # 300-mm Tank/Inner per Figure 5
-# surf5: Error converting surface type "cylinder": could not convert string to float: 'tr'
+surf5 = openmc.ZCylinder(surface_id=5, x0=32.79, y0=0.0, r=14.7)
 # 300-mm Tank/Outer per Figure 5
-# surf6: Error converting surface type "cylinder": could not convert string to float: 'tr'
+surf6 = openmc.ZCylinder(surface_id=6, x0=32.79, y0=0.0, r=15.0)
+
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(z0=0.0)
+surf2_zmax = openmc.ZPlane(z0=101.145)
+surf3_zmin = openmc.ZPlane(z0=-1.355)
+surf3_zmax = openmc.ZPlane(z0=102.345)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -64,26 +70,28 @@ surf4 = openmc.ZPlane(surface_id=4, z0=39.104)
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = +surf1 & -surf2
+cell1.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # Soln
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = -surf1 & -surf2
+cell2.region = -surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf2 & -surf3
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # Void
 cell4 = openmc.Cell(cell_id=4)
-cell4.region = +surf4
+cell4.region = +surf4 & -surf5
 
 # Soln
 cell5 = openmc.Cell(cell_id=5, fill=mat1)
-cell5.region = -surf4
+cell5.region = -surf4 & -surf5
 
 # SST
 cell6 = openmc.Cell(cell_id=6, fill=mat2)
+cell6.region = +surf5 & -surf6
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)
 

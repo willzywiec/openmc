@@ -73,15 +73,27 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # ==============================================================================
 
 # (U20)
-surf1 = openmc.ZCylinder(surface_id=1, x0=-19.3545, y0=19.3545, r=21.7255)
+surf1 = openmc.ZCylinder(surface_id=1, r=21.7255)
 # Copper (CU)
-surf2 = openmc.ZCylinder(surface_id=2, x0=-59.00, y0=59.00, r=51.114)
+surf2 = openmc.ZCylinder(surface_id=2, r=51.114)
 # Void Region (VR)
-surf3 = openmc.ZCylinder(surface_id=3, x0=-61.15, y0=61.15, r=51.114)
+surf3 = openmc.ZCylinder(surface_id=3, r=51.114)
 # Inside End Blocks (IEB)
-surf4 = openmc.ZCylinder(surface_id=4, x0=-63.10, y0=63.10, r=51.114)
+surf4 = openmc.ZCylinder(surface_id=4, r=51.114)
 # Outside End Blocks (OEB)
-surf5 = openmc.ZCylinder(surface_id=5, x0=-64.85, y0=64.85, r=51.114, boundary_type="vacuum")
+surf5 = openmc.ZCylinder(surface_id=5, r=51.114)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=-19.3545)
+surf1_zmax = openmc.ZPlane(z0=19.3545)
+surf2_zmin = openmc.ZPlane(z0=-59.0)
+surf2_zmax = openmc.ZPlane(z0=59.0)
+surf3_zmin = openmc.ZPlane(z0=-61.15)
+surf3_zmax = openmc.ZPlane(z0=61.15)
+surf4_zmin = openmc.ZPlane(z0=-63.1)
+surf4_zmax = openmc.ZPlane(z0=63.1)
+surf5_zmin = openmc.ZPlane(z0=-64.85, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(z0=64.85, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -89,23 +101,23 @@ surf5 = openmc.ZCylinder(surface_id=5, x0=-64.85, y0=64.85, r=51.114, boundary_t
 
 # U20
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax)
 
 # Cu
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2 & -surf3 & -surf4 & -surf5
+cell2.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # VR
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = +surf2 & -surf3 & -surf4 & -surf5
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # IEB
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = +surf2 & +surf3 & -surf4 & -surf5
+cell4.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # OEB
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
-cell5.region = +surf2 & +surf3 & +surf4 & -surf5
+cell5.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)

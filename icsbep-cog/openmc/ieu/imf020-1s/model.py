@@ -74,21 +74,39 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # ==============================================================================
 
 # (U20)
-surf1 = openmc.ZCylinder(surface_id=1, x0=-15.0535, y0=15.0535, r=15.292)
+surf1 = openmc.ZCylinder(surface_id=1, r=15.292)
 # Copper (CU)
-surf2 = openmc.ZCylinder(surface_id=2, x0=-55.9035, y0=55.9035, r=48.996)
+surf2 = openmc.ZCylinder(surface_id=2, r=48.996)
 # Void Region (VR)
-surf3 = openmc.ZCylinder(surface_id=3, x0=-57.4535, y0=58.2465, r=48.996)
+surf3 = openmc.ZCylinder(surface_id=3, r=48.996)
 # Inside End Blocks (IEB)
-surf4 = openmc.ZCylinder(surface_id=4, x0=-59.7535, y0=60.2465, r=48.996)
+surf4 = openmc.ZCylinder(surface_id=4, r=48.996)
 # Outside End Blocks (OEB)
-surf5 = openmc.ZCylinder(surface_id=5, x0=-61.5535, y0=61.9465, r=48.996)
+surf5 = openmc.ZCylinder(surface_id=5, r=48.996)
 # Locking rails
-surf6 = openmc.ZCylinder(surface_id=6, x0=61.9465, y0=64.7465, r=48.996)
+surf6 = openmc.ZCylinder(surface_id=6, r=48.996)
 # Iron reactor table and wall; inner
-surf7 = openmc.ZCylinder(surface_id=7, x0=-61.5535, y0=64.7465, r=68.4)
+surf7 = openmc.ZCylinder(surface_id=7, r=68.4)
 # Iron reactor table and wall; outer
-surf8 = openmc.ZCylinder(surface_id=8, x0=-77.5535, y0=64.7465, r=70.0, boundary_type="vacuum")
+surf8 = openmc.ZCylinder(surface_id=8, r=70.0)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=-15.0535)
+surf1_zmax = openmc.ZPlane(z0=15.0535)
+surf2_zmin = openmc.ZPlane(z0=-55.9035)
+surf2_zmax = openmc.ZPlane(z0=55.9035)
+surf3_zmin = openmc.ZPlane(z0=-57.4535)
+surf3_zmax = openmc.ZPlane(z0=58.2465)
+surf4_zmin = openmc.ZPlane(z0=-59.7535)
+surf4_zmax = openmc.ZPlane(z0=60.2465)
+surf5_zmin = openmc.ZPlane(z0=-61.5535)
+surf5_zmax = openmc.ZPlane(z0=61.9465)
+surf6_zmin = openmc.ZPlane(z0=61.9465)
+surf6_zmax = openmc.ZPlane(z0=64.7465)
+surf7_zmin = openmc.ZPlane(z0=-61.5535)
+surf7_zmax = openmc.ZPlane(z0=64.7465)
+surf8_zmin = openmc.ZPlane(z0=-77.5535, boundary_type="vacuum")
+surf8_zmax = openmc.ZPlane(z0=64.7465, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -96,31 +114,31 @@ surf8 = openmc.ZCylinder(surface_id=8, x0=-77.5535, y0=64.7465, r=70.0, boundary
 
 # U20
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax)
 
 # Cu
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2
+cell2.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # VR
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
-cell3.region = +surf2 & -surf3
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # IEB
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = +surf2 & +surf3 & -surf4
+cell4.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 
 # OEB
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
-cell5.region = +surf2 & +surf3 & +surf4 & -surf5
+cell5.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # FE
 cell6 = openmc.Cell(cell_id=6, fill=mat6)
-cell6.region = +surf5 & -surf6 & -surf7
+cell6.region = (+surf5 | -surf5_zmin | +surf5_zmax) & (-surf6 & +surf6_zmin & -surf6_zmax) & (-surf7 & +surf7_zmin & -surf7_zmax)
 
 # FE
 cell7 = openmc.Cell(cell_id=7, fill=mat6)
-cell7.region = +surf2 & +surf3 & +surf4 & +surf5 & +surf6 & +surf7 & -surf8
+cell7.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (+surf3 | -surf3_zmin | +surf3_zmax) & (+surf4 | -surf4_zmin | +surf4_zmax) & (+surf5 | -surf5_zmin | +surf5_zmax) & (+surf6 | -surf6_zmin | +surf6_zmax) & (+surf7 | -surf7_zmin | +surf7_zmax) & (-surf8 & +surf8_zmin & -surf8_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7])
 geometry = openmc.Geometry(root_universe)

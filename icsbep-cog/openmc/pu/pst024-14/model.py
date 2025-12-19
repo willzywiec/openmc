@@ -156,19 +156,19 @@ cell2.region = +surf2 & -surf3 & -surf5
 
 # Crate
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf3 & -surf5
+cell3.region = +surf3 & -surf5 & +surf101 & +surf103 & +surf105 & +surf107 & +surf109
 
 # Plex
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = +surf3
+cell4.region = +surf3 & -surf4 & -surf101 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf103
 
 # Plex
 cell5 = openmc.Cell(cell_id=5, fill=mat4)
-cell5.region = +surf3
+cell5.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf105 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = +surf3
+cell6.region = +surf3 & -surf4 & -surf107 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf109
 
 # Plex
 cell7 = openmc.Cell(cell_id=7, fill=mat4)
@@ -176,15 +176,15 @@ cell7.region = +surf3 & -surf4
 
 # Plex
 cell8 = openmc.Cell(cell_id=8, fill=mat4)
-cell8.region = +surf3
+cell8.region = +surf3 & -surf4 & -surf111 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf113
 
 # Plex
 cell9 = openmc.Cell(cell_id=9, fill=mat4)
-cell9.region = +surf3
+cell9.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf115 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell10 = openmc.Cell(cell_id=10, fill=mat4)
-cell10.region = +surf3
+cell10.region = +surf3 & -surf4 & -surf117 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf119
 
 # Plex
 cell11 = openmc.Cell(cell_id=11, fill=mat4)
@@ -192,15 +192,15 @@ cell11.region = +surf3 & -surf4
 
 # Plex
 cell12 = openmc.Cell(cell_id=12, fill=mat4)
-cell12.region = +surf3
+cell12.region = +surf3 & -surf4 & -surf121 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf123
 
 # Plex
 cell13 = openmc.Cell(cell_id=13, fill=mat4)
-cell13.region = +surf3
+cell13.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf125 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell14 = openmc.Cell(cell_id=14, fill=mat4)
-cell14.region = +surf3
+cell14.region = +surf3 & -surf4 & -surf127 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf129
 
 # Plex
 cell15 = openmc.Cell(cell_id=15, fill=mat4)
@@ -208,15 +208,15 @@ cell15.region = +surf3 & -surf4
 
 # Plex
 cell16 = openmc.Cell(cell_id=16, fill=mat4)
-cell16.region = +surf3
+cell16.region = +surf3 & -surf4 & -surf131 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf133
 
 # Plex
 cell17 = openmc.Cell(cell_id=17, fill=mat4)
-cell17.region = +surf3
+cell17.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf135 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell18 = openmc.Cell(cell_id=18, fill=mat4)
-cell18.region = +surf3
+cell18.region = +surf3 & -surf4 & -surf137 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf139
 
 # Plex
 cell19 = openmc.Cell(cell_id=19, fill=mat4)
@@ -224,15 +224,15 @@ cell19.region = +surf3 & -surf4
 
 # Plex
 cell20 = openmc.Cell(cell_id=20, fill=mat4)
-cell20.region = +surf3
+cell20.region = +surf3 & -surf4 & -surf141 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf143
 
 # Plex
 cell21 = openmc.Cell(cell_id=21, fill=mat4)
-cell21.region = +surf3
+cell21.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf145 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell22 = openmc.Cell(cell_id=22, fill=mat4)
-cell22.region = +surf3
+cell22.region = +surf3 & -surf4 & -surf147 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf149
 
 # Plex
 cell23 = openmc.Cell(cell_id=23, fill=mat4)
@@ -240,15 +240,15 @@ cell23.region = +surf3 & -surf4
 
 # Plex
 cell24 = openmc.Cell(cell_id=24, fill=mat4)
-cell24.region = +surf3
+cell24.region = +surf3 & -surf4 & -surf151 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf153
 
 # Plex
 cell25 = openmc.Cell(cell_id=25, fill=mat4)
-cell25.region = +surf3
+cell25.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf155 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell26 = openmc.Cell(cell_id=26, fill=mat4)
-cell26.region = +surf3
+cell26.region = +surf3 & -surf4 & -surf157 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf159
 
 # Plex
 cell27 = openmc.Cell(cell_id=27, fill=mat4)
@@ -256,15 +256,15 @@ cell27.region = +surf3 & -surf4
 
 # Plex
 cell28 = openmc.Cell(cell_id=28, fill=mat4)
-cell28.region = +surf3
+cell28.region = +surf3 & -surf4 & -surf161 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf163
 
 # Plex
 cell29 = openmc.Cell(cell_id=29, fill=mat4)
-cell29.region = +surf3
+cell29.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf165 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell30 = openmc.Cell(cell_id=30, fill=mat4)
-cell30.region = +surf3
+cell30.region = +surf3 & -surf4 & -surf167 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf169
 
 # Plex
 cell31 = openmc.Cell(cell_id=31, fill=mat4)
@@ -272,15 +272,15 @@ cell31.region = +surf3 & -surf4
 
 # Plex
 cell32 = openmc.Cell(cell_id=32, fill=mat4)
-cell32.region = +surf3
+cell32.region = +surf3 & -surf4 & -surf171 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf173
 
 # Plex
 cell33 = openmc.Cell(cell_id=33, fill=mat4)
-cell33.region = +surf3
+cell33.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf175 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell34 = openmc.Cell(cell_id=34, fill=mat4)
-cell34.region = +surf3
+cell34.region = +surf3 & -surf4 & -surf177 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf179
 
 # Plex
 cell35 = openmc.Cell(cell_id=35, fill=mat4)
@@ -288,15 +288,15 @@ cell35.region = +surf3 & -surf4
 
 # Plex
 cell36 = openmc.Cell(cell_id=36, fill=mat4)
-cell36.region = +surf3
+cell36.region = +surf3 & -surf4 & -surf181 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf183
 
 # Plex
 cell37 = openmc.Cell(cell_id=37, fill=mat4)
-cell37.region = +surf3
+cell37.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf185 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell38 = openmc.Cell(cell_id=38, fill=mat4)
-cell38.region = +surf3
+cell38.region = +surf3 & -surf4 & -surf187 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf189
 
 # Plex
 cell39 = openmc.Cell(cell_id=39, fill=mat4)
@@ -304,15 +304,15 @@ cell39.region = +surf3 & -surf4
 
 # Plex
 cell40 = openmc.Cell(cell_id=40, fill=mat4)
-cell40.region = +surf3
+cell40.region = +surf3 & -surf4 & -surf191 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf193
 
 # Plex
 cell41 = openmc.Cell(cell_id=41, fill=mat4)
-cell41.region = +surf3
+cell41.region = +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf195 & +surf4 & +surf3 & -surf4
 
 # Plex
 cell42 = openmc.Cell(cell_id=42, fill=mat4)
-cell42.region = +surf3
+cell42.region = +surf3 & -surf4 & -surf197 & +surf4 & +surf3 & -surf4 & +surf4 & +surf3 & -surf4 & -surf199
 
 # Plex
 cell43 = openmc.Cell(cell_id=43, fill=mat4)

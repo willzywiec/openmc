@@ -40,8 +40,14 @@ materials = openmc.Materials([mat1, mat2])
 # ==============================================================================
 
 surf1 = openmc.ZPlane(surface_id=1, z0=59.2074)
-surf2 = openmc.ZCylinder(surface_id=2, x0=0.0, y0=243.84, r=77.3684)
-surf3 = openmc.ZCylinder(surface_id=3, x0=-0.3302, y0=243.84, r=77.9686, boundary_type="vacuum")
+surf2 = openmc.ZCylinder(surface_id=2, r=77.3684)
+surf3 = openmc.ZCylinder(surface_id=3, r=77.9686)
+
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(z0=0.0)
+surf2_zmax = openmc.ZPlane(z0=243.84)
+surf3_zmin = openmc.ZPlane(z0=-0.3302, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(z0=243.84, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -49,15 +55,15 @@ surf3 = openmc.ZCylinder(surface_id=3, x0=-0.3302, y0=243.84, r=77.9686, boundar
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
-cell1.region = +surf1 & -surf2 & -surf3
+cell1.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # Soln
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = -surf1 & -surf2 & -surf3
+cell2.region = -surf1 & (-surf2 & +surf2_zmin & -surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf2 & -surf3
+cell3.region = (+surf2 | -surf2_zmin | +surf2_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3])
 geometry = openmc.Geometry(root_universe)

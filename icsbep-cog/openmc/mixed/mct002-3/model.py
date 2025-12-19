@@ -92,7 +92,7 @@ surf13 = openmc.ZPlane(surface_id=13, z0=125.8215)
 surf14 = openmc.ZPlane(surface_id=14, z0=126.7740)
 # Arbitrary big box for unit cell bcd
 surf15 = openmc.model.RectangularParallelepiped(-4.95, 4.95, -4.95, 4.95, -499.95, 499.95)
-surf90 = openmc.ZCylinder(surface_id=90, x0=0.0, y0=132.4890, r=60.0, boundary_type="vacuum")
+surf90 = openmc.ZCylinder(surface_id=90, r=60.0)
 surf101 = openmc.XPlane(surface_id=101, x0=-62.96049)
 surf102 = openmc.XPlane(surface_id=102, x0=-60.75135)
 surf103 = openmc.XPlane(surface_id=103, x0=-58.54221)
@@ -212,6 +212,10 @@ surf258 = openmc.YPlane(surface_id=258, y0=62.96049)
 surf301 = openmc.ZPlane(surface_id=301, z0=-999.0)
 surf302 = openmc.ZPlane(surface_id=302, z0=999.0)
 
+# Z-plane surfaces for bounded cylinders
+surf90_zmin = openmc.ZPlane(z0=0.0, boundary_type="vacuum")
+surf90_zmax = openmc.ZPlane(z0=132.489, boundary_type="vacuum")
+
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
@@ -254,7 +258,7 @@ universe3 = openmc.Universe(universe_id=3, cells=[])
 
 # PNL32
 cell1 = openmc.Cell(cell_id=1, fill=universe3)
-cell1.region = -surf90
+cell1.region = (-surf90 & +surf90_zmin & -surf90_zmax)
 
 # unit2
 cell15 = openmc.Cell(cell_id=15, fill=universe2)

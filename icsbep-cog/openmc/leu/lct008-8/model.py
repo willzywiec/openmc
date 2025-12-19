@@ -66,13 +66,17 @@ surf4 = openmc.ZCylinder(surface_id=4, r=0.585)
 # Actual dimensions
 surf5 = openmc.model.RectangularParallelepiped(-66.24828, 66.24828, -66.24828, 66.24828, -81.662, 81.662)
 # Radial reflector boundary
-surf6 = openmc.ZCylinder(surface_id=6, x0=-81.662, y0=81.662, r=76.2, boundary_type="vacuum")
+surf6 = openmc.ZCylinder(surface_id=6, r=76.2)
 # Actual planar dimensions
 surf10 = openmc.model.RectangularParallelepiped(-36.8046, 36.8046, -36.8046, 36.8046, -450.0, 450.0)
 surf11 = openmc.XPlane(surface_id=11, x0=-12.2682)
 surf12 = openmc.XPlane(surface_id=12, x0=12.2682)
 surf13 = openmc.YPlane(surface_id=13, y0=-12.2682)
 surf14 = openmc.YPlane(surface_id=14, y0=12.2682)
+
+# Z-plane surfaces for bounded cylinders
+surf6_zmin = openmc.ZPlane(z0=-81.662, boundary_type="vacuum")
+surf6_zmax = openmc.ZPlane(z0=81.662, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -217,54 +221,54 @@ universe5.add_cell(openmc.Cell(fill=lattice5))
 # assy
 cell1 = openmc.Cell(cell_id=1, fill=universe5)
 cell1.translation = (-24.5364, 24.5364, 0.0)
-cell1.region = -surf5 & -surf6 & -surf10 & -surf11 & +surf14
+cell1.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & -surf11 & +surf14
 
 # assy
 cell2 = openmc.Cell(cell_id=2, fill=universe5)
 cell2.translation = (0.0, 24.5364, 0.0)
-cell2.region = -surf5 & -surf6 & -surf10 & +surf11 & -surf12 & +surf14
+cell2.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & +surf11 & -surf12 & +surf14
 
 # assy
 cell3 = openmc.Cell(cell_id=3, fill=universe5)
 cell3.translation = (24.5364, 24.5364, 0.0)
-cell3.region = -surf5 & -surf6 & -surf10 & +surf12 & +surf14
+cell3.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & +surf12 & +surf14
 
 # assy
 cell4 = openmc.Cell(cell_id=4, fill=universe5)
 cell4.translation = (-24.5364, 0.0, 0.0)
-cell4.region = -surf5 & -surf6 & -surf10 & -surf11 & +surf13 & -surf14
+cell4.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & -surf11 & +surf13 & -surf14
 
 # assy
 cell5 = openmc.Cell(cell_id=5, fill=universe5)
-cell5.region = -surf5 & -surf6 & -surf10 & +surf11 & -surf12 & +surf13 & -surf14
+cell5.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & +surf11 & -surf12 & +surf13 & -surf14
 
 # assy
 cell6 = openmc.Cell(cell_id=6, fill=universe5)
 cell6.translation = (24.5364, 0.0, 0.0)
-cell6.region = -surf5 & -surf6 & -surf10 & +surf12 & +surf13 & -surf14
+cell6.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & +surf12 & +surf13 & -surf14
 
 # assy
 cell7 = openmc.Cell(cell_id=7, fill=universe5)
 cell7.translation = (-24.5364, -24.5364, 0.0)
-cell7.region = -surf5 & -surf6 & -surf10 & -surf11 & -surf13
+cell7.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & -surf11 & -surf13
 
 # assy
 cell8 = openmc.Cell(cell_id=8, fill=universe5)
 cell8.translation = (0.0, -24.5364, 0.0)
-cell8.region = -surf5 & -surf6 & -surf10 & +surf11 & -surf12 & -surf13
+cell8.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & +surf11 & -surf12 & -surf13
 
 # assy
 cell9 = openmc.Cell(cell_id=9, fill=universe5)
 cell9.translation = (24.5364, -24.5364, 0.0)
-cell9.region = -surf5 & -surf6 & -surf10 & +surf12 & -surf13
+cell9.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & -surf10 & +surf12 & -surf13
 
 # lttc
 cell10 = openmc.Cell(cell_id=10, fill=universe4)
-cell10.region = -surf5 & -surf6 & +surf10
+cell10.region = -surf5 & (-surf6 & +surf6_zmin & -surf6_zmax) & +surf10
 
 # H2O-B
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
-cell11.region = +surf5 & -surf6
+cell11.region = +surf5 & (-surf6 & +surf6_zmin & -surf6_zmax)
 
 # H2O-B
 cell15 = openmc.Cell(cell_id=15, fill=mat3)

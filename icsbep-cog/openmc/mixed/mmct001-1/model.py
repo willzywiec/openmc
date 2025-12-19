@@ -127,13 +127,13 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # ==============================================================================
 
 # Polyethylene spacer
-surf1 = openmc.ZCylinder(surface_id=1, x0=0.922, y0=22.106, r=26.503)
+surf1 = openmc.ZCylinder(surface_id=1, r=26.503)
 # SS304L middle lattice spacer
-surf2 = openmc.ZCylinder(surface_id=2, x0=121.202, y0=121.68, r=26.213)
+surf2 = openmc.ZCylinder(surface_id=2, r=26.213)
 # SS304L tube tank, inner
-surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=180.603, r=26.503)
+surf3 = openmc.ZCylinder(surface_id=3, r=26.503)
 # SS304L tube tank, outer
-surf4 = openmc.ZCylinder(surface_id=4, x0=-1.586, y0=182.533, r=26.594)
+surf4 = openmc.ZCylinder(surface_id=4, r=26.594)
 # Carbon steel reflector tank, inner
 surf5 = openmc.model.RectangularParallelepiped(-47.48, 131.30, -49.38, 49.38, -17.586, 139.279)
 # Carbon steel reflector tank, outer & bcd
@@ -145,72 +145,104 @@ surf8 = openmc.ZPlane(surface_id=8, z0=126.533)
 # Solution height (case 106)
 surf9 = openmc.ZPlane(surface_id=9, z0=18.41)
 # SS316 clad, inner
-surf10 = openmc.ZCylinder(surface_id=10, x0=5.596, y0=228.816, r=0.254)
+surf10 = openmc.ZCylinder(surface_id=10, r=0.254)
 # Inconel 600 reflector, lower
-surf11 = openmc.ZCylinder(surface_id=11, x0=5.596, y0=20.074, r=0.240665)
+surf11 = openmc.ZCylinder(surface_id=11, r=0.240665)
 # Nat-UO2, lower
-surf12 = openmc.ZCylinder(surface_id=12, x0=20.074, y0=22.16, r=0.2413)
+surf12 = openmc.ZCylinder(surface_id=12, r=0.2413)
 # Active fuel
-surf13 = openmc.ZCylinder(surface_id=13, x0=22.16, y0=113.546, r=0.247015)
+surf13 = openmc.ZCylinder(surface_id=13, r=0.247015)
 # Nat-UO2, upper
-surf14 = openmc.ZCylinder(surface_id=14, x0=113.546, y0=115.578, r=0.2413)
+surf14 = openmc.ZCylinder(surface_id=14, r=0.2413)
 # Inconel 600 reflector, upper
-surf15 = openmc.ZCylinder(surface_id=15, x0=115.578, y0=130.056, r=0.240665)
+surf15 = openmc.ZCylinder(surface_id=15, r=0.240665)
 # SS302 spring, homog.
-surf16 = openmc.ZCylinder(surface_id=16, x0=130.056, y0=142.606, r=0.254)
+surf16 = openmc.ZCylinder(surface_id=16, r=0.254)
 # SS316 plenum, inner
 surf17 = openmc.ZCylinder(surface_id=17, r=0.23114)
 # SS316 plenum, outer
-surf18 = openmc.ZCylinder(surface_id=18, x0=142.606, y0=228.816, r=0.24511)
+surf18 = openmc.ZCylinder(surface_id=18, r=0.24511)
 # SS316 clad, outer
-surf19 = openmc.ZCylinder(surface_id=19, x0=1.536, y0=239.276, r=0.2921)
+surf19 = openmc.ZCylinder(surface_id=19, r=0.2921)
 # SS304L guide tube, inner
-surf20 = openmc.ZCylinder(surface_id=20, x0=1.536, y0=182.533, r=0.30415)
+surf20 = openmc.ZCylinder(surface_id=20, r=0.30415)
 # SS304L guide tube, outer
-surf21 = openmc.ZCylinder(surface_id=21, x0=0.922, y0=182.533, r=0.32315)
+surf21 = openmc.ZCylinder(surface_id=21, r=0.32315)
 # surf22: Unsupported surface type "rev" with params ['4', '0.922', '0.3505', '29.999', '0.3505', '30.999', '0.3231', '239.276', '0.3231']
 surf98 = openmc.ZCylinder(surface_id=98, r=26.503)
 # Array outer x-y boundaries
 surf99 = openmc.model.RectangularParallelepiped(-25.2, 25.2, -25.2, 25.2, -499.95, 499.95)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=0.922)
+surf1_zmax = openmc.ZPlane(z0=22.106)
+surf2_zmin = openmc.ZPlane(z0=121.202)
+surf2_zmax = openmc.ZPlane(z0=121.68)
+surf3_zmin = openmc.ZPlane(z0=0.0)
+surf3_zmax = openmc.ZPlane(z0=180.603)
+surf4_zmin = openmc.ZPlane(z0=-1.586)
+surf4_zmax = openmc.ZPlane(z0=182.533)
+surf10_zmin = openmc.ZPlane(z0=5.596)
+surf10_zmax = openmc.ZPlane(z0=228.816)
+surf11_zmin = openmc.ZPlane(z0=5.596)
+surf11_zmax = openmc.ZPlane(z0=20.074)
+surf12_zmin = openmc.ZPlane(z0=20.074)
+surf12_zmax = openmc.ZPlane(z0=22.16)
+surf13_zmin = openmc.ZPlane(z0=22.16)
+surf13_zmax = openmc.ZPlane(z0=113.546)
+surf14_zmin = openmc.ZPlane(z0=113.546)
+surf14_zmax = openmc.ZPlane(z0=115.578)
+surf15_zmin = openmc.ZPlane(z0=115.578)
+surf15_zmax = openmc.ZPlane(z0=130.056)
+surf16_zmin = openmc.ZPlane(z0=130.056)
+surf16_zmax = openmc.ZPlane(z0=142.606)
+surf18_zmin = openmc.ZPlane(z0=142.606)
+surf18_zmax = openmc.ZPlane(z0=228.816)
+surf19_zmin = openmc.ZPlane(z0=1.536)
+surf19_zmax = openmc.ZPlane(z0=239.276)
+surf20_zmin = openmc.ZPlane(z0=1.536)
+surf20_zmax = openmc.ZPlane(z0=182.533)
+surf21_zmin = openmc.ZPlane(z0=0.922)
+surf21_zmax = openmc.ZPlane(z0=182.533)
 
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat8)
-u1_cell0.region = -surf1
+u1_cell0.region = (-surf1 & +surf1_zmin & -surf1_zmax)
 u1_cell1 = openmc.Cell(fill=mat10)
-u1_cell1.region = +surf1 & -surf3 & -surf9
+u1_cell1.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf3 & +surf3_zmin & -surf3_zmax) & -surf9
 u1_cell2 = openmc.Cell(fill=mat6)
-u1_cell2.region = -surf2
+u1_cell2.region = (-surf2 & +surf2_zmin & -surf2_zmax)
 u1_cell3 = openmc.Cell(fill=mat6)
-u1_cell3.region = +surf3 & -surf4
+u1_cell3.region = (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax)
 u1_cell4 = openmc.Cell(fill=mat9)
-u1_cell4.region = +surf4 & -surf5 & -surf6 & -surf7
+u1_cell4.region = (+surf4 | -surf4_zmin | +surf4_zmax) & -surf5 & -surf6 & -surf7
 u1_cell5 = openmc.Cell(fill=mat7)
 u1_cell5.region = +surf5 & -surf6 & -surf7
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4, u1_cell5])
 
 u2_cell0 = openmc.Cell(fill=mat3)
-u2_cell0.region = -surf10 & -surf11
+u2_cell0.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (-surf11 & +surf11_zmin & -surf11_zmax)
 u2_cell1 = openmc.Cell(fill=mat2)
-u2_cell1.region = -surf10 & +surf11 & -surf12
+u2_cell1.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (+surf11 | -surf11_zmin | +surf11_zmax) & (-surf12 & +surf12_zmin & -surf12_zmax)
 u2_cell2 = openmc.Cell(fill=mat1)
-u2_cell2.region = -surf10 & +surf12 & -surf13
+u2_cell2.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (+surf12 | -surf12_zmin | +surf12_zmax) & (-surf13 & +surf13_zmin & -surf13_zmax)
 u2_cell3 = openmc.Cell(fill=mat2)
-u2_cell3.region = -surf10 & +surf13 & -surf14
+u2_cell3.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (+surf13 | -surf13_zmin | +surf13_zmax) & (-surf14 & +surf14_zmin & -surf14_zmax)
 u2_cell4 = openmc.Cell(fill=mat3)
-u2_cell4.region = -surf10 & +surf14 & -surf15
+u2_cell4.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (+surf14 | -surf14_zmin | +surf14_zmax) & (-surf15 & +surf15_zmin & -surf15_zmax)
 u2_cell5 = openmc.Cell(fill=mat4)
-u2_cell5.region = -surf10 & +surf15 & -surf16
+u2_cell5.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (+surf15 | -surf15_zmin | +surf15_zmax) & (-surf16 & +surf16_zmin & -surf16_zmax)
 u2_cell6 = openmc.Cell(fill=mat5)
-u2_cell6.region = -surf10 & +surf16 & +surf17 & -surf18
+u2_cell6.region = (-surf10 & +surf10_zmin & -surf10_zmax) & (+surf16 | -surf16_zmin | +surf16_zmax) & +surf17 & (-surf18 & +surf18_zmin & -surf18_zmax)
 u2_cell7 = openmc.Cell(fill=mat5)
-u2_cell7.region = +surf10 & -surf19
+u2_cell7.region = (+surf10 | -surf10_zmin | +surf10_zmax) & (-surf19 & +surf19_zmin & -surf19_zmax) & -surf22
 u2_cell8 = openmc.Cell(fill=mat6)
-u2_cell8.region = +surf19 & +surf20 & -surf21
+u2_cell8.region = (+surf19 | -surf19_zmin | +surf19_zmax) & (+surf20 | -surf20_zmin | +surf20_zmax) & (-surf21 & +surf21_zmin & -surf21_zmax) & -surf22
 u2_cell9 = openmc.Cell(fill=mat10)
-u2_cell9.region = +surf19 & +surf21 & -surf9
+u2_cell9.region = (+surf19 | -surf19_zmin | +surf19_zmax) & (+surf21 | -surf21_zmin | +surf21_zmax) & -surf22 & -surf9
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0, u2_cell1, u2_cell2, u2_cell3, u2_cell4, u2_cell5, u2_cell6, u2_cell7, u2_cell8, u2_cell9])
 
 # Lattice 3: 36x36 array

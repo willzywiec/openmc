@@ -57,6 +57,23 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# = 0.7144/2 (MOX/Outer)
+surf1 = openmc.XCylinder(surface_id=1, r=0.3572)
+# = 0.7370/2 (Inner Clad/Inner)
+surf2 = openmc.XCylinder(surface_id=2, r=0.3685)
+# = 0.7850/2 (Inner Clad/Outer)
+surf3 = openmc.XCylinder(surface_id=3, r=0.3925)
+# = 0.8040/2 (Outer Clad/Inner)
+surf4 = openmc.XCylinder(surface_id=4, r=0.402)
+# = 0.8480/2 (Outer Clad/Outer)
+surf5 = openmc.XCylinder(surface_id=5, r=0.424)
+# Prism 6: 6-sided polygon
+surf6_0 = openmc.Plane(a=0.8660254055, b=0.4999999970, c=0, d=0.4724999972)
+surf6_1 = openmc.Plane(a=0.0000000000, b=1.0000000000, c=0, d=0.4725000000)
+surf6_2 = openmc.Plane(a=-0.8660254055, b=0.4999999970, c=0, d=0.4724999972)
+surf6_3 = openmc.Plane(a=-0.8660254055, b=-0.4999999970, c=0, d=0.4724999972)
+surf6_4 = openmc.Plane(a=0.0000000000, b=-1.0000000000, c=0, d=0.4725000000)
+surf6_5 = openmc.Plane(a=0.8660254055, b=-0.4999999970, c=0, d=0.4724999972)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -64,16 +81,28 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 
 # MOX
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1 & (-surf6_0 & -surf6_1 & -surf6_2 & -surf6_3 & -surf6_4 & -surf6_5)
+
 # AIR
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+cell2.region = +surf1 & -surf2 & (-surf6_0 & -surf6_1 & -surf6_2 & -surf6_3 & -surf6_4 & -surf6_5)
+
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
+cell3.region = +surf2 & -surf3 & (-surf6_0 & -surf6_1 & -surf6_2 & -surf6_3 & -surf6_4 & -surf6_5)
+
 # AIR
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
+cell4.region = +surf3 & -surf4 & (-surf6_0 & -surf6_1 & -surf6_2 & -surf6_3 & -surf6_4 & -surf6_5)
+
 # SST
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
+cell5.region = +surf4 & -surf5 & (-surf6_0 & -surf6_1 & -surf6_2 & -surf6_3 & -surf6_4 & -surf6_5)
+
 # H2O
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
+cell6.region = +surf5 & (-surf6_0 & -surf6_1 & -surf6_2 & -surf6_3 & -surf6_4 & -surf6_5)
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)
 

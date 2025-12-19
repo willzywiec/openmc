@@ -38,7 +38,7 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Fuel
 surf1 = openmc.ZCylinder(surface_id=1, r=0.625)
 # Clad
-surf2 = openmc.ZCylinder(surface_id=2, x0=0.0, y0=144.15, r=0.7085)
+surf2 = openmc.ZCylinder(surface_id=2, r=0.7085)
 # Water critical height, Hc
 surf3 = openmc.ZPlane(surface_id=3, z0=99.45)
 # DX=DY=19*1.849        = 35.131 (core planar bdy)
@@ -46,16 +46,20 @@ surf4 = openmc.model.RectangularParallelepiped(-17.5655, 17.5655, -17.5655, 17.5
 # DX=DY=19*1.849 + 2*30 = 95.131 (refl planar bdy)
 surf5 = openmc.model.RectangularParallelepiped(-47.5655, 47.5655, -47.5655, 47.5655, -30.0, 144.15, boundary_type="vacuum")
 
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(z0=0.0)
+surf2_zmax = openmc.ZPlane(z0=144.15)
+
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1 & -surf2
+u1_cell0.region = -surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 u1_cell1 = openmc.Cell(fill=mat2)
-u1_cell1.region = +surf1 & -surf2
+u1_cell1.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax)
 u1_cell2 = openmc.Cell(fill=mat3)
-u1_cell2.region = +surf2 & -surf3 & -surf5
+u1_cell2.region = (+surf2 | -surf2_zmin | +surf2_zmax) & -surf3 & -surf5
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 # Lattice 2: 19x19 array
@@ -100,7 +104,7 @@ cell2.region = -surf3 & +surf4 & -surf5
 
 # H2O
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
-cell6.region = +surf2 & -surf3 & -surf5
+cell6.region = (+surf2 | -surf2_zmin | +surf2_zmax) & -surf3 & -surf5
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell6])
 geometry = openmc.Geometry(root_universe)

@@ -54,7 +54,7 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # ==============================================================================
 
 # Water/OR
-surf1 = openmc.ZCylinder(surface_id=1, x0=-56.2991, y0=56.2991, r=91.44, boundary_type="vacuum")
+surf1 = openmc.ZCylinder(surface_id=1, r=91.44)
 # Z-Lo = -200/2 + 115.765 = 15.765 cm
 surf2 = openmc.model.RectangularParallelepiped(-3.81, 3.81, -5.605779999999999, -5.42798, 15.765, 215.765)
 surf3 = openmc.model.RectangularParallelepiped(-3.81, 3.81, -1.92786, -1.75006, 15.765, 215.765)
@@ -65,7 +65,7 @@ surf10 = openmc.ZCylinder(surface_id=10, r=0.26797)
 # Clad/IR
 surf11 = openmc.ZCylinder(surface_id=11, r=0.2794)
 # Clad/OR
-# surf12: Error converting surface type "cylinder": could not convert string to float: 'tr'
+surf12 = openmc.ZCylinder(surface_id=12, x0=0.0, y0=0.0, r=0.32385)
 # Fuel/Lower
 surf13 = openmc.ZPlane(surface_id=13, z0=-19.05)
 # Fuel/Upper
@@ -75,7 +75,7 @@ surf15 = openmc.ZCylinder(surface_id=15, r=0.62103)
 # Clad/IR
 surf16 = openmc.ZCylinder(surface_id=16, r=0.63373)
 # Clad/OR
-# surf17: Error converting surface type "cylinder": could not convert string to float: 'tr'
+surf17 = openmc.ZCylinder(surface_id=17, x0=0.0, y0=0.0, r=0.7239)
 surf100 = openmc.model.RectangularParallelepiped(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0)
 # surf101: Unsupported surface type "sameas" with params ['12', 'tr', '-9.65454', '-9.65454', '0', '102', 'sameas', '12', 'tr', '-8.73506', '-9.65454', '0', '103', 'sameas', '12', 'tr', '-7.81558', '-9.65454', '0']
 # surf104: Unsupported surface type "sameas" with params ['12', 'tr', '-6.89610', '-9.65454', '0', '105', 'sameas', '12', 'tr', '-5.97662', '-9.65454', '0', '106', 'sameas', '12', 'tr', '-5.05714', '-9.65454', '0']
@@ -116,42 +116,46 @@ surf260 = openmc.YPlane(surface_id=260, y0=6.43636)
 surf265 = openmc.YPlane(surface_id=265, y0=15.63116)
 surf270 = openmc.YPlane(surface_id=270, y0=24.82596)
 
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=-56.2991, boundary_type="vacuum")
+surf1_zmax = openmc.ZPlane(z0=56.2991, boundary_type="vacuum")
+
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat3)
-u1_cell0.region = -surf10 & +surf13 & -surf14
+u1_cell0.region = -surf10 & -surf12 & +surf13 & -surf14
 u1_cell1 = openmc.Cell(fill=mat4)
-u1_cell1.region = -surf10 & -surf13
+u1_cell1.region = -surf10 & -surf12 & -surf13
 u1_cell2 = openmc.Cell(fill=mat4)
-u1_cell2.region = -surf10 & +surf14
+u1_cell2.region = -surf10 & -surf12 & +surf14
 u1_cell3 = openmc.Cell()
-u1_cell3.region = +surf10 & -surf11
+u1_cell3.region = +surf10 & -surf11 & -surf12
 u1_cell4 = openmc.Cell(fill=mat4)
-u1_cell4.region = +surf11
+u1_cell4.region = +surf11 & -surf12
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4])
 
 u2_cell0 = openmc.Cell(fill=mat1)
-u2_cell0.region = -surf100
+u2_cell0.region = -surf100 & +surf101 & +surf104 & +surf107 & +surf110 & +surf113 & +surf116 & +surf119 & +surf122
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0])
 
 universe3 = openmc.Universe(universe_id=3, cells=[])
 
 u4_cell0 = openmc.Cell(fill=mat5)
-u4_cell0.region = -surf15 & +surf13 & -surf14
+u4_cell0.region = -surf15 & -surf17 & +surf13 & -surf14
 u4_cell1 = openmc.Cell(fill=mat4)
-u4_cell1.region = -surf15 & -surf13
+u4_cell1.region = -surf15 & -surf17 & -surf13
 u4_cell2 = openmc.Cell(fill=mat4)
-u4_cell2.region = -surf15 & +surf14
+u4_cell2.region = -surf15 & -surf17 & +surf14
 u4_cell3 = openmc.Cell()
-u4_cell3.region = +surf15 & -surf16
+u4_cell3.region = +surf15 & -surf16 & -surf17
 u4_cell4 = openmc.Cell(fill=mat4)
-u4_cell4.region = +surf16
+u4_cell4.region = +surf16 & -surf17
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 u5_cell0 = openmc.Cell(fill=mat1)
-u5_cell0.region = -surf100
+u5_cell0.region = -surf100 & +surf201 & +surf204 & +surf207 & +surf210
 universe5 = openmc.Universe(universe_id=5, cells=[u5_cell0])
 
 universe6 = openmc.Universe(universe_id=6, cells=[])
@@ -162,23 +166,23 @@ universe6 = openmc.Universe(universe_id=6, cells=[])
 
 # Cntrl
 cell1 = openmc.Cell(cell_id=1, fill=mat2)
-cell1.region = -surf1 & -surf2
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax) & -surf2
 
 # Cntrl
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = -surf1 & -surf3
+cell2.region = (-surf1 & +surf1_zmin & -surf1_zmax) & -surf3
 
 # Cntrl
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = -surf1 & -surf4
+cell3.region = (-surf1 & +surf1_zmin & -surf1_zmax) & -surf4
 
 # Cntrl
 cell4 = openmc.Cell(cell_id=4, fill=mat2)
-cell4.region = -surf1 & -surf5
+cell4.region = (-surf1 & +surf1_zmin & -surf1_zmax) & -surf5
 
 # Zr2
 cell17 = openmc.Cell(cell_id=17, fill=mat4)
-cell17.region = +surf11
+cell17.region = +surf11 & -surf12
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell17])
 geometry = openmc.Geometry(root_universe)

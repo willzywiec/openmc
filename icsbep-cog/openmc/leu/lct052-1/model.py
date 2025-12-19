@@ -65,13 +65,13 @@ surf4 = openmc.model.RectangularParallelepiped(-30.0, 30.0, -30.0, 30.0, 96.45, 
 # Solution critical height
 surf5 = openmc.ZPlane(surface_id=5, z0=89.6)
 # UO2
-surf11 = openmc.ZCylinder(surface_id=11, x0=0.0, y0=90.0, r=0.395)
+surf11 = openmc.ZCylinder(surface_id=11, r=0.395)
 # Gap
-surf12 = openmc.ZCylinder(surface_id=12, x0=0.0, y0=96.9, r=0.41)
+surf12 = openmc.ZCylinder(surface_id=12, r=0.41)
 # AGS
 # surf13: Unsupported surface type "rev" with params ['3', '-1.8', '0.0', '-1.0', '0.47', '98.2', '0.47']
 # Hole
-surf20 = openmc.ZCylinder(surface_id=20, x0=-1.8, y0=98.2, r=0.5)
+surf20 = openmc.ZCylinder(surface_id=20, r=0.5)
 # Hole
 surf21 = openmc.ZCylinder(surface_id=21, x0=-0.675, y0=1.169134, r=0.5)
 # Hole
@@ -92,6 +92,14 @@ surf99_2 = openmc.Plane(a=-0.8660254666, b=0.4999998913, c=0, d=23.9672547873)
 surf99_3 = openmc.Plane(a=-0.8660254666, b=-0.4999998913, c=0, d=23.9672547873)
 surf99_4 = openmc.Plane(a=0.0000000000, b=-1.0000000000, c=0, d=23.9672600000)
 surf99_5 = openmc.Plane(a=0.8660254666, b=-0.4999998913, c=0, d=23.9672547873)
+
+# Z-plane surfaces for bounded cylinders
+surf11_zmin = openmc.ZPlane(z0=0.0)
+surf11_zmax = openmc.ZPlane(z0=90.0)
+surf12_zmin = openmc.ZPlane(z0=0.0)
+surf12_zmax = openmc.ZPlane(z0=96.9)
+surf20_zmin = openmc.ZPlane(z0=-1.8)
+surf20_zmax = openmc.ZPlane(z0=98.2)
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -153,23 +161,23 @@ cell2.region = -surf1 & (+surf99_0 | +surf99_1 | +surf99_2 | +surf99_3 | +surf99
 
 # UO2
 cell3 = openmc.Cell(cell_id=3, fill=mat1)
-cell3.region = -surf11 & -surf12
+cell3.region = (-surf11 & +surf11_zmin & -surf11_zmax) & (-surf12 & +surf12_zmin & -surf12_zmax)
 
 # Void
 cell4 = openmc.Cell(cell_id=4)
-cell4.region = +surf11 & -surf12
+cell4.region = (+surf11 | -surf11_zmin | +surf11_zmax) & (-surf12 & +surf12_zmin & -surf12_zmax)
 
 # AGS
 cell5 = openmc.Cell(cell_id=5, fill=mat2)
-cell5.region = +surf11 & +surf12 & -surf20
+cell5.region = (+surf11 | -surf11_zmin | +surf11_zmax) & (+surf12 | -surf12_zmin | +surf12_zmax) & -surf13 & (-surf20 & +surf20_zmin & -surf20_zmax)
 
 # Soln
 cell6 = openmc.Cell(cell_id=6, fill=mat4)
-cell6.region = -surf5 & -surf20
+cell6.region = -surf5 & +surf13 & (-surf20 & +surf20_zmin & -surf20_zmax)
 
 # Refl
 cell7 = openmc.Cell(cell_id=7, fill=universe4)
-cell7.region = -surf1 & +surf20 & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
+cell7.region = -surf1 & (+surf20 | -surf20_zmin | +surf20_zmax) & +surf21 & +surf22 & +surf23 & +surf24 & +surf25 & +surf26
 
 # Grid
 cell12 = openmc.Cell(cell_id=12, fill=mat3)

@@ -83,26 +83,34 @@ surf1 = openmc.ZCylinder(surface_id=1, r=1.5875)
 # Raschig ring, outer
 surf2 = openmc.ZCylinder(surface_id=2, r=1.905)
 # SST304L tank, inner
-surf3 = openmc.ZCylinder(surface_id=3, x0=0.0, y0=106.68, r=30.495)
+surf3 = openmc.ZCylinder(surface_id=3, r=30.495)
 # SST304L tank, inner
-surf4 = openmc.ZCylinder(surface_id=4, x0=-0.635, y0=107.633, r=30.574)
+surf4 = openmc.ZCylinder(surface_id=4, r=30.574)
 # Water reflector
-surf5 = openmc.ZCylinder(surface_id=5, x0=-20.0, y0=107.633, r=49.53, boundary_type="vacuum")
+surf5 = openmc.ZCylinder(surface_id=5, r=49.53)
 # Critical height (case 8)
 surf6 = openmc.ZPlane(surface_id=6, z0=85.70)
 # Top of dry Raschig rings
 surf7 = openmc.ZPlane(surface_id=7, z0=99.06)
+
+# Z-plane surfaces for bounded cylinders
+surf3_zmin = openmc.ZPlane(z0=0.0)
+surf3_zmax = openmc.ZPlane(z0=106.68)
+surf4_zmin = openmc.ZPlane(z0=-0.635)
+surf4_zmax = openmc.ZPlane(z0=107.633)
+surf5_zmin = openmc.ZPlane(z0=-20.0, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(z0=107.633, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes
 # ------------------------------------------------------------------------------
 
 u1_cell0 = openmc.Cell(fill=mat1)
-u1_cell0.region = -surf1 & -surf5
+u1_cell0.region = -surf1 & (-surf5 & +surf5_zmin & -surf5_zmax)
 u1_cell1 = openmc.Cell(fill=mat2)
-u1_cell1.region = +surf1 & -surf2 & -surf5
+u1_cell1.region = +surf1 & -surf2 & (-surf5 & +surf5_zmin & -surf5_zmax)
 u1_cell2 = openmc.Cell(fill=mat1)
-u1_cell2.region = +surf2 & -surf5
+u1_cell2.region = +surf2 & (-surf5 & +surf5_zmin & -surf5_zmax)
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 # Lattice 2: 15x15 array
@@ -135,27 +143,27 @@ universe2.add_cell(openmc.Cell(fill=lattice2))
 
 # array
 cell1 = openmc.Cell(cell_id=1, fill=universe2)
-cell1.region = -surf3 & -surf6
+cell1.region = (-surf3 & +surf3_zmin & -surf3_zmax) & -surf6
 
 # rings
 cell2 = openmc.Cell(cell_id=2, fill=mat3)
-cell2.region = -surf3 & +surf6 & -surf7
+cell2.region = (-surf3 & +surf3_zmin & -surf3_zmax) & +surf6 & -surf7
 
 # void
 cell3 = openmc.Cell(cell_id=3)
-cell3.region = -surf3 & +surf7
+cell3.region = (-surf3 & +surf3_zmin & -surf3_zmax) & +surf7
 
 # SS304L
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
-cell4.region = +surf3 & -surf4 & -surf5
+cell4.region = (+surf3 | -surf3_zmin | +surf3_zmax) & (-surf4 & +surf4_zmin & -surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # water
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
-cell5.region = +surf4 & -surf5
+cell5.region = (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 # Soln
 cell9 = openmc.Cell(cell_id=9, fill=mat1)
-cell9.region = +surf2 & -surf5
+cell9.region = +surf2 & (-surf5 & +surf5_zmin & -surf5_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell9])
 geometry = openmc.Geometry(root_universe)

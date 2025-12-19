@@ -87,15 +87,15 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 # ==============================================================================
 
 # Solution
-surf1 = openmc.ZCylinder(surface_id=1, x0=0.00, y0=149.86, r=29.5)
+surf1 = openmc.ZCylinder(surface_id=1, r=29.5)
 # 60-cm diam. tank
-surf2 = openmc.ZCylinder(surface_id=2, x0=-2.02, y0=152.80, r=29.8)
+surf2 = openmc.ZCylinder(surface_id=2, r=29.8)
 # Hc
 surf3 = openmc.ZPlane(surface_id=3, z0=81.26)
 # Steel support/inner
 surf11 = openmc.ZCylinder(surface_id=11, r=31.7)
 # Steel support/outer
-surf12 = openmc.ZCylinder(surface_id=12, x0=-4.0, y0=-1.5, r=68.5)
+surf12 = openmc.ZCylinder(surface_id=12, r=68.5)
 # =A
 surf13 = openmc.ZCylinder(surface_id=13, r=31.95)
 # =B
@@ -109,7 +109,17 @@ surf18 = openmc.ZPlane(surface_id=18, z0=0.0)
 surf19 = openmc.ZPlane(surface_id=19, z0=142.0)
 surf20 = openmc.ZPlane(surface_id=20, z0=142.6)
 # BCD
-surf21 = openmc.ZCylinder(surface_id=21, x0=-4.00, y0=152.80, r=68.5, boundary_type="vacuum")
+surf21 = openmc.ZCylinder(surface_id=21, r=68.5)
+
+# Z-plane surfaces for bounded cylinders
+surf1_zmin = openmc.ZPlane(z0=0.0)
+surf1_zmax = openmc.ZPlane(z0=149.86)
+surf2_zmin = openmc.ZPlane(z0=-2.02)
+surf2_zmax = openmc.ZPlane(z0=152.8)
+surf12_zmin = openmc.ZPlane(z0=-4.0)
+surf12_zmax = openmc.ZPlane(z0=-1.5)
+surf21_zmin = openmc.ZPlane(z0=-4.0, boundary_type="vacuum")
+surf21_zmax = openmc.ZPlane(z0=152.8, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -117,19 +127,19 @@ surf21 = openmc.ZCylinder(surface_id=21, x0=-4.00, y0=152.80, r=68.5, boundary_t
 
 # Soln
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
-cell1.region = -surf1 & -surf3
+cell1.region = (-surf1 & +surf1_zmin & -surf1_zmax) & -surf3
 
 # SST
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
-cell2.region = +surf1 & -surf2
+cell2.region = (+surf1 | -surf1_zmin | +surf1_zmax) & (-surf2 & +surf2_zmin & -surf2_zmax)
 
 # SST
 cell3 = openmc.Cell(cell_id=3, fill=mat4)
-cell3.region = +surf11 & -surf12
+cell3.region = +surf11 & (-surf12 & +surf12_zmin & -surf12_zmax)
 
 # Alum
 cell4 = openmc.Cell(cell_id=4, fill=mat5)
-cell4.region = +surf12 & +surf13 & -surf16 & +surf17 & -surf18
+cell4.region = (+surf12 | -surf12_zmin | +surf12_zmax) & +surf13 & -surf16 & +surf17 & -surf18
 
 # Alum
 cell5 = openmc.Cell(cell_id=5, fill=mat5)

@@ -88,6 +88,13 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+surf1 = openmc.ZCylinder(surface_id=1, r=35.797)
+surf2 = openmc.ZCylinder(surface_id=2, r=70.284, boundary_type="vacuum")
+surf3 = openmc.ZPlane(surface_id=3, z0=0.000)
+surf4 = openmc.ZPlane(surface_id=4, z0=35.643)
+surf5 = openmc.ZPlane(surface_id=5, z0=50.926)
+surf6 = openmc.ZPlane(surface_id=6, z0=61.915)
+surf7 = openmc.ZPlane(surface_id=7, z0=66.759)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -95,14 +102,24 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 
 # CORE
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = -surf1 & +surf3 & -surf4
+
 # AR1
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+cell2.region = -surf1 & +surf4 & -surf5
+
 # AR2
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
+cell3.region = -surf1 & +surf5 & -surf7
+
 # RR
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
+cell4.region = +surf1 & -surf2 & +surf3 & -surf6
+
 # MTX
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
+cell5.region = +surf1 & -surf2 & +surf6 & -surf7
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5])
 geometry = openmc.Geometry(root_universe)
 

@@ -51,12 +51,45 @@ materials = openmc.Materials([mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# surf3: Unsupported surface type "revolution" with params ['3']
+# 2nd Tank/Outer
+surf4 = openmc.XCylinder(surface_id=4, r=18.3)
+# 3rd Tank/Inner
+surf5 = openmc.XCylinder(surface_id=5, r=54.6)
+# 3rd Tank/Outer
+surf6 = openmc.XCylinder(surface_id=6, r=55.0)
+# = Hc (Table 1)
+surf7 = openmc.XPlane(surface_id=7, x0=19.08)
+
+# Z-plane surfaces for bounded cylinders
+surf4_zmin = openmc.ZPlane(z0=-0.3)
+surf4_zmax = openmc.ZPlane(z0=81.5)
+surf5_zmin = openmc.ZPlane(z0=-25.9)
+surf5_zmax = openmc.ZPlane(z0=50.8)
+surf6_zmin = openmc.ZPlane(z0=-26.2)
+surf6_zmax = openmc.ZPlane(z0=51.2)
 
 # ------------------------------------------------------------------------------
 # Root Cells
 # ------------------------------------------------------------------------------
 
-root_universe = openmc.Universe(cells=[])
+# SOLND
+cell1 = openmc.Cell(cell_id=1, fill=mat2)
+cell1.region = -surf3 & (-surf4 & +surf4_zmin & -surf4_zmax) & -surf7
+
+# SST
+cell2 = openmc.Cell(cell_id=2, fill=mat3)
+cell2.region = +surf3 & (-surf4 & +surf4_zmin & -surf4_zmax)
+
+# WATER
+cell3 = openmc.Cell(cell_id=3, fill=mat4)
+cell3.region = (+surf4 | -surf4_zmin | +surf4_zmax) & (-surf5 & +surf5_zmin & -surf5_zmax) & -surf7
+
+# SST
+cell4 = openmc.Cell(cell_id=4, fill=mat3)
+cell4.region = (+surf4 | -surf4_zmin | +surf4_zmax) & (+surf5 | -surf5_zmin | +surf5_zmax) & (-surf6 & +surf6_zmin & -surf6_zmax)
+
+root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4])
 geometry = openmc.Geometry(root_universe)
 
 # ==============================================================================

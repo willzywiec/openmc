@@ -70,8 +70,10 @@ universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2])
 
 # Void
 cell1 = openmc.Cell(cell_id=1)
+
 # Conc
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+
 root_universe = openmc.Universe(cells=[cell1, cell2])
 geometry = openmc.Geometry(root_universe)
 

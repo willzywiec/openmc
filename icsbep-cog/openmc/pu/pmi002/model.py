@@ -81,6 +81,14 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# surf1: Unsupported surface type "analytic" with params ['1.', 'z', '0.00000', 'constant']
+# surf2: Unsupported surface type "analytic" with params ['1.', 'z', '-38.17874', 'constant']
+# surf3: Unsupported surface type "analytic" with params ['1.', 'z', '-92.08002', 'constant']
+# surf4: Unsupported surface type "analytic" with params ['1.', 'z', '-121.92000', 'constant']
+surf5 = openmc.ZCylinder(surface_id=5, r=41.93313)
+surf6 = openmc.ZCylinder(surface_id=6, r=86.88175)
+surf7 = openmc.ZCylinder(surface_id=7, r=104.17047)
+surf8 = openmc.ZCylinder(surface_id=8, r=115.32402)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -88,16 +96,28 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 
 # CORE
 cell1 = openmc.Cell(cell_id=1, fill=mat1)
+cell1.region = +surf1 & -surf2 & -surf5
+
 # SSAXR
 cell2 = openmc.Cell(cell_id=2, fill=mat2)
+cell2.region = +surf2 & -surf3 & -surf5
+
 # SSRDR
 cell3 = openmc.Cell(cell_id=3, fill=mat3)
+cell3.region = +surf1 & -surf3 & +surf5 & -surf6
+
 # FERDR
 cell4 = openmc.Cell(cell_id=4, fill=mat4)
+cell4.region = +surf1 & -surf3 & +surf6 & -surf7
+
 # MATRX
 cell5 = openmc.Cell(cell_id=5, fill=mat5)
+cell5.region = +surf1 & -surf3 & +surf7 & -surf8
+
 # MATRX
 cell6 = openmc.Cell(cell_id=6, fill=mat5)
+cell6.region = +surf3 & -surf4 & -surf8
+
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6])
 geometry = openmc.Geometry(root_universe)
 

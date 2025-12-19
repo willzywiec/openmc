@@ -58,7 +58,7 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Steel (Fe) diaphragm, inner
 surf1 = openmc.ZCylinder(surface_id=1, r=4.8)
 # Steel (Fe) diaphragm, outer
-surf2 = openmc.ZCylinder(surface_id=2, x0=-0.2, y0=0.0, r=13.9)
+surf2 = openmc.ZCylinder(surface_id=2, r=13.9)
 # interface
 surf3 = openmc.ZPlane(surface_id=3, z0=0.0)
 # Pu, inner
@@ -86,14 +86,17 @@ surf10 = openmc.ZPlane(surface_id=10, z0=-0.4)
 # Cu
 # surf16: Unsupported surface type "s" with params ['10.15', 'tr', '0', '0', '-0.4']
 # Steel (Fe)
-surf17 = openmc.ZCylinder(surface_id=17, x0=-14.55, y0=-1.0, r=2.5)
+surf17 = openmc.ZCylinder(surface_id=17, r=2.5)
 # Hole in lower HEU
-surf20_cyl = openmc.XCylinder(surface_id=20, x0=tr, y0=0, r=0.6)
-surf20_zmin = openmc.ZPlane(z0=0.0)
-surf20_zmax = openmc.ZPlane(z0=-0.4)
-surf20 = (surf20_cyl, surf20_zmin, surf20_zmax)
+surf20 = openmc.XCylinder(surface_id=20, x0=0.0, y0=0.0, r=0.6)
 # Extent of Cu
 surf21 = openmc.ZCylinder(surface_id=21, r=8.7)
+
+# Z-plane surfaces for bounded cylinders
+surf2_zmin = openmc.ZPlane(z0=-0.2)
+surf2_zmax = openmc.ZPlane(z0=0.0)
+surf17_zmin = openmc.ZPlane(z0=-14.55)
+surf17_zmax = openmc.ZPlane(z0=-1.0)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -101,41 +104,43 @@ surf21 = openmc.ZCylinder(surface_id=21, r=8.7)
 
 # Steel
 cell1 = openmc.Cell(cell_id=1, fill=mat4)
-cell1.region = +surf1 & -surf2 & -surf3
+cell1.region = +surf1 & (-surf2 & +surf2_zmin & -surf2_zmax) & -surf3
 
 # Pu
 cell2 = openmc.Cell(cell_id=2, fill=mat1)
-cell2.region = +surf3
+cell2.region = +surf3 & +surf4 & -surf5
 
 # HEU
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf3 & +surf8
+cell3.region = +surf3 & +surf5 & -surf6 & +surf8
 
 # Al
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = +surf3
+cell4.region = +surf3 & +surf6 & -surf7
 
 # Pu
 cell5 = openmc.Cell(cell_id=5, fill=mat1)
+cell5.region = +surf11 & -surf12
+
 # Pu
 cell6 = openmc.Cell(cell_id=6, fill=mat1)
-cell6.region = -surf10
+cell6.region = -surf10 & +surf12 & -surf13
 
 # HEU
 cell7 = openmc.Cell(cell_id=7, fill=mat2)
-cell7.region = -surf10 & +surf20
+cell7.region = -surf10 & +surf13 & -surf14 & +surf20
 
 # Al
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = -surf10
+cell8.region = -surf10 & +surf14 & -surf15
 
 # Cu
 cell9 = openmc.Cell(cell_id=9, fill=mat5)
-cell9.region = -surf10 & -surf21
+cell9.region = -surf10 & +surf15 & -surf16 & -surf21
 
 # Steel
 cell10 = openmc.Cell(cell_id=10, fill=mat4)
-cell10.region = -surf10 & -surf17
+cell10.region = -surf10 & +surf16 & (-surf17 & +surf17_zmin & -surf17_zmax)
 
 root_universe = openmc.Universe(cells=[cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10])
 geometry = openmc.Geometry(root_universe)

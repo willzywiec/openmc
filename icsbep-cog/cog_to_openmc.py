@@ -192,20 +192,23 @@ class COGParser:
 
             lower_line = line.lower()
 
+            # Strip trailing comments from section headers
+            lower_line_stripped = lower_line.split('$')[0].strip()
+
             # Check for section headers
-            if lower_line == 'basic':
+            if lower_line_stripped == 'basic':
                 self._current_section = 'basic'
-            elif lower_line == 'criticality':
+            elif lower_line_stripped == 'criticality':
                 self._current_section = 'criticality'
-            elif lower_line.startswith('mix'):
+            elif lower_line_stripped.startswith('mix'):
                 self._current_section = 'mix'
-            elif lower_line == 'geometry':
+            elif lower_line_stripped == 'geometry':
                 self._current_section = 'geometry'
-            elif lower_line == 'surfaces':
+            elif lower_line_stripped == 'surfaces':
                 self._current_section = 'surfaces'
-            elif lower_line.startswith('assign-mc'):
+            elif lower_line_stripped.startswith('assign-mc'):
                 self._current_section = 'assign-mc'
-            elif lower_line in ['end', 'end.']:
+            elif lower_line_stripped in ['end', 'end.']:
                 break
             elif self._current_section:
                 if self._current_section == 'geometry' and lower_line.startswith('define unit'):
@@ -818,6 +821,8 @@ class OpenMCPythonGenerator:
         self._prism_planes: Dict[int, List[str]] = {}
         self._composite_surfaces: Dict[int, str] = {}  # Maps surf_id to composite type
         self._defined_surfaces: set = set()  # Track all defined surface IDs
+        self._bounded_cylinder_zbounds: Dict[int, Tuple[float, float]] = {}  # z-bounds per bounded cylinder
+        self._outer_surface_id: Optional[int] = None  # Track outermost surface for vacuum BC
 
     def generate(self) -> str:
         """Generate complete OpenMC Python script."""
@@ -903,6 +908,11 @@ class OpenMCPythonGenerator:
         """Generate surface definitions."""
         lines = []
 
+        # First pass: identify which surface has vacuum BC (outermost)
+        for surf_id, boundary_type in self.parser.boundary_surfaces.items():
+            if boundary_type == 'vacuum':
+                self._outer_surface_id = surf_id
+
         for surf_id in sorted(self.parser.surfaces.keys()):
             surface = self.parser.surfaces[surf_id]
             surf_code = self._convert_surface(surface)
@@ -912,6 +922,20 @@ class OpenMCPythonGenerator:
                 lines.append(surf_code)
                 # Track this surface as defined
                 self._defined_surfaces.add(surf_id)
+
+        # Generate z-plane surfaces for bounded cylinders
+        if self._bounded_cylinder_zbounds:
+            lines.append('')
+            lines.append('# Z-plane surfaces for bounded cylinders')
+            for surf_id in sorted(self._bounded_cylinder_zbounds.keys()):
+                z_min, z_max = self._bounded_cylinder_zbounds[surf_id]
+                # Apply vacuum BC to z-planes of the outermost surface
+                zmax_bc = ', boundary_type="vacuum"' if surf_id == self._outer_surface_id else ''
+                zmin_bc = ', boundary_type="vacuum"' if surf_id == self._outer_surface_id else ''
+                lines.append(f'surf{surf_id}_zmin = openmc.ZPlane(z0={z_min}{zmin_bc})')
+                lines.append(f'surf{surf_id}_zmax = openmc.ZPlane(z0={z_max}{zmax_bc})')
+                self._defined_surfaces.add(f'{surf_id}_zmin')
+                self._defined_surfaces.add(f'{surf_id}_zmax')
 
         return lines
 
@@ -970,7 +994,13 @@ class OpenMCPythonGenerator:
             return f'{var_name} = openmc.Sphere(surface_id={surf_id}, r={params[0]}{bc})'
 
     def _gen_cylinder(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
-        """Generate cylinder surface."""
+        """Generate cylinder surface.
+
+        COG formats:
+        - c z radius                    -> simple ZCylinder at origin
+        - c z radius tr tx ty tz        -> ZCylinder translated by (tx, ty)
+        - cylinder z radius zmin zmax   -> bounded ZCylinder (infinite cyl + z-planes)
+        """
         if not params:
             return f'# {var_name}: Empty cylinder params'
 
@@ -987,7 +1017,6 @@ class OpenMCPythonGenerator:
         radius = float(remaining[0])
 
         # Check for 'tr' translation keyword in remaining params
-        # COG format: c z radius tr tx ty tz OR c z radius x0 y0 [z_min z_max]
         tr_idx = None
         for i, p in enumerate(remaining):
             if str(p).lower() == 'tr':
@@ -996,29 +1025,38 @@ class OpenMCPythonGenerator:
 
         if tr_idx is not None:
             # Translation specified: radius tr tx ty tz
-            # Extract translation values (tx, ty are used as center offsets)
             if tr_idx + 3 <= len(remaining):
                 x0 = float(remaining[tr_idx + 1])
                 y0 = float(remaining[tr_idx + 2])
-                # tz is ignored for cylinder center (only x,y matter for ZCylinder)
                 return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius}{bc})'
             else:
                 return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={radius}{bc})'
 
-        # Check for center offset and z-bounds (COG format: radius [center_x center_y] [z_min z_max])
+        # Check for bounded cylinder: cylinder z radius zmin zmax
+        # Format: radius z_min z_max (3 values after axis)
+        if len(remaining) == 3:
+            try:
+                val1, val2 = float(remaining[1]), float(remaining[2])
+                # Bounded cylinder: val1 is z_min, val2 is z_max
+                # Detect by: z_min < z_max, or opposite signs, or large absolute values
+                if val1 < val2 or (val1 < 0 and val2 > 0) or abs(val1) > 10 or abs(val2) > 10:
+                    # Store z-bounds for later z-plane generation
+                    self._bounded_cylinder_zbounds[surf_id] = (val1, val2)
+                    # Create infinite cylinder (no BC on cylinder, BC goes on z-planes)
+                    return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={radius})'
+            except ValueError:
+                pass
+            # Fall through to treat as x0, y0 if not z-bounds
+
+        # Check for center offset and z-bounds (COG format: radius x0 y0 z_min z_max)
         if len(remaining) >= 5:
-            # Has center and z-bounds: radius x0 y0 z_min z_max
             x0, y0 = float(remaining[1]), float(remaining[2])
             z_min, z_max = float(remaining[3]), float(remaining[4])
-            self._composite_surfaces[surf_id] = 'bounded_cylinder'
-            lines = []
-            lines.append(f'{var_name}_cyl = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius})')
-            lines.append(f'{var_name}_zmin = openmc.ZPlane(z0={z_min})')
-            lines.append(f'{var_name}_zmax = openmc.ZPlane(z0={z_max}{bc})')
-            lines.append(f'{var_name} = ({var_name}_cyl, {var_name}_zmin, {var_name}_zmax)')
-            return '\n'.join(lines)
+            # Store z-bounds for later z-plane generation
+            self._bounded_cylinder_zbounds[surf_id] = (z_min, z_max)
+            return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius})'
         elif len(remaining) >= 3:
-            # Has center only: radius x0 y0
+            # Has center only: radius x0 y0 (small offsets)
             x0, y0 = float(remaining[1]), float(remaining[2])
             return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius}{bc})'
         else:
@@ -1333,7 +1371,16 @@ class OpenMCPythonGenerator:
                         # Outside prism: union of positive half-spaces
                         prism_region = ' | '.join(f'+{pv}' for pv in plane_vars)
                     parts.append(f'({prism_region})')
-                # Check if this is a composite surface (box, rpp, bounded cylinder)
+                # Check if this is a bounded cylinder
+                elif surf_num in self._bounded_cylinder_zbounds:
+                    # Bounded cylinder: surfN is cylinder, surfN_zmin and surfN_zmax are z-planes
+                    if is_negative:
+                        # Inside: inside cylinder AND between z-planes
+                        parts.append(f'(-surf{surf_num} & +surf{surf_num}_zmin & -surf{surf_num}_zmax)')
+                    else:
+                        # Outside: outside cylinder OR outside z-planes
+                        parts.append(f'(+surf{surf_num} | -surf{surf_num}_zmin | +surf{surf_num}_zmax)')
+                # Check if this is a composite surface (box, rpp)
                 elif surf_num in self._composite_surfaces:
                     if is_negative:
                         parts.append(f'-surf{surf_num}')
