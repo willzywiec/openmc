@@ -82,12 +82,12 @@ surf16 = openmc.XCylinder(surface_id=16, r=0.5)
 surf17 = openmc.XCylinder(surface_id=17, r=15.0)
 
 # Z-plane surfaces for bounded cylinders
-surf8_zmin = openmc.ZPlane(z0=-14.0)
-surf8_zmax = openmc.ZPlane(z0=-3.0)
-surf9_zmin = openmc.ZPlane(z0=-16.0)
-surf9_zmax = openmc.ZPlane(z0=-7.0)
-surf17_zmin = openmc.ZPlane(z0=0.41)
-surf17_zmax = openmc.ZPlane(z0=0.61)
+surf8_zmin = openmc.ZPlane(surface_id=1017, z0=-14.0)
+surf8_zmax = openmc.ZPlane(surface_id=1018, z0=-3.0)
+surf9_zmin = openmc.ZPlane(surface_id=1019, z0=-16.0)
+surf9_zmax = openmc.ZPlane(surface_id=1020, z0=-7.0)
+surf17_zmin = openmc.ZPlane(surface_id=1021, z0=0.41)
+surf17_zmax = openmc.ZPlane(surface_id=1022, z0=0.61)
 
 # ------------------------------------------------------------------------------
 # Root Cells

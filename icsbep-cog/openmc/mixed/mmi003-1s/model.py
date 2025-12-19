@@ -95,21 +95,21 @@ surf4 = openmc.ZCylinder(surface_id=4, r=32.0805)
 # Radial blanket
 surf5 = openmc.ZCylinder(surface_id=5, r=64.691)
 # Matrix
-surf6 = openmc.ZCylinder(surface_id=6, r=96.8226)
+surf6 = openmc.ZCylinder(surface_id=6, r=96.8226, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=-30.5634)
-surf1_zmax = openmc.ZPlane(z0=30.5634)
-surf2_zmin = openmc.ZPlane(z0=-53.4234)
-surf2_zmax = openmc.ZPlane(z0=53.4234)
-surf3_zmin = openmc.ZPlane(z0=-54.0584)
-surf3_zmax = openmc.ZPlane(z0=54.0584)
-surf4_zmin = openmc.ZPlane(z0=-61.6784)
-surf4_zmax = openmc.ZPlane(z0=61.6784)
-surf5_zmin = openmc.ZPlane(z0=-60.96)
-surf5_zmax = openmc.ZPlane(z0=60.96)
-surf6_zmin = openmc.ZPlane(z0=-85.09, boundary_type="vacuum")
-surf6_zmax = openmc.ZPlane(z0=85.09, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1006, z0=-30.5634)
+surf1_zmax = openmc.ZPlane(surface_id=1007, z0=30.5634)
+surf2_zmin = openmc.ZPlane(surface_id=1008, z0=-53.4234)
+surf2_zmax = openmc.ZPlane(surface_id=1009, z0=53.4234)
+surf3_zmin = openmc.ZPlane(surface_id=1010, z0=-54.0584)
+surf3_zmax = openmc.ZPlane(surface_id=1011, z0=54.0584)
+surf4_zmin = openmc.ZPlane(surface_id=1012, z0=-61.6784)
+surf4_zmax = openmc.ZPlane(surface_id=1013, z0=61.6784)
+surf5_zmin = openmc.ZPlane(surface_id=1014, z0=-60.96)
+surf5_zmax = openmc.ZPlane(surface_id=1015, z0=60.96)
+surf6_zmin = openmc.ZPlane(surface_id=1016, z0=-85.09, boundary_type="vacuum")
+surf6_zmax = openmc.ZPlane(surface_id=1017, z0=85.09, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

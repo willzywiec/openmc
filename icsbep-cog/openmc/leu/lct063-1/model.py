@@ -186,7 +186,7 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # ==============================================================================
 
 # BCD
-surf1 = openmc.ZCylinder(surface_id=1, r=129.55)
+surf1 = openmc.ZCylinder(surface_id=1, r=129.55, boundary_type="vacuum")
 # Hc
 surf2 = openmc.ZPlane(surface_id=2, z0=49.47)
 # Upper lattice plate
@@ -257,20 +257,20 @@ surf61 = openmc.model.RectangularParallelepiped(22.6812, 40.0224, -22.6812, -20.
 surf62 = openmc.model.RectangularParallelepiped(20.0112, 22.6812, -42.6924, -20.0112, -1.078, 67.872)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=-32.348, boundary_type="vacuum")
-surf1_zmax = openmc.ZPlane(z0=71.72, boundary_type="vacuum")
-surf21_zmin = openmc.ZPlane(z0=0.0)
-surf21_zmax = openmc.ZPlane(z0=69.285)
-surf22_zmin = openmc.ZPlane(z0=0.0)
-surf22_zmax = openmc.ZPlane(z0=69.285)
-surf23_zmin = openmc.ZPlane(z0=-2.078)
-surf23_zmax = openmc.ZPlane(z0=-0.678)
-surf24_zmin = openmc.ZPlane(z0=-1.078)
-surf24_zmax = openmc.ZPlane(z0=0.0)
-surf25_zmin = openmc.ZPlane(z0=69.285)
-surf25_zmax = openmc.ZPlane(z0=70.748)
-surf26_zmin = openmc.ZPlane(z0=-1.03)
-surf26_zmax = openmc.ZPlane(z0=70.7)
+surf1_zmin = openmc.ZPlane(surface_id=1062, z0=-32.348, boundary_type="vacuum")
+surf1_zmax = openmc.ZPlane(surface_id=1063, z0=71.72, boundary_type="vacuum")
+surf21_zmin = openmc.ZPlane(surface_id=1064, z0=0.0)
+surf21_zmax = openmc.ZPlane(surface_id=1065, z0=69.285)
+surf22_zmin = openmc.ZPlane(surface_id=1066, z0=0.0)
+surf22_zmax = openmc.ZPlane(surface_id=1067, z0=69.285)
+surf23_zmin = openmc.ZPlane(surface_id=1068, z0=-2.078)
+surf23_zmax = openmc.ZPlane(surface_id=1069, z0=-0.678)
+surf24_zmin = openmc.ZPlane(surface_id=1070, z0=-1.078)
+surf24_zmax = openmc.ZPlane(surface_id=1071, z0=0.0)
+surf25_zmin = openmc.ZPlane(surface_id=1072, z0=69.285)
+surf25_zmax = openmc.ZPlane(surface_id=1073, z0=70.748)
+surf26_zmin = openmc.ZPlane(surface_id=1074, z0=-1.03)
+surf26_zmax = openmc.ZPlane(surface_id=1075, z0=70.7)
 
 # ------------------------------------------------------------------------------
 # Universes

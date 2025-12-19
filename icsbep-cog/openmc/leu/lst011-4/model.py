@@ -57,17 +57,17 @@ surf1 = openmc.ZCylinder(surface_id=1, r=39.505)
 # 60-cm diam. tank/outer
 surf2 = openmc.ZCylinder(surface_id=2, r=39.815)
 # Water reflector /outer
-surf3 = openmc.ZCylinder(surface_id=3, r=69.815)
+surf3 = openmc.ZCylinder(surface_id=3, r=69.815, boundary_type="vacuum")
 # Hc
 surf4 = openmc.ZPlane(surface_id=4, z0=66.67)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=149.71)
-surf2_zmin = openmc.ZPlane(z0=-2.06)
-surf2_zmax = openmc.ZPlane(z0=152.64)
-surf3_zmin = openmc.ZPlane(z0=-32.06, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=172.64, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1004, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1005, z0=149.71)
+surf2_zmin = openmc.ZPlane(surface_id=1006, z0=-2.06)
+surf2_zmax = openmc.ZPlane(surface_id=1007, z0=152.64)
+surf3_zmin = openmc.ZPlane(surface_id=1008, z0=-32.06, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1009, z0=172.64, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

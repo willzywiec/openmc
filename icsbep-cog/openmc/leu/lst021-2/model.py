@@ -54,17 +54,17 @@ surf3 = openmc.model.RectangularParallelepiped(-60.2, 39.8, -50.0, 50.0, -19.0, 
 # Hole in base plate
 surf4 = openmc.ZCylinder(surface_id=4, x0=24.8, y0=17.0, r=7.76)
 # boundary condition
-surf5 = openmc.ZCylinder(surface_id=5, r=79.815)
+surf5 = openmc.ZCylinder(surface_id=5, r=79.815, boundary_type="vacuum")
 # Hc
 surf6 = openmc.ZPlane(surface_id=6, z0=51.33)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=149.71)
-surf2_zmin = openmc.ZPlane(z0=-2.06)
-surf2_zmax = openmc.ZPlane(z0=152.64)
-surf5_zmin = openmc.ZPlane(z0=-34.5, boundary_type="vacuum")
-surf5_zmax = openmc.ZPlane(z0=169.71, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1006, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1007, z0=149.71)
+surf2_zmin = openmc.ZPlane(surface_id=1008, z0=-2.06)
+surf2_zmax = openmc.ZPlane(surface_id=1009, z0=152.64)
+surf5_zmin = openmc.ZPlane(surface_id=1010, z0=-34.5, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(surface_id=1011, z0=169.71, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

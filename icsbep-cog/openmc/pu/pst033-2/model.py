@@ -75,15 +75,15 @@ surf4 = openmc.ZCylinder(surface_id=4, r=54.6)
 # SST refelctor tank, top
 surf5 = openmc.ZPlane(surface_id=5, z0=63.2)
 # SST reflector tank, outer, and BCD
-surf6 = openmc.ZCylinder(surface_id=6, r=55.0)
+surf6 = openmc.ZCylinder(surface_id=6, r=55.0, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf3_zmin = openmc.ZPlane(z0=-0.3)
-surf3_zmax = openmc.ZPlane(z0=80.7)
-surf4_zmin = openmc.ZPlane(z0=-25.9)
-surf4_zmax = openmc.ZPlane(z0=62.8)
-surf6_zmin = openmc.ZPlane(z0=-26.3, boundary_type="vacuum")
-surf6_zmax = openmc.ZPlane(z0=85.7, boundary_type="vacuum")
+surf3_zmin = openmc.ZPlane(surface_id=1006, z0=-0.3)
+surf3_zmax = openmc.ZPlane(surface_id=1007, z0=80.7)
+surf4_zmin = openmc.ZPlane(surface_id=1008, z0=-25.9)
+surf4_zmax = openmc.ZPlane(surface_id=1009, z0=62.8)
+surf6_zmin = openmc.ZPlane(surface_id=1010, z0=-26.3, boundary_type="vacuum")
+surf6_zmax = openmc.ZPlane(surface_id=1011, z0=85.7, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

@@ -83,16 +83,16 @@ surf6 = openmc.XCylinder(surface_id=6, r=55.0)
 surf7 = openmc.XPlane(surface_id=7, x0=22.66)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=3.45)
-surf1_zmax = openmc.ZPlane(z0=17.45)
-surf2_zmin = openmc.ZPlane(z0=3.3)
-surf2_zmax = openmc.ZPlane(z0=17.6)
-surf4_zmin = openmc.ZPlane(z0=-0.3)
-surf4_zmax = openmc.ZPlane(z0=81.5)
-surf5_zmin = openmc.ZPlane(z0=-25.9)
-surf5_zmax = openmc.ZPlane(z0=50.8)
-surf6_zmin = openmc.ZPlane(z0=-26.2)
-surf6_zmax = openmc.ZPlane(z0=51.2)
+surf1_zmin = openmc.ZPlane(surface_id=1007, z0=3.45)
+surf1_zmax = openmc.ZPlane(surface_id=1008, z0=17.45)
+surf2_zmin = openmc.ZPlane(surface_id=1009, z0=3.3)
+surf2_zmax = openmc.ZPlane(surface_id=1010, z0=17.6)
+surf4_zmin = openmc.ZPlane(surface_id=1011, z0=-0.3)
+surf4_zmax = openmc.ZPlane(surface_id=1012, z0=81.5)
+surf5_zmin = openmc.ZPlane(surface_id=1013, z0=-25.9)
+surf5_zmax = openmc.ZPlane(surface_id=1014, z0=50.8)
+surf6_zmin = openmc.ZPlane(surface_id=1015, z0=-26.2)
+surf6_zmax = openmc.ZPlane(surface_id=1016, z0=51.2)
 
 # ------------------------------------------------------------------------------
 # Root Cells

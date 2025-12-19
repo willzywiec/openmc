@@ -100,12 +100,12 @@ surf12 = openmc.model.RectangularParallelepiped(-866.105, 200.895, -509.190, 557
 surf13 = openmc.model.RectangularParallelepiped(-1018.105, 352.895, -600.190, 709.810, -205.528, 556.442, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf2_zmin = openmc.ZPlane(z0=-16.953)
-surf2_zmax = openmc.ZPlane(z0=-0.953)
-surf3_zmin = openmc.ZPlane(z0=0.0)
-surf3_zmax = openmc.ZPlane(z0=90.6)
-surf4_zmin = openmc.ZPlane(z0=-0.953)
-surf4_zmax = openmc.ZPlane(z0=91.553)
+surf2_zmin = openmc.ZPlane(surface_id=1013, z0=-16.953)
+surf2_zmax = openmc.ZPlane(surface_id=1014, z0=-0.953)
+surf3_zmin = openmc.ZPlane(surface_id=1015, z0=0.0)
+surf3_zmax = openmc.ZPlane(surface_id=1016, z0=90.6)
+surf4_zmin = openmc.ZPlane(surface_id=1017, z0=-0.953)
+surf4_zmax = openmc.ZPlane(surface_id=1018, z0=91.553)
 
 # ------------------------------------------------------------------------------
 # Root Cells

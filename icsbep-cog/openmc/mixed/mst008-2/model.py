@@ -87,19 +87,19 @@ surf3 = openmc.ZCylinder(surface_id=3, r=30.495)
 # SST304L tank, inner
 surf4 = openmc.ZCylinder(surface_id=4, r=30.574)
 # Water reflector
-surf5 = openmc.ZCylinder(surface_id=5, r=49.53)
+surf5 = openmc.ZCylinder(surface_id=5, r=49.53, boundary_type="vacuum")
 # Critical height (case 2)
 surf6 = openmc.ZPlane(surface_id=6, z0=63.98)
 # Top of dry Raschig rings
 surf7 = openmc.ZPlane(surface_id=7, z0=99.06)
 
 # Z-plane surfaces for bounded cylinders
-surf3_zmin = openmc.ZPlane(z0=0.0)
-surf3_zmax = openmc.ZPlane(z0=106.68)
-surf4_zmin = openmc.ZPlane(z0=-0.635)
-surf4_zmax = openmc.ZPlane(z0=107.633)
-surf5_zmin = openmc.ZPlane(z0=-20.0, boundary_type="vacuum")
-surf5_zmax = openmc.ZPlane(z0=107.633, boundary_type="vacuum")
+surf3_zmin = openmc.ZPlane(surface_id=1007, z0=0.0)
+surf3_zmax = openmc.ZPlane(surface_id=1008, z0=106.68)
+surf4_zmin = openmc.ZPlane(surface_id=1009, z0=-0.635)
+surf4_zmax = openmc.ZPlane(surface_id=1010, z0=107.633)
+surf5_zmin = openmc.ZPlane(surface_id=1011, z0=-20.0, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(surface_id=1012, z0=107.633, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

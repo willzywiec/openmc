@@ -111,14 +111,14 @@ surf17 = openmc.ZPlane(surface_id=17, z0=-34.10)
 surf18 = openmc.ZPlane(surface_id=18, z0=-34.60)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=70.6)
-surf2_zmin = openmc.ZPlane(z0=-16.83)
-surf2_zmax = openmc.ZPlane(z0=0.0)
-surf3_zmin = openmc.ZPlane(z0=70.6)
-surf3_zmax = openmc.ZPlane(z0=81.17)
-surf4_zmin = openmc.ZPlane(z0=-16.83)
-surf4_zmax = openmc.ZPlane(z0=81.17)
+surf1_zmin = openmc.ZPlane(surface_id=1018, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1019, z0=70.6)
+surf2_zmin = openmc.ZPlane(surface_id=1020, z0=-16.83)
+surf2_zmax = openmc.ZPlane(surface_id=1021, z0=0.0)
+surf3_zmin = openmc.ZPlane(surface_id=1022, z0=70.6)
+surf3_zmax = openmc.ZPlane(surface_id=1023, z0=81.17)
+surf4_zmin = openmc.ZPlane(surface_id=1024, z0=-16.83)
+surf4_zmax = openmc.ZPlane(surface_id=1025, z0=81.17)
 
 # ------------------------------------------------------------------------------
 # Universes

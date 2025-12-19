@@ -70,11 +70,11 @@ surf1 = openmc.XPlane(surface_id=1, x0=-2.37375)
 # Hc
 surf3 = openmc.ZPlane(surface_id=3, z0=-1.17)
 # BCD
-surf4 = openmc.ZCylinder(surface_id=4, r=25.0)
+surf4 = openmc.ZCylinder(surface_id=4, r=25.0, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf4_zmin = openmc.ZPlane(z0=-31.333, boundary_type="vacuum")
-surf4_zmax = openmc.ZPlane(z0=18.667, boundary_type="vacuum")
+surf4_zmin = openmc.ZPlane(surface_id=1004, z0=-31.333, boundary_type="vacuum")
+surf4_zmax = openmc.ZPlane(surface_id=1005, z0=18.667, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

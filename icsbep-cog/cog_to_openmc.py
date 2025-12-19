@@ -927,13 +927,18 @@ class OpenMCPythonGenerator:
         if self._bounded_cylinder_zbounds:
             lines.append('')
             lines.append('# Z-plane surfaces for bounded cylinders')
+            # Start IDs after the highest existing surface ID
+            max_surf_id = max(self.parser.surfaces.keys()) if self.parser.surfaces else 0
+            next_id = max_surf_id + 1000  # Use high offset to avoid conflicts
             for surf_id in sorted(self._bounded_cylinder_zbounds.keys()):
                 z_min, z_max = self._bounded_cylinder_zbounds[surf_id]
                 # Apply vacuum BC to z-planes of the outermost surface
                 zmax_bc = ', boundary_type="vacuum"' if surf_id == self._outer_surface_id else ''
                 zmin_bc = ', boundary_type="vacuum"' if surf_id == self._outer_surface_id else ''
-                lines.append(f'surf{surf_id}_zmin = openmc.ZPlane(z0={z_min}{zmin_bc})')
-                lines.append(f'surf{surf_id}_zmax = openmc.ZPlane(z0={z_max}{zmax_bc})')
+                lines.append(f'surf{surf_id}_zmin = openmc.ZPlane(surface_id={next_id}, z0={z_min}{zmin_bc})')
+                next_id += 1
+                lines.append(f'surf{surf_id}_zmax = openmc.ZPlane(surface_id={next_id}, z0={z_max}{zmax_bc})')
+                next_id += 1
                 self._defined_surfaces.add(f'{surf_id}_zmin')
                 self._defined_surfaces.add(f'{surf_id}_zmax')
 
@@ -1042,8 +1047,9 @@ class OpenMCPythonGenerator:
                 if val1 < val2 or (val1 < 0 and val2 > 0) or abs(val1) > 10 or abs(val2) > 10:
                     # Store z-bounds for later z-plane generation
                     self._bounded_cylinder_zbounds[surf_id] = (val1, val2)
-                    # Create infinite cylinder (no BC on cylinder, BC goes on z-planes)
-                    return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={radius})'
+                    # Create infinite cylinder WITH boundary condition if specified
+                    # (vacuum BC should be on cylinder AND z-planes for outermost surface)
+                    return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, r={radius}{bc})'
             except ValueError:
                 pass
             # Fall through to treat as x0, y0 if not z-bounds
@@ -1054,7 +1060,8 @@ class OpenMCPythonGenerator:
             z_min, z_max = float(remaining[3]), float(remaining[4])
             # Store z-bounds for later z-plane generation
             self._bounded_cylinder_zbounds[surf_id] = (z_min, z_max)
-            return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius})'
+            # Apply BC to cylinder if specified (for outermost surface)
+            return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={x0}, y0={y0}, r={radius}{bc})'
         elif len(remaining) >= 3:
             # Has center only: radius x0 y0 (small offsets)
             x0, y0 = float(remaining[1]), float(remaining[2])

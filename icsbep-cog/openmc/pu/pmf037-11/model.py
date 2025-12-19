@@ -91,7 +91,7 @@ surf6 = openmc.ZPlane(surface_id=6, z0=25.5)
 # Inner tank
 surf7 = openmc.ZCylinder(surface_id=7, r=34.925)
 # Outer tank
-surf8 = openmc.ZCylinder(surface_id=8, r=35.56)
+surf8 = openmc.ZCylinder(surface_id=8, r=35.56, boundary_type="vacuum")
 surf11 = openmc.ZCylinder(surface_id=11, x0=-3.81, y0=-3.81, r=3.81)
 surf12 = openmc.ZCylinder(surface_id=12, x0=-3.81, y0=3.81, r=3.81)
 surf13 = openmc.ZCylinder(surface_id=13, x0=3.81, y0=-3.81, r=3.81)
@@ -126,20 +126,20 @@ surf62 = openmc.model.RectangularParallelepiped(-22.85, 22.85, -22.85, 22.85, 91
 surf63 = openmc.model.RectangularParallelepiped(-22.85, 22.85, -22.85, 22.85, 95.17, 95.80499999999999)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.997)
-surf1_zmax = openmc.ZPlane(z0=5.63)
-surf2_zmin = openmc.ZPlane(z0=0.91)
-surf2_zmax = openmc.ZPlane(z0=5.63)
-surf3_zmin = openmc.ZPlane(z0=5.63)
-surf3_zmax = openmc.ZPlane(z0=5.651)
-surf4_zmin = openmc.ZPlane(z0=0.91)
-surf4_zmax = openmc.ZPlane(z0=6.277)
-surf5_zmin = openmc.ZPlane(z0=0.0)
-surf5_zmax = openmc.ZPlane(z0=6.947)
-surf7_zmin = openmc.ZPlane(z0=0.0)
-surf7_zmax = openmc.ZPlane(z0=125.0)
-surf8_zmin = openmc.ZPlane(z0=-0.635, boundary_type="vacuum")
-surf8_zmax = openmc.ZPlane(z0=125.0, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1063, z0=0.997)
+surf1_zmax = openmc.ZPlane(surface_id=1064, z0=5.63)
+surf2_zmin = openmc.ZPlane(surface_id=1065, z0=0.91)
+surf2_zmax = openmc.ZPlane(surface_id=1066, z0=5.63)
+surf3_zmin = openmc.ZPlane(surface_id=1067, z0=5.63)
+surf3_zmax = openmc.ZPlane(surface_id=1068, z0=5.651)
+surf4_zmin = openmc.ZPlane(surface_id=1069, z0=0.91)
+surf4_zmax = openmc.ZPlane(surface_id=1070, z0=6.277)
+surf5_zmin = openmc.ZPlane(surface_id=1071, z0=0.0)
+surf5_zmax = openmc.ZPlane(surface_id=1072, z0=6.947)
+surf7_zmin = openmc.ZPlane(surface_id=1073, z0=0.0)
+surf7_zmax = openmc.ZPlane(surface_id=1074, z0=125.0)
+surf8_zmin = openmc.ZPlane(surface_id=1075, z0=-0.635, boundary_type="vacuum")
+surf8_zmax = openmc.ZPlane(surface_id=1076, z0=125.0, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

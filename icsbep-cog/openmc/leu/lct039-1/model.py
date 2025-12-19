@@ -83,10 +83,10 @@ surf12 = openmc.ZCylinder(surface_id=12, r=0.41)
 # surf13: Unsupported surface type "rev" with params ['3', '-1.8', '0.0', '-1.0', '0.47', '98.2', '0.47', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
 
 # Z-plane surfaces for bounded cylinders
-surf11_zmin = openmc.ZPlane(z0=0.0)
-surf11_zmax = openmc.ZPlane(z0=89.7)
-surf12_zmin = openmc.ZPlane(z0=0.0)
-surf12_zmax = openmc.ZPlane(z0=96.9)
+surf11_zmin = openmc.ZPlane(surface_id=1013, z0=0.0)
+surf11_zmax = openmc.ZPlane(surface_id=1014, z0=89.7)
+surf12_zmin = openmc.ZPlane(surface_id=1015, z0=0.0)
+surf12_zmax = openmc.ZPlane(surface_id=1016, z0=96.9)
 
 # ------------------------------------------------------------------------------
 # Universes

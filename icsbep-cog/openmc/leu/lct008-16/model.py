@@ -55,13 +55,13 @@ surf3 = openmc.model.RectangularParallelepiped(-450.0, 450.0, -450.0, 450.0, -45
 # Actual dimensions
 surf4 = openmc.model.RectangularParallelepiped(-66.24828, 66.24828, -66.24828, 66.24828, -81.662, 81.662)
 # Radial reflector boundary
-surf5 = openmc.ZCylinder(surface_id=5, r=76.2)
+surf5 = openmc.ZCylinder(surface_id=5, r=76.2, boundary_type="vacuum")
 # Actual planar dimensions
 surf10 = openmc.model.RectangularParallelepiped(-36.8046, 36.8046, -36.8046, 36.8046, -450.0, 450.0)
 
 # Z-plane surfaces for bounded cylinders
-surf5_zmin = openmc.ZPlane(z0=-81.662, boundary_type="vacuum")
-surf5_zmax = openmc.ZPlane(z0=81.662, boundary_type="vacuum")
+surf5_zmin = openmc.ZPlane(surface_id=1010, z0=-81.662, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(surface_id=1011, z0=81.662, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

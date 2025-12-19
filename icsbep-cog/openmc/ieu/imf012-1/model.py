@@ -40,13 +40,13 @@ materials = openmc.Materials([mat1, mat2])
 # ==============================================================================
 
 surf1 = openmc.ZCylinder(surface_id=1, r=41.55292)
-surf2 = openmc.ZCylinder(surface_id=2, r=75.02445)
+surf2 = openmc.ZCylinder(surface_id=2, r=75.02445, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=-40.72676)
-surf1_zmax = openmc.ZPlane(z0=40.72676)
-surf2_zmin = openmc.ZPlane(z0=-71.32269, boundary_type="vacuum")
-surf2_zmax = openmc.ZPlane(z0=71.32269, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1002, z0=-40.72676)
+surf1_zmax = openmc.ZPlane(surface_id=1003, z0=40.72676)
+surf2_zmin = openmc.ZPlane(surface_id=1004, z0=-71.32269, boundary_type="vacuum")
+surf2_zmax = openmc.ZPlane(surface_id=1005, z0=71.32269, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

@@ -44,15 +44,15 @@ surf14 = openmc.YPlane(surface_id=14, y0=2.6067)
 surf15 = openmc.YPlane(surface_id=15, y0=7.8202)
 surf16 = openmc.YPlane(surface_id=16, y0=13.0337)
 # Water reflector
-surf90 = openmc.ZCylinder(surface_id=90, r=58.3)
+surf90 = openmc.ZCylinder(surface_id=90, r=58.3, boundary_type="vacuum")
 # Arbitrary
 surf99 = openmc.model.RectangularParallelepiped(-499.5, 499.5, -499.5, 499.5, -499.5, 499.5)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=60.0)
-surf90_zmin = openmc.ZPlane(z0=-16.51, boundary_type="vacuum")
-surf90_zmax = openmc.ZPlane(z0=65.3, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1099, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1100, z0=60.0)
+surf90_zmin = openmc.ZPlane(surface_id=1101, z0=-16.51, boundary_type="vacuum")
+surf90_zmax = openmc.ZPlane(surface_id=1102, z0=65.3, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

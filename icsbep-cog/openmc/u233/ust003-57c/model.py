@@ -52,17 +52,17 @@ surf1 = openmc.ZCylinder(surface_id=1, r=9.5246)
 # Vessel/Outer
 surf2 = openmc.ZCylinder(surface_id=2, r=9.6537)
 # Paraffin/Outer
-surf3 = openmc.ZCylinder(surface_id=3, r=24.8937)
+surf3 = openmc.ZCylinder(surface_id=3, r=24.8937, boundary_type="vacuum")
 # Hc
 # surf4: Unsupported surface type "analytic" with params ['1.', 'z', '-18.1783', 'constant']
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=18.8283)
-surf2_zmin = openmc.ZPlane(z0=-0.1291)
-surf2_zmax = openmc.ZPlane(z0=18.9574)
-surf3_zmin = openmc.ZPlane(z0=-15.3691, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=34.1974, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1004, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1005, z0=18.8283)
+surf2_zmin = openmc.ZPlane(surface_id=1006, z0=-0.1291)
+surf2_zmax = openmc.ZPlane(surface_id=1007, z0=18.9574)
+surf3_zmin = openmc.ZPlane(surface_id=1008, z0=-15.3691, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1009, z0=34.1974, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

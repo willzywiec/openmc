@@ -77,7 +77,7 @@ surf1 = openmc.XPlane(surface_id=1, x0=-2.37375)
 # Hc
 surf2 = openmc.ZPlane(surface_id=2, z0=1.17)
 # BCD
-surf3 = openmc.ZCylinder(surface_id=3, r=25.0)
+surf3 = openmc.ZCylinder(surface_id=3, r=25.0, boundary_type="vacuum")
 # Pu1
 # surf11: Unsupported surface type "s" with params ['2.0000', 'tr', '-2.37375', '0', '-6.333']
 # Pu2
@@ -214,8 +214,8 @@ surf3 = openmc.ZCylinder(surface_id=3, r=25.0)
 # surf77: Unsupported surface type "s" with params ['8.6614', 'tr', '-2.37375', '0', '-6.333']
 
 # Z-plane surfaces for bounded cylinders
-surf3_zmin = openmc.ZPlane(z0=-31.333, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=18.667, boundary_type="vacuum")
+surf3_zmin = openmc.ZPlane(surface_id=1077, z0=-31.333, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1078, z0=18.667, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

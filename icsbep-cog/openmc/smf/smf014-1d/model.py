@@ -199,18 +199,18 @@ surf200 = openmc.ZCylinder(surface_id=200, r=0.35687)
 # surf611: Unsupported surface type "s" with params ['8.34644', 'tr', '0', '0', '0.635', '612', 's', '21.59', 'tr', '0', '0', '0.635']
 
 # Z-plane surfaces for bounded cylinders
-surf6_zmin = openmc.ZPlane(z0=-24.7774)
-surf6_zmax = openmc.ZPlane(z0=-17.7924)
-surf7_zmin = openmc.ZPlane(z0=-28.9176)
-surf7_zmax = openmc.ZPlane(z0=-24.7774)
-surf8_zmin = openmc.ZPlane(z0=-24.7774)
-surf8_zmax = openmc.ZPlane(z0=-17.7924)
-surf9_zmin = openmc.ZPlane(z0=-28.9176)
-surf9_zmax = openmc.ZPlane(z0=-24.7774)
-surf13_zmin = openmc.ZPlane(z0=-6.985)
-surf13_zmax = openmc.ZPlane(z0=-1.0)
-surf53_zmin = openmc.ZPlane(z0=1.0)
-surf53_zmax = openmc.ZPlane(z0=6.985)
+surf6_zmin = openmc.ZPlane(surface_id=1611, z0=-24.7774)
+surf6_zmax = openmc.ZPlane(surface_id=1612, z0=-17.7924)
+surf7_zmin = openmc.ZPlane(surface_id=1613, z0=-28.9176)
+surf7_zmax = openmc.ZPlane(surface_id=1614, z0=-24.7774)
+surf8_zmin = openmc.ZPlane(surface_id=1615, z0=-24.7774)
+surf8_zmax = openmc.ZPlane(surface_id=1616, z0=-17.7924)
+surf9_zmin = openmc.ZPlane(surface_id=1617, z0=-28.9176)
+surf9_zmax = openmc.ZPlane(surface_id=1618, z0=-24.7774)
+surf13_zmin = openmc.ZPlane(surface_id=1619, z0=-6.985)
+surf13_zmax = openmc.ZPlane(surface_id=1620, z0=-1.0)
+surf53_zmin = openmc.ZPlane(surface_id=1621, z0=1.0)
+surf53_zmax = openmc.ZPlane(surface_id=1622, z0=6.985)
 
 # ------------------------------------------------------------------------------
 # Root Cells

@@ -67,19 +67,19 @@ surf6 = openmc.ZCylinder(surface_id=6, r=16.6561)
 # SST/outer
 surf7 = openmc.ZCylinder(surface_id=7, r=16.8161)
 # Dummy/bcd
-surf8 = openmc.ZCylinder(surface_id=8, r=39.9999)
+surf8 = openmc.ZCylinder(surface_id=8, r=39.9999, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=91.44)
-surf2_zmin = openmc.ZPlane(z0=-0.9525)
-surf2_zmax = openmc.ZPlane(z0=93.345)
-surf3_zmin = openmc.ZPlane(z0=0.0)
-surf3_zmax = openmc.ZPlane(z0=24.2194)
-surf7_zmin = openmc.ZPlane(z0=0.2)
-surf7_zmax = openmc.ZPlane(z0=23.7)
-surf8_zmin = openmc.ZPlane(z0=-1.9999, boundary_type="vacuum")
-surf8_zmax = openmc.ZPlane(z0=99.9999, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1008, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1009, z0=91.44)
+surf2_zmin = openmc.ZPlane(surface_id=1010, z0=-0.9525)
+surf2_zmax = openmc.ZPlane(surface_id=1011, z0=93.345)
+surf3_zmin = openmc.ZPlane(surface_id=1012, z0=0.0)
+surf3_zmax = openmc.ZPlane(surface_id=1013, z0=24.2194)
+surf7_zmin = openmc.ZPlane(surface_id=1014, z0=0.2)
+surf7_zmax = openmc.ZPlane(surface_id=1015, z0=23.7)
+surf8_zmin = openmc.ZPlane(surface_id=1016, z0=-1.9999, boundary_type="vacuum")
+surf8_zmax = openmc.ZPlane(surface_id=1017, z0=99.9999, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

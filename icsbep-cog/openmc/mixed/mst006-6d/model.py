@@ -75,15 +75,15 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Tank, outer
 surf2 = openmc.ZCylinder(surface_id=2, r=35.33)
 # Reflector, outer
-surf3 = openmc.ZCylinder(surface_id=3, r=65.33)
+surf3 = openmc.ZCylinder(surface_id=3, r=65.33, boundary_type="vacuum")
 # Critical height
 surf4 = openmc.ZPlane(surface_id=4, z0=97.85)
 
 # Z-plane surfaces for bounded cylinders
-surf2_zmin = openmc.ZPlane(z0=-0.5)
-surf2_zmax = openmc.ZPlane(z0=105.0)
-surf3_zmin = openmc.ZPlane(z0=-30.5, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=105.0, boundary_type="vacuum")
+surf2_zmin = openmc.ZPlane(surface_id=1004, z0=-0.5)
+surf2_zmax = openmc.ZPlane(surface_id=1005, z0=105.0)
+surf3_zmin = openmc.ZPlane(surface_id=1006, z0=-30.5, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1007, z0=105.0, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

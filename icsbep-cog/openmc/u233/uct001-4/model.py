@@ -57,7 +57,7 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # ==============================================================================
 
 # Water/OR
-surf1 = openmc.ZCylinder(surface_id=1, r=91.44)
+surf1 = openmc.ZCylinder(surface_id=1, r=91.44, boundary_type="vacuum")
 # Z-Lo = -200/2 + 115.765 = 15.765 cm
 surf2 = openmc.model.RectangularParallelepiped(-3.81, 3.81, -5.605779999999999, -5.42798, 15.765, 215.765)
 surf3 = openmc.model.RectangularParallelepiped(-3.81, 3.81, -1.92786, -1.75006, 15.765, 215.765)
@@ -114,8 +114,8 @@ surf265 = openmc.YPlane(surface_id=265, y0=15.63116)
 surf270 = openmc.YPlane(surface_id=270, y0=24.82596)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=-56.2991, boundary_type="vacuum")
-surf1_zmax = openmc.ZPlane(z0=56.2991, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1270, z0=-56.2991, boundary_type="vacuum")
+surf1_zmax = openmc.ZPlane(surface_id=1271, z0=56.2991, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

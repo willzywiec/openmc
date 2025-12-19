@@ -118,14 +118,14 @@ surf28 = openmc.ZCylinder(surface_id=28, x0=28.655, y0=1.455, r=0.5)
 surf29 = openmc.ZCylinder(surface_id=29, x0=1.455, y0=1.455, r=0.5)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=90.0)
-surf2_zmin = openmc.ZPlane(z0=0.0)
-surf2_zmax = openmc.ZPlane(z0=96.9)
-surf3_zmin = openmc.ZPlane(z0=-1.27)
-surf3_zmax = openmc.ZPlane(z0=98.2)
-surf4_zmin = openmc.ZPlane(z0=-1.27)
-surf4_zmax = openmc.ZPlane(z0=98.2)
+surf1_zmin = openmc.ZPlane(surface_id=1029, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1030, z0=90.0)
+surf2_zmin = openmc.ZPlane(surface_id=1031, z0=0.0)
+surf2_zmax = openmc.ZPlane(surface_id=1032, z0=96.9)
+surf3_zmin = openmc.ZPlane(surface_id=1033, z0=-1.27)
+surf3_zmax = openmc.ZPlane(surface_id=1034, z0=98.2)
+surf4_zmin = openmc.ZPlane(surface_id=1035, z0=-1.27)
+surf4_zmax = openmc.ZPlane(surface_id=1036, z0=98.2)
 
 # ------------------------------------------------------------------------------
 # Universes

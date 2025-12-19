@@ -52,15 +52,15 @@ surf1 = openmc.ZCylinder(surface_id=1, r=11.4351)
 # Vessel/Outer
 surf2 = openmc.ZCylinder(surface_id=2, r=11.5642)
 # Paraffin/Outer
-surf3 = openmc.ZCylinder(surface_id=3, r=26.8042)
+surf3 = openmc.ZCylinder(surface_id=3, r=26.8042, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=22.8338)
-surf2_zmin = openmc.ZPlane(z0=-0.1291)
-surf2_zmax = openmc.ZPlane(z0=22.9629)
-surf3_zmin = openmc.ZPlane(z0=-15.3691, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=38.2029, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1003, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1004, z0=22.8338)
+surf2_zmin = openmc.ZPlane(surface_id=1005, z0=-0.1291)
+surf2_zmax = openmc.ZPlane(surface_id=1006, z0=22.9629)
+surf3_zmin = openmc.ZPlane(surface_id=1007, z0=-15.3691, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1008, z0=38.2029, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

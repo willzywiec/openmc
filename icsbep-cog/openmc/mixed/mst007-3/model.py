@@ -72,17 +72,17 @@ surf3 = openmc.ZCylinder(surface_id=3, r=30.594)
 # Reflector tank, inner
 surf4 = openmc.ZCylinder(surface_id=4, r=49.53)
 # Reflector tank, inner
-surf5 = openmc.ZCylinder(surface_id=5, r=50.8)
+surf5 = openmc.ZCylinder(surface_id=5, r=50.8, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf2_zmin = openmc.ZPlane(z0=0.0)
-surf2_zmax = openmc.ZPlane(z0=107.0)
-surf3_zmin = openmc.ZPlane(z0=-0.635)
-surf3_zmax = openmc.ZPlane(z0=107.953)
-surf4_zmin = openmc.ZPlane(z0=-20.635)
-surf4_zmax = openmc.ZPlane(z0=107.953)
-surf5_zmin = openmc.ZPlane(z0=-21.905, boundary_type="vacuum")
-surf5_zmax = openmc.ZPlane(z0=107.953, boundary_type="vacuum")
+surf2_zmin = openmc.ZPlane(surface_id=1005, z0=0.0)
+surf2_zmax = openmc.ZPlane(surface_id=1006, z0=107.0)
+surf3_zmin = openmc.ZPlane(surface_id=1007, z0=-0.635)
+surf3_zmax = openmc.ZPlane(surface_id=1008, z0=107.953)
+surf4_zmin = openmc.ZPlane(surface_id=1009, z0=-20.635)
+surf4_zmax = openmc.ZPlane(surface_id=1010, z0=107.953)
+surf5_zmin = openmc.ZPlane(surface_id=1011, z0=-21.905, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(surface_id=1012, z0=107.953, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

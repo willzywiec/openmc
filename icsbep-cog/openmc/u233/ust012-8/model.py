@@ -61,25 +61,25 @@ surf6 = openmc.ZCylinder(surface_id=6, r=1.67005)
 # Refl Tank/Inner
 surf7 = openmc.ZCylinder(surface_id=7, r=45.72)
 # Refl Tank/Outer; BCD
-surf8 = openmc.ZCylinder(surface_id=8, r=46.0375)
+surf8 = openmc.ZCylinder(surface_id=8, r=46.0375, boundary_type="vacuum")
 # Critical Height; A + 18
 # surf9: Unsupported surface type "analytic" with params ['1.', 'z', '-45.4830', 'constant']
 # Water Height; C
 # surf10: Unsupported surface type "analytic" with params ['1.', 'z', '-65.8', 'constant']
 
 # Z-plane surfaces for bounded cylinders
-surf3_zmin = openmc.ZPlane(z0=-10.0)
-surf3_zmax = openmc.ZPlane(z0=20.0)
-surf4_zmin = openmc.ZPlane(z0=-10.0)
-surf4_zmax = openmc.ZPlane(z0=20.0)
-surf5_zmin = openmc.ZPlane(z0=25.0)
-surf5_zmax = openmc.ZPlane(z0=130.0)
-surf6_zmin = openmc.ZPlane(z0=25.0)
-surf6_zmax = openmc.ZPlane(z0=130.0)
-surf7_zmin = openmc.ZPlane(z0=0.0)
-surf7_zmax = openmc.ZPlane(z0=130.0)
-surf8_zmin = openmc.ZPlane(z0=-1.27, boundary_type="vacuum")
-surf8_zmax = openmc.ZPlane(z0=127.0, boundary_type="vacuum")
+surf3_zmin = openmc.ZPlane(surface_id=1010, z0=-10.0)
+surf3_zmax = openmc.ZPlane(surface_id=1011, z0=20.0)
+surf4_zmin = openmc.ZPlane(surface_id=1012, z0=-10.0)
+surf4_zmax = openmc.ZPlane(surface_id=1013, z0=20.0)
+surf5_zmin = openmc.ZPlane(surface_id=1014, z0=25.0)
+surf5_zmax = openmc.ZPlane(surface_id=1015, z0=130.0)
+surf6_zmin = openmc.ZPlane(surface_id=1016, z0=25.0)
+surf6_zmax = openmc.ZPlane(surface_id=1017, z0=130.0)
+surf7_zmin = openmc.ZPlane(surface_id=1018, z0=0.0)
+surf7_zmax = openmc.ZPlane(surface_id=1019, z0=130.0)
+surf8_zmin = openmc.ZPlane(surface_id=1020, z0=-1.27, boundary_type="vacuum")
+surf8_zmax = openmc.ZPlane(surface_id=1021, z0=127.0, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

@@ -178,7 +178,7 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 surf1 = openmc.ZCylinder(surface_id=1, r=24.3435)
 surf2 = openmc.ZCylinder(surface_id=2, r=78.0496)
 surf3 = openmc.ZCylinder(surface_id=3, r=111.5583)
-surf4 = openmc.ZCylinder(surface_id=4, r=140.2589)
+surf4 = openmc.ZCylinder(surface_id=4, r=140.2589, boundary_type="vacuum")
 surf5 = openmc.ZPlane(surface_id=5, z0=-106.6800)
 surf6 = openmc.ZPlane(surface_id=6, z0=-101.7257)
 surf7 = openmc.ZPlane(surface_id=7, z0=-76.2813)
@@ -188,10 +188,10 @@ surf10 = openmc.ZPlane(surface_id=10, z0=106.6800)
 surf20 = openmc.ZCylinder(surface_id=20, r=75.0028)
 
 # Z-plane surfaces for bounded cylinders
-surf3_zmin = openmc.ZPlane(z0=-110.5357)
-surf3_zmax = openmc.ZPlane(z0=110.5357)
-surf4_zmin = openmc.ZPlane(z0=-121.92, boundary_type="vacuum")
-surf4_zmax = openmc.ZPlane(z0=121.92, boundary_type="vacuum")
+surf3_zmin = openmc.ZPlane(surface_id=1020, z0=-110.5357)
+surf3_zmax = openmc.ZPlane(surface_id=1021, z0=110.5357)
+surf4_zmin = openmc.ZPlane(surface_id=1022, z0=-121.92, boundary_type="vacuum")
+surf4_zmax = openmc.ZPlane(surface_id=1023, z0=121.92, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

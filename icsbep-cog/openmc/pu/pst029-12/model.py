@@ -77,8 +77,8 @@ surf11 = openmc.XPlane(surface_id=11, x0=0.0)
 surf12 = openmc.model.RectangularParallelepiped(-95.3, 95.3, -55.5, 55.5, -32.800000000000004, 119.0)
 
 # Z-plane surfaces for bounded cylinders
-surf10_zmin = openmc.ZPlane(z0=-1.5)
-surf10_zmax = openmc.ZPlane(z0=119.0)
+surf10_zmin = openmc.ZPlane(surface_id=1012, z0=-1.5)
+surf10_zmax = openmc.ZPlane(surface_id=1013, z0=119.0)
 
 # ------------------------------------------------------------------------------
 # Universes

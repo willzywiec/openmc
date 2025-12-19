@@ -58,7 +58,7 @@ surf1 = openmc.ZPlane(surface_id=1, z0=131.32)
 # Tank inner
 surf2 = openmc.ZCylinder(surface_id=2, r=76.2)
 # Tank outer
-surf3 = openmc.ZCylinder(surface_id=3, r=77.47)
+surf3 = openmc.ZCylinder(surface_id=3, r=77.47, boundary_type="vacuum")
 # U(2.459)O2
 surf10 = openmc.ZCylinder(surface_id=10, r=0.515)
 # Gap
@@ -81,16 +81,16 @@ surf18 = openmc.ZPlane(surface_id=18, z0=150.00)
 surf19 = openmc.ZPlane(surface_id=19, z0=152.54)
 
 # Z-plane surfaces for bounded cylinders
-surf2_zmin = openmc.ZPlane(z0=-7.62)
-surf2_zmax = openmc.ZPlane(z0=180.04)
-surf3_zmin = openmc.ZPlane(z0=-8.89, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=180.04, boundary_type="vacuum")
-surf10_zmin = openmc.ZPlane(z0=0.3)
-surf10_zmax = openmc.ZPlane(z0=153.66)
-surf11_zmin = openmc.ZPlane(z0=0.3)
-surf11_zmax = openmc.ZPlane(z0=156.16)
-surf12_zmin = openmc.ZPlane(z0=0.3)
-surf12_zmax = openmc.ZPlane(z0=156.478)
+surf2_zmin = openmc.ZPlane(surface_id=1019, z0=-7.62)
+surf2_zmax = openmc.ZPlane(surface_id=1020, z0=180.04)
+surf3_zmin = openmc.ZPlane(surface_id=1021, z0=-8.89, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1022, z0=180.04, boundary_type="vacuum")
+surf10_zmin = openmc.ZPlane(surface_id=1023, z0=0.3)
+surf10_zmax = openmc.ZPlane(surface_id=1024, z0=153.66)
+surf11_zmin = openmc.ZPlane(surface_id=1025, z0=0.3)
+surf11_zmax = openmc.ZPlane(surface_id=1026, z0=156.16)
+surf12_zmin = openmc.ZPlane(surface_id=1027, z0=0.3)
+surf12_zmax = openmc.ZPlane(surface_id=1028, z0=156.478)
 
 # ------------------------------------------------------------------------------
 # Universes

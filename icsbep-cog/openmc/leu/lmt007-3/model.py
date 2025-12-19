@@ -35,7 +35,7 @@ surf1 = openmc.ZCylinder(surface_id=1, r=0.38645)
 # 15x16 lattice region
 surf2 = openmc.model.RectangularParallelepiped(-13.5, 13.5, -14.4, 14.4, -499.95, 499.95)
 # Water/boundary
-surf3 = openmc.ZCylinder(surface_id=3, r=50.53)
+surf3 = openmc.ZCylinder(surface_id=3, r=50.53, boundary_type="vacuum")
 surf101 = openmc.XPlane(surface_id=101, x0=-13.5)
 surf102 = openmc.XPlane(surface_id=102, x0=-11.7)
 surf103 = openmc.XPlane(surface_id=103, x0=-9.9)
@@ -73,10 +73,10 @@ surf301 = openmc.ZPlane(surface_id=301, z0=-999.0)
 surf302 = openmc.ZPlane(surface_id=302, z0=999.0)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=30.0)
-surf3_zmin = openmc.ZPlane(z0=-21.59, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=39.1, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1302, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1303, z0=30.0)
+surf3_zmin = openmc.ZPlane(surface_id=1304, z0=-21.59, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1305, z0=39.1, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

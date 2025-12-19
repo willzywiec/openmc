@@ -63,19 +63,19 @@ surf2 = openmc.ZCylinder(surface_id=2, r=8.5082)
 # Vessel/Outer
 surf3 = openmc.ZCylinder(surface_id=3, r=8.6373)
 # Paraffin/Outer
-surf4 = openmc.ZCylinder(surface_id=4, r=23.8773)
+surf4 = openmc.ZCylinder(surface_id=4, r=23.8773, boundary_type="vacuum")
 # Hc
 # surf5: Unsupported surface type "analytic" with params ['1.', 'z', '-16.5061', 'constant']
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=16.7061)
-surf2_zmin = openmc.ZPlane(z0=-0.178)
-surf2_zmax = openmc.ZPlane(z0=16.8841)
-surf3_zmin = openmc.ZPlane(z0=-0.3071)
-surf3_zmax = openmc.ZPlane(z0=17.0132)
-surf4_zmin = openmc.ZPlane(z0=-15.5471, boundary_type="vacuum")
-surf4_zmax = openmc.ZPlane(z0=32.2532, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1005, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1006, z0=16.7061)
+surf2_zmin = openmc.ZPlane(surface_id=1007, z0=-0.178)
+surf2_zmax = openmc.ZPlane(surface_id=1008, z0=16.8841)
+surf3_zmin = openmc.ZPlane(surface_id=1009, z0=-0.3071)
+surf3_zmax = openmc.ZPlane(surface_id=1010, z0=17.0132)
+surf4_zmin = openmc.ZPlane(surface_id=1011, z0=-15.5471, boundary_type="vacuum")
+surf4_zmax = openmc.ZPlane(surface_id=1012, z0=32.2532, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells
