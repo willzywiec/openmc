@@ -278,7 +278,8 @@ def parse_openmc_output(output: str, statepoint_path: Path = None) -> Dict[str, 
 
 
 def run_benchmark(bench_dir: Path, run_openmc: bool = False,
-                  enable_kinetics: bool = True, openmc_args: list = None) -> BenchmarkResult:
+                  enable_kinetics: bool = True, openmc_args: list = None,
+                  timeout: int = 7200, verbose: bool = False) -> BenchmarkResult:
     """Run a single benchmark and collect results.
 
     Args:
@@ -286,6 +287,8 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
         run_openmc: If True, run OpenMC after generating XML
         enable_kinetics: If True, enable point kinetics calculations
         openmc_args: Additional arguments to pass to OpenMC
+        timeout: Timeout in seconds for OpenMC run (default: 7200 = 2 hours)
+        verbose: If True, print progress messages
 
     Returns:
         BenchmarkResult with all collected data
@@ -369,11 +372,14 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
             if openmc_args:
                 cmd.extend(openmc_args)
 
+            if verbose:
+                print(f"  Running: {' '.join(cmd)} in {bench_dir}", flush=True)
+
             proc_result = subprocess.run(
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=7200  # 2 hour timeout for OpenMC runs
+                timeout=timeout
             )
 
             # Parse results from output
@@ -410,8 +416,11 @@ def run_benchmark(bench_dir: Path, run_openmc: bool = False,
         return result
 
     except subprocess.TimeoutExpired:
-        os.chdir(original_dir)
-        result.error_message = "Timeout"
+        try:
+            os.chdir(original_dir)
+        except:
+            pass
+        result.error_message = f"Timeout after {timeout}s"
         return result
     except Exception as e:
         try:
@@ -550,6 +559,10 @@ def main():
                        help='Number of OpenMP threads for each OpenMC run (default: all available)')
     parser.add_argument('--no-kinetics', action='store_true',
                        help='Disable point kinetics calculations')
+    parser.add_argument('--timeout', type=int, default=300,
+                       help='Timeout in seconds for each OpenMC run (default: 300 = 5 min)')
+    parser.add_argument('--verbose', '-v', action='store_true',
+                       help='Show detailed progress messages')
     parser.add_argument('--stop-on-error', action='store_true',
                        help='Stop running if a benchmark fails (default: continue)')
 
@@ -577,6 +590,8 @@ def main():
         print(f"Parallel processes: {args.parallel}")
     if args.threads:
         print(f"OpenMC threads per run: {args.threads}")
+    if args.run:
+        print(f"Timeout per benchmark: {args.timeout}s")
     print(f"Output file: {args.output}")
     print("-" * 60)
 
@@ -606,7 +621,8 @@ def main():
         # Parallel execution
         with ProcessPoolExecutor(max_workers=args.parallel) as executor:
             futures = {
-                executor.submit(run_benchmark, d, args.run, enable_kinetics, openmc_args): d
+                executor.submit(run_benchmark, d, args.run, enable_kinetics, openmc_args,
+                              args.timeout, args.verbose): d
                 for d in benchmark_dirs
             }
 
@@ -630,7 +646,10 @@ def main():
     else:
         # Sequential execution
         for i, bench_dir in enumerate(benchmark_dirs):
-            result = run_benchmark(bench_dir, args.run, enable_kinetics, openmc_args)
+            if args.verbose:
+                print(f"[{i+1}/{len(benchmark_dirs)}] Starting {bench_dir.parent.name}/{bench_dir.name}...", flush=True)
+            result = run_benchmark(bench_dir, args.run, enable_kinetics, openmc_args,
+                                  args.timeout, args.verbose)
             results.append(result)
 
             # Write result to CSV immediately
