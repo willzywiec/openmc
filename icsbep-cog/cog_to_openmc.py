@@ -759,6 +759,11 @@ class COGParser:
         surf_type = parts[1].lower()
         params = parts[2:]
 
+        # Handle multi-surface "sameas" lines: 101 sameas 12 tr x y z 102 sameas 12 tr x y z ...
+        if surf_type == 'sameas':
+            self._parse_sameas_line(surf_id, params, comment)
+            return
+
         # Handle multi-line prism definitions
         if surf_type == 'prism' and len(params) > 0:
             n_vertices = int(params[0])
@@ -801,6 +806,63 @@ class COGParser:
             return True
         except ValueError:
             return False
+
+    def _parse_sameas_line(self, first_id: int, params: List[str], comment: str) -> None:
+        """Parse a line with multiple 'sameas' surface definitions.
+
+        Format: 101 sameas 12 tr x y z 102 sameas 12 tr x y z ...
+        Where the first surface ID is already parsed, and params starts with ref_id.
+        """
+        current_id = first_id
+        i = 0
+
+        while i < len(params):
+            # Expect: ref_id [tr tx ty tz] [next_id sameas ref_id ...]
+            try:
+                ref_id = int(params[i])
+                i += 1
+            except (ValueError, IndexError):
+                break
+
+            # Check for optional 'tr' translation
+            tx, ty, tz = 0.0, 0.0, 0.0
+            if i < len(params) and params[i].lower() == 'tr':
+                i += 1  # skip 'tr'
+                if i + 2 < len(params):
+                    try:
+                        tx = float(params[i])
+                        ty = float(params[i + 1])
+                        tz = float(params[i + 2])
+                        i += 3
+                    except ValueError:
+                        pass
+
+            # Store this sameas surface
+            surface = Surface(
+                surf_id=current_id,
+                surf_type='sameas',
+                params=[str(ref_id), 'tr', str(tx), str(ty), str(tz)],
+                comment=comment if current_id == first_id else ''
+            )
+            self.surfaces[current_id] = surface
+
+            # Look for next surface on this line: next_id sameas ...
+            if i < len(params):
+                try:
+                    next_id = int(params[i])
+                    i += 1
+                    # Check if followed by 'sameas'
+                    if i < len(params) and params[i].lower() == 'sameas':
+                        i += 1  # skip 'sameas'
+                        current_id = next_id
+                        continue
+                    else:
+                        # Not a sameas, stop parsing
+                        break
+                except ValueError:
+                    break
+            else:
+                break
 
     def _identify_boundary_surfaces(self) -> None:
         """Apply boundary conditions to surfaces."""
@@ -988,6 +1050,10 @@ class OpenMCPythonGenerator:
                 return self._gen_axial_cyl(var_name, surf_id, 'z', params, bc)
             elif surf_type == 'prism':
                 return self._gen_prism(var_name, surf_id, params, bc)
+            elif surf_type == 'analytic':
+                return self._gen_analytic(var_name, surf_id, params, bc)
+            elif surf_type == 'sameas':
+                return self._gen_sameas(var_name, surf_id, params, bc)
             else:
                 return f'# {var_name}: Unsupported surface type "{surf_type}" with params {params}'
         except (ValueError, IndexError) as e:
@@ -1241,6 +1307,164 @@ class OpenMCPythonGenerator:
         self._prism_planes[surf_id] = plane_vars
 
         return '\n'.join(lines)
+
+    def _gen_analytic(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate analytic surface (typically a plane).
+
+        COG format: analytic coef axis value constant
+        - coef: coefficient (typically 1.0)
+        - axis: x, y, or z
+        - value: position on axis
+        - constant: keyword marker
+
+        Examples:
+        - analytic 1. z 0.000 constant -> ZPlane at z=0
+        - analytic 1. x 5.0 constant -> XPlane at x=5
+        """
+        if len(params) < 3:
+            return f'# {var_name}: Analytic surface needs at least 3 params: coef axis value'
+
+        try:
+            # params[0] is coefficient (usually 1.0)
+            coef = float(params[0].rstrip('.'))
+            axis = params[1].lower()
+            value = float(params[2])
+
+            # Apply coefficient to value (coef * axis = value means axis = value/coef)
+            if abs(coef) > 1e-10:
+                pos = value / coef
+            else:
+                pos = value
+
+            if axis == 'x':
+                return f'{var_name} = openmc.XPlane(surface_id={surf_id}, x0={pos}{bc})'
+            elif axis == 'y':
+                return f'{var_name} = openmc.YPlane(surface_id={surf_id}, y0={pos}{bc})'
+            elif axis == 'z':
+                return f'{var_name} = openmc.ZPlane(surface_id={surf_id}, z0={pos}{bc})'
+            else:
+                return f'# {var_name}: Unknown axis "{axis}" in analytic surface'
+        except (ValueError, IndexError) as e:
+            return f'# {var_name}: Error parsing analytic surface: {e}'
+
+    def _gen_sameas(self, var_name: str, surf_id: int, params: List[str], bc: str) -> str:
+        """Generate a 'sameas' surface (copy of another surface with translation).
+
+        params format: [ref_id, 'tr', tx, ty, tz]
+        """
+        if len(params) < 5:
+            return f'# {var_name}: sameas surface needs ref_id and translation'
+
+        try:
+            ref_id = int(params[0])
+            tx = float(params[2])
+            ty = float(params[3])
+            tz = float(params[4])
+        except (ValueError, IndexError) as e:
+            return f'# {var_name}: Error parsing sameas params: {e}'
+
+        # Look up the referenced surface
+        if ref_id not in self.parser.surfaces:
+            return f'# {var_name}: Reference surface {ref_id} not found'
+
+        ref_surf = self.parser.surfaces[ref_id]
+        ref_type = ref_surf.surf_type.lower()
+        ref_params = ref_surf.params
+
+        # Handle different surface types
+        if ref_type in ['c', 'cyl', 'cylinder']:
+            # Cylinder - apply translation to center
+            axis = ref_params[0].lower() if ref_params[0].lower() in ['x', 'y', 'z'] else 'z'
+            idx = 1 if ref_params[0].lower() in ['x', 'y', 'z'] else 0
+            remaining = ref_params[idx:]
+
+            if not remaining:
+                return f'# {var_name}: No radius in reference cylinder'
+
+            radius = float(remaining[0])
+
+            # Get original center offset
+            x0, y0 = 0.0, 0.0
+            if len(remaining) >= 3:
+                # Check for 'tr' in original
+                tr_idx = None
+                for i, p in enumerate(remaining):
+                    if str(p).lower() == 'tr':
+                        tr_idx = i
+                        break
+                if tr_idx is not None and tr_idx + 2 < len(remaining):
+                    x0 = float(remaining[tr_idx + 1])
+                    y0 = float(remaining[tr_idx + 2])
+                elif self._is_number(str(remaining[1])) and self._is_number(str(remaining[2])):
+                    # May be bounded cylinder format: r zmin zmax OR r x0 y0
+                    val1, val2 = float(remaining[1]), float(remaining[2])
+                    # Check if these look like z-bounds or center offsets
+                    if not (val1 < val2 or (val1 < 0 and val2 > 0) or abs(val1) > 10 or abs(val2) > 10):
+                        x0, y0 = val1, val2
+
+            # Apply translation
+            new_x0 = x0 + tx
+            new_y0 = y0 + ty
+
+            cyl_class = {'x': 'XCylinder', 'y': 'YCylinder', 'z': 'ZCylinder'}[axis]
+            return f'{var_name} = openmc.{cyl_class}(surface_id={surf_id}, x0={new_x0}, y0={new_y0}, r={radius}{bc})'
+
+        elif ref_type in ['sphere', 'sph', 'so']:
+            # Sphere - apply translation to center
+            if len(ref_params) == 1:
+                # Centered at origin
+                return f'{var_name} = openmc.Sphere(surface_id={surf_id}, x0={tx}, y0={ty}, z0={tz}, r={ref_params[0]}{bc})'
+            elif len(ref_params) >= 4:
+                x0 = float(ref_params[0]) + tx
+                y0 = float(ref_params[1]) + ty
+                z0 = float(ref_params[2]) + tz
+                return f'{var_name} = openmc.Sphere(surface_id={surf_id}, x0={x0}, y0={y0}, z0={z0}, r={ref_params[3]}{bc})'
+            else:
+                return f'{var_name} = openmc.Sphere(surface_id={surf_id}, x0={tx}, y0={ty}, z0={tz}, r={ref_params[0]}{bc})'
+
+        elif ref_type == 'box':
+            # Box - apply translation to center
+            if len(ref_params) < 3:
+                return f'# {var_name}: Reference box {ref_id} has insufficient params'
+
+            dx, dy, dz = float(ref_params[0]), float(ref_params[1]), float(ref_params[2])
+            x0, y0, z0 = 0.0, 0.0, 0.0
+
+            # Look for translation in original box
+            for i, p in enumerate(ref_params):
+                if str(p).lower() == 'tr' and i + 3 < len(ref_params):
+                    x0 = float(ref_params[i+1])
+                    y0 = float(ref_params[i+2])
+                    z0 = float(ref_params[i+3])
+                    break
+
+            # Apply sameas translation
+            new_x0 = x0 + tx
+            new_y0 = y0 + ty
+            new_z0 = z0 + tz
+
+            xmin, xmax = new_x0 - dx/2, new_x0 + dx/2
+            ymin, ymax = new_y0 - dy/2, new_y0 + dy/2
+            zmin, zmax = new_z0 - dz/2, new_z0 + dz/2
+
+            self._composite_surfaces[surf_id] = 'box'
+            return f'{var_name} = openmc.model.RectangularParallelepiped({xmin}, {xmax}, {ymin}, {ymax}, {zmin}, {zmax}{bc})'
+
+        elif ref_type in ['px', 'py', 'pz', 'p', 'plane', 'analytic']:
+            # Planes - apply translation to position
+            # This is a simplified handling - may need refinement for complex cases
+            return f'# {var_name}: Translated plane from sameas {ref_id} (complex - needs manual review)'
+
+        else:
+            return f'# {var_name}: sameas for surface type "{ref_type}" not yet supported'
+
+    def _is_number(self, s: str) -> bool:
+        """Check if string is a number (instance method for sameas)."""
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
 
     def _generate_universes(self) -> List[str]:
         """Generate universe definitions."""

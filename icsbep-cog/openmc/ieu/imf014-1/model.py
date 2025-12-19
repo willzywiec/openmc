@@ -94,10 +94,10 @@ openmc.Surface.next_id = 10000
 surf1 = openmc.ZCylinder(surface_id=1, r=34.118)
 surf2 = openmc.ZCylinder(surface_id=2, r=34.404)
 surf3 = openmc.ZCylinder(surface_id=3, r=70.284, boundary_type="vacuum")
-# surf4: Unsupported surface type "analytic" with params ['1.', 'z', '0.000', 'constant']
-# surf5: Unsupported surface type "analytic" with params ['1.', 'z', '-30.563', 'constant']
-# surf6: Unsupported surface type "analytic" with params ['1.', 'z', '-50.926', 'constant']
-# surf7: Unsupported surface type "analytic" with params ['1.', 'z', '-61.915', 'constant']
+surf4 = openmc.ZPlane(surface_id=4, z0=0.0)
+surf5 = openmc.ZPlane(surface_id=5, z0=-30.563)
+surf6 = openmc.ZPlane(surface_id=6, z0=-50.926)
+surf7 = openmc.ZPlane(surface_id=7, z0=-61.915)
 
 # ------------------------------------------------------------------------------
 # Root Cells

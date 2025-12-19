@@ -61,10 +61,10 @@ surf7 = openmc.ZCylinder(surface_id=7, r=10.0076)
 surf8 = openmc.ZCylinder(surface_id=8, r=10.0584)
 surf9 = openmc.ZCylinder(surface_id=9, r=10.3632)
 surf10 = openmc.ZCylinder(surface_id=10, r=48.26, boundary_type="vacuum")
-# surf11: Unsupported surface type "analytic" with params ['1.', 'z', '42.0370']
-# surf12: Unsupported surface type "analytic" with params ['1.', 'z', '11.5570']
-# surf13: Unsupported surface type "analytic" with params ['1.', 'z', '9.5758']
-# surf14: Unsupported surface type "analytic" with params ['1.', 'z', '-35.6201']
+surf11 = openmc.ZPlane(surface_id=11, z0=42.037)
+surf12 = openmc.ZPlane(surface_id=12, z0=11.557)
+surf13 = openmc.ZPlane(surface_id=13, z0=9.5758)
+surf14 = openmc.ZPlane(surface_id=14, z0=-35.6201)
 
 # Z-plane surfaces for bounded cylinders
 surf3_zmin = openmc.ZPlane(surface_id=1014, z0=0.0)

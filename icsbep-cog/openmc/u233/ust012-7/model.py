@@ -66,9 +66,9 @@ surf7 = openmc.ZCylinder(surface_id=7, r=45.72)
 # Refl Tank/Outer; BCD
 surf8 = openmc.ZCylinder(surface_id=8, r=46.0375, boundary_type="vacuum")
 # Critical Height; A + 18
-# surf9: Unsupported surface type "analytic" with params ['1.', 'z', '-46.4730', 'constant']
+surf9 = openmc.ZPlane(surface_id=9, z0=-46.473)
 # Water Height; C
-# surf10: Unsupported surface type "analytic" with params ['1.', 'z', '-65.8', 'constant']
+surf10 = openmc.ZPlane(surface_id=10, z0=-65.8)
 
 # Z-plane surfaces for bounded cylinders
 surf3_zmin = openmc.ZPlane(surface_id=1010, z0=-10.0)

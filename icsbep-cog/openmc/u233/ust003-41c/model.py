@@ -68,7 +68,7 @@ surf3 = openmc.ZCylinder(surface_id=3, r=7.1336)
 # Paraffin/Outer
 surf4 = openmc.ZCylinder(surface_id=4, r=22.3736, boundary_type="vacuum")
 # Hc
-# surf5: Unsupported surface type "analytic" with params ['1.', 'z', '-48.5411', 'constant']
+surf5 = openmc.ZPlane(surface_id=5, z0=-48.5411)
 
 # Z-plane surfaces for bounded cylinders
 surf1_zmin = openmc.ZPlane(surface_id=1005, z0=0.0)

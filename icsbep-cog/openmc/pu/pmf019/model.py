@@ -57,7 +57,7 @@ surf3 = openmc.Sphere(surface_id=3, r=11.0)
 # Cu/OR
 surf4 = openmc.Sphere(surface_id=4, r=11.15)
 # Be/TOP/LHS
-# surf5: Unsupported surface type "analytic" with params ['1.', 'x', '0.15', 'constant']
+surf5 = openmc.XPlane(surface_id=5, x0=0.15)
 # Cu/SIDE
 surf6 = openmc.XCylinder(surface_id=6, r=9.7)
 # Steel
@@ -67,7 +67,7 @@ surf11 = openmc.Sphere(surface_id=11, x0=5.35, y0=tr, z0=1.05, r=0.)
 # Be/OR
 surf12 = openmc.Sphere(surface_id=12, x0=11.00, y0=tr, z0=1.05, r=0.)
 # Be/Bottom
-# surf13: Unsupported surface type "analytic" with params ['1.', 'x', '-1.20', 'constant']
+surf13 = openmc.XPlane(surface_id=13, x0=-1.2)
 # Be/Hole
 surf14 = openmc.XCylinder(surface_id=14, r=1.1)
 # STL/IR
