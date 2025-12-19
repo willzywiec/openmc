@@ -56,6 +56,9 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Hc
 surf1 = openmc.ZPlane(surface_id=1, z0=83.467)
 # Tank/Inner: Width = Tc
@@ -78,56 +81,106 @@ surf9 = openmc.model.RectangularParallelepiped(-533.4, 533.4, -563.88, 502.91999
 surf10 = openmc.model.RectangularParallelepiped(-685.8, 685.8, -655.32, 655.32, -373.38, 373.38, boundary_type="vacuum")
 # Square Holes
 surf11 = openmc.model.RectangularParallelepiped(-5.14125, 5.14125, -500.0, 500.0, -5.14125, 5.14125)
-# surf101: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-187.289', '102', 'sameas', '11', 'tr', '-321.269', '0.0', '-187.289']
-# surf103: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-187.289', '104', 'sameas', '11', 'tr', '-300.069', '0.0', '-187.289']
-# surf105: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-187.289', '106', 'sameas', '11', 'tr', '-278.869', '0.0', '-187.289']
-# surf107: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-187.289', '108', 'sameas', '11', 'tr', '-257.669', '0.0', '-187.289']
-# surf109: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-187.289', '110', 'sameas', '11', 'tr', '-236.469', '0.0', '-187.289']
-# surf111: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-176.689', '112', 'sameas', '11', 'tr', '-321.269', '0.0', '-176.689']
-# surf113: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-176.689', '114', 'sameas', '11', 'tr', '-300.069', '0.0', '-176.689']
-# surf115: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-176.689', '116', 'sameas', '11', 'tr', '-278.869', '0.0', '-176.689']
-# surf117: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-176.689', '118', 'sameas', '11', 'tr', '-257.669', '0.0', '-176.689']
-# surf119: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-176.689', '120', 'sameas', '11', 'tr', '-236.469', '0.0', '-176.689']
-# surf121: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-166.089', '122', 'sameas', '11', 'tr', '-321.269', '0.0', '-166.089']
-# surf123: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-166.089', '124', 'sameas', '11', 'tr', '-300.069', '0.0', '-166.089']
-# surf125: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-166.089', '126', 'sameas', '11', 'tr', '-278.869', '0.0', '-166.089']
-# surf127: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-166.089', '128', 'sameas', '11', 'tr', '-257.669', '0.0', '-166.089']
-# surf129: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-166.089', '130', 'sameas', '11', 'tr', '-236.469', '0.0', '-166.089']
-# surf131: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-155.489', '132', 'sameas', '11', 'tr', '-321.269', '0.0', '-155.489']
-# surf133: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-155.489', '134', 'sameas', '11', 'tr', '-300.069', '0.0', '-155.489']
-# surf135: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-155.489', '136', 'sameas', '11', 'tr', '-278.869', '0.0', '-155.489']
-# surf137: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-155.489', '138', 'sameas', '11', 'tr', '-257.669', '0.0', '-155.489']
-# surf139: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-155.489', '140', 'sameas', '11', 'tr', '-236.469', '0.0', '-155.489']
-# surf141: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-144.889', '142', 'sameas', '11', 'tr', '-321.269', '0.0', '-144.889']
-# surf143: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-144.889', '144', 'sameas', '11', 'tr', '-300.069', '0.0', '-144.889']
-# surf145: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-144.889', '146', 'sameas', '11', 'tr', '-278.869', '0.0', '-144.889']
-# surf147: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-144.889', '148', 'sameas', '11', 'tr', '-257.669', '0.0', '-144.889']
-# surf149: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-144.889', '150', 'sameas', '11', 'tr', '-236.469', '0.0', '-144.889']
-# surf151: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-134.289', '152', 'sameas', '11', 'tr', '-321.269', '0.0', '-134.289']
-# surf153: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-134.289', '154', 'sameas', '11', 'tr', '-300.069', '0.0', '-134.289']
-# surf155: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-134.289', '156', 'sameas', '11', 'tr', '-278.869', '0.0', '-134.289']
-# surf157: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-134.289', '158', 'sameas', '11', 'tr', '-257.669', '0.0', '-134.289']
-# surf159: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-134.289', '160', 'sameas', '11', 'tr', '-236.469', '0.0', '-134.289']
-# surf161: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-123.689', '162', 'sameas', '11', 'tr', '-321.269', '0.0', '-123.689']
-# surf163: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-123.689', '164', 'sameas', '11', 'tr', '-300.069', '0.0', '-123.689']
-# surf165: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-123.689', '166', 'sameas', '11', 'tr', '-278.869', '0.0', '-123.689']
-# surf167: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-123.689', '168', 'sameas', '11', 'tr', '-257.669', '0.0', '-123.689']
-# surf169: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-123.689', '170', 'sameas', '11', 'tr', '-236.469', '0.0', '-123.689']
-# surf171: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-113.089', '172', 'sameas', '11', 'tr', '-321.269', '0.0', '-113.089']
-# surf173: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-113.089', '174', 'sameas', '11', 'tr', '-300.069', '0.0', '-113.089']
-# surf175: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-113.089', '176', 'sameas', '11', 'tr', '-278.869', '0.0', '-113.089']
-# surf177: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-113.089', '178', 'sameas', '11', 'tr', '-257.669', '0.0', '-113.089']
-# surf179: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-113.089', '180', 'sameas', '11', 'tr', '-236.469', '0.0', '-113.089']
-# surf181: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-102.489', '182', 'sameas', '11', 'tr', '-321.269', '0.0', '-102.489']
-# surf183: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-102.489', '184', 'sameas', '11', 'tr', '-300.069', '0.0', '-102.489']
-# surf185: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-102.489', '186', 'sameas', '11', 'tr', '-278.869', '0.0', '-102.489']
-# surf187: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-102.489', '188', 'sameas', '11', 'tr', '-257.669', '0.0', '-102.489']
-# surf189: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-102.489', '190', 'sameas', '11', 'tr', '-236.469', '0.0', '-102.489']
-# surf191: Unsupported surface type "sameas" with params ['11', 'tr', '-331.869', '0.0', '-91.889', '192', 'sameas', '11', 'tr', '-321.269', '0.0', '-91.889']
-# surf193: Unsupported surface type "sameas" with params ['11', 'tr', '-310.669', '0.0', '-91.889', '194', 'sameas', '11', 'tr', '-300.069', '0.0', '-91.889']
-# surf195: Unsupported surface type "sameas" with params ['11', 'tr', '-289.469', '0.0', '-91.889', '196', 'sameas', '11', 'tr', '-278.869', '0.0', '-91.889']
-# surf197: Unsupported surface type "sameas" with params ['11', 'tr', '-268.269', '0.0', '-91.889', '198', 'sameas', '11', 'tr', '-257.669', '0.0', '-91.889']
-# surf199: Unsupported surface type "sameas" with params ['11', 'tr', '-247.069', '0.0', '-91.889', '200', 'sameas', '11', 'tr', '-236.469', '0.0', '-91.889']
+surf101 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf102 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf103 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf104 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf105 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf106 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf107 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf108 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf109 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf110 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -192.43025, -182.14774999999997)
+surf111 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf112 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf113 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf114 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf115 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf116 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf117 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf118 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf119 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf120 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -181.83025, -171.54774999999998)
+surf121 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf122 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf123 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf124 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf125 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf126 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf127 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf128 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf129 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf130 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -171.23025, -160.94774999999998)
+surf131 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf132 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf133 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf134 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf135 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf136 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf137 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf138 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf139 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf140 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -160.63025000000002, -150.34775)
+surf141 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf142 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf143 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf144 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf145 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf146 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf147 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf148 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf149 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf150 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -150.03025000000002, -139.74775)
+surf151 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf152 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf153 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf154 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf155 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf156 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf157 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf158 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf159 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf160 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -139.43025, -129.14774999999997)
+surf161 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -128.83025, -118.54775)
+surf162 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -128.83025, -118.54775)
+surf163 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -128.83025, -118.54775)
+surf164 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -128.83025, -118.54775)
+surf165 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -128.83025, -118.54775)
+surf166 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -128.83025, -118.54775)
+surf167 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -128.83025, -118.54775)
+surf168 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -128.83025, -118.54775)
+surf169 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -128.83025, -118.54775)
+surf170 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -128.83025, -118.54775)
+surf171 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -118.23025, -107.94775)
+surf172 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -118.23025, -107.94775)
+surf173 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -118.23025, -107.94775)
+surf174 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -118.23025, -107.94775)
+surf175 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -118.23025, -107.94775)
+surf176 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -118.23025, -107.94775)
+surf177 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -118.23025, -107.94775)
+surf178 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -118.23025, -107.94775)
+surf179 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -118.23025, -107.94775)
+surf180 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -118.23025, -107.94775)
+surf181 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -107.63025, -97.34775)
+surf182 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -107.63025, -97.34775)
+surf183 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -107.63025, -97.34775)
+surf184 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -107.63025, -97.34775)
+surf185 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -107.63025, -97.34775)
+surf186 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -107.63025, -97.34775)
+surf187 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -107.63025, -97.34775)
+surf188 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -107.63025, -97.34775)
+surf189 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -107.63025, -97.34775)
+surf190 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -107.63025, -97.34775)
+surf191 = openmc.model.RectangularParallelepiped(-337.01025000000004, -326.72775, -500.0, 500.0, -97.03025, -86.74775)
+surf192 = openmc.model.RectangularParallelepiped(-326.41025, -316.12775, -500.0, 500.0, -97.03025, -86.74775)
+surf193 = openmc.model.RectangularParallelepiped(-315.81025, -305.52774999999997, -500.0, 500.0, -97.03025, -86.74775)
+surf194 = openmc.model.RectangularParallelepiped(-305.21025000000003, -294.92775, -500.0, 500.0, -97.03025, -86.74775)
+surf195 = openmc.model.RectangularParallelepiped(-294.61025, -284.32775, -500.0, 500.0, -97.03025, -86.74775)
+surf196 = openmc.model.RectangularParallelepiped(-284.01025000000004, -273.72775, -500.0, 500.0, -97.03025, -86.74775)
+surf197 = openmc.model.RectangularParallelepiped(-273.41025, -263.12775, -500.0, 500.0, -97.03025, -86.74775)
+surf198 = openmc.model.RectangularParallelepiped(-262.81025, -252.52774999999997, -500.0, 500.0, -97.03025, -86.74775)
+surf199 = openmc.model.RectangularParallelepiped(-252.21025, -241.92774999999997, -500.0, 500.0, -97.03025, -86.74775)
+surf200 = openmc.model.RectangularParallelepiped(-241.61025, -231.32774999999998, -500.0, 500.0, -97.03025, -86.74775)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -143,7 +196,7 @@ cell2.region = +surf2 & -surf3 & -surf4
 
 # Crate
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf3 & -surf4 & +surf101 & +surf103 & +surf105 & +surf107 & +surf109
+cell3.region = +surf3 & -surf4 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110
 
 # Frame
 cell4 = openmc.Cell(cell_id=4, fill=mat2)

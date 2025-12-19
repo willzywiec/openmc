@@ -83,9 +83,12 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.ZCylinder(surface_id=1, r=26.50215)
 surf2 = openmc.ZCylinder(surface_id=2, r=56.99622)
-surf3 = openmc.ZCylinder(surface_id=3, r=96.82257)
+surf3 = openmc.ZCylinder(surface_id=3, r=96.82257, boundary_type="vacuum")
 surf10 = openmc.ZPlane(surface_id=10, z0=-54.12762)
 surf11 = openmc.ZPlane(surface_id=11, z0=-53.34000)
 surf12 = openmc.ZPlane(surface_id=12, z0=-38.88762)
@@ -98,8 +101,8 @@ surf18 = openmc.ZPlane(surface_id=18, z0=53.34000)
 surf19 = openmc.ZPlane(surface_id=19, z0=54.12762)
 
 # Z-plane surfaces for bounded cylinders
-surf3_zmin = openmc.ZPlane(z0=-85.09, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=85.09, boundary_type="vacuum")
+surf3_zmin = openmc.ZPlane(surface_id=1019, z0=-85.09, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1020, z0=85.09, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

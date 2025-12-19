@@ -78,6 +78,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Critical height
 surf1 = openmc.ZPlane(surface_id=1, z0=92.31)
 # Array boundary
@@ -109,18 +112,18 @@ surf22 = openmc.ZCylinder(surface_id=22, r=0.70612)
 surf31 = openmc.model.RectangularParallelepiped(19.558, 20.180799999999998, -22.5, 22.5, 0.37000000000000455, 150.37)
 
 # Z-plane surfaces for bounded cylinders
-surf11_zmin = openmc.ZPlane(z0=0.0)
-surf11_zmax = openmc.ZPlane(z0=144.15)
-surf12_zmin = openmc.ZPlane(z0=0.0)
-surf12_zmax = openmc.ZPlane(z0=146.69)
-surf13_zmin = openmc.ZPlane(z0=-16.83)
-surf13_zmax = openmc.ZPlane(z0=170.73)
-surf14_zmin = openmc.ZPlane(z0=-16.84)
-surf14_zmax = openmc.ZPlane(z0=170.73)
-surf21_zmin = openmc.ZPlane(z0=0.0)
-surf21_zmax = openmc.ZPlane(z0=145.415)
-surf22_zmin = openmc.ZPlane(z0=-16.83)
-surf22_zmax = openmc.ZPlane(z0=170.73)
+surf11_zmin = openmc.ZPlane(surface_id=1031, z0=0.0)
+surf11_zmax = openmc.ZPlane(surface_id=1032, z0=144.15)
+surf12_zmin = openmc.ZPlane(surface_id=1033, z0=0.0)
+surf12_zmax = openmc.ZPlane(surface_id=1034, z0=146.69)
+surf13_zmin = openmc.ZPlane(surface_id=1035, z0=-16.83)
+surf13_zmax = openmc.ZPlane(surface_id=1036, z0=170.73)
+surf14_zmin = openmc.ZPlane(surface_id=1037, z0=-16.84)
+surf14_zmax = openmc.ZPlane(surface_id=1038, z0=170.73)
+surf21_zmin = openmc.ZPlane(surface_id=1039, z0=0.0)
+surf21_zmax = openmc.ZPlane(surface_id=1040, z0=145.415)
+surf22_zmin = openmc.ZPlane(surface_id=1041, z0=-16.83)
+surf22_zmax = openmc.ZPlane(surface_id=1042, z0=170.73)
 
 # ------------------------------------------------------------------------------
 # Universes

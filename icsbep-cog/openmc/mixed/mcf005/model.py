@@ -125,26 +125,29 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.ZCylinder(surface_id=1, r=59.0562)
 surf2 = openmc.ZCylinder(surface_id=2, r=59.0562)
 surf3 = openmc.ZCylinder(surface_id=3, r=89.3018)
 surf4 = openmc.ZCylinder(surface_id=4, r=89.3018)
 surf5 = openmc.ZCylinder(surface_id=5, r=105.4629)
-surf6 = openmc.ZCylinder(surface_id=6, r=140.2589)
+surf6 = openmc.ZCylinder(surface_id=6, r=140.2589, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=-45.7993)
-surf1_zmax = openmc.ZPlane(z0=45.7993)
-surf2_zmin = openmc.ZPlane(z0=-76.297)
-surf2_zmax = openmc.ZPlane(z0=76.297)
-surf3_zmin = openmc.ZPlane(z0=-76.297)
-surf3_zmax = openmc.ZPlane(z0=76.297)
-surf4_zmin = openmc.ZPlane(z0=-92.0801)
-surf4_zmax = openmc.ZPlane(z0=92.0801)
-surf5_zmin = openmc.ZPlane(z0=-92.0801)
-surf5_zmax = openmc.ZPlane(z0=92.0801)
-surf6_zmin = openmc.ZPlane(z0=-121.92, boundary_type="vacuum")
-surf6_zmax = openmc.ZPlane(z0=121.92, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1006, z0=-45.7993)
+surf1_zmax = openmc.ZPlane(surface_id=1007, z0=45.7993)
+surf2_zmin = openmc.ZPlane(surface_id=1008, z0=-76.297)
+surf2_zmax = openmc.ZPlane(surface_id=1009, z0=76.297)
+surf3_zmin = openmc.ZPlane(surface_id=1010, z0=-76.297)
+surf3_zmax = openmc.ZPlane(surface_id=1011, z0=76.297)
+surf4_zmin = openmc.ZPlane(surface_id=1012, z0=-92.0801)
+surf4_zmax = openmc.ZPlane(surface_id=1013, z0=92.0801)
+surf5_zmin = openmc.ZPlane(surface_id=1014, z0=-92.0801)
+surf5_zmax = openmc.ZPlane(surface_id=1015, z0=92.0801)
+surf6_zmin = openmc.ZPlane(surface_id=1016, z0=-121.92, boundary_type="vacuum")
+surf6_zmax = openmc.ZPlane(surface_id=1017, z0=121.92, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

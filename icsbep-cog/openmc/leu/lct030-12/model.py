@@ -51,6 +51,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Critical water height
 surf1 = openmc.ZPlane(surface_id=1, z0=117.89)
 # SST lower grid plate
@@ -58,7 +61,7 @@ surf2 = openmc.ZCylinder(surface_id=2, r=50.0)
 # SST upper grid plate
 surf3 = openmc.ZCylinder(surface_id=3, r=50.0)
 # Boundary condition
-surf4 = openmc.ZCylinder(surface_id=4, r=65.0)
+surf4 = openmc.ZCylinder(surface_id=4, r=65.0, boundary_type="vacuum")
 # UO2
 surf10 = openmc.ZCylinder(surface_id=10, r=0.37875)
 # Zr plug, inner
@@ -76,13 +79,13 @@ surf16 = openmc.ZCylinder(surface_id=16, r=0.4518)
 # Clad, top and bottom portions
 surf17 = openmc.ZCylinder(surface_id=17, r=0.3)
 # Hole
-# surf20: Unsupported surface type "rev" with params ['4', '-3.9', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
-# surf21: Unsupported surface type "rev" with params ['4', '-3.9', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-0.635', '1.09985', '0', '-0.635', '1.09985', '9', '-0.635', '9', '0']
-# surf22: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '0.635', '1.09985', '0', '0.635', '1.09985', '9', '0.635', '9', '0']
-# surf23: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-1.270', '0', '0', '-1.270', '0', '9', '-1.270', '9', '0']
-# surf24: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '1.270', '0', '0', '1.270', '0', '9', '1.270', '9', '0']
-# surf25: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-0.635', '-1.09985', '0', '-0.635', '-1.09985', '9', '-0.635', '9', '0']
-# surf26: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '0.635', '-1.09985', '0', '0.635', '-1.09985', '9', '0.635', '9', '0']
+surf20 = openmc.Revolution(surface_id=20, rz=[(-3.9, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf21 = openmc.Revolution(surface_id=21, rz=[(-3.9, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf22 = openmc.Revolution(surface_id=22, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf23 = openmc.Revolution(surface_id=23, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf24 = openmc.Revolution(surface_id=24, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf25 = openmc.Revolution(surface_id=25, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf26 = openmc.Revolution(surface_id=26, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
 # 1st prism with all fuel rods
 # Prism 31: 6-sided polygon
 surf31_0 = openmc.Plane(a=0.8660248905, b=0.5000008891, c=0, d=15.9478483580)
@@ -113,24 +116,24 @@ surf322 = openmc.model.RectangularParallelepiped(-6.35, 6.35, -499.5, 499.5, -49
 surf323 = openmc.model.RectangularParallelepiped(-6.35, 6.35, -499.5, 499.5, -499.5, 499.5)
 
 # Z-plane surfaces for bounded cylinders
-surf2_zmin = openmc.ZPlane(z0=-3.8)
-surf2_zmax = openmc.ZPlane(z0=-2.3)
-surf3_zmin = openmc.ZPlane(z0=126.9)
-surf3_zmax = openmc.ZPlane(z0=127.9)
-surf4_zmin = openmc.ZPlane(z0=-33.8, boundary_type="vacuum")
-surf4_zmax = openmc.ZPlane(z0=131.8, boundary_type="vacuum")
-surf10_zmin = openmc.ZPlane(z0=0.0)
-surf10_zmax = openmc.ZPlane(z0=125.0)
-surf12_zmin = openmc.ZPlane(z0=125.0)
-surf12_zmax = openmc.ZPlane(z0=125.7)
-surf14_zmin = openmc.ZPlane(z0=125.7)
-surf14_zmax = openmc.ZPlane(z0=128.0)
-surf15_zmin = openmc.ZPlane(z0=0.0)
-surf15_zmax = openmc.ZPlane(z0=128.0)
-surf16_zmin = openmc.ZPlane(z0=-2.3)
-surf16_zmax = openmc.ZPlane(z0=130.3)
-surf17_zmin = openmc.ZPlane(z0=-3.8)
-surf17_zmax = openmc.ZPlane(z0=131.8)
+surf2_zmin = openmc.ZPlane(surface_id=1323, z0=-3.8)
+surf2_zmax = openmc.ZPlane(surface_id=1324, z0=-2.3)
+surf3_zmin = openmc.ZPlane(surface_id=1325, z0=126.9)
+surf3_zmax = openmc.ZPlane(surface_id=1326, z0=127.9)
+surf4_zmin = openmc.ZPlane(surface_id=1327, z0=-33.8, boundary_type="vacuum")
+surf4_zmax = openmc.ZPlane(surface_id=1328, z0=131.8, boundary_type="vacuum")
+surf10_zmin = openmc.ZPlane(surface_id=1329, z0=0.0)
+surf10_zmax = openmc.ZPlane(surface_id=1330, z0=125.0)
+surf12_zmin = openmc.ZPlane(surface_id=1331, z0=125.0)
+surf12_zmax = openmc.ZPlane(surface_id=1332, z0=125.7)
+surf14_zmin = openmc.ZPlane(surface_id=1333, z0=125.7)
+surf14_zmax = openmc.ZPlane(surface_id=1334, z0=128.0)
+surf15_zmin = openmc.ZPlane(surface_id=1335, z0=0.0)
+surf15_zmax = openmc.ZPlane(surface_id=1336, z0=128.0)
+surf16_zmin = openmc.ZPlane(surface_id=1337, z0=-2.3)
+surf16_zmax = openmc.ZPlane(surface_id=1338, z0=130.3)
+surf17_zmin = openmc.ZPlane(surface_id=1339, z0=-3.8)
+surf17_zmax = openmc.ZPlane(surface_id=1340, z0=131.8)
 
 # ------------------------------------------------------------------------------
 # Universes

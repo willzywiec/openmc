@@ -124,6 +124,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Na
 surf1 = openmc.model.RectangularParallelepiped(-2.4815, 2.4815, -2.4815, 2.4815, 1.3068300000000002, 1.84917)
 # Na

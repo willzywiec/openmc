@@ -56,8 +56,11 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Water/OR
-surf1 = openmc.ZCylinder(surface_id=1, r=91.44)
+surf1 = openmc.ZCylinder(surface_id=1, r=91.44, boundary_type="vacuum")
 # Z-Lo = -200/2 + 115.765 = 15.765 cm
 surf2 = openmc.model.RectangularParallelepiped(-3.81, 3.81, -5.605779999999999, -5.42798, 15.765, 215.765)
 surf3 = openmc.model.RectangularParallelepiped(-3.81, 3.81, -1.92786, -1.75006, 15.765, 215.765)
@@ -80,12 +83,22 @@ surf16 = openmc.ZCylinder(surface_id=16, r=0.63246)
 # Clad/OR
 surf17 = openmc.ZCylinder(surface_id=17, x0=0.0, y0=0.0, r=0.72263)
 surf100 = openmc.model.RectangularParallelepiped(-500.0, 500.0, -500.0, 500.0, -500.0, 500.0)
-# surf101: Unsupported surface type "sameas" with params ['12', 'tr', '-6.89610', '-7.81558', '0', '102', 'sameas', '12', 'tr', '-5.97662', '-7.81558', '0', '103', 'sameas', '12', 'tr', '-5.05714', '-7.81558', '0']
-# surf104: Unsupported surface type "sameas" with params ['12', 'tr', '-4.13766', '-7.81558', '0', '105', 'sameas', '12', 'tr', '-3.21818', '-7.81558', '0', '106', 'sameas', '12', 'tr', '-2.29870', '-7.81558', '0']
-# surf107: Unsupported surface type "sameas" with params ['12', 'tr', '-1.37922', '-7.81558', '0', '108', 'sameas', '12', 'tr', '-0.45974', '-7.81558', '0', '109', 'sameas', '12', 'tr', '0.45974', '-7.81558', '0']
-# surf110: Unsupported surface type "sameas" with params ['12', 'tr', '1.37922', '-7.81558', '0', '111', 'sameas', '12', 'tr', '2.29870', '-7.81558', '0', '112', 'sameas', '12', 'tr', '3.21818', '-7.81558', '0']
-# surf113: Unsupported surface type "sameas" with params ['12', 'tr', '4.13766', '-7.81558', '0', '114', 'sameas', '12', 'tr', '5.05714', '-7.81558', '0', '115', 'sameas', '12', 'tr', '5.97662', '-7.81558', '0']
-# surf116: Unsupported surface type "sameas" with params ['12', 'tr', '6.89610', '-7.81558', '0']
+surf101 = openmc.ZCylinder(surface_id=101, x0=-6.8961, y0=-7.81558, r=0.32385)
+surf102 = openmc.ZCylinder(surface_id=102, x0=-5.97662, y0=-7.81558, r=0.32385)
+surf103 = openmc.ZCylinder(surface_id=103, x0=-5.05714, y0=-7.81558, r=0.32385)
+surf104 = openmc.ZCylinder(surface_id=104, x0=-4.13766, y0=-7.81558, r=0.32385)
+surf105 = openmc.ZCylinder(surface_id=105, x0=-3.21818, y0=-7.81558, r=0.32385)
+surf106 = openmc.ZCylinder(surface_id=106, x0=-2.2987, y0=-7.81558, r=0.32385)
+surf107 = openmc.ZCylinder(surface_id=107, x0=-1.37922, y0=-7.81558, r=0.32385)
+surf108 = openmc.ZCylinder(surface_id=108, x0=-0.45974, y0=-7.81558, r=0.32385)
+surf109 = openmc.ZCylinder(surface_id=109, x0=0.45974, y0=-7.81558, r=0.32385)
+surf110 = openmc.ZCylinder(surface_id=110, x0=1.37922, y0=-7.81558, r=0.32385)
+surf111 = openmc.ZCylinder(surface_id=111, x0=2.2987, y0=-7.81558, r=0.32385)
+surf112 = openmc.ZCylinder(surface_id=112, x0=3.21818, y0=-7.81558, r=0.32385)
+surf113 = openmc.ZCylinder(surface_id=113, x0=4.13766, y0=-7.81558, r=0.32385)
+surf114 = openmc.ZCylinder(surface_id=114, x0=5.05714, y0=-7.81558, r=0.32385)
+surf115 = openmc.ZCylinder(surface_id=115, x0=5.97662, y0=-7.81558, r=0.32385)
+surf116 = openmc.ZCylinder(surface_id=116, x0=6.8961, y0=-7.81558, r=0.32385)
 surf120 = openmc.YPlane(surface_id=120, y0=-7.35584)
 surf125 = openmc.YPlane(surface_id=125, y0=-2.75844)
 surf130 = openmc.YPlane(surface_id=130, y0=1.83896)
@@ -94,17 +107,38 @@ surf135 = openmc.YPlane(surface_id=135, y0=6.43636)
 surf141 = openmc.model.RectangularParallelepiped(-7.35584, 7.35584, -0.91948, 0.91948, -500.0, 500.0)
 # Seed Region/Short
 surf142 = openmc.model.RectangularParallelepiped(-5.51688, 5.51688, -8.27532, 8.27532, -500.0, 500.0)
-# surf201: Unsupported surface type "sameas" with params ['17', 'tr', '-28.50388', '0', '0', '202', 'sameas', '17', 'tr', '-26.66492', '0', '0', '203', 'sameas', '17', 'tr', '-24.82596', '0', '0']
-# surf204: Unsupported surface type "sameas" with params ['17', 'tr', '-22.98700', '0', '0', '205', 'sameas', '17', 'tr', '-21.14804', '0', '0', '206', 'sameas', '17', 'tr', '-19.30908', '0', '0']
-# surf207: Unsupported surface type "sameas" with params ['17', 'tr', '-17.47012', '0', '0', '208', 'sameas', '17', 'tr', '-15.63116', '0', '0', '209', 'sameas', '17', 'tr', '-13.79220', '0', '0']
-# surf210: Unsupported surface type "sameas" with params ['17', 'tr', '-11.95324', '0', '0', '211', 'sameas', '17', 'tr', '-10.11428', '0', '0', '212', 'sameas', '17', 'tr', '-8.27532', '0', '0']
-# surf213: Unsupported surface type "sameas" with params ['17', 'tr', '-6.43636', '0', '0', '214', 'sameas', '17', 'tr', '-4.59740', '0', '0', '215', 'sameas', '17', 'tr', '-2.75844', '0', '0']
-# surf216: Unsupported surface type "sameas" with params ['17', 'tr', '-0.91948', '0', '0', '217', 'sameas', '17', 'tr', '0.91948', '0', '0', '218', 'sameas', '17', 'tr', '2.75844', '0', '0']
-# surf219: Unsupported surface type "sameas" with params ['17', 'tr', '4.59740', '0', '0', '220', 'sameas', '17', 'tr', '6.43636', '0', '0', '221', 'sameas', '17', 'tr', '8.27532', '0', '0']
-# surf222: Unsupported surface type "sameas" with params ['17', 'tr', '10.11428', '0', '0', '223', 'sameas', '17', 'tr', '11.95324', '0', '0', '224', 'sameas', '17', 'tr', '13.79220', '0', '0']
-# surf225: Unsupported surface type "sameas" with params ['17', 'tr', '15.63116', '0', '0', '226', 'sameas', '17', 'tr', '17.47012', '0', '0', '227', 'sameas', '17', 'tr', '19.30908', '0', '0']
-# surf228: Unsupported surface type "sameas" with params ['17', 'tr', '21.14804', '0', '0', '229', 'sameas', '17', 'tr', '22.98700', '0', '0', '230', 'sameas', '17', 'tr', '24.82596', '0', '0']
-# surf231: Unsupported surface type "sameas" with params ['17', 'tr', '26.66492', '0', '0', '232', 'sameas', '17', 'tr', '28.50388', '0', '0']
+surf201 = openmc.ZCylinder(surface_id=201, x0=-28.50388, y0=0.0, r=0.72263)
+surf202 = openmc.ZCylinder(surface_id=202, x0=-26.66492, y0=0.0, r=0.72263)
+surf203 = openmc.ZCylinder(surface_id=203, x0=-24.82596, y0=0.0, r=0.72263)
+surf204 = openmc.ZCylinder(surface_id=204, x0=-22.987, y0=0.0, r=0.72263)
+surf205 = openmc.ZCylinder(surface_id=205, x0=-21.14804, y0=0.0, r=0.72263)
+surf206 = openmc.ZCylinder(surface_id=206, x0=-19.30908, y0=0.0, r=0.72263)
+surf207 = openmc.ZCylinder(surface_id=207, x0=-17.47012, y0=0.0, r=0.72263)
+surf208 = openmc.ZCylinder(surface_id=208, x0=-15.63116, y0=0.0, r=0.72263)
+surf209 = openmc.ZCylinder(surface_id=209, x0=-13.7922, y0=0.0, r=0.72263)
+surf210 = openmc.ZCylinder(surface_id=210, x0=-11.95324, y0=0.0, r=0.72263)
+surf211 = openmc.ZCylinder(surface_id=211, x0=-10.11428, y0=0.0, r=0.72263)
+surf212 = openmc.ZCylinder(surface_id=212, x0=-8.27532, y0=0.0, r=0.72263)
+surf213 = openmc.ZCylinder(surface_id=213, x0=-6.43636, y0=0.0, r=0.72263)
+surf214 = openmc.ZCylinder(surface_id=214, x0=-4.5974, y0=0.0, r=0.72263)
+surf215 = openmc.ZCylinder(surface_id=215, x0=-2.75844, y0=0.0, r=0.72263)
+surf216 = openmc.ZCylinder(surface_id=216, x0=-0.91948, y0=0.0, r=0.72263)
+surf217 = openmc.ZCylinder(surface_id=217, x0=0.91948, y0=0.0, r=0.72263)
+surf218 = openmc.ZCylinder(surface_id=218, x0=2.75844, y0=0.0, r=0.72263)
+surf219 = openmc.ZCylinder(surface_id=219, x0=4.5974, y0=0.0, r=0.72263)
+surf220 = openmc.ZCylinder(surface_id=220, x0=6.43636, y0=0.0, r=0.72263)
+surf221 = openmc.ZCylinder(surface_id=221, x0=8.27532, y0=0.0, r=0.72263)
+surf222 = openmc.ZCylinder(surface_id=222, x0=10.11428, y0=0.0, r=0.72263)
+surf223 = openmc.ZCylinder(surface_id=223, x0=11.95324, y0=0.0, r=0.72263)
+surf224 = openmc.ZCylinder(surface_id=224, x0=13.7922, y0=0.0, r=0.72263)
+surf225 = openmc.ZCylinder(surface_id=225, x0=15.63116, y0=0.0, r=0.72263)
+surf226 = openmc.ZCylinder(surface_id=226, x0=17.47012, y0=0.0, r=0.72263)
+surf227 = openmc.ZCylinder(surface_id=227, x0=19.30908, y0=0.0, r=0.72263)
+surf228 = openmc.ZCylinder(surface_id=228, x0=21.14804, y0=0.0, r=0.72263)
+surf229 = openmc.ZCylinder(surface_id=229, x0=22.987, y0=0.0, r=0.72263)
+surf230 = openmc.ZCylinder(surface_id=230, x0=24.82596, y0=0.0, r=0.72263)
+surf231 = openmc.ZCylinder(surface_id=231, x0=26.66492, y0=0.0, r=0.72263)
+surf232 = openmc.ZCylinder(surface_id=232, x0=28.50388, y0=0.0, r=0.72263)
 surf240 = openmc.YPlane(surface_id=240, y0=-30.34284)
 surf245 = openmc.YPlane(surface_id=245, y0=-21.14804)
 surf250 = openmc.YPlane(surface_id=250, y0=-11.95324)
@@ -114,8 +148,8 @@ surf265 = openmc.YPlane(surface_id=265, y0=15.63116)
 surf270 = openmc.YPlane(surface_id=270, y0=24.82596)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=-56.2991, boundary_type="vacuum")
-surf1_zmax = openmc.ZPlane(z0=56.2991, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1270, z0=-56.2991, boundary_type="vacuum")
+surf1_zmax = openmc.ZPlane(surface_id=1271, z0=56.2991, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes
@@ -134,7 +168,7 @@ u1_cell4.region = +surf11 & -surf12
 universe1 = openmc.Universe(universe_id=1, cells=[u1_cell0, u1_cell1, u1_cell2, u1_cell3, u1_cell4])
 
 u2_cell0 = openmc.Cell(fill=mat1)
-u2_cell0.region = -surf100 & +surf101 & +surf104 & +surf107 & +surf110 & +surf113 & +surf116
+u2_cell0.region = -surf100 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110 & +surf111 & +surf112 & +surf113 & +surf114 & +surf115 & +surf116
 universe2 = openmc.Universe(universe_id=2, cells=[u2_cell0])
 
 universe3 = openmc.Universe(universe_id=3, cells=[])
@@ -152,7 +186,7 @@ u4_cell4.region = +surf16 & -surf17
 universe4 = openmc.Universe(universe_id=4, cells=[u4_cell0, u4_cell1, u4_cell2, u4_cell3, u4_cell4])
 
 u5_cell0 = openmc.Cell(fill=mat1)
-u5_cell0.region = -surf100 & +surf201 & +surf204 & +surf207 & +surf210
+u5_cell0.region = -surf100 & +surf201 & +surf202 & +surf203 & +surf204 & +surf205 & +surf206 & +surf207 & +surf208 & +surf209 & +surf210
 universe5 = openmc.Universe(universe_id=5, cells=[u5_cell0])
 
 universe6 = openmc.Universe(universe_id=6, cells=[])

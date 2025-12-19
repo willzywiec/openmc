@@ -46,6 +46,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Pu/IR
 surf1 = openmc.Sphere(surface_id=1, r=1.4)
 # Pu/OR
@@ -57,7 +60,7 @@ surf4 = openmc.Sphere(surface_id=4, r=13.00)
 # Duralumin/OR
 surf5 = openmc.Sphere(surface_id=5, r=13.20)
 # Midplane
-# surf6: Unsupported surface type "analytic" with params ['1.', 'x', '0.00', 'constant']
+surf6 = openmc.XPlane(surface_id=6, x0=0.0)
 # D38/HOLE
 surf7 = openmc.XCylinder(surface_id=7, r=1.75)
 # Duralumin/SIDE
@@ -65,7 +68,7 @@ surf8 = openmc.XCylinder(surface_id=8, r=11.0)
 # Duralumin/RAM
 surf9 = openmc.XCylinder(surface_id=9, r=2.5)
 # Pu/BOTTOM
-# surf10: Unsupported surface type "analytic" with params ['1.', 'x', '-0.61', 'constant']
+surf10 = openmc.XPlane(surface_id=10, x0=-0.61)
 # Pu/IR
 surf11 = openmc.Sphere(surface_id=11, x0=1.4, y0=tr, z0=0.61, r=0.)
 # Pu/OR
@@ -82,12 +85,12 @@ surf16 = openmc.XCylinder(surface_id=16, r=0.5)
 surf17 = openmc.XCylinder(surface_id=17, r=15.0)
 
 # Z-plane surfaces for bounded cylinders
-surf8_zmin = openmc.ZPlane(z0=-14.0)
-surf8_zmax = openmc.ZPlane(z0=-3.0)
-surf9_zmin = openmc.ZPlane(z0=-16.0)
-surf9_zmax = openmc.ZPlane(z0=-7.0)
-surf17_zmin = openmc.ZPlane(z0=0.41)
-surf17_zmax = openmc.ZPlane(z0=0.61)
+surf8_zmin = openmc.ZPlane(surface_id=1017, z0=-14.0)
+surf8_zmax = openmc.ZPlane(surface_id=1018, z0=-3.0)
+surf9_zmin = openmc.ZPlane(surface_id=1019, z0=-16.0)
+surf9_zmax = openmc.ZPlane(surface_id=1020, z0=-7.0)
+surf17_zmin = openmc.ZPlane(surface_id=1021, z0=0.41)
+surf17_zmax = openmc.ZPlane(surface_id=1022, z0=0.61)
 
 # ------------------------------------------------------------------------------
 # Root Cells

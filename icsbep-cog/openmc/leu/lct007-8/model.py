@@ -63,6 +63,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Entire problem (BCD)
 surf1 = openmc.model.RectangularParallelepiped(-60.0, 60.0, -60.0, 60.0, -21.799999999999997, 98.2, boundary_type="vacuum")
 # Hexagonal
@@ -88,7 +91,7 @@ surf11 = openmc.ZCylinder(surface_id=11, r=0.3946)
 # Gap
 surf12 = openmc.ZCylinder(surface_id=12, r=0.41)
 # AGS
-# surf13: Unsupported surface type "rev" with params ['3', '-1.8', '0.0', '-1.0', '0.47', '98.2', '0.47']
+surf13 = openmc.Revolution(surface_id=13, rz=[(-1.8, 0.0), (-1.0, 0.47), (98.2, 0.47)], axis="x")
 # Hole in grid plates
 surf14 = openmc.ZCylinder(surface_id=14, r=0.5)
 # SS pedestal plate
@@ -170,14 +173,14 @@ surf162 = openmc.ZCylinder(surface_id=162, x0=7.425, y0=-15.198742, r=0.5)
 surf163 = openmc.ZCylinder(surface_id=163, x0=8.775, y0=-15.198742, r=0.5)
 
 # Z-plane surfaces for bounded cylinders
-surf11_zmin = openmc.ZPlane(z0=0.0)
-surf11_zmax = openmc.ZPlane(z0=89.7)
-surf12_zmin = openmc.ZPlane(z0=0.0)
-surf12_zmax = openmc.ZPlane(z0=96.9)
-surf16_zmin = openmc.ZPlane(z0=-0.3)
-surf16_zmax = openmc.ZPlane(z0=-0.05)
-surf17_zmin = openmc.ZPlane(z0=96.45)
-surf17_zmax = openmc.ZPlane(z0=96.7)
+surf11_zmin = openmc.ZPlane(surface_id=1163, z0=0.0)
+surf11_zmax = openmc.ZPlane(surface_id=1164, z0=89.7)
+surf12_zmin = openmc.ZPlane(surface_id=1165, z0=0.0)
+surf12_zmax = openmc.ZPlane(surface_id=1166, z0=96.9)
+surf16_zmin = openmc.ZPlane(surface_id=1167, z0=-0.3)
+surf16_zmax = openmc.ZPlane(surface_id=1168, z0=-0.05)
+surf17_zmin = openmc.ZPlane(surface_id=1169, z0=96.45)
+surf17_zmax = openmc.ZPlane(surface_id=1170, z0=96.7)
 
 # ------------------------------------------------------------------------------
 # Universes

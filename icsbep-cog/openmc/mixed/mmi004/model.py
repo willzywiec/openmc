@@ -85,6 +85,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Core
 surf1 = openmc.ZCylinder(surface_id=1, r=34.3564)
 # Axial Blanket
@@ -96,21 +99,21 @@ surf4 = openmc.ZCylinder(surface_id=4, r=34.3564)
 # Radial Blanket
 surf5 = openmc.ZCylinder(surface_id=5, r=68.4995)
 # Matrix
-surf6 = openmc.ZCylinder(surface_id=6, r=96.8226)
+surf6 = openmc.ZCylinder(surface_id=6, r=96.8226, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=-30.5631)
-surf1_zmax = openmc.ZPlane(z0=30.5631)
-surf2_zmin = openmc.ZPlane(z0=-61.6781)
-surf2_zmax = openmc.ZPlane(z0=61.6781)
-surf3_zmin = openmc.ZPlane(z0=53.4231)
-surf3_zmax = openmc.ZPlane(z0=54.0581)
-surf4_zmin = openmc.ZPlane(z0=-54.0581)
-surf4_zmax = openmc.ZPlane(z0=-53.4231)
-surf5_zmin = openmc.ZPlane(z0=-60.96)
-surf5_zmax = openmc.ZPlane(z0=60.96)
-surf6_zmin = openmc.ZPlane(z0=-85.09, boundary_type="vacuum")
-surf6_zmax = openmc.ZPlane(z0=85.09, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1006, z0=-30.5631)
+surf1_zmax = openmc.ZPlane(surface_id=1007, z0=30.5631)
+surf2_zmin = openmc.ZPlane(surface_id=1008, z0=-61.6781)
+surf2_zmax = openmc.ZPlane(surface_id=1009, z0=61.6781)
+surf3_zmin = openmc.ZPlane(surface_id=1010, z0=53.4231)
+surf3_zmax = openmc.ZPlane(surface_id=1011, z0=54.0581)
+surf4_zmin = openmc.ZPlane(surface_id=1012, z0=-54.0581)
+surf4_zmax = openmc.ZPlane(surface_id=1013, z0=-53.4231)
+surf5_zmin = openmc.ZPlane(surface_id=1014, z0=-60.96)
+surf5_zmax = openmc.ZPlane(surface_id=1015, z0=60.96)
+surf6_zmin = openmc.ZPlane(surface_id=1016, z0=-85.09, boundary_type="vacuum")
+surf6_zmax = openmc.ZPlane(surface_id=1017, z0=85.09, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

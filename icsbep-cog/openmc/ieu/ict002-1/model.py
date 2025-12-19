@@ -46,6 +46,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.ZCylinder(surface_id=1, x0=0.0, y0=34.0, r=2.35)
 surf2 = openmc.ZCylinder(surface_id=2, x0=-5.88897, y0=30.6, r=2.35)
 surf3 = openmc.ZCylinder(surface_id=3, x0=5.88897, y0=30.6, r=2.35)
@@ -178,21 +181,21 @@ surf905 = openmc.ZCylinder(surface_id=905, r=42.0)
 # SST cylindrical annulus/outer
 surf906 = openmc.ZCylinder(surface_id=906, r=44.0)
 # Water reflector and boundary condition
-surf999 = openmc.ZCylinder(surface_id=999, r=60.0)
+surf999 = openmc.ZCylinder(surface_id=999, r=60.0, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf301_zmin = openmc.ZPlane(z0=4.3)
-surf301_zmax = openmc.ZPlane(z0=999.9)
-surf302_zmin = openmc.ZPlane(z0=4.0)
-surf302_zmax = openmc.ZPlane(z0=999.9)
-surf902_zmin = openmc.ZPlane(z0=-19.0)
-surf902_zmax = openmc.ZPlane(z0=0.0)
-surf903_zmin = openmc.ZPlane(z0=0.0)
-surf903_zmax = openmc.ZPlane(z0=3.5)
-surf904_zmin = openmc.ZPlane(z0=66.8)
-surf904_zmax = openmc.ZPlane(z0=68.8)
-surf999_zmin = openmc.ZPlane(z0=-19.0, boundary_type="vacuum")
-surf999_zmax = openmc.ZPlane(z0=106.0, boundary_type="vacuum")
+surf301_zmin = openmc.ZPlane(surface_id=1999, z0=4.3)
+surf301_zmax = openmc.ZPlane(surface_id=2000, z0=999.9)
+surf302_zmin = openmc.ZPlane(surface_id=2001, z0=4.0)
+surf302_zmax = openmc.ZPlane(surface_id=2002, z0=999.9)
+surf902_zmin = openmc.ZPlane(surface_id=2003, z0=-19.0)
+surf902_zmax = openmc.ZPlane(surface_id=2004, z0=0.0)
+surf903_zmin = openmc.ZPlane(surface_id=2005, z0=0.0)
+surf903_zmax = openmc.ZPlane(surface_id=2006, z0=3.5)
+surf904_zmin = openmc.ZPlane(surface_id=2007, z0=66.8)
+surf904_zmax = openmc.ZPlane(surface_id=2008, z0=68.8)
+surf999_zmin = openmc.ZPlane(surface_id=2009, z0=-19.0, boundary_type="vacuum")
+surf999_zmax = openmc.ZPlane(surface_id=2010, z0=106.0, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

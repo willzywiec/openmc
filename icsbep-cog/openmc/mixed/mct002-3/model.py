@@ -75,6 +75,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.ZCylinder(surface_id=1, r=0.64135)
 surf2 = openmc.ZCylinder(surface_id=2, r=0.71755)
 # Eggcrate inner
@@ -92,7 +95,7 @@ surf13 = openmc.ZPlane(surface_id=13, z0=125.8215)
 surf14 = openmc.ZPlane(surface_id=14, z0=126.7740)
 # Arbitrary big box for unit cell bcd
 surf15 = openmc.model.RectangularParallelepiped(-4.95, 4.95, -4.95, 4.95, -499.95, 499.95)
-surf90 = openmc.ZCylinder(surface_id=90, r=60.0)
+surf90 = openmc.ZCylinder(surface_id=90, r=60.0, boundary_type="vacuum")
 surf101 = openmc.XPlane(surface_id=101, x0=-62.96049)
 surf102 = openmc.XPlane(surface_id=102, x0=-60.75135)
 surf103 = openmc.XPlane(surface_id=103, x0=-58.54221)
@@ -213,8 +216,8 @@ surf301 = openmc.ZPlane(surface_id=301, z0=-999.0)
 surf302 = openmc.ZPlane(surface_id=302, z0=999.0)
 
 # Z-plane surfaces for bounded cylinders
-surf90_zmin = openmc.ZPlane(z0=0.0, boundary_type="vacuum")
-surf90_zmax = openmc.ZPlane(z0=132.489, boundary_type="vacuum")
+surf90_zmin = openmc.ZPlane(surface_id=1302, z0=0.0, boundary_type="vacuum")
+surf90_zmax = openmc.ZPlane(surface_id=1303, z0=132.489, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

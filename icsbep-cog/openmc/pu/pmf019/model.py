@@ -45,6 +45,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Pu/IR
 surf1 = openmc.Sphere(surface_id=1, r=1.4)
 # Pu/OR
@@ -54,7 +57,7 @@ surf3 = openmc.Sphere(surface_id=3, r=11.0)
 # Cu/OR
 surf4 = openmc.Sphere(surface_id=4, r=11.15)
 # Be/TOP/LHS
-# surf5: Unsupported surface type "analytic" with params ['1.', 'x', '0.15', 'constant']
+surf5 = openmc.XPlane(surface_id=5, x0=0.15)
 # Cu/SIDE
 surf6 = openmc.XCylinder(surface_id=6, r=9.7)
 # Steel
@@ -64,7 +67,7 @@ surf11 = openmc.Sphere(surface_id=11, x0=5.35, y0=tr, z0=1.05, r=0.)
 # Be/OR
 surf12 = openmc.Sphere(surface_id=12, x0=11.00, y0=tr, z0=1.05, r=0.)
 # Be/Bottom
-# surf13: Unsupported surface type "analytic" with params ['1.', 'x', '-1.20', 'constant']
+surf13 = openmc.XPlane(surface_id=13, x0=-1.2)
 # Be/Hole
 surf14 = openmc.XCylinder(surface_id=14, r=1.1)
 # STL/IR
@@ -73,14 +76,14 @@ surf21 = openmc.XCylinder(surface_id=21, r=5.5)
 surf22 = openmc.XCylinder(surface_id=22, r=14.0)
 
 # Z-plane surfaces for bounded cylinders
-surf6_zmin = openmc.ZPlane(z0=-12.0)
-surf6_zmax = openmc.ZPlane(z0=-3.0)
-surf7_zmin = openmc.ZPlane(z0=-14.15)
-surf7_zmax = openmc.ZPlane(z0=-7.0)
-surf21_zmin = openmc.ZPlane(z0=1.0)
-surf21_zmax = openmc.ZPlane(z0=1.2)
-surf22_zmin = openmc.ZPlane(z0=1.0)
-surf22_zmax = openmc.ZPlane(z0=1.2)
+surf6_zmin = openmc.ZPlane(surface_id=1022, z0=-12.0)
+surf6_zmax = openmc.ZPlane(surface_id=1023, z0=-3.0)
+surf7_zmin = openmc.ZPlane(surface_id=1024, z0=-14.15)
+surf7_zmax = openmc.ZPlane(surface_id=1025, z0=-7.0)
+surf21_zmin = openmc.ZPlane(surface_id=1026, z0=1.0)
+surf21_zmax = openmc.ZPlane(surface_id=1027, z0=1.2)
+surf22_zmin = openmc.ZPlane(surface_id=1028, z0=1.0)
+surf22_zmax = openmc.ZPlane(surface_id=1029, z0=1.2)
 
 # ------------------------------------------------------------------------------
 # Root Cells

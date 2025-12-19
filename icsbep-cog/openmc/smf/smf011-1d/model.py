@@ -97,6 +97,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Al mounting plate
 surf1 = openmc.model.RectangularParallelepiped(-15.24, 15.24, -15.24, 15.24, -33.78194, -33.14694)
 # SS304 lower base
@@ -106,7 +109,7 @@ surf3 = openmc.model.RectangularParallelepiped(-9.8425, 9.8425, -8.255, 8.255, -
 # SS304 table
 surf4 = openmc.model.RectangularParallelepiped(-12.7, 12.7, -7.62, 7.62, -23.30444, -20.76444)
 # Al mounting tube: spherical contour
-# surf5: Unsupported surface type "s" with params ['15.00124', 'tr', '0', '0', '2.1489']
+surf5 = openmc.Sphere(surface_id=5, x0=15.00124, y0=tr, z0=0, r=0)
 # Al mounting tube: large hole
 surf6 = openmc.ZCylinder(surface_id=6, r=5.08)
 # Al mounting tube: small hole
@@ -118,9 +121,9 @@ surf9 = openmc.ZCylinder(surface_id=9, r=10.16)
 # Al bottom/top shell: top/bottom; Poly spacer: bottom
 surf10 = openmc.ZPlane(surface_id=10, z0=0.0)
 # Al bottom shell: inner
-# surf11: Unsupported surface type "s" with params ['4.83108']
+surf11 = openmc.Sphere(surface_id=11, r=4.83108)
 # Al bottom shell: outer
-# surf12: Unsupported surface type "s" with params ['4.99872']
+surf12 = openmc.Sphere(surface_id=12, r=4.99872)
 # Al bottom shell: stem
 surf13 = openmc.ZCylinder(surface_id=13, r=0.3302)
 # Polyethylene spacer: inner
@@ -130,19 +133,19 @@ surf18 = openmc.ZCylinder(surface_id=18, r=12.99972)
 # Polyethylene spacer: top
 surf19 = openmc.ZPlane(surface_id=19, z0=0.635)
 # Np sphere
-# surf21: Unsupported surface type "s" with params ['4.14909']
+surf21 = openmc.Sphere(surface_id=21, r=4.14909)
 # W shield: inner
-# surf22: Unsupported surface type "s" with params ['4.16814']
+surf22 = openmc.Sphere(surface_id=22, r=4.16814)
 # W shield: outer
-# surf23: Unsupported surface type "s" with params ['4.42722']
+surf23 = openmc.Sphere(surface_id=23, r=4.42722)
 # Inner Ni cladding: inner
-# surf24: Unsupported surface type "s" with params ['4.4323']
+surf24 = openmc.Sphere(surface_id=24, r=4.4323)
 # Inner Ni cladding: outer
-# surf25: Unsupported surface type "s" with params ['4.6228']
+surf25 = openmc.Sphere(surface_id=25, r=4.6228)
 # Outer Ni cladding: inner
-# surf26: Unsupported surface type "s" with params ['4.62788']
+surf26 = openmc.Sphere(surface_id=26, r=4.62788)
 # Outer Ni cladding: outer
-# surf27: Unsupported surface type "s" with params ['4.81838']
+surf27 = openmc.Sphere(surface_id=27, r=4.81838)
 # Hole in top Al support plate
 surf31 = openmc.ZCylinder(surface_id=31, r=15.0114)
 # Top Al support plate
@@ -152,71 +155,71 @@ surf45 = openmc.model.RectangularParallelepiped(-22.098, 22.098, -22.098, 22.098
 # Al top plate
 surf46 = openmc.model.RectangularParallelepiped(-57.15, 57.15, -57.15, 57.15, -3.175, -0.635)
 # Al top shell: inner
-# surf51: Unsupported surface type "s" with params ['4.83108']
+surf51 = openmc.Sphere(surface_id=51, r=4.83108)
 # Al top shell: outer
-# surf52: Unsupported surface type "s" with params ['4.99872']
+surf52 = openmc.Sphere(surface_id=52, r=4.99872)
 # Al top shell: stem
 surf53 = openmc.ZCylinder(surface_id=53, r=0.3302)
 # Central z-hole in all HEU shells
 surf200 = openmc.ZCylinder(surface_id=200, r=0.35687)
 # Bottom HEU shell no. 21
-# surf211: Unsupported surface type "s" with params ['5.017', '212', 's', '5.337']
+surf211 = openmc.Sphere(surface_id=211, x0=5.017, y0=212, z0=s, r=5.337)
 # Top HEU shell no. 22
-# surf221: Unsupported surface type "s" with params ['5.013', '222', 's', '5.336']
+surf221 = openmc.Sphere(surface_id=221, x0=5.013, y0=222, z0=s, r=5.336)
 # Bottom HEU shell no. 23
-# surf231: Unsupported surface type "s" with params ['5.346', '232', 's', '5.669']
+surf231 = openmc.Sphere(surface_id=231, x0=5.346, y0=232, z0=s, r=5.669)
 # Top HEU shell no. 24
-# surf241: Unsupported surface type "s" with params ['5.346', '242', 's', '5.669']
+surf241 = openmc.Sphere(surface_id=241, x0=5.346, y0=242, z0=s, r=5.669)
 # Bottom HEU shell no. 25
-# surf251: Unsupported surface type "s" with params ['5.679', '252', 's', '6.003']
+surf251 = openmc.Sphere(surface_id=251, x0=5.679, y0=252, z0=s, r=6.003)
 # Top HEU shell no. 26
-# surf261: Unsupported surface type "s" with params ['5.679', '262', 's', '6.001']
+surf261 = openmc.Sphere(surface_id=261, x0=5.679, y0=262, z0=s, r=6.001)
 # Bottom HEU shell no. 27
-# surf271: Unsupported surface type "s" with params ['6.011', '272', 's', '6.335']
+surf271 = openmc.Sphere(surface_id=271, x0=6.011, y0=272, z0=s, r=6.335)
 # Top HEU shell no. 28
-# surf281: Unsupported surface type "s" with params ['6.012', '282', 's', '6.334']
+surf281 = openmc.Sphere(surface_id=281, x0=6.012, y0=282, z0=s, r=6.334)
 # Bottom HEU shell no. 29
-# surf291: Unsupported surface type "s" with params ['6.345', '292', 's', '6.671']
+surf291 = openmc.Sphere(surface_id=291, x0=6.345, y0=292, z0=s, r=6.671)
 # Top HEU shell no. 30
-# surf301: Unsupported surface type "s" with params ['6.344', '302', 's', '6.670']
+surf301 = openmc.Sphere(surface_id=301, x0=6.344, y0=302, z0=s, r=6.670)
 # Bottom HEU shell no. 31
-# surf311: Unsupported surface type "s" with params ['6.678', '312', 's', '7.002']
+surf311 = openmc.Sphere(surface_id=311, x0=6.678, y0=312, z0=s, r=7.002)
 # Top HEU shell no. 32
-# surf321: Unsupported surface type "s" with params ['6.679', '322', 's', '7.003']
+surf321 = openmc.Sphere(surface_id=321, x0=6.679, y0=322, z0=s, r=7.003)
 # Bottom HEU shell no. 33
-# surf331: Unsupported surface type "s" with params ['7.006', '332', 's', '7.330']
+surf331 = openmc.Sphere(surface_id=331, x0=7.006, y0=332, z0=s, r=7.330)
 # Top HEU shell no. 34
-# surf341: Unsupported surface type "s" with params ['7.010', '342', 's', '7.334']
+surf341 = openmc.Sphere(surface_id=341, x0=7.010, y0=342, z0=s, r=7.334)
 # Bottom HEU shell no. 35
-# surf351: Unsupported surface type "s" with params ['7.342', '352', 's', '7.666']
+surf351 = openmc.Sphere(surface_id=351, x0=7.342, y0=352, z0=s, r=7.666)
 # Top HEU shell no. 36
-# surf361: Unsupported surface type "s" with params ['7.343', '362', 's', '7.666']
+surf361 = openmc.Sphere(surface_id=361, x0=7.343, y0=362, z0=s, r=7.666)
 # Poly 2B
-# surf371: Unsupported surface type "s" with params ['7.676', '372', 's', '8.004']
+surf371 = openmc.Sphere(surface_id=371, x0=7.676, y0=372, z0=s, r=8.004)
 # Top HEU shell no. 38
-# surf381: Unsupported surface type "s" with params ['7.671', '382', 's', '8.003']
+surf381 = openmc.Sphere(surface_id=381, x0=7.671, y0=382, z0=s, r=8.003)
 # Poly 1B
-# surf391: Unsupported surface type "s" with params ['8.011', '392', 's', '8.334']
+surf391 = openmc.Sphere(surface_id=391, x0=8.011, y0=392, z0=s, r=8.334)
 # Poly 1T shell
-# surf401: Unsupported surface type "s" with params ['8.011', '402', 's', '8.3334']
+surf401 = openmc.Sphere(surface_id=401, x0=8.011, y0=402, z0=s, r=8.3334)
 # Bottom polyethylene reflector
-# surf411: Unsupported surface type "s" with params ['8.34644', '412', 's', '12.99972', '413', 'c', 'z', '0.35179']
+surf411 = openmc.Sphere(surface_id=411, x0=8.34644, y0=412, z0=s, r=12.99972)
 # Top polyethylene reflector
-# surf421: Unsupported surface type "s" with params ['8.34644', 'tr', '0', '0', '0.635', '422', 's', '15.00124', 'tr', '0', '0', '0.635']
+surf421 = openmc.Sphere(surface_id=421, x0=8.34644, y0=tr, z0=0, r=0)
 
 # Z-plane surfaces for bounded cylinders
-surf6_zmin = openmc.ZPlane(z0=-16.62424)
-surf6_zmax = openmc.ZPlane(z0=-9.63924)
-surf7_zmin = openmc.ZPlane(z0=-20.76444)
-surf7_zmax = openmc.ZPlane(z0=-16.62424)
-surf8_zmin = openmc.ZPlane(z0=-16.62424)
-surf8_zmax = openmc.ZPlane(z0=-9.63924)
-surf9_zmin = openmc.ZPlane(z0=-20.76444)
-surf9_zmax = openmc.ZPlane(z0=-16.62424)
-surf13_zmin = openmc.ZPlane(z0=-6.985)
-surf13_zmax = openmc.ZPlane(z0=-1.0)
-surf53_zmin = openmc.ZPlane(z0=1.0)
-surf53_zmax = openmc.ZPlane(z0=6.985)
+surf6_zmin = openmc.ZPlane(surface_id=1421, z0=-16.62424)
+surf6_zmax = openmc.ZPlane(surface_id=1422, z0=-9.63924)
+surf7_zmin = openmc.ZPlane(surface_id=1423, z0=-20.76444)
+surf7_zmax = openmc.ZPlane(surface_id=1424, z0=-16.62424)
+surf8_zmin = openmc.ZPlane(surface_id=1425, z0=-16.62424)
+surf8_zmax = openmc.ZPlane(surface_id=1426, z0=-9.63924)
+surf9_zmin = openmc.ZPlane(surface_id=1427, z0=-20.76444)
+surf9_zmax = openmc.ZPlane(surface_id=1428, z0=-16.62424)
+surf13_zmin = openmc.ZPlane(surface_id=1429, z0=-6.985)
+surf13_zmax = openmc.ZPlane(surface_id=1430, z0=-1.0)
+surf53_zmin = openmc.ZPlane(surface_id=1431, z0=1.0)
+surf53_zmax = openmc.ZPlane(surface_id=1432, z0=6.985)
 
 # ------------------------------------------------------------------------------
 # Root Cells

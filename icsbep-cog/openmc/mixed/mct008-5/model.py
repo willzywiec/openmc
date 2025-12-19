@@ -73,6 +73,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # MOX fuel
 surf1 = openmc.ZCylinder(surface_id=1, r=0.64135)
 # UO2
@@ -122,12 +125,12 @@ surf112 = openmc.ZCylinder(surface_id=112, x0=10.0584, y0=-29.0361, r=0.71775)
 surf113 = openmc.ZCylinder(surface_id=113, x0=-30.1752, y0=0.0, r=0.71775)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=3.1035)
-surf1_zmax = openmc.ZPlane(z0=94.0435)
-surf2_zmin = openmc.ZPlane(z0=2.6035)
-surf2_zmax = openmc.ZPlane(z0=3.1035)
-surf3_zmin = openmc.ZPlane(z0=1.905)
-surf3_zmax = openmc.ZPlane(z0=94.869)
+surf1_zmin = openmc.ZPlane(surface_id=1113, z0=3.1035)
+surf1_zmax = openmc.ZPlane(surface_id=1114, z0=94.0435)
+surf2_zmin = openmc.ZPlane(surface_id=1115, z0=2.6035)
+surf2_zmax = openmc.ZPlane(surface_id=1116, z0=3.1035)
+surf3_zmin = openmc.ZPlane(surface_id=1117, z0=1.905)
+surf3_zmax = openmc.ZPlane(surface_id=1118, z0=94.869)
 
 # ------------------------------------------------------------------------------
 # Universes

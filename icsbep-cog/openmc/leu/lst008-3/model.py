@@ -96,6 +96,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Solution
 surf1 = openmc.ZCylinder(surface_id=1, r=29.5)
 # 60-cm diam. tank
@@ -119,27 +122,27 @@ surf17 = openmc.ZCylinder(surface_id=17, r=50.6)
 # = 50.60 +  0.81 (Outer Wall)
 surf18 = openmc.ZCylinder(surface_id=18, r=51.41)
 # BCD
-surf19 = openmc.ZCylinder(surface_id=19, r=68.5)
+surf19 = openmc.ZCylinder(surface_id=19, r=68.5, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=149.86)
-surf2_zmin = openmc.ZPlane(z0=-2.02)
-surf2_zmax = openmc.ZPlane(z0=152.8)
-surf12_zmin = openmc.ZPlane(z0=-4.0)
-surf12_zmax = openmc.ZPlane(z0=-1.5)
-surf13_zmin = openmc.ZPlane(z0=-1.5)
-surf13_zmax = openmc.ZPlane(z0=0.0)
-surf14_zmin = openmc.ZPlane(z0=142.0)
-surf14_zmax = openmc.ZPlane(z0=142.6)
-surf16_zmin = openmc.ZPlane(z0=0.0)
-surf16_zmax = openmc.ZPlane(z0=142.0)
-surf17_zmin = openmc.ZPlane(z0=0.0)
-surf17_zmax = openmc.ZPlane(z0=142.0)
-surf18_zmin = openmc.ZPlane(z0=0.0)
-surf18_zmax = openmc.ZPlane(z0=142.0)
-surf19_zmin = openmc.ZPlane(z0=-4.0, boundary_type="vacuum")
-surf19_zmax = openmc.ZPlane(z0=152.8, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1019, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1020, z0=149.86)
+surf2_zmin = openmc.ZPlane(surface_id=1021, z0=-2.02)
+surf2_zmax = openmc.ZPlane(surface_id=1022, z0=152.8)
+surf12_zmin = openmc.ZPlane(surface_id=1023, z0=-4.0)
+surf12_zmax = openmc.ZPlane(surface_id=1024, z0=-1.5)
+surf13_zmin = openmc.ZPlane(surface_id=1025, z0=-1.5)
+surf13_zmax = openmc.ZPlane(surface_id=1026, z0=0.0)
+surf14_zmin = openmc.ZPlane(surface_id=1027, z0=142.0)
+surf14_zmax = openmc.ZPlane(surface_id=1028, z0=142.6)
+surf16_zmin = openmc.ZPlane(surface_id=1029, z0=0.0)
+surf16_zmax = openmc.ZPlane(surface_id=1030, z0=142.0)
+surf17_zmin = openmc.ZPlane(surface_id=1031, z0=0.0)
+surf17_zmax = openmc.ZPlane(surface_id=1032, z0=142.0)
+surf18_zmin = openmc.ZPlane(surface_id=1033, z0=0.0)
+surf18_zmax = openmc.ZPlane(surface_id=1034, z0=142.0)
+surf19_zmin = openmc.ZPlane(surface_id=1035, z0=-4.0, boundary_type="vacuum")
+surf19_zmax = openmc.ZPlane(surface_id=1036, z0=152.8, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

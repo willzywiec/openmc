@@ -305,6 +305,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Al mounting plate
 surf1 = openmc.model.RectangularParallelepiped(-15.24, 15.24, -15.24, 15.24, -28.2575, -27.6225)
 # SS304 lower base
@@ -314,7 +317,7 @@ surf3 = openmc.model.RectangularParallelepiped(-9.8425, 9.8425, -8.255, 8.255, -
 # SS304 table
 surf4 = openmc.model.RectangularParallelepiped(-12.7, 12.7, -7.62, 7.62, -17.78, -15.24)
 # Al mounting tube: spherical contour
-# surf5: Unsupported surface type "s" with params ['10.0', 'tr', '0', '0', '-0.3175']
+surf5 = openmc.Sphere(surface_id=5, x0=10.0, y0=tr, z0=0, r=0)
 # Al mounting tube: large hole
 surf6 = openmc.ZCylinder(surface_id=6, r=5.08)
 # Al mounting tube: small hole
@@ -326,9 +329,9 @@ surf9 = openmc.ZCylinder(surface_id=9, r=7.62)
 # Al shell: top; Al spacer: bottom
 surf10 = openmc.ZPlane(surface_id=10, z0=-0.3175)
 # Al shell: inner
-# surf11: Unsupported surface type "s" with params ['4.83108', 'tr', '0', '0', '-0.3175']
+surf11 = openmc.Sphere(surface_id=11, x0=4.83108, y0=tr, z0=0, r=0)
 # Al shell: outer
-# surf12: Unsupported surface type "s" with params ['4.99872', 'tr', '0', '0', '-0.3175']
+surf12 = openmc.Sphere(surface_id=12, x0=4.99872, y0=tr, z0=0, r=0)
 # Al stem
 surf13 = openmc.ZCylinder(surface_id=13, r=0.3302)
 # SS304 alignment rod: upper
@@ -342,19 +345,19 @@ surf18 = openmc.ZCylinder(surface_id=18, r=10.0)
 # Al spacer: top
 surf19 = openmc.ZPlane(surface_id=19, z0=0.0)
 # Np sphere
-# surf21: Unsupported surface type "s" with params ['4.14909', 'tr', '0', '0', '-0.3175']
+surf21 = openmc.Sphere(surface_id=21, x0=4.14909, y0=tr, z0=0, r=0)
 # W shield: inner
-# surf22: Unsupported surface type "s" with params ['4.16814', 'tr', '0', '0', '-0.3175']
+surf22 = openmc.Sphere(surface_id=22, x0=4.16814, y0=tr, z0=0, r=0)
 # W shield: outer
-# surf23: Unsupported surface type "s" with params ['4.42722', 'tr', '0', '0', '-0.3175']
+surf23 = openmc.Sphere(surface_id=23, x0=4.42722, y0=tr, z0=0, r=0)
 # Inner Ni cladding: inner
-# surf24: Unsupported surface type "s" with params ['4.4323', 'tr', '0', '0', '-0.3175']
+surf24 = openmc.Sphere(surface_id=24, x0=4.4323, y0=tr, z0=0, r=0)
 # Inner Ni cladding: outer
-# surf25: Unsupported surface type "s" with params ['4.6228', 'tr', '0', '0', '-0.3175']
+surf25 = openmc.Sphere(surface_id=25, x0=4.6228, y0=tr, z0=0, r=0)
 # Outer Ni cladding: inner
-# surf26: Unsupported surface type "s" with params ['4.62788', 'tr', '0', '0', '-0.3175']
+surf26 = openmc.Sphere(surface_id=26, x0=4.62788, y0=tr, z0=0, r=0)
 # Outer Ni cladding: outer
-# surf27: Unsupported surface type "s" with params ['4.81838', 'tr', '0', '0', '-0.3175']
+surf27 = openmc.Sphere(surface_id=27, x0=4.81838, y0=tr, z0=0, r=0)
 # Hole in Al support plate, collar and mounting flange
 surf31 = openmc.ZCylinder(surface_id=31, r=10.4775)
 # Al support plate
@@ -380,9 +383,9 @@ surf46 = openmc.model.RectangularParallelepiped(-57.15, 57.15, -57.15, 57.15, -1
 # Al shell: bottom
 surf50 = openmc.ZPlane(surface_id=50, z0=0.08128)
 # Al shell: inner
-# surf51: Unsupported surface type "s" with params ['4.83108', 'tr', '0', '0', '0.08128']
+surf51 = openmc.Sphere(surface_id=51, x0=4.83108, y0=tr, z0=0, r=0)
 # Al shell: outer
-# surf52: Unsupported surface type "s" with params ['4.99872', 'tr', '0', '0', '0.08128']
+surf52 = openmc.Sphere(surface_id=52, x0=4.99872, y0=tr, z0=0, r=0)
 # Al stem
 surf53 = openmc.ZCylinder(surface_id=53, r=0.3302)
 # SS304 mounting rod: lower
@@ -392,265 +395,265 @@ surf55 = openmc.ZCylinder(surface_id=55, r=0.3175)
 # Central z-hole in all HEU shells
 surf200 = openmc.ZCylinder(surface_id=200, r=0.35687)
 # HEU shell no. 21: inner
-# surf211: Unsupported surface type "s" with params ['5.017', 'tr', '0', '0', '-0.3175']
+surf211 = openmc.Sphere(surface_id=211, x0=5.017, y0=tr, z0=0, r=0)
 # HEU shell no. 21: outer
-# surf212: Unsupported surface type "s" with params ['5.337', 'tr', '0', '0', '-0.3175']
+surf212 = openmc.Sphere(surface_id=212, x0=5.337, y0=tr, z0=0, r=0)
 # HEU shell no. 21: x-hole
 surf213 = openmc.XCylinder(surface_id=213, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 21: y-hole
 surf214 = openmc.YCylinder(surface_id=214, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 22: inner
-# surf221: Unsupported surface type "s" with params ['5.013', 'tr', '0', '0', '0.08128']
+surf221 = openmc.Sphere(surface_id=221, x0=5.013, y0=tr, z0=0, r=0)
 # HEU shell no. 22: outer
-# surf222: Unsupported surface type "s" with params ['5.336', 'tr', '0', '0', '0.08128']
+surf222 = openmc.Sphere(surface_id=222, x0=5.336, y0=tr, z0=0, r=0)
 # HEU shell no. 22: x-hole
 surf223 = openmc.XCylinder(surface_id=223, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 22: y-hole
 surf224 = openmc.YCylinder(surface_id=224, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 23: inner
-# surf231: Unsupported surface type "s" with params ['5.346', 'tr', '0', '0', '-0.3175']
+surf231 = openmc.Sphere(surface_id=231, x0=5.346, y0=tr, z0=0, r=0)
 # HEU shell no. 23: outer
-# surf232: Unsupported surface type "s" with params ['5.669', 'tr', '0', '0', '-0.3175']
+surf232 = openmc.Sphere(surface_id=232, x0=5.669, y0=tr, z0=0, r=0)
 # HEU shell no. 23: x-hole
 surf233 = openmc.XCylinder(surface_id=233, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 23: y-hole
 surf234 = openmc.YCylinder(surface_id=234, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 24: inner
-# surf241: Unsupported surface type "s" with params ['5.346', 'tr', '0', '0', '0.08128']
+surf241 = openmc.Sphere(surface_id=241, x0=5.346, y0=tr, z0=0, r=0)
 # HEU shell no. 24: outer
-# surf242: Unsupported surface type "s" with params ['5.669', 'tr', '0', '0', '0.08128']
+surf242 = openmc.Sphere(surface_id=242, x0=5.669, y0=tr, z0=0, r=0)
 # HEU shell no. 24: x-hole
 surf243 = openmc.XCylinder(surface_id=243, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 24: y-hole
 surf244 = openmc.YCylinder(surface_id=244, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 25: inner
-# surf251: Unsupported surface type "s" with params ['5.679', 'tr', '0', '0', '-0.3175']
+surf251 = openmc.Sphere(surface_id=251, x0=5.679, y0=tr, z0=0, r=0)
 # HEU shell no. 25: outer
-# surf252: Unsupported surface type "s" with params ['6.003', 'tr', '0', '0', '-0.3175']
+surf252 = openmc.Sphere(surface_id=252, x0=6.003, y0=tr, z0=0, r=0)
 # HEU shell no. 25: x-hole
 surf253 = openmc.XCylinder(surface_id=253, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 25: y-hole
 surf254 = openmc.YCylinder(surface_id=254, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 26: inner
-# surf261: Unsupported surface type "s" with params ['5.679', 'tr', '0', '0', '0.08128']
+surf261 = openmc.Sphere(surface_id=261, x0=5.679, y0=tr, z0=0, r=0)
 # HEU shell no. 26: outer
-# surf262: Unsupported surface type "s" with params ['6.001', 'tr', '0', '0', '0.08128']
+surf262 = openmc.Sphere(surface_id=262, x0=6.001, y0=tr, z0=0, r=0)
 # HEU shell no. 26: x-hole
 surf263 = openmc.XCylinder(surface_id=263, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 26: y-hole
 surf264 = openmc.YCylinder(surface_id=264, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 27: inner
-# surf271: Unsupported surface type "s" with params ['6.011', 'tr', '0', '0', '-0.3175']
+surf271 = openmc.Sphere(surface_id=271, x0=6.011, y0=tr, z0=0, r=0)
 # HEU shell no. 27: outer
-# surf272: Unsupported surface type "s" with params ['6.335', 'tr', '0', '0', '-0.3175']
+surf272 = openmc.Sphere(surface_id=272, x0=6.335, y0=tr, z0=0, r=0)
 # HEU shell no. 27: x-hole
 surf273 = openmc.XCylinder(surface_id=273, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 27: y-hole
 surf274 = openmc.YCylinder(surface_id=274, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 28: inner
-# surf281: Unsupported surface type "s" with params ['6.012', 'tr', '0', '0', '0.08128']
+surf281 = openmc.Sphere(surface_id=281, x0=6.012, y0=tr, z0=0, r=0)
 # HEU shell no. 28: outer
-# surf282: Unsupported surface type "s" with params ['6.334', 'tr', '0', '0', '0.08128']
+surf282 = openmc.Sphere(surface_id=282, x0=6.334, y0=tr, z0=0, r=0)
 # HEU shell no. 28: x-hole
 surf283 = openmc.XCylinder(surface_id=283, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 28: y-hole
 surf284 = openmc.YCylinder(surface_id=284, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 29: inner
-# surf291: Unsupported surface type "s" with params ['6.345', 'tr', '0', '0', '-0.3175']
+surf291 = openmc.Sphere(surface_id=291, x0=6.345, y0=tr, z0=0, r=0)
 # HEU shell no. 29: outer
-# surf292: Unsupported surface type "s" with params ['6.671', 'tr', '0', '0', '-0.3175']
+surf292 = openmc.Sphere(surface_id=292, x0=6.671, y0=tr, z0=0, r=0)
 # HEU shell no. 29: x-hole
 surf293 = openmc.XCylinder(surface_id=293, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 29: y-hole
 surf294 = openmc.YCylinder(surface_id=294, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 30: inner
-# surf301: Unsupported surface type "s" with params ['6.344', 'tr', '0', '0', '0.08128']
+surf301 = openmc.Sphere(surface_id=301, x0=6.344, y0=tr, z0=0, r=0)
 # HEU shell no. 30: outer
-# surf302: Unsupported surface type "s" with params ['6.670', 'tr', '0', '0', '0.08128']
+surf302 = openmc.Sphere(surface_id=302, x0=6.670, y0=tr, z0=0, r=0)
 # HEU shell no. 30: x-hole
 surf303 = openmc.XCylinder(surface_id=303, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 30: y-hole
 surf304 = openmc.YCylinder(surface_id=304, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 31: inner
-# surf311: Unsupported surface type "s" with params ['6.678', 'tr', '0', '0', '-0.3175']
+surf311 = openmc.Sphere(surface_id=311, x0=6.678, y0=tr, z0=0, r=0)
 # HEU shell no. 31: outer
-# surf312: Unsupported surface type "s" with params ['7.002', 'tr', '0', '0', '-0.3175']
+surf312 = openmc.Sphere(surface_id=312, x0=7.002, y0=tr, z0=0, r=0)
 # HEU shell no. 31: x-hole
 surf313 = openmc.XCylinder(surface_id=313, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 31: y-hole
 surf314 = openmc.YCylinder(surface_id=314, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 32: inner
-# surf321: Unsupported surface type "s" with params ['6.679', 'tr', '0', '0', '0.08128']
+surf321 = openmc.Sphere(surface_id=321, x0=6.679, y0=tr, z0=0, r=0)
 # HEU shell no. 32: outer
-# surf322: Unsupported surface type "s" with params ['7.003', 'tr', '0', '0', '0.08128']
+surf322 = openmc.Sphere(surface_id=322, x0=7.003, y0=tr, z0=0, r=0)
 # HEU shell no. 32: x-hole
 surf323 = openmc.XCylinder(surface_id=323, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 32: y-hole
 surf324 = openmc.YCylinder(surface_id=324, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 33: inner
-# surf331: Unsupported surface type "s" with params ['7.006', 'tr', '0', '0', '-0.3175']
+surf331 = openmc.Sphere(surface_id=331, x0=7.006, y0=tr, z0=0, r=0)
 # HEU shell no. 33: outer
-# surf332: Unsupported surface type "s" with params ['7.330', 'tr', '0', '0', '-0.3175']
+surf332 = openmc.Sphere(surface_id=332, x0=7.330, y0=tr, z0=0, r=0)
 # HEU shell no. 33: x-hole
 surf333 = openmc.XCylinder(surface_id=333, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 33: y-hole
 surf334 = openmc.YCylinder(surface_id=334, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 34: inner
-# surf341: Unsupported surface type "s" with params ['7.010', 'tr', '0', '0', '0.08128']
+surf341 = openmc.Sphere(surface_id=341, x0=7.010, y0=tr, z0=0, r=0)
 # HEU shell no. 34: outer
-# surf342: Unsupported surface type "s" with params ['7.334', 'tr', '0', '0', '0.08128']
+surf342 = openmc.Sphere(surface_id=342, x0=7.334, y0=tr, z0=0, r=0)
 # HEU shell no. 34: x-hole
 surf343 = openmc.XCylinder(surface_id=343, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 34: y-hole
 surf344 = openmc.YCylinder(surface_id=344, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 35: inner
-# surf351: Unsupported surface type "s" with params ['7.342', 'tr', '0', '0', '-0.3175']
+surf351 = openmc.Sphere(surface_id=351, x0=7.342, y0=tr, z0=0, r=0)
 # HEU shell no. 35: outer
-# surf352: Unsupported surface type "s" with params ['7.666', 'tr', '0', '0', '-0.3175']
+surf352 = openmc.Sphere(surface_id=352, x0=7.666, y0=tr, z0=0, r=0)
 # HEU shell no. 35: x-hole
 surf353 = openmc.XCylinder(surface_id=353, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 35: y-hole
 surf354 = openmc.YCylinder(surface_id=354, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 36: inner
-# surf361: Unsupported surface type "s" with params ['7.343', 'tr', '0', '0', '0.08128']
+surf361 = openmc.Sphere(surface_id=361, x0=7.343, y0=tr, z0=0, r=0)
 # HEU shell no. 36: outer
-# surf362: Unsupported surface type "s" with params ['7.666', 'tr', '0', '0', '0.08128']
+surf362 = openmc.Sphere(surface_id=362, x0=7.666, y0=tr, z0=0, r=0)
 # HEU shell no. 36: x-hole
 surf363 = openmc.XCylinder(surface_id=363, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 36: y-hole
 surf364 = openmc.YCylinder(surface_id=364, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 37: inner
-# surf371: Unsupported surface type "s" with params ['7.682', 'tr', '0', '0', '-0.3175']
+surf371 = openmc.Sphere(surface_id=371, x0=7.682, y0=tr, z0=0, r=0)
 # HEU shell no. 37: outer
-# surf372: Unsupported surface type "s" with params ['8.003', 'tr', '0', '0', '-0.3175']
+surf372 = openmc.Sphere(surface_id=372, x0=8.003, y0=tr, z0=0, r=0)
 # HEU shell no. 37: x-hole
 surf373 = openmc.XCylinder(surface_id=373, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 37: y-hole
 surf374 = openmc.YCylinder(surface_id=374, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 38: inner
-# surf381: Unsupported surface type "s" with params ['7.671', 'tr', '0', '0', '0.08128']
+surf381 = openmc.Sphere(surface_id=381, x0=7.671, y0=tr, z0=0, r=0)
 # HEU shell no. 38: outer
-# surf382: Unsupported surface type "s" with params ['8.003', 'tr', '0', '0', '0.08128']
+surf382 = openmc.Sphere(surface_id=382, x0=8.003, y0=tr, z0=0, r=0)
 # HEU shell no. 38: x-hole
 surf383 = openmc.XCylinder(surface_id=383, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 38: y-hole
 surf384 = openmc.YCylinder(surface_id=384, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 39: inner
-# surf391: Unsupported surface type "s" with params ['8.013', 'tr', '0', '0', '-0.3175']
+surf391 = openmc.Sphere(surface_id=391, x0=8.013, y0=tr, z0=0, r=0)
 # HEU shell no. 39: outer
-# surf392: Unsupported surface type "s" with params ['8.336', 'tr', '0', '0', '-0.3175']
+surf392 = openmc.Sphere(surface_id=392, x0=8.336, y0=tr, z0=0, r=0)
 # HEU shell no. 39: x-hole
 surf393 = openmc.XCylinder(surface_id=393, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 39: y-hole
 surf394 = openmc.YCylinder(surface_id=394, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 40: inner
-# surf401: Unsupported surface type "s" with params ['8.007', 'tr', '0', '0', '0.08128']
+surf401 = openmc.Sphere(surface_id=401, x0=8.007, y0=tr, z0=0, r=0)
 # HEU shell no. 40: outer
-# surf402: Unsupported surface type "s" with params ['8.329', 'tr', '0', '0', '0.08128']
+surf402 = openmc.Sphere(surface_id=402, x0=8.329, y0=tr, z0=0, r=0)
 # HEU shell no. 40: x-hole
 surf403 = openmc.XCylinder(surface_id=403, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 40: y-hole
 surf404 = openmc.YCylinder(surface_id=404, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 41: inner
-# surf411: Unsupported surface type "s" with params ['8.346', 'tr', '0', '0', '-0.3175']
+surf411 = openmc.Sphere(surface_id=411, x0=8.346, y0=tr, z0=0, r=0)
 # HEU shell no. 41: outer
-# surf412: Unsupported surface type "s" with params ['8.668', 'tr', '0', '0', '-0.3175']
+surf412 = openmc.Sphere(surface_id=412, x0=8.668, y0=tr, z0=0, r=0)
 # HEU shell no. 41: x-hole
 surf413 = openmc.XCylinder(surface_id=413, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 41: y-hole
 surf414 = openmc.YCylinder(surface_id=414, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 42: inner
-# surf421: Unsupported surface type "s" with params ['8.344', 'tr', '0', '0', '0.08128']
+surf421 = openmc.Sphere(surface_id=421, x0=8.344, y0=tr, z0=0, r=0)
 # HEU shell no. 42: outer
-# surf422: Unsupported surface type "s" with params ['8.668', 'tr', '0', '0', '0.08128']
+surf422 = openmc.Sphere(surface_id=422, x0=8.668, y0=tr, z0=0, r=0)
 # HEU shell no. 42: x-hole
 surf423 = openmc.XCylinder(surface_id=423, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 42: y-hole
 surf424 = openmc.YCylinder(surface_id=424, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 43: inner
-# surf431: Unsupported surface type "s" with params ['8.678', 'tr', '0', '0', '-0.3175']
+surf431 = openmc.Sphere(surface_id=431, x0=8.678, y0=tr, z0=0, r=0)
 # HEU shell no. 43: outer
-# surf432: Unsupported surface type "s" with params ['9.000', 'tr', '0', '0', '-0.3175']
+surf432 = openmc.Sphere(surface_id=432, x0=9.000, y0=tr, z0=0, r=0)
 # HEU shell no. 43: x-hole
 surf433 = openmc.XCylinder(surface_id=433, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 43: y-hole
 surf434 = openmc.YCylinder(surface_id=434, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 44: inner
-# surf441: Unsupported surface type "s" with params ['8.676', 'tr', '0', '0', '0.08128']
+surf441 = openmc.Sphere(surface_id=441, x0=8.676, y0=tr, z0=0, r=0)
 # HEU shell no. 44: outer
-# surf442: Unsupported surface type "s" with params ['8.999', 'tr', '0', '0', '0.08128']
+surf442 = openmc.Sphere(surface_id=442, x0=8.999, y0=tr, z0=0, r=0)
 # HEU shell no. 44: x-hole
 surf443 = openmc.XCylinder(surface_id=443, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 44: y-hole
 surf444 = openmc.YCylinder(surface_id=444, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 45: inner
-# surf451: Unsupported surface type "s" with params ['9.009', 'tr', '0', '0', '-0.3175']
+surf451 = openmc.Sphere(surface_id=451, x0=9.009, y0=tr, z0=0, r=0)
 # HEU shell no. 45: outer
-# surf452: Unsupported surface type "s" with params ['9.333', 'tr', '0', '0', '-0.3175']
+surf452 = openmc.Sphere(surface_id=452, x0=9.333, y0=tr, z0=0, r=0)
 # HEU shell no. 45: x-hole
 surf453 = openmc.XCylinder(surface_id=453, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 45: y-hole
 surf454 = openmc.YCylinder(surface_id=454, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 46: inner
-# surf461: Unsupported surface type "s" with params ['9.010', 'tr', '0', '0', '0.08128']
+surf461 = openmc.Sphere(surface_id=461, x0=9.010, y0=tr, z0=0, r=0)
 # HEU shell no. 46: outer
-# surf462: Unsupported surface type "s" with params ['9.333', 'tr', '0', '0', '0.08128']
+surf462 = openmc.Sphere(surface_id=462, x0=9.333, y0=tr, z0=0, r=0)
 # HEU shell no. 46: x-hole
 surf463 = openmc.XCylinder(surface_id=463, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 46: y-hole
 surf464 = openmc.YCylinder(surface_id=464, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 47: inner
-# surf471: Unsupported surface type "s" with params ['9.342', 'tr', '0', '0', '-0.3175']
+surf471 = openmc.Sphere(surface_id=471, x0=9.342, y0=tr, z0=0, r=0)
 # HEU shell no. 47: outer
-# surf472: Unsupported surface type "s" with params ['9.667', 'tr', '0', '0', '-0.3175']
+surf472 = openmc.Sphere(surface_id=472, x0=9.667, y0=tr, z0=0, r=0)
 # HEU shell no. 47: x-hole
 surf473 = openmc.XCylinder(surface_id=473, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 47: y-hole
 surf474 = openmc.YCylinder(surface_id=474, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 48: inner
-# surf481: Unsupported surface type "s" with params ['9.343', 'tr', '0', '0', '0.08128']
+surf481 = openmc.Sphere(surface_id=481, x0=9.343, y0=tr, z0=0, r=0)
 # HEU shell no. 48: outer
-# surf482: Unsupported surface type "s" with params ['9.668', 'tr', '0', '0', '0.08128']
+surf482 = openmc.Sphere(surface_id=482, x0=9.668, y0=tr, z0=0, r=0)
 # HEU shell no. 48: x-hole
 surf483 = openmc.XCylinder(surface_id=483, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 48: y-hole
 surf484 = openmc.YCylinder(surface_id=484, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 49: inner
-# surf491: Unsupported surface type "s" with params ['9.677', 'tr', '0', '0', '-0.3175']
+surf491 = openmc.Sphere(surface_id=491, x0=9.677, y0=tr, z0=0, r=0)
 # HEU shell no. 49: outer
-# surf492: Unsupported surface type "s" with params ['10.000', 'tr', '0', '0', '-0.3175']
+surf492 = openmc.Sphere(surface_id=492, x0=10.000, y0=tr, z0=0, r=0)
 # HEU shell no. 49: x-hole
 surf493 = openmc.XCylinder(surface_id=493, x0=0.0, y0=0.0, r=0.15875)
 # HEU shell no. 49: y-hole
 surf494 = openmc.YCylinder(surface_id=494, x0=0.0, y0=0.0, r=0.15875)
 
 # Z-plane surfaces for bounded cylinders
-surf6_zmin = openmc.ZPlane(z0=-10.4775)
-surf6_zmax = openmc.ZPlane(z0=-7.9375)
-surf7_zmin = openmc.ZPlane(z0=-15.24)
-surf7_zmax = openmc.ZPlane(z0=-10.4775)
-surf8_zmin = openmc.ZPlane(z0=-10.4775)
-surf8_zmax = openmc.ZPlane(z0=-7.9375)
-surf9_zmin = openmc.ZPlane(z0=-15.24)
-surf9_zmax = openmc.ZPlane(z0=-10.4775)
-surf13_zmin = openmc.ZPlane(z0=-7.3025)
-surf13_zmax = openmc.ZPlane(z0=-1.0)
-surf14_zmin = openmc.ZPlane(z0=-7.3025)
-surf14_zmax = openmc.ZPlane(z0=-6.0325)
-surf15_zmin = openmc.ZPlane(z0=-15.24)
-surf15_zmax = openmc.ZPlane(z0=-7.3025)
-surf33_zmin = openmc.ZPlane(z0=-1.27)
-surf33_zmax = openmc.ZPlane(z0=0.0)
-surf35_zmin = openmc.ZPlane(z0=0.0)
-surf35_zmax = openmc.ZPlane(z0=0.08128)
-surf36_zmin = openmc.ZPlane(z0=0.08128)
-surf36_zmax = openmc.ZPlane(z0=1.35128)
-surf53_zmin = openmc.ZPlane(z0=1.0)
-surf53_zmax = openmc.ZPlane(z0=7.06628)
-surf54_zmin = openmc.ZPlane(z0=5.79628)
-surf54_zmax = openmc.ZPlane(z0=7.06628)
-surf55_zmin = openmc.ZPlane(z0=7.06628)
-surf55_zmax = openmc.ZPlane(z0=15.95628)
+surf6_zmin = openmc.ZPlane(surface_id=1494, z0=-10.4775)
+surf6_zmax = openmc.ZPlane(surface_id=1495, z0=-7.9375)
+surf7_zmin = openmc.ZPlane(surface_id=1496, z0=-15.24)
+surf7_zmax = openmc.ZPlane(surface_id=1497, z0=-10.4775)
+surf8_zmin = openmc.ZPlane(surface_id=1498, z0=-10.4775)
+surf8_zmax = openmc.ZPlane(surface_id=1499, z0=-7.9375)
+surf9_zmin = openmc.ZPlane(surface_id=1500, z0=-15.24)
+surf9_zmax = openmc.ZPlane(surface_id=1501, z0=-10.4775)
+surf13_zmin = openmc.ZPlane(surface_id=1502, z0=-7.3025)
+surf13_zmax = openmc.ZPlane(surface_id=1503, z0=-1.0)
+surf14_zmin = openmc.ZPlane(surface_id=1504, z0=-7.3025)
+surf14_zmax = openmc.ZPlane(surface_id=1505, z0=-6.0325)
+surf15_zmin = openmc.ZPlane(surface_id=1506, z0=-15.24)
+surf15_zmax = openmc.ZPlane(surface_id=1507, z0=-7.3025)
+surf33_zmin = openmc.ZPlane(surface_id=1508, z0=-1.27)
+surf33_zmax = openmc.ZPlane(surface_id=1509, z0=0.0)
+surf35_zmin = openmc.ZPlane(surface_id=1510, z0=0.0)
+surf35_zmax = openmc.ZPlane(surface_id=1511, z0=0.08128)
+surf36_zmin = openmc.ZPlane(surface_id=1512, z0=0.08128)
+surf36_zmax = openmc.ZPlane(surface_id=1513, z0=1.35128)
+surf53_zmin = openmc.ZPlane(surface_id=1514, z0=1.0)
+surf53_zmax = openmc.ZPlane(surface_id=1515, z0=7.06628)
+surf54_zmin = openmc.ZPlane(surface_id=1516, z0=5.79628)
+surf54_zmax = openmc.ZPlane(surface_id=1517, z0=7.06628)
+surf55_zmin = openmc.ZPlane(surface_id=1518, z0=7.06628)
+surf55_zmax = openmc.ZPlane(surface_id=1519, z0=15.95628)
 
 # ------------------------------------------------------------------------------
 # Root Cells

@@ -32,6 +32,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Prism 1: 6-sided polygon
 surf1_0 = openmc.Plane(a=0.8660254039, b=-0.4999999999, c=0, d=14.0620499963)
 surf1_1 = openmc.Plane(a=0.8660254039, b=0.4999999999, c=0, d=14.0620499963)

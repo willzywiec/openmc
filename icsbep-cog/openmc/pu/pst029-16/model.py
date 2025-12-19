@@ -50,6 +50,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Tank/Sloped Bottom
 surf1 = openmc.Plane(surface_id=1, a=-25.0, b=0.0, c=0.3, d=0.0)
 # = Hc per Table 1
@@ -66,8 +69,8 @@ surf8 = openmc.XPlane(surface_id=8, x0=0.0)
 surf9 = openmc.model.RectangularParallelepiped(-87.8, 87.8, -55.5, 55.5, -32.800000000000004, 119.0)
 
 # Z-plane surfaces for bounded cylinders
-surf7_zmin = openmc.ZPlane(z0=-1.5)
-surf7_zmax = openmc.ZPlane(z0=119.0)
+surf7_zmin = openmc.ZPlane(surface_id=1009, z0=-1.5)
+surf7_zmax = openmc.ZPlane(surface_id=1010, z0=119.0)
 
 # ------------------------------------------------------------------------------
 # Universes

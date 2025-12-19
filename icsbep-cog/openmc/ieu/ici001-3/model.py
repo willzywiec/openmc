@@ -62,6 +62,9 @@ materials = openmc.Materials([mat1, mat2, mat10, mat11, mat20, mat21])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # SST tube/inner
 surf1 = openmc.ZCylinder(surface_id=1, r=2.4)
 # SST tube/outer
@@ -92,18 +95,18 @@ surf20 = openmc.ZCylinder(surface_id=20, r=2.3)
 surf21 = openmc.ZCylinder(surface_id=21, r=2.33)
 
 # Z-plane surfaces for bounded cylinders
-surf6_zmin = openmc.ZPlane(z0=0.0)
-surf6_zmax = openmc.ZPlane(z0=0.12)
-surf7_zmin = openmc.ZPlane(z0=1.12)
-surf7_zmax = openmc.ZPlane(z0=1.24)
-surf10_zmin = openmc.ZPlane(z0=1.26)
-surf10_zmax = openmc.ZPlane(z0=1.393)
-surf11_zmin = openmc.ZPlane(z0=1.24)
-surf11_zmax = openmc.ZPlane(z0=1.413)
-surf20_zmin = openmc.ZPlane(z0=0.15)
-surf20_zmax = openmc.ZPlane(z0=1.09)
-surf21_zmin = openmc.ZPlane(z0=0.12)
-surf21_zmax = openmc.ZPlane(z0=1.12)
+surf6_zmin = openmc.ZPlane(surface_id=1021, z0=0.0)
+surf6_zmax = openmc.ZPlane(surface_id=1022, z0=0.12)
+surf7_zmin = openmc.ZPlane(surface_id=1023, z0=1.12)
+surf7_zmax = openmc.ZPlane(surface_id=1024, z0=1.24)
+surf10_zmin = openmc.ZPlane(surface_id=1025, z0=1.26)
+surf10_zmax = openmc.ZPlane(surface_id=1026, z0=1.393)
+surf11_zmin = openmc.ZPlane(surface_id=1027, z0=1.24)
+surf11_zmax = openmc.ZPlane(surface_id=1028, z0=1.413)
+surf20_zmin = openmc.ZPlane(surface_id=1029, z0=0.15)
+surf20_zmax = openmc.ZPlane(surface_id=1030, z0=1.09)
+surf21_zmin = openmc.ZPlane(surface_id=1031, z0=0.12)
+surf21_zmax = openmc.ZPlane(surface_id=1032, z0=1.12)
 
 # ------------------------------------------------------------------------------
 # Universes

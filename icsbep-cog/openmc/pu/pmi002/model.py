@@ -81,10 +81,13 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
-# surf1: Unsupported surface type "analytic" with params ['1.', 'z', '0.00000', 'constant']
-# surf2: Unsupported surface type "analytic" with params ['1.', 'z', '-38.17874', 'constant']
-# surf3: Unsupported surface type "analytic" with params ['1.', 'z', '-92.08002', 'constant']
-# surf4: Unsupported surface type "analytic" with params ['1.', 'z', '-121.92000', 'constant']
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
+surf1 = openmc.ZPlane(surface_id=1, z0=0.0, boundary_type="vacuum")
+surf2 = openmc.ZPlane(surface_id=2, z0=-38.17874)
+surf3 = openmc.ZPlane(surface_id=3, z0=-92.08002)
+surf4 = openmc.ZPlane(surface_id=4, z0=-121.92, boundary_type="vacuum")
 surf5 = openmc.ZCylinder(surface_id=5, r=41.93313)
 surf6 = openmc.ZCylinder(surface_id=6, r=86.88175)
 surf7 = openmc.ZCylinder(surface_id=7, r=104.17047)

@@ -51,6 +51,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Fuel
 surf1 = openmc.ZCylinder(surface_id=1, r=0.428498)
 # Gap
@@ -78,19 +81,19 @@ surf12 = openmc.ZCylinder(surface_id=12, x0=0.7112, y0=0.7112, r=0.24511)
 # Circulation hole in middle grid plate
 surf13 = openmc.ZCylinder(surface_id=13, x0=0.7112, y0=-0.7112, r=0.24511)
 # BCD
-surf14 = openmc.ZCylinder(surface_id=14, r=50.0)
+surf14 = openmc.ZCylinder(surface_id=14, r=50.0, boundary_type="vacuum")
 # Hw
 surf15 = openmc.ZPlane(surface_id=15, z0=133.935)
 # Dummy
 surf99 = openmc.model.RectangularParallelepiped(-499.95, 499.95, -499.95, 499.95, -499.95, 499.95)
 
 # Z-plane surfaces for bounded cylinders
-surf2_zmin = openmc.ZPlane(z0=45.875)
-surf2_zmax = openmc.ZPlane(z0=138.389)
-surf3_zmin = openmc.ZPlane(z0=43.97)
-surf3_zmax = openmc.ZPlane(z0=143.159)
-surf14_zmin = openmc.ZPlane(z0=0.0, boundary_type="vacuum")
-surf14_zmax = openmc.ZPlane(z0=143.159, boundary_type="vacuum")
+surf2_zmin = openmc.ZPlane(surface_id=1099, z0=45.875)
+surf2_zmax = openmc.ZPlane(surface_id=1100, z0=138.389)
+surf3_zmin = openmc.ZPlane(surface_id=1101, z0=43.97)
+surf3_zmax = openmc.ZPlane(surface_id=1102, z0=143.159)
+surf14_zmin = openmc.ZPlane(surface_id=1103, z0=0.0, boundary_type="vacuum")
+surf14_zmax = openmc.ZPlane(surface_id=1104, z0=143.159, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

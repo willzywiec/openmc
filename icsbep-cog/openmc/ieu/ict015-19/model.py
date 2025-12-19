@@ -36,6 +36,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.model.RectangularParallelepiped(-11.43, 11.43, -11.43, 11.43, -13.2969, 13.2969)
 surf2 = openmc.model.RectangularParallelepiped(-31.75, 31.75, -31.75, 31.75, -33.6169, 33.6169, boundary_type="vacuum")
 

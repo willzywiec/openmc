@@ -44,6 +44,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Fuel/Outer (Zo = Hc/2 - 223.52)
 surf1 = openmc.model.RectangularParallelepiped(221.065, 261.775, 205.375, 251.185, -223.52, -174.4)
 # Room/Inner

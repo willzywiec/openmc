@@ -81,6 +81,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Concrete walls, floor and ceiling, inner
 surf1 = openmc.model.RectangularParallelepiped(-425.285, 847.715, -380.0, 420.0, -150.75, 649.25)
 # Concrete walls, floor and ceiling, outer
@@ -391,10 +394,10 @@ surf1196 = openmc.ZCylinder(surface_id=1196, x0=-14.527, y0=23.96, r=1.265)
 surf1197 = openmc.ZCylinder(surface_id=1197, x0=-17.058, y0=23.961, r=1.265)
 
 # Z-plane surfaces for bounded cylinders
-surf207_zmin = openmc.ZPlane(z0=-57.65)
-surf207_zmax = openmc.ZPlane(z0=-30.104)
-surf208_zmin = openmc.ZPlane(z0=-57.65)
-surf208_zmax = openmc.ZPlane(z0=-30.104)
+surf207_zmin = openmc.ZPlane(surface_id=2197, z0=-57.65)
+surf207_zmax = openmc.ZPlane(surface_id=2198, z0=-30.104)
+surf208_zmin = openmc.ZPlane(surface_id=2199, z0=-57.65)
+surf208_zmax = openmc.ZPlane(surface_id=2200, z0=-30.104)
 
 # ------------------------------------------------------------------------------
 # Universes

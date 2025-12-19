@@ -32,6 +32,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Fuel with C(Pu) = 1.1200 g/cc
 surf1 = openmc.model.RectangularParallelepiped(-12.93, 12.93, -12.93, 12.93, -8.215, 8.215)
 # 6" (15.24 cm) Plexiglas Reflector

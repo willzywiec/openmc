@@ -40,6 +40,9 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.model.RectangularParallelepiped(-10.16, 10.16, -10.16, 10.16, -10.1092, 10.1092)
 surf2 = openmc.model.RectangularParallelepiped(-30.48, 30.48, -30.48, 30.48, -49.99995, 49.99995, boundary_type="vacuum")
 # Bottom of polythene

@@ -29,6 +29,9 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # U (fuel)
 surf1 = openmc.ZCylinder(surface_id=1, r=1.2475)
 surf2 = openmc.ZCylinder(surface_id=2, x0=6.02, y0=0.0, r=1.2475)
@@ -50,15 +53,15 @@ surf17 = openmc.YPlane(surface_id=17, y0=13.0337)
 surf18 = openmc.YPlane(surface_id=18, y0=18.2472)
 surf19 = openmc.YPlane(surface_id=19, y0=23.4606)
 # Water/boundary
-surf90 = openmc.ZCylinder(surface_id=90, r=58.3)
+surf90 = openmc.ZCylinder(surface_id=90, r=58.3, boundary_type="vacuum")
 # Arbitrary
 surf99 = openmc.model.RectangularParallelepiped(-499.5, 499.5, -499.5, 499.5, -499.5, 499.5)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=30.0)
-surf90_zmin = openmc.ZPlane(z0=-16.51, boundary_type="vacuum")
-surf90_zmax = openmc.ZPlane(z0=37.05, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1099, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1100, z0=30.0)
+surf90_zmin = openmc.ZPlane(surface_id=1101, z0=-16.51, boundary_type="vacuum")
+surf90_zmax = openmc.ZPlane(surface_id=1102, z0=37.05, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

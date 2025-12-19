@@ -70,20 +70,23 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Tank, inner
-# surf1: Unsupported surface type "rev" with params ['3', '0.0', '0.0', '1.2', '35.03', '103.8', '35.03', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
+surf1 = openmc.Revolution(surface_id=1, rz=[(0.0, 0.0), (1.2, 35.03), (103.8, 35.03)], axis="x")
 # Tank, outer
 surf2 = openmc.ZCylinder(surface_id=2, r=35.33)
 # Reflector, outer
-surf3 = openmc.ZCylinder(surface_id=3, r=65.33)
+surf3 = openmc.ZCylinder(surface_id=3, r=65.33, boundary_type="vacuum")
 # Critical height
 surf4 = openmc.ZPlane(surface_id=4, z0=25.98)
 
 # Z-plane surfaces for bounded cylinders
-surf2_zmin = openmc.ZPlane(z0=-0.5)
-surf2_zmax = openmc.ZPlane(z0=105.0)
-surf3_zmin = openmc.ZPlane(z0=-30.5, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=105.0, boundary_type="vacuum")
+surf2_zmin = openmc.ZPlane(surface_id=1004, z0=-0.5)
+surf2_zmax = openmc.ZPlane(surface_id=1005, z0=105.0)
+surf3_zmin = openmc.ZPlane(surface_id=1006, z0=-30.5, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1007, z0=105.0, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

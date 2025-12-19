@@ -105,6 +105,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # UO2
 surf1 = openmc.ZCylinder(surface_id=1, r=0.395)
 # Gap
@@ -167,14 +170,14 @@ surf42 = openmc.model.RectangularParallelepiped(-155.5, 30.5, -93.0, 93.0, -6.5,
 surf99 = openmc.model.RectangularParallelepiped(-49.2, 30.5, -65.05, 65.05, -24.0, 116.1, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=90.0)
-surf2_zmin = openmc.ZPlane(z0=0.0)
-surf2_zmax = openmc.ZPlane(z0=96.9)
-surf3_zmin = openmc.ZPlane(z0=-1.27)
-surf3_zmax = openmc.ZPlane(z0=98.2)
-surf4_zmin = openmc.ZPlane(z0=-1.27)
-surf4_zmax = openmc.ZPlane(z0=98.2)
+surf1_zmin = openmc.ZPlane(surface_id=1099, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1100, z0=90.0)
+surf2_zmin = openmc.ZPlane(surface_id=1101, z0=0.0)
+surf2_zmax = openmc.ZPlane(surface_id=1102, z0=96.9)
+surf3_zmin = openmc.ZPlane(surface_id=1103, z0=-1.27)
+surf3_zmax = openmc.ZPlane(surface_id=1104, z0=98.2)
+surf4_zmin = openmc.ZPlane(surface_id=1105, z0=-1.27)
+surf4_zmax = openmc.ZPlane(surface_id=1106, z0=98.2)
 
 # ------------------------------------------------------------------------------
 # Universes

@@ -30,18 +30,21 @@ materials = openmc.Materials([mat1, mat2])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Fuel rod
 surf1 = openmc.ZCylinder(surface_id=1, r=0.38645)
 # 15x15 lattice region
 surf2 = openmc.model.RectangularParallelepiped(-15.375, 15.375, -15.375, 15.375, -499.95, 499.95)
 # Water/boundary
-surf3 = openmc.ZCylinder(surface_id=3, r=50.53)
+surf3 = openmc.ZCylinder(surface_id=3, r=50.53, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=30.0)
-surf3_zmin = openmc.ZPlane(z0=-21.59, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=45.8, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1003, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1004, z0=30.0)
+surf3_zmin = openmc.ZPlane(surface_id=1005, z0=-21.59, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1006, z0=45.8, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

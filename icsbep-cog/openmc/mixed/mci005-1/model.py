@@ -57,6 +57,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # = 0.7144/2 (MOX/Outer)
 surf1 = openmc.XCylinder(surface_id=1, r=0.3572)
 # = 0.7370/2 (Inner Clad/Inner)

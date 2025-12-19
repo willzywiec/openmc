@@ -58,6 +58,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Hc
 surf1 = openmc.ZPlane(surface_id=1, z0=50.04)
 # Cavity, bottom
@@ -71,21 +74,21 @@ surf5 = openmc.ZCylinder(surface_id=5, r=25.0)
 # Outer tank, outer
 surf6 = openmc.ZCylinder(surface_id=6, r=25.3)
 # Water
-surf7 = openmc.ZCylinder(surface_id=7, r=56.6)
+surf7 = openmc.ZCylinder(surface_id=7, r=56.6, boundary_type="vacuum")
 # Cadmium
 surf30 = openmc.ZCylinder(surface_id=30, r=9.6075)
 
 # Z-plane surfaces for bounded cylinders
-surf3_zmin = openmc.ZPlane(z0=1.2)
-surf3_zmax = openmc.ZPlane(z0=120.1)
-surf4_zmin = openmc.ZPlane(z0=1.2)
-surf4_zmax = openmc.ZPlane(z0=120.1)
-surf5_zmin = openmc.ZPlane(z0=1.2)
-surf5_zmax = openmc.ZPlane(z0=118.3)
-surf6_zmin = openmc.ZPlane(z0=0.0)
-surf6_zmax = openmc.ZPlane(z0=120.1)
-surf7_zmin = openmc.ZPlane(z0=-31.3, boundary_type="vacuum")
-surf7_zmax = openmc.ZPlane(z0=120.1, boundary_type="vacuum")
+surf3_zmin = openmc.ZPlane(surface_id=1030, z0=1.2)
+surf3_zmax = openmc.ZPlane(surface_id=1031, z0=120.1)
+surf4_zmin = openmc.ZPlane(surface_id=1032, z0=1.2)
+surf4_zmax = openmc.ZPlane(surface_id=1033, z0=120.1)
+surf5_zmin = openmc.ZPlane(surface_id=1034, z0=1.2)
+surf5_zmax = openmc.ZPlane(surface_id=1035, z0=118.3)
+surf6_zmin = openmc.ZPlane(surface_id=1036, z0=0.0)
+surf6_zmax = openmc.ZPlane(surface_id=1037, z0=120.1)
+surf7_zmin = openmc.ZPlane(surface_id=1038, z0=-31.3, boundary_type="vacuum")
+surf7_zmax = openmc.ZPlane(surface_id=1039, z0=120.1, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

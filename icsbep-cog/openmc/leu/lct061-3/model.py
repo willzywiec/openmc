@@ -62,6 +62,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Critical water height
 surf1 = openmc.ZPlane(surface_id=1, z0=91.99)
 # SST lower grid plate
@@ -69,7 +72,7 @@ surf2 = openmc.ZCylinder(surface_id=2, r=50.0)
 # SST upper grid plate
 surf3 = openmc.ZCylinder(surface_id=3, r=50.0)
 # Boundary condition
-surf4 = openmc.ZCylinder(surface_id=4, r=65.0)
+surf4 = openmc.ZCylinder(surface_id=4, r=65.0, boundary_type="vacuum")
 # UO2
 surf10 = openmc.ZCylinder(surface_id=10, r=0.37875)
 # Zr plug, inner
@@ -87,13 +90,13 @@ surf16 = openmc.ZCylinder(surface_id=16, r=0.45225)
 # Clad, top and bottom portions
 surf17 = openmc.ZCylinder(surface_id=17, r=0.3)
 # Hole
-# surf20: Unsupported surface type "rev" with params ['4', '-3.9', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
-# surf21: Unsupported surface type "rev" with params ['4', '-3.9', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-0.635', '1.09985', '0', '-0.635', '1.09985', '9', '-0.635', '9', '0']
-# surf22: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '0.635', '1.09985', '0', '0.635', '1.09985', '9', '0.635', '9', '0']
-# surf23: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-1.270', '0', '0', '-1.270', '0', '9', '-1.270', '9', '0']
-# surf24: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '1.270', '0', '0', '1.270', '0', '9', '1.270', '9', '0']
-# surf25: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-0.635', '-1.09985', '0', '-0.635', '-1.09985', '9', '-0.635', '9', '0']
-# surf26: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '0.635', '-1.09985', '0', '0.635', '-1.09985', '9', '0.635', '9', '0']
+surf20 = openmc.Revolution(surface_id=20, rz=[(-3.9, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf21 = openmc.Revolution(surface_id=21, rz=[(-3.9, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf22 = openmc.Revolution(surface_id=22, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf23 = openmc.Revolution(surface_id=23, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf24 = openmc.Revolution(surface_id=24, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf25 = openmc.Revolution(surface_id=25, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf26 = openmc.Revolution(surface_id=26, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
 # The region
 # Prism 30: 6-sided polygon
 surf30_0 = openmc.Plane(a=0.8660253759, b=0.5000000483, c=0, d=18.1475617522)
@@ -110,89 +113,89 @@ surf31_2 = openmc.Plane(a=-0.8660254126, b=0.4999999847, c=0, d=21.4471193435)
 surf31_3 = openmc.Plane(a=-0.8660254126, b=-0.4999999847, c=0, d=21.4471193435)
 surf31_4 = openmc.Plane(a=0.0000000000, b=-1.0000000000, c=0, d=21.4471200000)
 surf31_5 = openmc.Plane(a=0.8660254126, b=-0.4999999847, c=0, d=21.4471193435)
-# surf41: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-10.16', '17.59760', '0', '-10.16', '17.59760', '9', '-10.16', '9', '0']
-# surf42: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-8.89', '17.59760', '0', '-8.89', '17.59760', '9', '-8.89', '9', '0']
-# surf43: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-7.62', '17.59760', '0', '-7.62', '17.59760', '9', '-7.62', '9', '0']
-# surf44: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-6.35', '17.59760', '0', '-6.35', '17.59760', '9', '-6.35', '9', '0']
-# surf45: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '6.35', '17.59760', '0', '6.35', '17.59760', '9', '6.35', '9', '0']
-# surf46: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '7.62', '17.59760', '0', '7.62', '17.59760', '9', '7.62', '9', '0']
-# surf47: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '8.89', '17.59760', '0', '8.89', '17.59760', '9', '8.89', '9', '0']
-# surf48: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '10.16', '17.59760', '0', '10.16', '17.59760', '9', '10.16', '9', '0']
-# surf49: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-10.795', '16.49775', '0', '-10.795', '16.49775', '9', '-10.795', '9', '0']
-# surf50: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-9.525', '16.49775', '0', '-9.525', '16.49775', '9', '-9.525', '9', '0']
-# surf51: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '9.525', '16.49775', '0', '9.525', '16.49775', '9', '9.525', '9', '0']
-# surf52: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '10.795', '16.49775', '0', '10.795', '16.49775', '9', '10.795', '9', '0']
-# surf53: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-11.43', '15.39790', '0', '-11.43', '15.39790', '9', '-11.43', '9', '0']
-# surf54: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '11.43', '15.39790', '0', '11.43', '15.39790', '9', '11.43', '9', '0']
-# surf55: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-12.065', '14.29805', '0', '-12.065', '14.29805', '9', '-12.065', '9', '0']
-# surf56: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '12.065', '14.29805', '0', '12.065', '14.29805', '9', '12.065', '9', '0']
-# surf57: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-18.415', '3.29955', '0', '-18.415', '3.29955', '9', '-18.415', '9', '0']
-# surf58: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '18.415', '3.29955', '0', '18.415', '3.29955', '9', '18.415', '9', '0']
-# surf59: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-19.05', '2.19970', '0', '-19.05', '2.19970', '9', '-19.05', '9', '0']
-# surf60: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '19.05', '2.19970', '0', '19.05', '2.19970', '9', '19.05', '9', '0']
-# surf61: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-19.685', '1.09985', '0', '-19.685', '1.09985', '9', '-19.685', '9', '0']
-# surf62: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '19.685', '1.09985', '0', '19.685', '1.09985', '9', '19.685', '9', '0']
-# surf63: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-20.32', '0.0', '0', '-20.32', '0.0', '9', '-20.32', '9', '0']
-# surf64: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-19.05', '0.0', '0', '-19.05', '0.0', '9', '-19.05', '9', '0']
-# surf65: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '19.05', '0.0', '0', '19.05', '0.0', '9', '19.05', '9', '0']
-# surf66: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '20.32', '0.0', '0', '20.32', '0.0', '9', '20.32', '9', '0']
-# surf67: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-19.685', '-1.09985', '0', '-19.685', '-1.09985', '9', '-19.685', '9', '0']
-# surf68: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '19.685', '-1.09985', '0', '19.685', '-1.09985', '9', '19.685', '9', '0']
-# surf69: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-19.05', '-2.19970', '0', '-19.05', '-2.19970', '9', '-19.05', '9', '0']
-# surf70: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '19.05', '-2.19970', '0', '19.05', '-2.19970', '9', '19.05', '9', '0']
-# surf71: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-18.415', '-3.29955', '0', '-18.415', '-3.29955', '9', '-18.415', '9', '0']
-# surf72: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '18.415', '-3.29955', '0', '18.415', '-3.29955', '9', '18.415', '9', '0']
-# surf73: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-12.065', '-14.29805', '0', '-12.065', '-14.29805', '9', '-12.065', '9', '0']
-# surf74: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '12.065', '-14.29805', '0', '12.065', '-14.29805', '9', '12.065', '9', '0']
-# surf75: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-11.43', '-15.39790', '0', '-11.43', '-15.39790', '9', '-11.43', '9', '0']
-# surf76: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '11.43', '-15.39790', '0', '11.43', '-15.39790', '9', '11.43', '9', '0']
-# surf77: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-10.795', '-16.49775', '0', '-10.795', '-16.49775', '9', '-10.795', '9', '0']
-# surf78: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-9.525', '-16.49775', '0', '-9.525', '-16.49775', '9', '-9.525', '9', '0']
-# surf79: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '9.525', '-16.49775', '0', '9.525', '-16.49775', '9', '9.525', '9', '0']
-# surf80: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '10.795', '-16.49775', '0', '10.795', '-16.49775', '9', '10.795', '9', '0']
-# surf81: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-10.16', '-17.59760', '0', '-10.16', '-17.59760', '9', '-10.16', '9', '0']
-# surf82: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-8.89', '-17.59760', '0', '-8.89', '-17.59760', '9', '-8.89', '9', '0']
-# surf83: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-7.62', '-17.59760', '0', '-7.62', '-17.59760', '9', '-7.62', '9', '0']
-# surf84: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '-6.35', '-17.59760', '0', '-6.35', '-17.59760', '9', '-6.35', '9', '0']
-# surf85: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '6.35', '-17.59760', '0', '6.35', '-17.59760', '9', '6.35', '9', '0']
-# surf86: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '7.62', '-17.59760', '0', '7.62', '-17.59760', '9', '7.62', '9', '0']
-# surf87: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '8.89', '-17.59760', '0', '8.89', '-17.59760', '9', '8.89', '9', '0']
-# surf88: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '131.8', '0.47', 'tr', '10.16', '-17.59760', '0', '10.16', '-17.59760', '9', '10.16', '9', '0']
+surf41 = openmc.Revolution(surface_id=41, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf42 = openmc.Revolution(surface_id=42, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf43 = openmc.Revolution(surface_id=43, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf44 = openmc.Revolution(surface_id=44, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf45 = openmc.Revolution(surface_id=45, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf46 = openmc.Revolution(surface_id=46, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf47 = openmc.Revolution(surface_id=47, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf48 = openmc.Revolution(surface_id=48, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf49 = openmc.Revolution(surface_id=49, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf50 = openmc.Revolution(surface_id=50, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf51 = openmc.Revolution(surface_id=51, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf52 = openmc.Revolution(surface_id=52, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf53 = openmc.Revolution(surface_id=53, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf54 = openmc.Revolution(surface_id=54, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf55 = openmc.Revolution(surface_id=55, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf56 = openmc.Revolution(surface_id=56, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf57 = openmc.Revolution(surface_id=57, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf58 = openmc.Revolution(surface_id=58, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf59 = openmc.Revolution(surface_id=59, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf60 = openmc.Revolution(surface_id=60, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf61 = openmc.Revolution(surface_id=61, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf62 = openmc.Revolution(surface_id=62, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf63 = openmc.Revolution(surface_id=63, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf64 = openmc.Revolution(surface_id=64, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf65 = openmc.Revolution(surface_id=65, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf66 = openmc.Revolution(surface_id=66, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf67 = openmc.Revolution(surface_id=67, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf68 = openmc.Revolution(surface_id=68, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf69 = openmc.Revolution(surface_id=69, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf70 = openmc.Revolution(surface_id=70, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf71 = openmc.Revolution(surface_id=71, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf72 = openmc.Revolution(surface_id=72, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf73 = openmc.Revolution(surface_id=73, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf74 = openmc.Revolution(surface_id=74, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf75 = openmc.Revolution(surface_id=75, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf76 = openmc.Revolution(surface_id=76, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf77 = openmc.Revolution(surface_id=77, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf78 = openmc.Revolution(surface_id=78, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf79 = openmc.Revolution(surface_id=79, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf80 = openmc.Revolution(surface_id=80, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf81 = openmc.Revolution(surface_id=81, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf82 = openmc.Revolution(surface_id=82, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf83 = openmc.Revolution(surface_id=83, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf84 = openmc.Revolution(surface_id=84, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf85 = openmc.Revolution(surface_id=85, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf86 = openmc.Revolution(surface_id=86, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf87 = openmc.Revolution(surface_id=87, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
+surf88 = openmc.Revolution(surface_id=88, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (131.8, 0.47)], axis="x")
 # Hf rod, lower
 surf91 = openmc.ZCylinder(surface_id=91, r=0.3)
 # Hf rod, upper
 surf92 = openmc.ZCylinder(surface_id=92, r=0.41)
-# surf101: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '133.27', '0.47', 'tr', '0.0', '0.0', '0', '0.0', '0.0', '9', '0.0', '9', '0']
-# surf102: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '133.27', '0.47', 'tr', '2.54', '2.19970', '0', '2.54', '2.19970', '9', '2.54', '9', '0']
-# surf103: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '133.27', '0.47', 'tr', '-0.635', '3.29955', '0', '-0.635', '3.29955', '9', '-0.635', '9', '0']
-# surf104: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '133.27', '0.47', 'tr', '-3.175', '1.09985', '0', '-3.175', '1.09985', '9', '-3.175', '9', '0']
-# surf105: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '133.27', '0.47', 'tr', '-2.54', '-2.19970', '0', '-2.54', '-2.19970', '9', '-2.54', '9', '0']
-# surf106: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '133.27', '0.47', 'tr', '0.635', '-3.29955', '0', '0.635', '-3.29955', '9', '0.635', '9', '0']
-# surf107: Unsupported surface type "rev" with params ['4', '-3.8', '0.31', '-2.3', '0.31', '-2.29999', '0.47', '133.27', '0.47', 'tr', '3.175', '-1.09985', '0', '3.175', '-1.09985', '9', '3.175', '9', '0']
+surf101 = openmc.Revolution(surface_id=101, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (133.27, 0.47)], axis="x")
+surf102 = openmc.Revolution(surface_id=102, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (133.27, 0.47)], axis="x")
+surf103 = openmc.Revolution(surface_id=103, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (133.27, 0.47)], axis="x")
+surf104 = openmc.Revolution(surface_id=104, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (133.27, 0.47)], axis="x")
+surf105 = openmc.Revolution(surface_id=105, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (133.27, 0.47)], axis="x")
+surf106 = openmc.Revolution(surface_id=106, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (133.27, 0.47)], axis="x")
+surf107 = openmc.Revolution(surface_id=107, rz=[(-3.8, 0.31), (-2.3, 0.31), (-2.29999, 0.47), (133.27, 0.47)], axis="x")
 
 # Z-plane surfaces for bounded cylinders
-surf2_zmin = openmc.ZPlane(z0=-3.8)
-surf2_zmax = openmc.ZPlane(z0=-2.3)
-surf3_zmin = openmc.ZPlane(z0=126.9)
-surf3_zmax = openmc.ZPlane(z0=127.9)
-surf4_zmin = openmc.ZPlane(z0=-32.3, boundary_type="vacuum")
-surf4_zmax = openmc.ZPlane(z0=133.3, boundary_type="vacuum")
-surf10_zmin = openmc.ZPlane(z0=0.0)
-surf10_zmax = openmc.ZPlane(z0=125.0)
-surf12_zmin = openmc.ZPlane(z0=125.0)
-surf12_zmax = openmc.ZPlane(z0=125.7)
-surf14_zmin = openmc.ZPlane(z0=125.7)
-surf14_zmax = openmc.ZPlane(z0=128.0)
-surf15_zmin = openmc.ZPlane(z0=0.0)
-surf15_zmax = openmc.ZPlane(z0=128.0)
-surf16_zmin = openmc.ZPlane(z0=-2.3)
-surf16_zmax = openmc.ZPlane(z0=130.3)
-surf17_zmin = openmc.ZPlane(z0=-3.8)
-surf17_zmax = openmc.ZPlane(z0=131.8)
-surf91_zmin = openmc.ZPlane(z0=-3.8)
-surf91_zmax = openmc.ZPlane(z0=-2.3)
-surf92_zmin = openmc.ZPlane(z0=-2.3)
-surf92_zmax = openmc.ZPlane(z0=133.27)
+surf2_zmin = openmc.ZPlane(surface_id=1107, z0=-3.8)
+surf2_zmax = openmc.ZPlane(surface_id=1108, z0=-2.3)
+surf3_zmin = openmc.ZPlane(surface_id=1109, z0=126.9)
+surf3_zmax = openmc.ZPlane(surface_id=1110, z0=127.9)
+surf4_zmin = openmc.ZPlane(surface_id=1111, z0=-32.3, boundary_type="vacuum")
+surf4_zmax = openmc.ZPlane(surface_id=1112, z0=133.3, boundary_type="vacuum")
+surf10_zmin = openmc.ZPlane(surface_id=1113, z0=0.0)
+surf10_zmax = openmc.ZPlane(surface_id=1114, z0=125.0)
+surf12_zmin = openmc.ZPlane(surface_id=1115, z0=125.0)
+surf12_zmax = openmc.ZPlane(surface_id=1116, z0=125.7)
+surf14_zmin = openmc.ZPlane(surface_id=1117, z0=125.7)
+surf14_zmax = openmc.ZPlane(surface_id=1118, z0=128.0)
+surf15_zmin = openmc.ZPlane(surface_id=1119, z0=0.0)
+surf15_zmax = openmc.ZPlane(surface_id=1120, z0=128.0)
+surf16_zmin = openmc.ZPlane(surface_id=1121, z0=-2.3)
+surf16_zmax = openmc.ZPlane(surface_id=1122, z0=130.3)
+surf17_zmin = openmc.ZPlane(surface_id=1123, z0=-3.8)
+surf17_zmax = openmc.ZPlane(surface_id=1124, z0=131.8)
+surf91_zmin = openmc.ZPlane(surface_id=1125, z0=-3.8)
+surf91_zmax = openmc.ZPlane(surface_id=1126, z0=-2.3)
+surf92_zmin = openmc.ZPlane(surface_id=1127, z0=-2.3)
+surf92_zmax = openmc.ZPlane(surface_id=1128, z0=133.27)
 
 # ------------------------------------------------------------------------------
 # Universes

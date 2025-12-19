@@ -63,20 +63,23 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Hemi
 surf1 = openmc.XPlane(surface_id=1, x0=-2.37375)
 # Pu
-# surf2: Unsupported surface type "s" with params ['6.333', 'tr', '-2.37375', '0', '-6.333']
+surf2 = openmc.Sphere(surface_id=2, x0=6.333, y0=tr, z0=-2.37375, r=0)
 # Steel
-# surf3: Unsupported surface type "s" with params ['10.000', 'tr', '-2.37375', '0', '-6.333']
+surf3 = openmc.Sphere(surface_id=3, x0=10.000, y0=tr, z0=-2.37375, r=0)
 # Hc
 surf4 = openmc.ZPlane(surface_id=4, z0=1.30)
 # BCD
-surf5 = openmc.ZCylinder(surface_id=5, r=25.0)
+surf5 = openmc.ZCylinder(surface_id=5, r=25.0, boundary_type="vacuum")
 
 # Z-plane surfaces for bounded cylinders
-surf5_zmin = openmc.ZPlane(z0=-31.333, boundary_type="vacuum")
-surf5_zmax = openmc.ZPlane(z0=18.667, boundary_type="vacuum")
+surf5_zmin = openmc.ZPlane(surface_id=1005, z0=-31.333, boundary_type="vacuum")
+surf5_zmax = openmc.ZPlane(surface_id=1006, z0=18.667, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

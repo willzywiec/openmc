@@ -46,6 +46,9 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.model.RectangularParallelepiped(-10.16, 10.16, -10.16, 10.16, -15.367, 15.367)
 # 0.0381 cm thick Cadmium
 surf2 = openmc.model.RectangularParallelepiped(-10.1981, 10.1981, -10.1981, 10.1981, -15.4051, 15.4051)

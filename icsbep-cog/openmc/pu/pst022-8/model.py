@@ -63,6 +63,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Tank/Sloped Bottom
 surf1 = openmc.Plane(surface_id=1, a=-25.0, b=0.0, c=-0.22, d=0.0)
 # = Hc per Table 1
@@ -74,7 +77,7 @@ surf6 = openmc.ZCylinder(surface_id=6, r=25.0)
 # Tank/Outermost
 surf7 = openmc.ZCylinder(surface_id=7, r=25.3)
 # Reflector/Outer
-surf8 = openmc.ZCylinder(surface_id=8, r=50.3)
+surf8 = openmc.ZCylinder(surface_id=8, r=50.3, boundary_type="vacuum")
 # Hole
 surf11 = openmc.ZCylinder(surface_id=11, x0=17.5, y0=0.0, r=3.0)
 # Hole
@@ -93,10 +96,10 @@ surf17 = openmc.ZCylinder(surface_id=17, x0=0.0, y0=-17.5, r=3.0)
 surf18 = openmc.ZCylinder(surface_id=18, x0=12.3744, y0=-12.3744, r=3.0)
 
 # Z-plane surfaces for bounded cylinders
-surf7_zmin = openmc.ZPlane(z0=-1.42)
-surf7_zmax = openmc.ZPlane(z0=118.68)
-surf8_zmin = openmc.ZPlane(z0=-26.42, boundary_type="vacuum")
-surf8_zmax = openmc.ZPlane(z0=118.68, boundary_type="vacuum")
+surf7_zmin = openmc.ZPlane(surface_id=1018, z0=-1.42)
+surf7_zmax = openmc.ZPlane(surface_id=1019, z0=118.68)
+surf8_zmin = openmc.ZPlane(surface_id=1020, z0=-26.42, boundary_type="vacuum")
+surf8_zmax = openmc.ZPlane(surface_id=1021, z0=118.68, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

@@ -57,6 +57,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # UO2
 surf1 = openmc.ZCylinder(surface_id=1, r=0.37875)
 # Zr-Nb plug inner
@@ -84,7 +87,7 @@ surf13 = openmc.ZCylinder(surface_id=13, r=0.47)
 # Upper grid plate
 surf14 = openmc.ZCylinder(surface_id=14, r=50.0)
 # water, air, and boundary condition
-surf15 = openmc.ZCylinder(surface_id=15, r=65.0)
+surf15 = openmc.ZCylinder(surface_id=15, r=65.0, boundary_type="vacuum")
 surf21 = openmc.ZCylinder(surface_id=21, x0=-0.635, y0=1.099852, r=0.47)
 surf22 = openmc.ZCylinder(surface_id=22, x0=0.635, y0=1.099852, r=0.47)
 surf23 = openmc.ZCylinder(surface_id=23, x0=-0.635, y0=-1.099852, r=0.47)
@@ -185,26 +188,26 @@ surf317 = openmc.ZCylinder(surface_id=317, x0=-10.16, y0=17.59764, r=0.47)
 surf318 = openmc.ZCylinder(surface_id=318, x0=10.16, y0=17.59764, r=0.47)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=125.0)
-surf3_zmin = openmc.ZPlane(z0=125.0)
-surf3_zmax = openmc.ZPlane(z0=125.7)
-surf5_zmin = openmc.ZPlane(z0=125.7)
-surf5_zmax = openmc.ZPlane(z0=128.0)
-surf6_zmin = openmc.ZPlane(z0=0.0)
-surf6_zmax = openmc.ZPlane(z0=128.0)
-surf7_zmin = openmc.ZPlane(z0=-2.07)
-surf7_zmax = openmc.ZPlane(z0=130.53)
-surf8_zmin = openmc.ZPlane(z0=-3.57)
-surf8_zmax = openmc.ZPlane(z0=132.03)
-surf12_zmin = openmc.ZPlane(z0=-3.57)
-surf12_zmax = openmc.ZPlane(z0=-2.07)
-surf13_zmin = openmc.ZPlane(z0=-999.9)
-surf13_zmax = openmc.ZPlane(z0=999.9)
-surf14_zmin = openmc.ZPlane(z0=127.13)
-surf14_zmax = openmc.ZPlane(z0=128.13)
-surf15_zmin = openmc.ZPlane(z0=-33.57, boundary_type="vacuum")
-surf15_zmax = openmc.ZPlane(z0=132.03, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1318, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1319, z0=125.0)
+surf3_zmin = openmc.ZPlane(surface_id=1320, z0=125.0)
+surf3_zmax = openmc.ZPlane(surface_id=1321, z0=125.7)
+surf5_zmin = openmc.ZPlane(surface_id=1322, z0=125.7)
+surf5_zmax = openmc.ZPlane(surface_id=1323, z0=128.0)
+surf6_zmin = openmc.ZPlane(surface_id=1324, z0=0.0)
+surf6_zmax = openmc.ZPlane(surface_id=1325, z0=128.0)
+surf7_zmin = openmc.ZPlane(surface_id=1326, z0=-2.07)
+surf7_zmax = openmc.ZPlane(surface_id=1327, z0=130.53)
+surf8_zmin = openmc.ZPlane(surface_id=1328, z0=-3.57)
+surf8_zmax = openmc.ZPlane(surface_id=1329, z0=132.03)
+surf12_zmin = openmc.ZPlane(surface_id=1330, z0=-3.57)
+surf12_zmax = openmc.ZPlane(surface_id=1331, z0=-2.07)
+surf13_zmin = openmc.ZPlane(surface_id=1332, z0=-999.9)
+surf13_zmax = openmc.ZPlane(surface_id=1333, z0=999.9)
+surf14_zmin = openmc.ZPlane(surface_id=1334, z0=127.13)
+surf14_zmax = openmc.ZPlane(surface_id=1335, z0=128.13)
+surf15_zmin = openmc.ZPlane(surface_id=1336, z0=-33.57, boundary_type="vacuum")
+surf15_zmax = openmc.ZPlane(surface_id=1337, z0=132.03, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes

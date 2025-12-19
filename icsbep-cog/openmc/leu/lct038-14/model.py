@@ -92,12 +92,15 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # UO2
 surf1 = openmc.ZCylinder(surface_id=1, r=0.395)
 # Gap
 surf2 = openmc.ZCylinder(surface_id=2, r=0.41)
 # AGS
-# surf3: Unsupported surface type "rev" with params ['3', '-1.8', '0.0', '-1.0', '0.470', '98.2', '0.470', 'tr', '0', '0', '0', '0', '0', '1', '0', '1', '0']
+surf3 = openmc.Revolution(surface_id=3, rz=[(-1.8, 0.0), (-1.0, 0.47), (98.2, 0.47)], axis="x")
 # Hole
 surf4 = openmc.ZCylinder(surface_id=4, r=0.5)
 # Critical water height
@@ -162,12 +165,12 @@ surf50 = openmc.model.RectangularParallelepiped(-4.95, 15.05, -35.0, 35.0, -2.54
 surf51 = openmc.model.RectangularParallelepiped(-5.000000000000001, 15.100000000000001, -35.05, 35.05, -2.5999999999999943, 97.5)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=90.0)
-surf2_zmin = openmc.ZPlane(z0=0.0)
-surf2_zmax = openmc.ZPlane(z0=96.9)
-surf4_zmin = openmc.ZPlane(z0=-1.8)
-surf4_zmax = openmc.ZPlane(z0=98.2)
+surf1_zmin = openmc.ZPlane(surface_id=1051, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1052, z0=90.0)
+surf2_zmin = openmc.ZPlane(surface_id=1053, z0=0.0)
+surf2_zmax = openmc.ZPlane(surface_id=1054, z0=96.9)
+surf4_zmin = openmc.ZPlane(surface_id=1055, z0=-1.8)
+surf4_zmax = openmc.ZPlane(surface_id=1056, z0=98.2)
 
 # ------------------------------------------------------------------------------
 # Universes

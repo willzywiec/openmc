@@ -43,22 +43,25 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Vessel/Inner
 surf1 = openmc.ZCylinder(surface_id=1, r=6.323)
 # Vessel/Outer
 surf2 = openmc.ZCylinder(surface_id=2, r=6.4521)
 # Paraffin/Outer
-surf3 = openmc.ZCylinder(surface_id=3, r=21.6921)
+surf3 = openmc.ZCylinder(surface_id=3, r=21.6921, boundary_type="vacuum")
 # Hc
-# surf4: Unsupported surface type "analytic" with params ['1.', 'z', '-56.3528', 'constant']
+surf4 = openmc.ZPlane(surface_id=4, z0=-56.3528)
 
 # Z-plane surfaces for bounded cylinders
-surf1_zmin = openmc.ZPlane(z0=0.0)
-surf1_zmax = openmc.ZPlane(z0=91.2928)
-surf2_zmin = openmc.ZPlane(z0=-0.1291)
-surf2_zmax = openmc.ZPlane(z0=91.4219)
-surf3_zmin = openmc.ZPlane(z0=-15.3691, boundary_type="vacuum")
-surf3_zmax = openmc.ZPlane(z0=91.4219, boundary_type="vacuum")
+surf1_zmin = openmc.ZPlane(surface_id=1004, z0=0.0)
+surf1_zmax = openmc.ZPlane(surface_id=1005, z0=91.2928)
+surf2_zmin = openmc.ZPlane(surface_id=1006, z0=-0.1291)
+surf2_zmax = openmc.ZPlane(surface_id=1007, z0=91.4219)
+surf3_zmin = openmc.ZPlane(surface_id=1008, z0=-15.3691, boundary_type="vacuum")
+surf3_zmax = openmc.ZPlane(surface_id=1009, z0=91.4219, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Root Cells

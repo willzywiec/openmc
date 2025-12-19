@@ -49,6 +49,9 @@ materials = openmc.Materials([mat1, mat2, mat3])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Hc (Solution)
 surf1 = openmc.ZPlane(surface_id=1, z0=48.057)
 # Sol'n Tank/Inner: Width = Tc
@@ -65,56 +68,106 @@ surf6 = openmc.model.RectangularParallelepiped(-71.12, 71.12, -34.29, 34.29, -18
 surf7 = openmc.model.RectangularParallelepiped(-71.596, 71.596, -34.925, 34.925, -18.891, 125.095, boundary_type="vacuum")
 # Square Holes
 surf8 = openmc.model.RectangularParallelepiped(-5.14125, 5.14125, -500.0, 500.0, -5.14125, 5.14125)
-# surf101: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '5.64', '102', 'sameas', '8', 'tr', '-37.1', '0.0', '5.64']
-# surf103: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '5.64', '104', 'sameas', '8', 'tr', '-15.9', '0.0', '5.64']
-# surf105: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '5.64', '106', 'sameas', '8', 'tr', '5.3', '0.0', '5.64']
-# surf107: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '5.64', '108', 'sameas', '8', 'tr', '26.5', '0.0', '5.64']
-# surf109: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '5.64', '110', 'sameas', '8', 'tr', '47.7', '0.0', '5.64']
-# surf111: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '16.24', '112', 'sameas', '8', 'tr', '-37.1', '0.0', '16.24']
-# surf113: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '16.24', '114', 'sameas', '8', 'tr', '-15.9', '0.0', '16.24']
-# surf115: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '16.24', '116', 'sameas', '8', 'tr', '5.3', '0.0', '16.24']
-# surf117: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '16.24', '118', 'sameas', '8', 'tr', '26.5', '0.0', '16.24']
-# surf119: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '16.24', '120', 'sameas', '8', 'tr', '47.7', '0.0', '16.24']
-# surf121: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '26.84', '122', 'sameas', '8', 'tr', '-37.1', '0.0', '26.84']
-# surf123: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '26.84', '124', 'sameas', '8', 'tr', '-15.9', '0.0', '26.84']
-# surf125: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '26.84', '126', 'sameas', '8', 'tr', '5.3', '0.0', '26.84']
-# surf127: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '26.84', '128', 'sameas', '8', 'tr', '26.5', '0.0', '26.84']
-# surf129: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '26.84', '130', 'sameas', '8', 'tr', '47.7', '0.0', '26.84']
-# surf131: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '37.44', '132', 'sameas', '8', 'tr', '-37.1', '0.0', '37.44']
-# surf133: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '37.44', '134', 'sameas', '8', 'tr', '-15.9', '0.0', '37.44']
-# surf135: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '37.44', '136', 'sameas', '8', 'tr', '5.3', '0.0', '37.44']
-# surf137: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '37.44', '138', 'sameas', '8', 'tr', '26.5', '0.0', '37.44']
-# surf139: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '37.44', '140', 'sameas', '8', 'tr', '47.7', '0.0', '37.44']
-# surf141: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '48.04', '142', 'sameas', '8', 'tr', '-37.1', '0.0', '48.04']
-# surf143: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '48.04', '144', 'sameas', '8', 'tr', '-15.9', '0.0', '48.04']
-# surf145: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '48.04', '146', 'sameas', '8', 'tr', '5.3', '0.0', '48.04']
-# surf147: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '48.04', '148', 'sameas', '8', 'tr', '26.5', '0.0', '48.04']
-# surf149: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '48.04', '150', 'sameas', '8', 'tr', '47.7', '0.0', '48.04']
-# surf151: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '58.64', '152', 'sameas', '8', 'tr', '-37.1', '0.0', '58.64']
-# surf153: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '58.64', '154', 'sameas', '8', 'tr', '-15.9', '0.0', '58.64']
-# surf155: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '58.64', '156', 'sameas', '8', 'tr', '5.3', '0.0', '58.64']
-# surf157: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '58.64', '158', 'sameas', '8', 'tr', '26.5', '0.0', '58.64']
-# surf159: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '58.64', '160', 'sameas', '8', 'tr', '47.7', '0.0', '58.64']
-# surf161: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '69.24', '162', 'sameas', '8', 'tr', '-37.1', '0.0', '69.24']
-# surf163: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '69.24', '164', 'sameas', '8', 'tr', '-15.9', '0.0', '69.24']
-# surf165: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '69.24', '166', 'sameas', '8', 'tr', '5.3', '0.0', '69.24']
-# surf167: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '69.24', '168', 'sameas', '8', 'tr', '26.5', '0.0', '69.24']
-# surf169: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '69.24', '170', 'sameas', '8', 'tr', '47.7', '0.0', '69.24']
-# surf171: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '79.84', '172', 'sameas', '8', 'tr', '-37.1', '0.0', '79.84']
-# surf173: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '79.84', '174', 'sameas', '8', 'tr', '-15.9', '0.0', '79.84']
-# surf175: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '79.84', '176', 'sameas', '8', 'tr', '5.3', '0.0', '79.84']
-# surf177: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '79.84', '178', 'sameas', '8', 'tr', '26.5', '0.0', '79.84']
-# surf179: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '79.84', '180', 'sameas', '8', 'tr', '47.7', '0.0', '79.84']
-# surf181: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '90.44', '182', 'sameas', '8', 'tr', '-37.1', '0.0', '90.44']
-# surf183: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '90.44', '184', 'sameas', '8', 'tr', '-15.9', '0.0', '90.44']
-# surf185: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '90.44', '186', 'sameas', '8', 'tr', '5.3', '0.0', '90.44']
-# surf187: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '90.44', '188', 'sameas', '8', 'tr', '26.5', '0.0', '90.44']
-# surf189: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '90.44', '190', 'sameas', '8', 'tr', '47.7', '0.0', '90.44']
-# surf191: Unsupported surface type "sameas" with params ['8', 'tr', '-47.7', '0.0', '101.04', '192', 'sameas', '8', 'tr', '-37.1', '0.0', '101.04']
-# surf193: Unsupported surface type "sameas" with params ['8', 'tr', '-26.5', '0.0', '101.04', '194', 'sameas', '8', 'tr', '-15.9', '0.0', '101.04']
-# surf195: Unsupported surface type "sameas" with params ['8', 'tr', '-5.3', '0.0', '101.04', '196', 'sameas', '8', 'tr', '5.3', '0.0', '101.04']
-# surf197: Unsupported surface type "sameas" with params ['8', 'tr', '15.9', '0.0', '101.04', '198', 'sameas', '8', 'tr', '26.5', '0.0', '101.04']
-# surf199: Unsupported surface type "sameas" with params ['8', 'tr', '37.1', '0.0', '101.04', '200', 'sameas', '8', 'tr', '47.7', '0.0', '101.04']
+surf101 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf102 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf103 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf104 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf105 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf106 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf107 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf108 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf109 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf110 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 0.49874999999999936, 10.78125)
+surf111 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf112 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf113 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf114 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf115 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf116 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf117 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf118 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf119 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf120 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 11.098749999999999, 21.381249999999998)
+surf121 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 21.69875, 31.98125)
+surf122 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 21.69875, 31.98125)
+surf123 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 21.69875, 31.98125)
+surf124 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 21.69875, 31.98125)
+surf125 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 21.69875, 31.98125)
+surf126 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 21.69875, 31.98125)
+surf127 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 21.69875, 31.98125)
+surf128 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 21.69875, 31.98125)
+surf129 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 21.69875, 31.98125)
+surf130 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 21.69875, 31.98125)
+surf131 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 32.29875, 42.58125)
+surf132 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 32.29875, 42.58125)
+surf133 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 32.29875, 42.58125)
+surf134 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 32.29875, 42.58125)
+surf135 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 32.29875, 42.58125)
+surf136 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 32.29875, 42.58125)
+surf137 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 32.29875, 42.58125)
+surf138 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 32.29875, 42.58125)
+surf139 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 32.29875, 42.58125)
+surf140 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 32.29875, 42.58125)
+surf141 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 42.89875, 53.18125)
+surf142 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 42.89875, 53.18125)
+surf143 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 42.89875, 53.18125)
+surf144 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 42.89875, 53.18125)
+surf145 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 42.89875, 53.18125)
+surf146 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 42.89875, 53.18125)
+surf147 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 42.89875, 53.18125)
+surf148 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 42.89875, 53.18125)
+surf149 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 42.89875, 53.18125)
+surf150 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 42.89875, 53.18125)
+surf151 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 53.49875, 63.78125)
+surf152 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 53.49875, 63.78125)
+surf153 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 53.49875, 63.78125)
+surf154 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 53.49875, 63.78125)
+surf155 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 53.49875, 63.78125)
+surf156 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 53.49875, 63.78125)
+surf157 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 53.49875, 63.78125)
+surf158 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 53.49875, 63.78125)
+surf159 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 53.49875, 63.78125)
+surf160 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 53.49875, 63.78125)
+surf161 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 64.09875, 74.38125)
+surf162 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 64.09875, 74.38125)
+surf163 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 64.09875, 74.38125)
+surf164 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 64.09875, 74.38125)
+surf165 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 64.09875, 74.38125)
+surf166 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 64.09875, 74.38125)
+surf167 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 64.09875, 74.38125)
+surf168 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 64.09875, 74.38125)
+surf169 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 64.09875, 74.38125)
+surf170 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 64.09875, 74.38125)
+surf171 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 74.69875, 84.98125)
+surf172 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 74.69875, 84.98125)
+surf173 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 74.69875, 84.98125)
+surf174 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 74.69875, 84.98125)
+surf175 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 74.69875, 84.98125)
+surf176 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 74.69875, 84.98125)
+surf177 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 74.69875, 84.98125)
+surf178 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 74.69875, 84.98125)
+surf179 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 74.69875, 84.98125)
+surf180 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 74.69875, 84.98125)
+surf181 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 85.29875, 95.58125)
+surf182 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 85.29875, 95.58125)
+surf183 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 85.29875, 95.58125)
+surf184 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 85.29875, 95.58125)
+surf185 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 85.29875, 95.58125)
+surf186 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 85.29875, 95.58125)
+surf187 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 85.29875, 95.58125)
+surf188 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 85.29875, 95.58125)
+surf189 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 85.29875, 95.58125)
+surf190 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 85.29875, 95.58125)
+surf191 = openmc.model.RectangularParallelepiped(-52.84125, -42.55875, -500.0, 500.0, 95.89875, 106.18125)
+surf192 = openmc.model.RectangularParallelepiped(-42.24125, -31.958750000000002, -500.0, 500.0, 95.89875, 106.18125)
+surf193 = openmc.model.RectangularParallelepiped(-31.64125, -21.35875, -500.0, 500.0, 95.89875, 106.18125)
+surf194 = openmc.model.RectangularParallelepiped(-21.04125, -10.75875, -500.0, 500.0, 95.89875, 106.18125)
+surf195 = openmc.model.RectangularParallelepiped(-10.44125, -0.1587499999999995, -500.0, 500.0, 95.89875, 106.18125)
+surf196 = openmc.model.RectangularParallelepiped(0.1587499999999995, 10.44125, -500.0, 500.0, 95.89875, 106.18125)
+surf197 = openmc.model.RectangularParallelepiped(10.75875, 21.04125, -500.0, 500.0, 95.89875, 106.18125)
+surf198 = openmc.model.RectangularParallelepiped(21.35875, 31.64125, -500.0, 500.0, 95.89875, 106.18125)
+surf199 = openmc.model.RectangularParallelepiped(31.958750000000002, 42.24125, -500.0, 500.0, 95.89875, 106.18125)
+surf200 = openmc.model.RectangularParallelepiped(42.55875, 52.84125, -500.0, 500.0, 95.89875, 106.18125)
 
 # ------------------------------------------------------------------------------
 # Root Cells
@@ -130,167 +183,167 @@ cell2.region = +surf2 & -surf3 & -surf4
 
 # Crate
 cell3 = openmc.Cell(cell_id=3, fill=mat2)
-cell3.region = +surf3 & -surf4 & +surf101 & +surf103 & +surf105 & +surf107 & +surf109
+cell3.region = +surf3 & -surf4 & +surf101 & +surf102 & +surf103 & +surf104 & +surf105 & +surf106 & +surf107 & +surf108 & +surf109 & +surf110
 
 # Water
 cell4 = openmc.Cell(cell_id=4, fill=mat3)
-cell4.region = +surf3 & -surf4 & -surf101 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf103
+cell4.region = +surf3 & -surf4 & -surf101 & +surf3 & +surf3 & -surf4 & -surf102 & +surf3 & +surf3 & -surf4 & -surf103
 
 # Water
 cell5 = openmc.Cell(cell_id=5, fill=mat3)
-cell5.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf105 & +surf3 & +surf3 & -surf4
+cell5.region = +surf3 & -surf4 & -surf104 & +surf3 & +surf3 & -surf4 & -surf105 & +surf3 & +surf3 & -surf4 & -surf106
 
 # Water
 cell6 = openmc.Cell(cell_id=6, fill=mat3)
-cell6.region = +surf3 & -surf4 & -surf107 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf109
+cell6.region = +surf3 & -surf4 & -surf107 & +surf3 & +surf3 & -surf4 & -surf108 & +surf3 & +surf3 & -surf4 & -surf109
 
 # Water
 cell7 = openmc.Cell(cell_id=7, fill=mat3)
-cell7.region = +surf3 & -surf4
+cell7.region = +surf3 & -surf4 & -surf110
 
 # Water
 cell8 = openmc.Cell(cell_id=8, fill=mat3)
-cell8.region = +surf3 & -surf4 & -surf111 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf113
+cell8.region = +surf3 & -surf4 & -surf111 & +surf3 & +surf3 & -surf4 & -surf112 & +surf3 & +surf3 & -surf4 & -surf113
 
 # Water
 cell9 = openmc.Cell(cell_id=9, fill=mat3)
-cell9.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf115 & +surf3 & +surf3 & -surf4
+cell9.region = +surf3 & -surf4 & -surf114 & +surf3 & +surf3 & -surf4 & -surf115 & +surf3 & +surf3 & -surf4 & -surf116
 
 # Water
 cell10 = openmc.Cell(cell_id=10, fill=mat3)
-cell10.region = +surf3 & -surf4 & -surf117 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf119
+cell10.region = +surf3 & -surf4 & -surf117 & +surf3 & +surf3 & -surf4 & -surf118 & +surf3 & +surf3 & -surf4 & -surf119
 
 # Water
 cell11 = openmc.Cell(cell_id=11, fill=mat3)
-cell11.region = +surf3 & -surf4
+cell11.region = +surf3 & -surf4 & -surf120
 
 # Water
 cell12 = openmc.Cell(cell_id=12, fill=mat3)
-cell12.region = +surf3 & -surf4 & -surf121 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf123
+cell12.region = +surf3 & -surf4 & -surf121 & +surf3 & +surf3 & -surf4 & -surf122 & +surf3 & +surf3 & -surf4 & -surf123
 
 # Water
 cell13 = openmc.Cell(cell_id=13, fill=mat3)
-cell13.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf125 & +surf3 & +surf3 & -surf4
+cell13.region = +surf3 & -surf4 & -surf124 & +surf3 & +surf3 & -surf4 & -surf125 & +surf3 & +surf3 & -surf4 & -surf126
 
 # Water
 cell14 = openmc.Cell(cell_id=14, fill=mat3)
-cell14.region = +surf3 & -surf4 & -surf127 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf129
+cell14.region = +surf3 & -surf4 & -surf127 & +surf3 & +surf3 & -surf4 & -surf128 & +surf3 & +surf3 & -surf4 & -surf129
 
 # Water
 cell15 = openmc.Cell(cell_id=15, fill=mat3)
-cell15.region = +surf3 & -surf4
+cell15.region = +surf3 & -surf4 & -surf130
 
 # Water
 cell16 = openmc.Cell(cell_id=16, fill=mat3)
-cell16.region = +surf3 & -surf4 & -surf131 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf133
+cell16.region = +surf3 & -surf4 & -surf131 & +surf3 & +surf3 & -surf4 & -surf132 & +surf3 & +surf3 & -surf4 & -surf133
 
 # Water
 cell17 = openmc.Cell(cell_id=17, fill=mat3)
-cell17.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf135 & +surf3 & +surf3 & -surf4
+cell17.region = +surf3 & -surf4 & -surf134 & +surf3 & +surf3 & -surf4 & -surf135 & +surf3 & +surf3 & -surf4 & -surf136
 
 # Water
 cell18 = openmc.Cell(cell_id=18, fill=mat3)
-cell18.region = +surf3 & -surf4 & -surf137 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf139
+cell18.region = +surf3 & -surf4 & -surf137 & +surf3 & +surf3 & -surf4 & -surf138 & +surf3 & +surf3 & -surf4 & -surf139
 
 # Water
 cell19 = openmc.Cell(cell_id=19, fill=mat3)
-cell19.region = +surf3 & -surf4
+cell19.region = +surf3 & -surf4 & -surf140
 
 # Water
 cell20 = openmc.Cell(cell_id=20, fill=mat3)
-cell20.region = +surf3 & -surf4 & -surf141 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf143
+cell20.region = +surf3 & -surf4 & -surf141 & +surf3 & +surf3 & -surf4 & -surf142 & +surf3 & +surf3 & -surf4 & -surf143
 
 # Water
 cell21 = openmc.Cell(cell_id=21, fill=mat3)
-cell21.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf145 & +surf3 & +surf3 & -surf4
+cell21.region = +surf3 & -surf4 & -surf144 & +surf3 & +surf3 & -surf4 & -surf145 & +surf3 & +surf3 & -surf4 & -surf146
 
 # Water
 cell22 = openmc.Cell(cell_id=22, fill=mat3)
-cell22.region = +surf3 & -surf4 & -surf147 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf149
+cell22.region = +surf3 & -surf4 & -surf147 & +surf3 & +surf3 & -surf4 & -surf148 & +surf3 & +surf3 & -surf4 & -surf149
 
 # Water
 cell23 = openmc.Cell(cell_id=23, fill=mat3)
-cell23.region = +surf3 & -surf4
+cell23.region = +surf3 & -surf4 & -surf150
 
 # Water
 cell24 = openmc.Cell(cell_id=24, fill=mat3)
-cell24.region = +surf3 & -surf4 & -surf151 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf153
+cell24.region = +surf3 & -surf4 & -surf151 & +surf3 & +surf3 & -surf4 & -surf152 & +surf3 & +surf3 & -surf4 & -surf153
 
 # Water
 cell25 = openmc.Cell(cell_id=25, fill=mat3)
-cell25.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf155 & +surf3 & +surf3 & -surf4
+cell25.region = +surf3 & -surf4 & -surf154 & +surf3 & +surf3 & -surf4 & -surf155 & +surf3 & +surf3 & -surf4 & -surf156
 
 # Water
 cell26 = openmc.Cell(cell_id=26, fill=mat3)
-cell26.region = +surf3 & -surf4 & -surf157 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf159
+cell26.region = +surf3 & -surf4 & -surf157 & +surf3 & +surf3 & -surf4 & -surf158 & +surf3 & +surf3 & -surf4 & -surf159
 
 # Water
 cell27 = openmc.Cell(cell_id=27, fill=mat3)
-cell27.region = +surf3 & -surf4
+cell27.region = +surf3 & -surf4 & -surf160
 
 # Water
 cell28 = openmc.Cell(cell_id=28, fill=mat3)
-cell28.region = +surf3 & -surf4 & -surf161 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf163
+cell28.region = +surf3 & -surf4 & -surf161 & +surf3 & +surf3 & -surf4 & -surf162 & +surf3 & +surf3 & -surf4 & -surf163
 
 # Water
 cell29 = openmc.Cell(cell_id=29, fill=mat3)
-cell29.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf165 & +surf3 & +surf3 & -surf4
+cell29.region = +surf3 & -surf4 & -surf164 & +surf3 & +surf3 & -surf4 & -surf165 & +surf3 & +surf3 & -surf4 & -surf166
 
 # Water
 cell30 = openmc.Cell(cell_id=30, fill=mat3)
-cell30.region = +surf3 & -surf4 & -surf167 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf169
+cell30.region = +surf3 & -surf4 & -surf167 & +surf3 & +surf3 & -surf4 & -surf168 & +surf3 & +surf3 & -surf4 & -surf169
 
 # Water
 cell31 = openmc.Cell(cell_id=31, fill=mat3)
-cell31.region = +surf3 & -surf4
+cell31.region = +surf3 & -surf4 & -surf170
 
 # Water
 cell32 = openmc.Cell(cell_id=32, fill=mat3)
-cell32.region = +surf3 & -surf4 & -surf171 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf173
+cell32.region = +surf3 & -surf4 & -surf171 & +surf3 & +surf3 & -surf4 & -surf172 & +surf3 & +surf3 & -surf4 & -surf173
 
 # Water
 cell33 = openmc.Cell(cell_id=33, fill=mat3)
-cell33.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf175 & +surf3 & +surf3 & -surf4
+cell33.region = +surf3 & -surf4 & -surf174 & +surf3 & +surf3 & -surf4 & -surf175 & +surf3 & +surf3 & -surf4 & -surf176
 
 # Water
 cell34 = openmc.Cell(cell_id=34, fill=mat3)
-cell34.region = +surf3 & -surf4 & -surf177 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf179
+cell34.region = +surf3 & -surf4 & -surf177 & +surf3 & +surf3 & -surf4 & -surf178 & +surf3 & +surf3 & -surf4 & -surf179
 
 # Water
 cell35 = openmc.Cell(cell_id=35, fill=mat3)
-cell35.region = +surf3 & -surf4
+cell35.region = +surf3 & -surf4 & -surf180
 
 # Water
 cell36 = openmc.Cell(cell_id=36, fill=mat3)
-cell36.region = +surf3 & -surf4 & -surf181 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf183
+cell36.region = +surf3 & -surf4 & -surf181 & +surf3 & +surf3 & -surf4 & -surf182 & +surf3 & +surf3 & -surf4 & -surf183
 
 # Water
 cell37 = openmc.Cell(cell_id=37, fill=mat3)
-cell37.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf185 & +surf3 & +surf3 & -surf4
+cell37.region = +surf3 & -surf4 & -surf184 & +surf3 & +surf3 & -surf4 & -surf185 & +surf3 & +surf3 & -surf4 & -surf186
 
 # Water
 cell38 = openmc.Cell(cell_id=38, fill=mat3)
-cell38.region = +surf3 & -surf4 & -surf187 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf189
+cell38.region = +surf3 & -surf4 & -surf187 & +surf3 & +surf3 & -surf4 & -surf188 & +surf3 & +surf3 & -surf4 & -surf189
 
 # Water
 cell39 = openmc.Cell(cell_id=39, fill=mat3)
-cell39.region = +surf3 & -surf4
+cell39.region = +surf3 & -surf4 & -surf190
 
 # Water
 cell40 = openmc.Cell(cell_id=40, fill=mat3)
-cell40.region = +surf3 & -surf4 & -surf191 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf193
+cell40.region = +surf3 & -surf4 & -surf191 & +surf3 & +surf3 & -surf4 & -surf192 & +surf3 & +surf3 & -surf4 & -surf193
 
 # Water
 cell41 = openmc.Cell(cell_id=41, fill=mat3)
-cell41.region = +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf195 & +surf3 & +surf3 & -surf4
+cell41.region = +surf3 & -surf4 & -surf194 & +surf3 & +surf3 & -surf4 & -surf195 & +surf3 & +surf3 & -surf4 & -surf196
 
 # Water
 cell42 = openmc.Cell(cell_id=42, fill=mat3)
-cell42.region = +surf3 & -surf4 & -surf197 & +surf3 & +surf3 & -surf4 & +surf3 & +surf3 & -surf4 & -surf199
+cell42.region = +surf3 & -surf4 & -surf197 & +surf3 & +surf3 & -surf4 & -surf198 & +surf3 & +surf3 & -surf4 & -surf199
 
 # Water
 cell43 = openmc.Cell(cell_id=43, fill=mat3)
-cell43.region = +surf3 & -surf4
+cell43.region = +surf3 & -surf4 & -surf200
 
 # Water
 cell44 = openmc.Cell(cell_id=44, fill=mat3)

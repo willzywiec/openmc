@@ -161,17 +161,20 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
-# surf1: Unsupported surface type "analytic" with params ['1.', 'z', '121.920', 'constant']
-# surf2: Unsupported surface type "analytic" with params ['1.', 'z', '120.975', 'constant']
-# surf3: Unsupported surface type "analytic" with params ['1.', 'z', '120.461', 'constant']
-# surf4: Unsupported surface type "analytic" with params ['1.', 'z', '38.181', 'constant']
-# surf5: Unsupported surface type "analytic" with params ['1.', 'z', '22.941', 'constant']
-# surf6: Unsupported surface type "analytic" with params ['1.', 'z', '0.000', 'constant']
-# surf7: Unsupported surface type "analytic" with params ['1.', 'z', '-22.941', 'constant']
-# surf8: Unsupported surface type "analytic" with params ['1.', 'z', '-38.181', 'constant']
-# surf9: Unsupported surface type "analytic" with params ['1.', 'z', '-120.461', 'constant']
-# surf10: Unsupported surface type "analytic" with params ['1.', 'z', '-120.975', 'constant']
-# surf11: Unsupported surface type "analytic" with params ['1.', 'z', '-121.920', 'constant']
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
+surf1 = openmc.ZPlane(surface_id=1, z0=121.92, boundary_type="vacuum")
+surf2 = openmc.ZPlane(surface_id=2, z0=120.975)
+surf3 = openmc.ZPlane(surface_id=3, z0=120.461)
+surf4 = openmc.ZPlane(surface_id=4, z0=38.181)
+surf5 = openmc.ZPlane(surface_id=5, z0=22.941)
+surf6 = openmc.ZPlane(surface_id=6, z0=0.0)
+surf7 = openmc.ZPlane(surface_id=7, z0=-22.941)
+surf8 = openmc.ZPlane(surface_id=8, z0=-38.181)
+surf9 = openmc.ZPlane(surface_id=9, z0=-120.461)
+surf10 = openmc.ZPlane(surface_id=10, z0=-120.975)
+surf11 = openmc.ZPlane(surface_id=11, z0=-121.92, boundary_type="vacuum")
 surf12 = openmc.ZCylinder(surface_id=12, r=40.996)
 surf13 = openmc.ZCylinder(surface_id=13, r=65.157)
 surf14 = openmc.ZCylinder(surface_id=14, r=96.623)

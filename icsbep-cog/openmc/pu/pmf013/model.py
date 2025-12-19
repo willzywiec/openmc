@@ -118,6 +118,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5, mat6, mat7, mat8, ma
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 surf1 = openmc.ZCylinder(surface_id=1, r=0.5933)
 surf2 = openmc.ZCylinder(surface_id=2, r=5.2733)
 surf3 = openmc.ZCylinder(surface_id=3, r=6.55)
@@ -132,18 +135,18 @@ surf11 = openmc.ZCylinder(surface_id=11, r=11.0)
 surf12 = openmc.ZCylinder(surface_id=12, r=11.3)
 surf13 = openmc.ZCylinder(surface_id=13, r=11.5)
 surf14 = openmc.ZCylinder(surface_id=14, r=35.0, boundary_type="vacuum")
-# surf20: Unsupported surface type "analytic" with params ['1.', 'z', '0.0', 'constant']
-# surf21: Unsupported surface type "analytic" with params ['1.', 'z', '-25.5', 'constant']
-# surf22: Unsupported surface type "analytic" with params ['1.', 'z', '-26.8', 'constant']
-# surf23: Unsupported surface type "analytic" with params ['1.', 'z', '-28.98', 'constant']
-# surf24: Unsupported surface type "analytic" with params ['1.', 'z', '-41.98', 'constant']
-# surf25: Unsupported surface type "analytic" with params ['1.', 'z', '-43.5', 'constant']
-# surf26: Unsupported surface type "analytic" with params ['1.', 'z', '-44.16', 'constant']
-# surf27: Unsupported surface type "analytic" with params ['1.', 'z', '-45.0', 'constant']
-# surf28: Unsupported surface type "analytic" with params ['1.', 'z', '-47.0', 'constant']
-# surf29: Unsupported surface type "analytic" with params ['1.', 'z', '-47.16', 'constant']
-# surf30: Unsupported surface type "analytic" with params ['1.', 'z', '-68.66', 'constant']
-# surf31: Unsupported surface type "analytic" with params ['1.', 'z', '-71.0', 'constant']
+surf20 = openmc.ZPlane(surface_id=20, z0=0.0)
+surf21 = openmc.ZPlane(surface_id=21, z0=-25.5)
+surf22 = openmc.ZPlane(surface_id=22, z0=-26.8)
+surf23 = openmc.ZPlane(surface_id=23, z0=-28.98)
+surf24 = openmc.ZPlane(surface_id=24, z0=-41.98)
+surf25 = openmc.ZPlane(surface_id=25, z0=-43.5)
+surf26 = openmc.ZPlane(surface_id=26, z0=-44.16)
+surf27 = openmc.ZPlane(surface_id=27, z0=-45.0)
+surf28 = openmc.ZPlane(surface_id=28, z0=-47.0)
+surf29 = openmc.ZPlane(surface_id=29, z0=-47.16)
+surf30 = openmc.ZPlane(surface_id=30, z0=-68.66)
+surf31 = openmc.ZPlane(surface_id=31, z0=-71.0)
 
 # ------------------------------------------------------------------------------
 # Root Cells

@@ -65,6 +65,9 @@ materials = openmc.Materials([mat1, mat2, mat3, mat4, mat5])
 # Geometry
 # ==============================================================================
 
+# Reset surface ID counter to avoid conflicts with composite surfaces
+openmc.Surface.next_id = 10000
+
 # Fuel
 surf1 = openmc.ZCylinder(surface_id=1, r=0.514858)
 # Homogenized gap and clad
@@ -78,7 +81,7 @@ surf5 = openmc.ZCylinder(surface_id=5, r=0.5555)
 # Actual dimensions
 surf6 = openmc.model.RectangularParallelepiped(-66.24828, 66.24828, -66.24828, 66.24828, -81.662, 81.662)
 # Radial reflector boundary
-surf7 = openmc.ZCylinder(surface_id=7, r=76.2)
+surf7 = openmc.ZCylinder(surface_id=7, r=76.2, boundary_type="vacuum")
 # Actual planar dimensions
 surf10 = openmc.model.RectangularParallelepiped(-36.8046, 36.8046, -36.8046, 36.8046, -450.0, 450.0)
 surf11 = openmc.XPlane(surface_id=11, x0=-12.2682)
@@ -87,8 +90,8 @@ surf13 = openmc.YPlane(surface_id=13, y0=-12.2682)
 surf14 = openmc.YPlane(surface_id=14, y0=12.2682)
 
 # Z-plane surfaces for bounded cylinders
-surf7_zmin = openmc.ZPlane(z0=-81.662, boundary_type="vacuum")
-surf7_zmax = openmc.ZPlane(z0=81.662, boundary_type="vacuum")
+surf7_zmin = openmc.ZPlane(surface_id=1014, z0=-81.662, boundary_type="vacuum")
+surf7_zmax = openmc.ZPlane(surface_id=1015, z0=81.662, boundary_type="vacuum")
 
 # ------------------------------------------------------------------------------
 # Universes
