@@ -151,6 +151,35 @@ than unity. By ensuring that the expected number of fission sites in each mesh
 cell is constant, the collision density across all cells, and hence the variance
 of tallies, is more uniform than it would be otherwise.
 
+.. _methods_alpha_eigenvalue:
+
+-----------------------
+Alpha Eigenvalue Solver
+-----------------------
+
+In addition to the standard :math:`k`-eigenvalue, OpenMC can calculate the alpha
+eigenvalue (:math:`\alpha`), which represents the time constant governing the
+exponential growth or decay of the prompt neutron population. The alpha
+eigenvalue is computed from three quantities: the reactivity :math:`\rho = (k -
+1)/k`, the effective delayed neutron fraction :math:`\beta_\text{eff}`, and the
+effective neutron generation time :math:`\Lambda_\text{eff}`, combined as
+
+.. math::
+
+    \alpha = \frac{\rho - \beta_\text{eff}}{\Lambda_\text{eff}}.
+
+The effective delayed neutron fraction is obtained from the difference between
+the total and prompt multiplication factors, :math:`\beta_\text{eff} = (k -
+k_\text{prompt})/k`, where :math:`k_\text{prompt}` is scored using a
+tracklength estimator that excludes delayed neutron contributions. The effective
+generation time :math:`\Lambda_\text{eff}` is calculated using the Iterated
+Fission Probability (IFP) method, which provides adjoint-weighted quantities
+that properly account for the importance of neutrons at different energies and
+spatial positions. A negative :math:`\alpha` indicates that prompt neutrons are
+decaying (the system is below prompt critical), :math:`\alpha = 0` corresponds
+to prompt criticality, and a positive :math:`\alpha` means the prompt neutron
+population is growing exponentially.
+
 .. _Shannon entropy: https://mcnp.lanl.gov/pdf_files/TechReport_2006_LANL_LA-UR-06-3737_Brown.pdf
 
 .. [Lieberoth] J. Lieberoth, "A Monte Carlo Technique to Solve the Static
