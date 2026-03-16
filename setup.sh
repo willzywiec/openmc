@@ -8,7 +8,11 @@
 #
 # Author: William Zywiec (willzywiec@gmail.com)
 #
-# Usage: ./setup.sh [OPTIONS]
+# Usage: bash setup.sh [OPTIONS]
+#        ./setup.sh [OPTIONS]
+#
+# Note: Do NOT use "source setup.sh" -- this script must be executed, not
+#       sourced. If you get "Permission denied", use: bash setup.sh
 #
 # Options:
 #   --xs-dir PATH       Path to cross section data directory (default: ../endfb80-hdf5)
@@ -18,6 +22,25 @@
 #   --force-submodules  Force re-download of vendor submodules (fixes corrupted state)
 #   --help              Show this help message
 ################################################################################
+
+# Fix Windows/WSL line endings at runtime if this file has CRLF
+if [[ "$(printf 'x\r')" == "x"$'\r' ]] 2>/dev/null; then
+    # We're in bash -- check if this script has CRLF line endings
+    if head -1 "$0" 2>/dev/null | grep -q $'\r'; then
+        echo "Fixing Windows line endings in setup.sh..."
+        SELF="$(realpath "$0" 2>/dev/null || readlink -f "$0" 2>/dev/null || echo "$0")"
+        sed -i 's/\r$//' "$SELF"
+        exec bash "$SELF" "$@"
+    fi
+fi
+
+# Prevent sourcing -- this script should be executed, not sourced
+if [[ "${BASH_SOURCE[0]}" != "$0" ]]; then
+    echo "Error: This script should not be sourced. Run it instead:"
+    echo "  bash setup.sh [OPTIONS]"
+    echo "  ./setup.sh [OPTIONS]"
+    return 1 2>/dev/null || exit 1
+fi
 
 set -e  # Exit on error
 
@@ -63,7 +86,7 @@ log_error() {
 }
 
 print_usage() {
-    sed -n '2,16p' "$0" | sed 's/^# //'
+    sed -n '/^# Usage:/,/^##/{ /^##/d; s/^# \?//; p }' "$0"
 }
 
 ################################################################################
