@@ -1235,9 +1235,13 @@ class Settings:
         # Alpha calculation requires k_prompt and IFP
         if calculate_alpha:
             self._calculate_prompt_k = True
-            # Enable IFP with default of 10 generations if not already set
+            # Enable IFP with default generations if not already set.
+            # Must not exceed number of inactive cycles (C++ validation).
             if self._ifp_n_generation is None:
-                self._ifp_n_generation = 10
+                if self._inactive is not None and self._inactive > 0:
+                    self._ifp_n_generation = min(10, self._inactive)
+                else:
+                    self._ifp_n_generation = 10
 
     @property
     def delayed_photon_scaling(self) -> bool:
