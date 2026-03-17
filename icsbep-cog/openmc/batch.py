@@ -622,6 +622,7 @@ def main():
     # Initialize CSV file for incremental writing
     init_csv_file(csv_path)
     print(f"Writing results incrementally to: {csv_path}")
+    print(flush=True)  # Ensure all header output is flushed
 
     start_time = time.time()
     results: List[BenchmarkResult] = []
@@ -655,8 +656,8 @@ def main():
     else:
         # Sequential execution
         for i, bench_dir in enumerate(benchmark_dirs):
-            if args.verbose:
-                print(f"[{i+1}/{len(benchmark_dirs)}] Starting {bench_dir.parent.name}/{bench_dir.name}...", flush=True)
+            # Always show which benchmark is being processed
+            print(f"[{i+1}/{len(benchmark_dirs)}] Processing {bench_dir.parent.name}/{bench_dir.name}...", end=" ", flush=True)
             result = run_benchmark(bench_dir, args.run, enable_kinetics, openmc_args,
                                   args.timeout, args.verbose)
             results.append(result)
@@ -664,13 +665,10 @@ def main():
             # Write result to CSV immediately
             append_result_to_csv(result, csv_path)
 
-            status = "[OK]" if result.success else "[FAIL]"
+            # Print result on same line (after "Processing benchmark...")
+            status = "OK" if result.success else "FAIL"
             keff_str = f"k={result.keff:.5f}" if result.keff else "k=N/A"
-            beta_str = f"β={result.beta_eff:.5e}" if result.beta_eff else ""
-            alpha_str = f"α={result.alpha:.5e}" if result.alpha else ""
-            progress = f"[{i+1}/{len(benchmark_dirs)}]"
-
-            print(f"{progress} {status} {result.category}/{result.name}: {keff_str} {beta_str} {alpha_str}")
+            print(f"{status} {keff_str}")
 
             if not result.success and args.stop_on_error:
                 print(f"Error: {result.error_message}")
