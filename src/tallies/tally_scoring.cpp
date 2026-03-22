@@ -1000,6 +1000,39 @@ void score_general_ce_nonanalog(Particle& p, int i_tally, int start_index,
       }
       break;
 
+    case SCORE_IFP_PROMPT_TIME_NUM:
+      if (settings::ifp_on) {
+        if ((p.type() == Type::neutron) && (p.fission())) {
+          if (is_generation_time_or_both()) {
+            const auto& lifetimes =
+              simulation::ifp_source_lifetime_bank[p.current_work() - 1];
+            const auto& delayed_groups =
+              simulation::ifp_source_delayed_group_bank[p.current_work() - 1];
+            if (lifetimes.size() == settings::ifp_n_generation &&
+                delayed_groups.size() == settings::ifp_n_generation) {
+              if (delayed_groups[0] == 0) {
+                score = lifetimes[0] * p.wgt_last();
+              }
+            }
+          }
+        }
+      }
+      break;
+
+    case SCORE_IFP_PROMPT_DENOM:
+      if (settings::ifp_on) {
+        if ((p.type() == Type::neutron) && (p.fission())) {
+          const auto& delayed_groups =
+            simulation::ifp_source_delayed_group_bank[p.current_work() - 1];
+          if (delayed_groups.size() == settings::ifp_n_generation) {
+            if (delayed_groups[0] == 0) {
+              score = p.wgt_last();
+            }
+          }
+        }
+      }
+      break;
+
     case N_2N:
     case N_3N:
     case N_4N:
