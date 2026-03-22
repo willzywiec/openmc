@@ -535,7 +535,7 @@ void calculate_kinetics_parameters()
     // Calculate IFP-weighted Λ_eff and α if enabled and tally exists
     // Uses IFP scores for generation time:
     //   Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
-    //   α = (ρ - β_eff) / Λ_eff, where ρ = (k - 1) / k
+    //   α = (1 - k_p) / (Λ_eff × k_p)
     if (settings::calculate_alpha && simulation::kinetics_tally_index >= 0 &&
         settings::ifp_on) {
       auto& tally = *model::tallies[simulation::kinetics_tally_index];
@@ -552,15 +552,15 @@ void calculate_kinetics_parameters()
         // Calculate Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
         simulation::lambda_eff_ifp = ifp_time_num / (ifp_denom * simulation::keff);
 
-        // Calculate α = (ρ - β_eff) / Λ_eff, where ρ = (k - 1) / k
+        // Calculate α = (1 - k_p) / (Λ_eff × k_p)
         // Physical interpretation:
         //   α < 0: subcritical (prompt neutrons decaying)
         //   α = 0: prompt critical
         //   α > 0: prompt supercritical (prompt neutrons growing)
-        if (simulation::lambda_eff_ifp > 0.0) {
-          double rho = (simulation::keff - 1.0) / simulation::keff;
-          simulation::alpha_ifp =
-            (rho - simulation::beta_eff) / simulation::lambda_eff_ifp;
+        if (simulation::lambda_eff_ifp > 0.0 && simulation::keff_prompt > 0.0) {
+          double kp = simulation::keff_prompt;
+          double L = simulation::lambda_eff_ifp;
+          simulation::alpha_ifp = (1.0 - kp) / (L * kp);
 
           // Error propagation for Λ_eff and α
           if (n > 1) {
@@ -584,18 +584,14 @@ void calculate_kinetics_parameters()
                            dL_dk * dL_dk * simulation::keff_std * simulation::keff_std;
             simulation::lambda_eff_ifp_std = std::sqrt(var_L);
 
-            // Error propagation for α = (ρ - β) / Λ
-            // ∂α/∂β = -1/Λ, ∂α/∂k = 1/(k²Λ) (via ∂ρ/∂k = 1/k²), ∂α/∂Λ = -(ρ-β)/Λ²
-            double dAlpha_dBeta = -1.0 / simulation::lambda_eff_ifp;
-            double dAlpha_dk = 1.0 / (simulation::keff * simulation::keff *
-                                      simulation::lambda_eff_ifp);
-            double dAlpha_dLambda =
-              -(rho - simulation::beta_eff) /
-              (simulation::lambda_eff_ifp * simulation::lambda_eff_ifp);
+            // Error propagation for α = (1 - k_p) / (Λ × k_p)
+            // ∂α/∂k_p = -1/(Λ × k_p²), ∂α/∂Λ = -(1 - k_p)/(Λ² × k_p)
+            double dAlpha_dkp = -1.0 / (L * kp * kp);
+            double dAlpha_dLambda = -(1.0 - kp) / (L * L * kp);
 
             double var_alpha_ifp =
-              dAlpha_dBeta * dAlpha_dBeta * simulation::beta_eff_std * simulation::beta_eff_std +
-              dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
+              dAlpha_dkp * dAlpha_dkp * simulation::keff_prompt_std *
+                simulation::keff_prompt_std +
               dAlpha_dLambda * dAlpha_dLambda * simulation::lambda_eff_ifp_std *
                 simulation::lambda_eff_ifp_std;
 
@@ -953,7 +949,7 @@ void setup_kinetics_tallies()
   // Formulas:
   //   β_eff = (k - k_prompt) / k
   //   Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
-  //   α = (ρ - β_eff) / Λ_eff, where ρ = (k - 1) / k
+  //   α = (1 - k_p) / (Λ_eff × k_p)
   vector<std::string> scores;
   scores.push_back("ifp-time-numerator");  // Index 0: IFP-weighted lifetime numerator
   scores.push_back("ifp-denominator");     // Index 1: IFP common denominator
