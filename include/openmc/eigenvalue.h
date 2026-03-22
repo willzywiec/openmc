@@ -36,13 +36,16 @@ extern double keff_prompt_std;        //!< Standard deviation of k_prompt
 extern double beta_eff;               //!< Effective delayed neutron fraction
 extern double beta_eff_std;           //!< Standard deviation of beta_eff
 
-// IFP-weighted alpha eigenvalue
-// Computed from existing IFP scores: α = (k - 1) / Λ_eff
-// where Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
-extern double alpha_ifp;              //!< α from IFP-weighted Λ_eff [/s]
+// IFP-weighted generation times and alpha eigenvalue
+// Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+// Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)
+// α = −β_eff / [Λ_p · (1 − ρ)]
+extern double alpha_ifp;              //!< α from IFP-weighted Λ_p [/s]
 extern double alpha_ifp_std;          //!< Standard deviation of α_ifp
 extern double lambda_eff_ifp;         //!< IFP-weighted generation time Λ_eff [s]
 extern double lambda_eff_ifp_std;     //!< Standard deviation of Λ_eff
+extern double lambda_p_ifp;           //!< IFP-weighted prompt generation time Λ_p [s]
+extern double lambda_p_ifp_std;       //!< Standard deviation of Λ_p
 
 // Index of internal kinetics tally (for alpha calculations using IFP scores)
 extern int kinetics_tally_index;

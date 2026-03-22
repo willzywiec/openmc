@@ -107,6 +107,7 @@ _SCORES = {
     -15: 'fission-q-recoverable', -16: 'decay-rate', -17: 'pulse-height',
     -18: 'ifp-time-numerator', -19: 'ifp-beta-numerator',
     -20: 'ifp-denominator',
+    -21: 'ifp-prompt-time-numerator', -22: 'ifp-prompt-denominator',
 }
 _ESTIMATORS = {
     0: 'analog', 1: 'tracklength', 2: 'collision'

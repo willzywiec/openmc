@@ -346,11 +346,23 @@ class StatePoint:
             return None
 
     @property
+    def lambda_p_ifp(self):
+        """IFP-weighted prompt generation time (Λ_p) with uncertainty.
+
+        The prompt generation time computed using the Iterated Fission
+        Probability (IFP) method, considering only prompt neutron chains.
+        """
+        if self.run_mode == 'eigenvalue' and 'lambda_p_ifp' in self._f:
+            return ufloat(*self._f['lambda_p_ifp'][()])
+        else:
+            return None
+
+    @property
     def alpha_ifp(self):
         """IFP-weighted alpha eigenvalue with uncertainty.
 
-        Calculated as: α = (k - 1) / Λ_eff
-        where Λ_eff is the IFP-weighted effective generation time.
+        Calculated as: α = −β_eff / [Λ_p · (1 − ρ)]
+        where Λ_p is the IFP-weighted prompt generation time.
         """
         if self.run_mode == 'eigenvalue' and 'alpha_ifp' in self._f:
             return ufloat(*self._f['alpha_ifp'][()])
