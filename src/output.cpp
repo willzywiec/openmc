@@ -570,8 +570,10 @@ void print_results()
           simulation::lambda_eff_ifp, t_n1 * simulation::lambda_eff_ifp_std);
         fmt::print(" Lambda-prompt (IFP)        = {:.5e} +/- {:.5e} seconds\n",
           simulation::lambda_p_ifp, t_n1 * simulation::lambda_p_ifp_std);
-        fmt::print(" Alpha (Static)             = {:.5e} +/- {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (Delayed Critical)    = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_ifp, t_n1 * simulation::alpha_ifp_std);
+        fmt::print(" Alpha (Actual)              = {:.5e} +/- {:.5e} 1/seconds\n",
+          simulation::alpha_actual_ifp, t_n1 * simulation::alpha_actual_ifp_std);
       }
     }
   } else {
@@ -604,8 +606,10 @@ void print_results()
           simulation::lambda_eff_ifp);
         fmt::print(" Lambda-prompt (IFP)        = {:.5e} seconds\n",
           simulation::lambda_p_ifp);
-        fmt::print(" Alpha (Static)             = {:.5e} 1/seconds\n",
+        fmt::print(" Alpha (Delayed Critical)    = {:.5e} 1/seconds\n",
           simulation::alpha_ifp);
+        fmt::print(" Alpha (Actual)              = {:.5e} 1/seconds\n",
+          simulation::alpha_actual_ifp);
       }
     }
   }
