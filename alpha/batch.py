@@ -211,6 +211,8 @@ def run_benchmark(name: str, run_dir: Path) -> dict:
         "lifetime_unc": None,
         "gen_time": None,
         "gen_time_unc": None,
+        "alpha_dc": None,
+        "alpha_dc_unc": None,
         "alpha": None,
         "alpha_unc": None,
     }
@@ -288,7 +290,12 @@ def extract_results(run_dir: Path, name: str) -> dict:
             results["gen_time"] = sp.lambda_eff_ifp.nominal_value
             results["gen_time_unc"] = sp.lambda_eff_ifp.std_dev
 
-        # IFP-weighted alpha eigenvalue: (k - 1) / Lambda_eff
+        # IFP-weighted alpha eigenvalue (delayed critical): −β_eff · k_eff / Λ_p
+        if hasattr(sp, 'alpha_dc_ifp') and sp.alpha_dc_ifp is not None:
+            results["alpha_dc"] = sp.alpha_dc_ifp.nominal_value
+            results["alpha_dc_unc"] = sp.alpha_dc_ifp.std_dev
+
+        # IFP-weighted alpha eigenvalue (static): (k − 1 − β · k) / Λ_p
         if hasattr(sp, 'alpha_ifp') and sp.alpha_ifp is not None:
             results["alpha"] = sp.alpha_ifp.nominal_value
             results["alpha_unc"] = sp.alpha_ifp.std_dev
@@ -332,6 +339,7 @@ def write_results_xlsx(results: list, output_file: Path):
         "Beta-eff", "Beta-eff unc",
         "Lifetime (s)", "unc",
         "Gen Time (s)", "unc",
+        "Alpha DC (1/s)", "unc",
         "Alpha (1/s)", "unc",
         "Runtime (s)", "Status"
     ]
@@ -357,6 +365,8 @@ def write_results_xlsx(results: list, output_file: Path):
             r.get("lifetime_unc"),
             r.get("gen_time"),
             r.get("gen_time_unc"),
+            r.get("alpha_dc"),
+            r.get("alpha_dc_unc"),
             r.get("alpha"),
             r.get("alpha_unc"),
             r.get("runtime"),
@@ -370,7 +380,7 @@ def write_results_xlsx(results: list, output_file: Path):
             # Format numbers
             if isinstance(value, float):
                 # Lifetime, gen time, alpha - scientific notation (columns 8-13)
-                if col in [8, 9, 10, 11, 12, 13]:
+                if col in [8, 9, 10, 11, 12, 13, 14, 15]:
                     cell.number_format = '0.00E+00'
                 else:
                     cell.number_format = '0.000000'
@@ -471,6 +481,7 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             beta_eff = f"{result['beta_eff']:.6f} +/- {result['beta_eff_unc']:.6f}" if result.get("beta_eff") else "N/A"
             lifetime = f"{result['lifetime']:.4e} +/- {result['lifetime_unc']:.4e} s" if result.get("lifetime") else "N/A"
             gen_time = f"{result['gen_time']:.4e} +/- {result['gen_time_unc']:.4e} s" if result.get("gen_time") else "N/A"
+            alpha_dc = f"{result['alpha_dc']:.4e} +/- {result['alpha_dc_unc']:.4e} 1/s" if result.get("alpha_dc") else "N/A"
             alpha = f"{result['alpha']:.4e} +/- {result['alpha_unc']:.4e} 1/s" if result.get("alpha") else "N/A"
 
             print(f"  k-eff           = {keff}")
@@ -478,7 +489,8 @@ def run_all_benchmarks(dry_run: bool = False, quick_mode: bool = False):
             print(f"  beta-eff        = {beta_eff}")
             print(f"  lifetime        = {lifetime}")
             print(f"  gen time        = {gen_time}")
-            print(f"  alpha           = {alpha}")
+            print(f"  alpha (dc)      = {alpha_dc}")
+            print(f"  alpha (static)  = {alpha}")
 
             # Warn if kinetics parameters are missing
             if not result.get("k_prompt"):

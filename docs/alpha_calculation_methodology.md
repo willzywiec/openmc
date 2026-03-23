@@ -2,17 +2,22 @@
 
 ## Overview
 
-The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates alpha using the IFP (Iterated Fission Probability) method:
+The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates two forms of the alpha eigenvalue using the IFP (Iterated Fission Probability) method:
 
-**Formula:**
+**Delayed critical alpha** (assumes ρ = 0):
 ```
-α = (ρ - β_eff) / Λ_eff
+α_dc = −β_eff · k_eff / Λ_p
+```
+
+**Static alpha** (uses actual reactivity state):
+```
+α = (k_eff − 1 − β_eff · k_eff) / Λ_p
 ```
 
 **Definitions:**
-- **ρ** = reactivity = (k - 1) / k
+- **k_eff** = effective multiplication factor
 - **β_eff** = effective delayed neutron fraction (from k-prompt)
-- **Λ_eff** = IFP-weighted effective generation time
+- **Λ_p** = IFP-weighted prompt generation time
 
 ---
 
@@ -30,9 +35,10 @@ The kinetics parameters are computed using two methods:
 ```
 β_eff = (k - k_prompt) / k          (from k-prompt)
 Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)   (from IFP)
+Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)   (from IFP)
 ```
 
-The β_eff is calculated from the difference between total k-effective and prompt k-effective. The Λ_eff uses the IFP (Iterated Fission Probability) method which properly accounts for the importance of neutrons at different energies and positions.
+The β_eff is calculated from the difference between total k-effective and prompt k-effective. The Λ_eff and Λ_p use the IFP (Iterated Fission Probability) method which properly accounts for the importance of neutrons at different energies and positions.
 
 ---
 
@@ -43,7 +49,9 @@ The β_eff is calculated from the difference between total k-effective and promp
 OpenMC's IFP (Iterated Fission Probability) infrastructure is used for generation time calculations:
 
 - `ifp-time-numerator`: IFP-weighted time to fission
+- `ifp-prompt-time-numerator`: IFP-weighted prompt time to fission
 - `ifp-denominator`: IFP normalization factor
+- `ifp-prompt-denominator`: IFP prompt normalization factor
 
 β_eff is calculated separately from k-prompt (no IFP tally needed).
 
@@ -61,8 +69,10 @@ void setup_kinetics_tallies()
   tally->set_writable(false);  // Internal use only
 
   vector<std::string> scores;
-  scores.push_back("ifp-time-numerator");   // Index 0
-  scores.push_back("ifp-denominator");      // Index 1
+  scores.push_back("ifp-time-numerator");          // Index 0
+  scores.push_back("ifp-prompt-time-numerator");   // Index 1
+  scores.push_back("ifp-denominator");             // Index 2
+  scores.push_back("ifp-prompt-denominator");      // Index 3
 
   tally->set_scores(scores);
   tally->set_filters({});  // Tally over entire geometry
@@ -80,21 +90,24 @@ For each active generation, `calculate_kinetics_parameters()` computes:
 beta_eff = (keff - keff_prompt) / keff;
 ```
 
-#### Step 2: Effective Generation Time
+#### Step 2: Generation Times
 
 ```cpp
 // Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 lambda_eff_ifp = ifp_time_num / (ifp_denom * keff);
+
+// Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)
+lambda_p_ifp = ifp_prompt_time_num / (ifp_prompt_denom * keff);
 ```
 
-#### Step 3: Alpha Eigenvalue
+#### Step 3: Alpha Eigenvalues
 
 ```cpp
-// ρ = (k - 1) / k
-double rho = (keff - 1.0) / keff;
+// Delayed critical: α_dc = −β_eff · k_eff / Λ_p
+alpha_dc_ifp = -beta * k / Lp;
 
-// α = (ρ - β_eff) / Λ_eff
-alpha_ifp = (rho - beta_eff) / lambda_eff_ifp;
+// Static: α = (k_eff − 1 − β_eff · k_eff) / Λ_p
+alpha_ifp = (k - 1.0 - beta * k) / Lp;
 ```
 
 ### 4. Uncertainty Propagation
@@ -111,15 +124,15 @@ Standard deviations are calculated using error propagation:
 σ_Λ² ≈ (∂Λ/∂num)² σ_num² + (∂Λ/∂denom)² σ_denom² + (∂Λ/∂k)² σ_k²
 ```
 
-**For α = (ρ - β) / Λ:**
+**For α_dc = −β_eff · k_eff / Λ_p (using equivalent form α = (k_p − k) / Λ_p):**
 ```
-σ_α² ≈ (∂α/∂β)² σ_β² + (∂α/∂k)² σ_k² + (∂α/∂Λ)² σ_Λ²
+σ_α² ≈ (1/Λ_p)² σ_kp² + (−1/Λ_p)² σ_k² + ((k_p − k)/Λ_p²)² σ_Λp²
 ```
 
-where:
-- ∂α/∂β = -1/Λ
-- ∂α/∂k = 1/(k²Λ)
-- ∂α/∂Λ = -(ρ - β)/Λ²
+**For α = (k − 1 − β · k) / Λ_p:**
+```
+σ_α² ≈ ((1−β)/Λ_p)² σ_k² + (−k/Λ_p)² σ_β² + (−α/Λ_p)² σ_Λp²
+```
 
 ---
 
@@ -130,13 +143,13 @@ For a typical fast system (Godiva) near critical:
 **Given:**
 - k = 1.0001
 - β_eff = 0.0065
-- Λ_eff = 5.7 × 10⁻⁹ seconds
+- Λ_p = 5.7 × 10⁻⁹ seconds
 
 **Calculate:**
 ```
-ρ = (k - 1) / k = (1.0001 - 1.0) / 1.0001 ≈ 0.0001
+α_dc = −β_eff · k / Λ_p = −0.0065 × 1.0001 / 5.7e-9 ≈ −1.14e6 s⁻¹
 
-α = (ρ - β_eff) / Λ_eff = (0.0001 - 0.0065) / 5.7e-9 ≈ -1.12e6 s⁻¹
+α = (k − 1 − β · k) / Λ_p = (1.0001 − 1.0 − 0.0065 × 1.0001) / 5.7e-9 ≈ −1.12e6 s⁻¹
 ```
 
 The negative alpha (with ρ < β_eff) indicates the system is subcritical on the prompt timescale - prompt neutrons decay, but delayed neutrons sustain the chain reaction.
@@ -151,13 +164,17 @@ OpenMC prints alpha results in the summary:
  k-prompt                   = 0.99350 +/- 0.00045
  Beta-effective             = 0.00650 +/- 0.00010
  Lambda-effective (IFP)     = 5.70000e-09 +/- 2.50000e-11 seconds
- Alpha (Static)             = -1.12000e+06 +/- 1.80000e+04 1/seconds
+ Lambda-prompt (IFP)        = 5.60000e-09 +/- 2.40000e-11 seconds
+ Alpha (Delayed Critical)    = -1.14000e+06 +/- 1.80000e+04 1/seconds
+ Alpha (Static)              = -1.12000e+06 +/- 1.80000e+04 1/seconds
 ```
 
 The values are also written to statepoint files for post-processing via:
 - `sp.beta_eff` - effective delayed neutron fraction (from k-prompt)
 - `sp.lambda_eff_ifp` - IFP-weighted effective generation time
-- `sp.alpha_ifp` - alpha eigenvalue
+- `sp.lambda_p_ifp` - IFP-weighted prompt generation time
+- `sp.alpha_dc_ifp` - delayed critical alpha eigenvalue
+- `sp.alpha_ifp` - static alpha eigenvalue
 
 ---
 
@@ -172,9 +189,4 @@ The values are also written to statepoint files for post-processing via:
 
 ## References
 
-The alpha calculation uses the inhour equation from reactor kinetics theory:
-```
-α = (ρ - β_eff) / Λ_eff
-```
-
-The IFP method provides adjoint-weighted quantities that correctly account for neutron importance, making it suitable for heterogeneous reactor calculations.
+The alpha calculation uses standard reactor kinetics theory. The IFP method provides adjoint-weighted quantities that correctly account for neutron importance, making it suitable for heterogeneous reactor calculations.

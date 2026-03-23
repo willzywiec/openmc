@@ -5,7 +5,8 @@ This example shows how to enable calculation of:
 - k_prompt: prompt neutron k-effective
 - beta_eff: effective delayed neutron fraction
 - lambda_eff_ifp: IFP-weighted effective generation time (Λ_eff)
-- alpha_ifp: α = (k - 1) / Λ_eff (IFP-weighted alpha eigenvalue)
+- alpha_dc_ifp: α_dc = −β_eff · k_eff / Λ_p (delayed critical alpha)
+- alpha_ifp: α = (k_eff − 1 − β_eff · k_eff) / Λ_p (static alpha)
 
 The kinetics parameters are automatically calculated during an eigenvalue
 simulation when enabled in the settings. Alpha calculation requires IFP
@@ -70,6 +71,7 @@ settings.export_to_xml()
 # print(f"k-prompt: {sp.k_prompt}")
 # print(f"Beta-effective: {sp.beta_eff}")
 # print(f"Lambda-effective (IFP): {sp.lambda_eff_ifp}")
+# print(f"Alpha (Delayed Critical): {sp.alpha_dc_ifp}")
 # print(f"Alpha (Static): {sp.alpha_ifp}")
 
 print("Example files created successfully!")

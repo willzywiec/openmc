@@ -160,25 +160,123 @@ Alpha Eigenvalue Solver
 In addition to the standard :math:`k`-eigenvalue, OpenMC can calculate the alpha
 eigenvalue (:math:`\alpha`), which represents the time constant governing the
 exponential growth or decay of the prompt neutron population. The alpha
-eigenvalue is computed from three quantities: the reactivity :math:`\rho = (k -
-1)/k`, the effective delayed neutron fraction :math:`\beta_\text{eff}`, and the
-effective neutron generation time :math:`\Lambda_\text{eff}`, combined as
+eigenvalue depends on the effective delayed neutron fraction
+:math:`\beta_\text{eff}` and the IFP-weighted prompt generation time
+:math:`\Lambda_p`.
+
+Two forms of the alpha eigenvalue are reported:
+
+1. The **delayed critical alpha** assumes the system is exactly delayed critical
+   (:math:`\rho = 0`):
+
+   .. math::
+
+       \alpha_\text{dc} = \frac{-\beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p}
+
+2. The **static alpha** uses the system's actual reactivity state:
+
+   .. math::
+
+       \alpha = \frac{k_\text{eff} - 1 - \beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p}
+
+A negative :math:`\alpha` indicates that prompt neutrons are decaying (the
+system is below prompt critical), :math:`\alpha = 0` corresponds to prompt
+criticality, and a positive :math:`\alpha` means the prompt neutron population
+is growing exponentially.
+
+Iterated Fission Probability (IFP) Method
+-----------------------------------------
+
+The generation times and delayed neutron fraction used in the alpha calculation
+are computed using the Iterated Fission Probability (IFP) method
+[Hurwitz_1964]_. IFP provides adjoint-weighted kinetics parameters without
+requiring an explicit adjoint transport calculation. The key insight is that the
+importance of a neutron can be estimated by tracking its descendants over
+several generations: a neutron whose progeny survive and continue to cause
+fissions has high importance, while one whose line dies out has low importance.
+
+OpenMC implements IFP by maintaining a *genealogy* for each fission neutron.
+Each genealogy is a rolling window of size :math:`N_\text{gen}` (set via
+``settings.ifp_n_generation``, default 10) that records the properties of the
+neutron's direct ancestors. Two genealogy chains are tracked in parallel:
+
+- **Lifetime genealogy**: records the neutron lifetime (time from birth to next
+  fission) at each ancestor generation.
+- **Delayed group genealogy**: records the delayed neutron group number (1--6
+  for delayed, 0 for prompt) at each ancestor generation.
+
+When a fission occurs, the new fission site inherits its parent's genealogy,
+extended by one generation with the parent's current lifetime and delayed group
+number. The oldest entry is discarded once the genealogy reaches size
+:math:`N_\text{gen}`. Tallies are scored only from fission sites whose
+genealogy has reached full length, ensuring that the importance weighting has
+converged over :math:`N_\text{gen}` generations.
+
+IFP Tally Scores
+~~~~~~~~~~~~~~~~
+
+When alpha calculations are enabled (``settings.calculate_alpha = True``),
+OpenMC creates an internal tally with four IFP scores:
+
+.. table:: **IFP tally scores for alpha eigenvalue calculation**
+   :align: center
+
+   =================================== ====================================================
+   Score                               What it accumulates
+   =================================== ====================================================
+   ``ifp-time-numerator``              :math:`\ell_0 \cdot w` (ancestor lifetime × weight)
+   ``ifp-denominator``                 :math:`w` (particle weight at fission)
+   ``ifp-prompt-time-numerator``       :math:`\ell_0 \cdot w` (prompt ancestors only)
+   ``ifp-prompt-denominator``          :math:`w` (prompt ancestors only)
+   =================================== ====================================================
+
+Here :math:`\ell_0` is the lifetime of the oldest tracked ancestor (i.e., the
+ancestor :math:`N_\text{gen}` generations back) and :math:`w` is the statistical
+weight of the fission neutron being scored. The "prompt" variants score only when
+the oldest ancestor was a prompt neutron (delayed group = 0), filtering out
+fission chains that passed through a delayed neutron emission.
+
+A fission neutron contributes to the tally only when its genealogy has reached
+the required length of :math:`N_\text{gen}` entries. This means that the first
+:math:`N_\text{gen}` generations of the simulation (typically covered by
+inactive batches) are used to build up the genealogies before scoring begins.
+
+From Tally Scores to Kinetics Parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The effective generation time :math:`\Lambda_\text{eff}` is the ratio of the
+IFP-weighted lifetime to the IFP normalization, divided by :math:`k_\text{eff}`:
 
 .. math::
 
-    \alpha = \frac{\rho - \beta_\text{eff}}{\Lambda_\text{eff}}.
+    \Lambda_\text{eff} = \frac{S_\text{ifp-time-numerator}}{S_\text{ifp-denominator} \times k_\text{eff}}
 
-The effective delayed neutron fraction is obtained from the difference between
-the total and prompt multiplication factors, :math:`\beta_\text{eff} = (k -
-k_\text{prompt})/k`, where :math:`k_\text{prompt}` is scored using a
-tracklength estimator that excludes delayed neutron contributions. The effective
-generation time :math:`\Lambda_\text{eff}` is calculated using the Iterated
-Fission Probability (IFP) method, which provides adjoint-weighted quantities
-that properly account for the importance of neutrons at different energies and
-spatial positions. A negative :math:`\alpha` indicates that prompt neutrons are
-decaying (the system is below prompt critical), :math:`\alpha = 0` corresponds
-to prompt criticality, and a positive :math:`\alpha` means the prompt neutron
-population is growing exponentially.
+The prompt generation time :math:`\Lambda_p` uses the prompt-only scores:
+
+.. math::
+
+    \Lambda_p = \frac{S_\text{ifp-prompt-time-numerator}}{S_\text{ifp-prompt-denominator} \times k_\text{eff}}
+
+The effective delayed neutron fraction is obtained from the prompt
+:math:`k`-eigenvalue:
+
+.. math::
+
+    \beta_\text{eff} = \frac{k_\text{eff} - k_\text{prompt}}{k_\text{eff}}
+
+where :math:`k_\text{prompt}` is scored using a tracklength estimator that
+excludes delayed neutron contributions.
+
+With these three quantities, the two alpha eigenvalues are computed as:
+
+.. math::
+
+    \alpha_\text{dc} &= \frac{-\beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p} \\
+    \alpha &= \frac{k_\text{eff} - 1 - \beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p}
+
+Uncertainties on all derived quantities are computed via standard error
+propagation from the tally variances and the variance of
+:math:`k_\text{eff}`.
 
 .. _Shannon entropy: https://mcnp.lanl.gov/pdf_files/TechReport_2006_LANL_LA-UR-06-3737_Brown.pdf
 
