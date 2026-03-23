@@ -164,20 +164,21 @@ eigenvalue depends on the effective delayed neutron fraction
 :math:`\beta_\text{eff}` and the IFP-weighted prompt generation time
 :math:`\Lambda_p`.
 
-Two forms of the alpha eigenvalue are reported:
+Two forms of the alpha eigenvalue are reported, where :math:`k_p = k_\text{eff}
+\cdot (1 - \beta_\text{eff})` is the prompt multiplication factor:
 
 1. The **delayed critical alpha** assumes the system is exactly delayed critical
    (:math:`\rho = 0`):
 
    .. math::
 
-       \alpha_\text{dc} = \frac{-\beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p}
+       \alpha_\text{dc} = \frac{-\beta_\text{eff}}{\Lambda_p \cdot k_p}
 
 2. The **static alpha** uses the system's actual reactivity state:
 
    .. math::
 
-       \alpha = \frac{k_\text{eff} - 1 - \beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p}
+       \alpha = \frac{k_p - 1}{\Lambda_p \cdot k_p}
 
 A negative :math:`\alpha` indicates that prompt neutrons are decaying (the
 system is below prompt critical), :math:`\alpha = 0` corresponds to prompt
@@ -267,12 +268,14 @@ The effective delayed neutron fraction is obtained from the prompt
 where :math:`k_\text{prompt}` is scored using a tracklength estimator that
 excludes delayed neutron contributions.
 
-With these three quantities, the two alpha eigenvalues are computed as:
+With these three quantities and the prompt multiplication factor
+:math:`k_p = k_\text{eff} \cdot (1 - \beta_\text{eff})`, the two alpha
+eigenvalues are computed as:
 
 .. math::
 
-    \alpha_\text{dc} &= \frac{-\beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p} \\
-    \alpha &= \frac{k_\text{eff} - 1 - \beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p}
+    \alpha_\text{dc} &= \frac{-\beta_\text{eff}}{\Lambda_p \cdot k_p} \\
+    \alpha &= \frac{k_p - 1}{\Lambda_p \cdot k_p}
 
 Uncertainties on all derived quantities are computed via standard error
 propagation from the tally variances and the variance of
