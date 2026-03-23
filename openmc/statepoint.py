@@ -358,26 +358,26 @@ class StatePoint:
             return None
 
     @property
-    def alpha_ifp(self):
+    def alpha_dc_ifp(self):
         """IFP-weighted alpha eigenvalue at delayed critical with uncertainty.
 
         Calculated as: α_dc = −β_eff · k_eff / Λ_p
         where Λ_p is the IFP-weighted prompt generation time.
         """
-        if self.run_mode == 'eigenvalue' and 'alpha_ifp' in self._f:
-            return ufloat(*self._f['alpha_ifp'][()])
+        if self.run_mode == 'eigenvalue' and 'alpha_dc_ifp' in self._f:
+            return ufloat(*self._f['alpha_dc_ifp'][()])
         else:
             return None
 
     @property
-    def alpha_actual_ifp(self):
+    def alpha_ifp(self):
         """IFP-weighted alpha eigenvalue at actual reactivity with uncertainty.
 
         Calculated as: α = (k_eff − 1 − β_eff · k_eff) / Λ_p
         where Λ_p is the IFP-weighted prompt generation time.
         """
-        if self.run_mode == 'eigenvalue' and 'alpha_actual_ifp' in self._f:
-            return ufloat(*self._f['alpha_actual_ifp'][()])
+        if self.run_mode == 'eigenvalue' and 'alpha_ifp' in self._f:
+            return ufloat(*self._f['alpha_ifp'][()])
         else:
             return None
 
