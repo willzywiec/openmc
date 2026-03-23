@@ -5,7 +5,7 @@ Displays:
 - k-effective and k-prompt
 - Effective delayed neutron fraction (beta_eff)
 - IFP-weighted effective generation time (Lambda_eff)
-- IFP-weighted alpha eigenvalue: α = (k - 1) / Lambda_eff
+- IFP-weighted alpha eigenvalues: α_dc and α (static)
 """
 
 import openmc
@@ -21,6 +21,9 @@ sp = openmc.StatePoint('statepoint.150.h5')
 gen_time_us = sp.lambda_eff_ifp.nominal_value * 1e6 if sp.lambda_eff_ifp else 0.0
 gen_time_std_us = sp.lambda_eff_ifp.std_dev * 1e6 if sp.lambda_eff_ifp else 0.0
 
+alpha_dc_us = sp.alpha_dc_ifp.nominal_value / 1e6 if sp.alpha_dc_ifp else 0.0
+alpha_dc_std_us = sp.alpha_dc_ifp.std_dev / 1e6 if sp.alpha_dc_ifp else 0.0
+
 alpha_us = sp.alpha_ifp.nominal_value / 1e6 if sp.alpha_ifp else 0.0
 alpha_std_us = sp.alpha_ifp.std_dev / 1e6 if sp.alpha_ifp else 0.0
 
@@ -30,6 +33,7 @@ print(f"k-effective:              {sp.keff}")
 print(f"k-prompt:                 {sp.k_prompt}")
 print(f"Beta-effective:           {sp.beta_eff}")
 print(f"Lambda-effective (IFP):   {gen_time_us:.6e}+/-{gen_time_std_us:.6e} us")
+print(f"Alpha (Delayed Critical): {alpha_dc_us:.6e}+/-{alpha_dc_std_us:.6e} 1/us")
 print(f"Alpha (Static):           {alpha_us:.6e}+/-{alpha_std_us:.6e} 1/us")
 
 # Expected results for Godiva (from Cullen et al. 2003):

@@ -159,26 +159,34 @@ Alpha Eigenvalue Solver
 
 In addition to the standard :math:`k`-eigenvalue, OpenMC can calculate the alpha
 eigenvalue (:math:`\alpha`), which represents the time constant governing the
-exponential growth or decay of the prompt neutron population. The alpha
-eigenvalue is computed from three quantities: the reactivity :math:`\rho = (k -
-1)/k`, the effective delayed neutron fraction :math:`\beta_\text{eff}`, and the
-effective neutron generation time :math:`\Lambda_\text{eff}`, combined as
+exponential growth or decay of the prompt neutron population. Two forms of the
+alpha eigenvalue are computed using the IFP-weighted prompt generation time
+:math:`\Lambda_p`.
+
+The **delayed critical alpha** assumes the system is exactly delayed critical
+(:math:`\rho = 0`):
 
 .. math::
 
-    \alpha = \frac{\rho - \beta_\text{eff}}{\Lambda_\text{eff}}.
+    \alpha_\text{dc} = \frac{-\beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p}.
+
+The **static alpha** uses the system's actual reactivity state:
+
+.. math::
+
+    \alpha = \frac{k_\text{eff} - 1 - \beta_\text{eff} \cdot k_\text{eff}}{\Lambda_p}.
 
 The effective delayed neutron fraction is obtained from the difference between
 the total and prompt multiplication factors, :math:`\beta_\text{eff} = (k -
 k_\text{prompt})/k`, where :math:`k_\text{prompt}` is scored using a
-tracklength estimator that excludes delayed neutron contributions. The effective
-generation time :math:`\Lambda_\text{eff}` is calculated using the Iterated
-Fission Probability (IFP) method, which provides adjoint-weighted quantities
-that properly account for the importance of neutrons at different energies and
-spatial positions. A negative :math:`\alpha` indicates that prompt neutrons are
-decaying (the system is below prompt critical), :math:`\alpha = 0` corresponds
-to prompt criticality, and a positive :math:`\alpha` means the prompt neutron
-population is growing exponentially.
+tracklength estimator that excludes delayed neutron contributions. The prompt
+generation time :math:`\Lambda_p` is calculated using the Iterated Fission
+Probability (IFP) method, which provides adjoint-weighted quantities that
+properly account for the importance of neutrons at different energies and spatial
+positions. A negative :math:`\alpha` indicates that prompt neutrons are decaying
+(the system is below prompt critical), :math:`\alpha = 0` corresponds to prompt
+criticality, and a positive :math:`\alpha` means the prompt neutron population
+is growing exponentially.
 
 .. _Shannon entropy: https://mcnp.lanl.gov/pdf_files/TechReport_2006_LANL_LA-UR-06-3737_Brown.pdf
 
