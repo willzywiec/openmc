@@ -53,6 +53,8 @@ double beta_eff {0.0};
 double beta_eff_std {0.0};
 
 // IFP-weighted generation times and alpha eigenvalue
+double alpha_dc_ifp {0.0};
+double alpha_dc_ifp_std {0.0};
 double alpha_ifp {0.0};
 double alpha_ifp_std {0.0};
 double lambda_eff_ifp {0.0};
@@ -575,7 +577,10 @@ void calculate_kinetics_parameters()
           double beta = simulation::beta_eff;
           double k = simulation::keff;
           double Lp = simulation::lambda_p_ifp;
-          simulation::alpha_ifp = -beta * k / Lp;
+          simulation::alpha_dc_ifp = -beta * k / Lp;
+
+          // Actual alpha: α = (k_eff − 1 − β_eff · k_eff) / Λ_p
+          simulation::alpha_ifp = (k - 1.0 - beta * k) / Lp;
 
           // Error propagation
           if (n > 1) {
@@ -628,6 +633,21 @@ void calculate_kinetics_parameters()
                 dAlpha_dkp * dAlpha_dkp * simulation::keff_prompt_std * simulation::keff_prompt_std +
                 dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
                 dAlpha_dLp * dAlpha_dLp * simulation::lambda_p_ifp_std * simulation::lambda_p_ifp_std;
+              simulation::alpha_dc_ifp_std = std::sqrt(var_alpha);
+            }
+
+            // Error propagation for α = (k_eff − 1 − β_eff · k_eff) / Λ_p
+            // ∂α/∂k_eff = (1 − β_eff)/Λ_p, ∂α/∂β_eff = −k_eff/Λ_p
+            // ∂α/∂Λ_p = −(k_eff − 1 − β_eff · k_eff)/Λ_p²
+            {
+              double dA_dk = (1.0 - beta) / Lp;
+              double dA_dbeta = -k / Lp;
+              double dA_dLp = -(k - 1.0 - beta * k) / (Lp * Lp);
+
+              double var_alpha =
+                dA_dk * dA_dk * simulation::keff_std * simulation::keff_std +
+                dA_dbeta * dA_dbeta * simulation::beta_eff_std * simulation::beta_eff_std +
+                dA_dLp * dA_dLp * simulation::lambda_p_ifp_std * simulation::lambda_p_ifp_std;
               simulation::alpha_ifp_std = std::sqrt(var_alpha);
             }
           }
@@ -919,6 +939,9 @@ void write_eigenvalue_hdf5(hid_t group)
       array<double, 2> lambda_p_ifp_vals {
         simulation::lambda_p_ifp, simulation::lambda_p_ifp_std};
       write_dataset(group, "lambda_p_ifp", lambda_p_ifp_vals);
+      array<double, 2> alpha_dc_ifp_vals {
+        simulation::alpha_dc_ifp, simulation::alpha_dc_ifp_std};
+      write_dataset(group, "alpha_dc_ifp", alpha_dc_ifp_vals);
       array<double, 2> alpha_ifp_vals {
         simulation::alpha_ifp, simulation::alpha_ifp_std};
       write_dataset(group, "alpha_ifp", alpha_ifp_vals);
@@ -965,6 +988,12 @@ void read_eigenvalue_hdf5(hid_t group)
         read_dataset(group, "lambda_p_ifp", lambda_p_ifp_vals);
         simulation::lambda_p_ifp = lambda_p_ifp_vals[0];
         simulation::lambda_p_ifp_std = lambda_p_ifp_vals[1];
+      }
+      if (object_exists(group, "alpha_dc_ifp")) {
+        array<double, 2> alpha_dc_ifp_vals;
+        read_dataset(group, "alpha_dc_ifp", alpha_dc_ifp_vals);
+        simulation::alpha_dc_ifp = alpha_dc_ifp_vals[0];
+        simulation::alpha_dc_ifp_std = alpha_dc_ifp_vals[1];
       }
       if (object_exists(group, "alpha_ifp")) {
         array<double, 2> alpha_ifp_vals;
