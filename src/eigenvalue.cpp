@@ -566,9 +566,14 @@ void calculate_kinetics_parameters()
         // Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)
         simulation::lambda_p_ifp = ifp_prompt_time_numer / (ifp_prompt_denom * simulation::keff);
 
-        // α = −β_eff / [Λ_p · (1 − ρ)]
-        //   where ρ = (k_eff − 1) / k_eff, so (1 − ρ) = 1 / k_eff
-        //   thus α = −β_eff · k_eff / Λ_p
+        // From the inhour equation, the prompt alpha eigenvalue is:
+        //   α = (k_p − 1) / (Λ_p · k_p)
+        // where k_p = k_eff · (1 − β_eff) is the prompt multiplication factor
+        // and Λ_p is the prompt generation time from IFP.
+        //
+        // At delayed critical (k_eff = 1, k_p = 1 − β_eff):
+        //   α_dc = −β_eff / (Λ_p · k_p)
+        //
         // Physical interpretation:
         //   α < 0: subcritical (prompt neutrons decaying)
         //   α = 0: prompt critical
@@ -576,11 +581,14 @@ void calculate_kinetics_parameters()
         if (simulation::lambda_p_ifp > 0.0) {
           double beta = simulation::beta_eff;
           double k = simulation::keff;
+          double kp = k * (1.0 - beta);
           double Lp = simulation::lambda_p_ifp;
-          simulation::alpha_dc_ifp = -beta * k / Lp;
 
-          // Actual alpha: α = (k_eff − 1 − β_eff · k_eff) / Λ_p
-          simulation::alpha_ifp = (k - 1.0 - beta * k) / Lp;
+          // α_dc = −β_eff / (Λ_p · k_p)
+          simulation::alpha_dc_ifp = -beta / (Lp * kp);
+
+          // α = (k_p − 1) / (Λ_p · k_p)
+          simulation::alpha_ifp = (kp - 1.0) / (Lp * kp);
 
           // Error propagation
           if (n > 1) {
@@ -620,33 +628,31 @@ void calculate_kinetics_parameters()
               simulation::lambda_p_ifp_std = std::sqrt(var_Lp);
             }
 
-            // Error propagation for α = −β_eff · k_eff / Λ_p
-            // Using equivalent form α = (k_p − k_eff) / Λ_p for cleaner propagation
-            // ∂α/∂k_p = 1/Λ_p, ∂α/∂k_eff = −1/Λ_p, ∂α/∂Λ_p = −(k_p − k_eff)/Λ_p²
+            // Error propagation for α_dc = (k_p − k) / (Λ_p · k_p)
+            // ∂α_dc/∂k_p = k/(Λ_p · k_p²)
+            // ∂α_dc/∂k = −1/(Λ_p · k_p)
+            // ∂α_dc/∂Λ_p = −α_dc/Λ_p
             {
-              double kp = simulation::keff_prompt;
-              double dAlpha_dkp = 1.0 / Lp;
-              double dAlpha_dk = -1.0 / Lp;
-              double dAlpha_dLp = -(kp - k) / (Lp * Lp);
+              double dA_dkp = k / (Lp * kp * kp);
+              double dA_dk = -1.0 / (Lp * kp);
+              double dA_dLp = -simulation::alpha_dc_ifp / Lp;
 
               double var_alpha =
-                dAlpha_dkp * dAlpha_dkp * simulation::keff_prompt_std * simulation::keff_prompt_std +
-                dAlpha_dk * dAlpha_dk * simulation::keff_std * simulation::keff_std +
-                dAlpha_dLp * dAlpha_dLp * simulation::lambda_p_ifp_std * simulation::lambda_p_ifp_std;
+                dA_dkp * dA_dkp * simulation::keff_prompt_std * simulation::keff_prompt_std +
+                dA_dk * dA_dk * simulation::keff_std * simulation::keff_std +
+                dA_dLp * dA_dLp * simulation::lambda_p_ifp_std * simulation::lambda_p_ifp_std;
               simulation::alpha_dc_ifp_std = std::sqrt(var_alpha);
             }
 
-            // Error propagation for α = (k_eff − 1 − β_eff · k_eff) / Λ_p
-            // ∂α/∂k_eff = (1 − β_eff)/Λ_p, ∂α/∂β_eff = −k_eff/Λ_p
-            // ∂α/∂Λ_p = −(k_eff − 1 − β_eff · k_eff)/Λ_p²
+            // Error propagation for α = (k_p − 1) / (Λ_p · k_p)
+            // ∂α/∂k_p = 1/(Λ_p · k_p²)
+            // ∂α/∂Λ_p = −α/Λ_p
             {
-              double dA_dk = (1.0 - beta) / Lp;
-              double dA_dbeta = -k / Lp;
-              double dA_dLp = -(k - 1.0 - beta * k) / (Lp * Lp);
+              double dA_dkp = 1.0 / (Lp * kp * kp);
+              double dA_dLp = -simulation::alpha_ifp / Lp;
 
               double var_alpha =
-                dA_dk * dA_dk * simulation::keff_std * simulation::keff_std +
-                dA_dbeta * dA_dbeta * simulation::beta_eff_std * simulation::beta_eff_std +
+                dA_dkp * dA_dkp * simulation::keff_prompt_std * simulation::keff_prompt_std +
                 dA_dLp * dA_dLp * simulation::lambda_p_ifp_std * simulation::lambda_p_ifp_std;
               simulation::alpha_ifp_std = std::sqrt(var_alpha);
             }

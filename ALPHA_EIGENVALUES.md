@@ -8,16 +8,17 @@ The alpha eigenvalue (α) describes the time-dependent behavior of the neutron p
 
 **Delayed critical alpha** (assumes the system is exactly delayed critical, i.e., ρ = 0):
 ```
-α_dc = −β_eff · k_eff / Λ_p
+α_dc = −β_eff / (Λ_p · k_p)
 ```
 
 **Actual alpha** (uses the system's actual reactivity state):
 ```
-α = (k_eff − 1 − β_eff · k_eff) / Λ_p
+α = (k_p − 1) / (Λ_p · k_p)
 ```
 
 Where:
 - **k_eff**: Effective multiplication factor
+- **k_p**: Prompt multiplication factor = k_eff · (1 − β_eff)
 - **β_eff**: Effective delayed neutron fraction (from k-prompt)
 - **Λ_p**: IFP-weighted prompt generation time
 
@@ -245,13 +246,15 @@ When running OpenMC with alpha calculations enabled, the output will include a k
 
 **α_dc (Delayed Critical Alpha)**: Assumes the system is exactly delayed critical (ρ = 0):
 ```
-α_dc = −β_eff · k_eff / Λ_p
+α_dc = −β_eff / (Λ_p · k_p)
 ```
 
 **α (Actual Alpha)**: Uses the system's actual reactivity:
 ```
-α = (k_eff − 1 − β_eff · k_eff) / Λ_p
+α = (k_p − 1) / (Λ_p · k_p)
 ```
+
+where `k_p = k_eff · (1 − β_eff)` is the prompt multiplication factor.
 
 IFP scores used:
 - `ifp-time-numerator`: IFP-weighted time to fission
