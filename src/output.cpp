@@ -568,10 +568,10 @@ void print_results()
           simulation::lambda_eff_ifp > 0.0) {
         fmt::print(" Lambda-effective (IFP)     = {:.5e} +/- {:.5e} seconds\n",
           simulation::lambda_eff_ifp, t_n1 * simulation::lambda_eff_ifp_std);
-        fmt::print(" Lifetime-prompt (IFP)      = {:.5e} +/- {:.5e} seconds\n",
-          simulation::lifetime_p_ifp, t_n1 * simulation::lifetime_p_ifp_std);
         fmt::print(" Lambda-prompt (IFP)        = {:.5e} +/- {:.5e} seconds\n",
           simulation::lambda_p_ifp, t_n1 * simulation::lambda_p_ifp_std);
+        fmt::print(" Lifetime-prompt (IFP)      = {:.5e} +/- {:.5e} seconds\n",
+          simulation::lifetime_p_ifp, t_n1 * simulation::lifetime_p_ifp_std);
         fmt::print(" Alpha (Delayed Critical)   = {:.5e} +/- {:.5e} 1/seconds\n",
           simulation::alpha_dc_ifp, t_n1 * simulation::alpha_dc_ifp_std);
         fmt::print(" Alpha (Static)             = {:.5e} +/- {:.5e} 1/seconds\n",
@@ -606,10 +606,10 @@ void print_results()
           simulation::lambda_eff_ifp > 0.0) {
         fmt::print(" Lambda-effective (IFP)     = {:.5e} seconds\n",
           simulation::lambda_eff_ifp);
-        fmt::print(" Lifetime-prompt (IFP)      = {:.5e} seconds\n",
-          simulation::lifetime_p_ifp);
         fmt::print(" Lambda-prompt (IFP)        = {:.5e} seconds\n",
           simulation::lambda_p_ifp);
+        fmt::print(" Lifetime-prompt (IFP)      = {:.5e} seconds\n",
+          simulation::lifetime_p_ifp);
         fmt::print(" Alpha (Delayed Critical)   = {:.5e} 1/seconds\n",
           simulation::alpha_dc_ifp);
         fmt::print(" Alpha (Static)             = {:.5e} 1/seconds\n",
