@@ -47,6 +47,8 @@ extern double alpha_ifp;              //!< α at actual reactivity state [/s]
 extern double alpha_ifp_std;          //!< Standard deviation of α_ifp
 extern double lambda_eff_ifp;         //!< IFP-weighted generation time Λ_eff [s]
 extern double lambda_eff_ifp_std;     //!< Standard deviation of Λ_eff
+extern double lifetime_p_ifp;          //!< IFP-weighted prompt neutron lifetime ℓ_p [s]
+extern double lifetime_p_ifp_std;     //!< Standard deviation of ℓ_p
 extern double lambda_p_ifp;           //!< IFP-weighted prompt generation time Λ_p [s]
 extern double lambda_p_ifp_std;       //!< Standard deviation of Λ_p
 
