@@ -38,7 +38,7 @@ extern double beta_eff_std;           //!< Standard deviation of beta_eff
 
 // IFP-weighted generation times and alpha eigenvalue
 // Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
-// Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)
+// Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_p)
 // α_dc = −β_eff / (Λ_p · k_p),  α = (k_p − 1) / (Λ_p · k_p)
 extern double alpha_dc_ifp;           //!< α at delayed critical from IFP-weighted Λ_p [/s]
 extern double alpha_dc_ifp_std;      //!< Standard deviation of α_dc_ifp
