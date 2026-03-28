@@ -59,6 +59,8 @@ double alpha_ifp {0.0};
 double alpha_ifp_std {0.0};
 double lambda_eff_ifp {0.0};
 double lambda_eff_ifp_std {0.0};
+double lifetime_p_ifp {0.0};
+double lifetime_p_ifp_std {0.0};
 double lambda_p_ifp {0.0};
 double lambda_p_ifp_std {0.0};
 
@@ -571,6 +573,7 @@ void calculate_kinetics_parameters()
         // ℓ_p = ifp-prompt-time-numerator / ifp-prompt-denominator
         // (IFP-weighted prompt neutron lifetime, no k normalization needed)
         double lp = ifp_prompt_time_numer / ifp_prompt_denom;
+        simulation::lifetime_p_ifp = lp;
 
         // Λ_p = ℓ_p / k_p for reporting
         if (kp > 0.0) {
@@ -628,6 +631,7 @@ void calculate_kinetics_parameters()
               double var_lp = dlp_dnumer * dlp_dnumer * ifp_prompt_time_numer_std * ifp_prompt_time_numer_std +
                               dlp_ddenom * dlp_ddenom * ifp_prompt_denom_std * ifp_prompt_denom_std;
               lp_std = std::sqrt(var_lp);
+              simulation::lifetime_p_ifp_std = lp_std;
             }
 
             // Error propagation for Λ_p = ℓ_p / k_p
@@ -960,6 +964,9 @@ void write_eigenvalue_hdf5(hid_t group)
       array<double, 2> lambda_eff_ifp_vals {
         simulation::lambda_eff_ifp, simulation::lambda_eff_ifp_std};
       write_dataset(group, "lambda_eff_ifp", lambda_eff_ifp_vals);
+      array<double, 2> lifetime_p_ifp_vals {
+        simulation::lifetime_p_ifp, simulation::lifetime_p_ifp_std};
+      write_dataset(group, "lifetime_p_ifp", lifetime_p_ifp_vals);
       array<double, 2> lambda_p_ifp_vals {
         simulation::lambda_p_ifp, simulation::lambda_p_ifp_std};
       write_dataset(group, "lambda_p_ifp", lambda_p_ifp_vals);
@@ -1006,6 +1013,12 @@ void read_eigenvalue_hdf5(hid_t group)
         read_dataset(group, "lambda_eff_ifp", lambda_eff_ifp_vals);
         simulation::lambda_eff_ifp = lambda_eff_ifp_vals[0];
         simulation::lambda_eff_ifp_std = lambda_eff_ifp_vals[1];
+      }
+      if (object_exists(group, "lifetime_p_ifp")) {
+        array<double, 2> lifetime_p_ifp_vals;
+        read_dataset(group, "lifetime_p_ifp", lifetime_p_ifp_vals);
+        simulation::lifetime_p_ifp = lifetime_p_ifp_vals[0];
+        simulation::lifetime_p_ifp_std = lifetime_p_ifp_vals[1];
       }
       if (object_exists(group, "lambda_p_ifp")) {
         array<double, 2> lambda_p_ifp_vals;

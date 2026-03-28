@@ -346,11 +346,25 @@ class StatePoint:
             return None
 
     @property
+    def lifetime_p_ifp(self):
+        """IFP-weighted prompt neutron lifetime (ℓ_p) with uncertainty.
+
+        The prompt neutron lifetime computed using the Iterated Fission
+        Probability (IFP) method: ℓ_p = ifp-prompt-time-numerator /
+        ifp-prompt-denominator, considering only prompt neutron chains.
+        """
+        if self.run_mode == 'eigenvalue' and 'lifetime_p_ifp' in self._f:
+            return ufloat(*self._f['lifetime_p_ifp'][()])
+        else:
+            return None
+
+    @property
     def lambda_p_ifp(self):
         """IFP-weighted prompt generation time (Λ_p) with uncertainty.
 
         The prompt generation time computed using the Iterated Fission
-        Probability (IFP) method, considering only prompt neutron chains.
+        Probability (IFP) method: Λ_p = ℓ_p / k_p, considering only
+        prompt neutron chains.
         """
         if self.run_mode == 'eigenvalue' and 'lambda_p_ifp' in self._f:
             return ufloat(*self._f['lambda_p_ifp'][()])
@@ -361,9 +375,8 @@ class StatePoint:
     def alpha_dc_ifp(self):
         """IFP-weighted alpha eigenvalue at delayed critical with uncertainty.
 
-        Calculated as: α_dc = −β_eff / (Λ_p · k_p)
-        where Λ_p is the IFP-weighted prompt generation time and
-        k_p = k_eff · (1 − β_eff) is the prompt multiplication factor.
+        Calculated as: α_dc = −β_eff / ℓ_p
+        where ℓ_p is the IFP-weighted prompt neutron lifetime.
         """
         if self.run_mode == 'eigenvalue' and 'alpha_dc_ifp' in self._f:
             return ufloat(*self._f['alpha_dc_ifp'][()])
@@ -374,8 +387,8 @@ class StatePoint:
     def alpha_ifp(self):
         """IFP-weighted alpha eigenvalue at actual reactivity with uncertainty.
 
-        Calculated as: α = (k_p − 1) / (Λ_p · k_p)
-        where Λ_p is the IFP-weighted prompt generation time and
+        Calculated as: α = (k_p − 1) / ℓ_p
+        where ℓ_p is the IFP-weighted prompt neutron lifetime and
         k_p = k_eff · (1 − β_eff) is the prompt multiplication factor.
         """
         if self.run_mode == 'eigenvalue' and 'alpha_ifp' in self._f:
