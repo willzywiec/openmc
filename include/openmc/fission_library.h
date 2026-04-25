@@ -8,9 +8,9 @@
 //   "An 8-group delayed neutron model based on a consistent set of half-lives",
 //   Progress in Nuclear Energy 41(1-4), 223-251 (2002).
 //
-// Enabled by: cmake -DOPENMC_USE_FISSION_LIB=ON
+// Enabled by: cmake -DOPENMC_USE_FREYA=ON
 //
-// When OPENMC_FISSION_LIB is defined, the delayed neutron emission time in
+// When OPENMC_USE_FREYA is defined, the delayed neutron emission time in
 // sample_fission_neutron() (src/physics.cpp) is sampled from the Spriggs
 // 8-group model rather than from the ENDF/B precursor decay constants.
 // The group structure (for energy/angle sampling) and beta fraction still
@@ -25,7 +25,7 @@
 
 #pragma once
 
-#ifdef OPENMC_FISSION_LIB
+#ifdef OPENMC_USE_FREYA
 
 namespace openmc {
 namespace fission_lib {
@@ -138,4 +138,4 @@ inline int sample_spriggs_group(const SpriggsEntry* entry, double xi)
 } // namespace fission_lib
 } // namespace openmc
 
-#endif // OPENMC_FISSION_LIB
+#endif // OPENMC_USE_FREYA

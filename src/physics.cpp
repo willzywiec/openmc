@@ -27,7 +27,7 @@
 #include "openmc/tallies/tally.h"
 #include "openmc/thermal.h"
 #include "openmc/weight_windows.h"
-#ifdef OPENMC_FISSION_LIB
+#ifdef OPENMC_USE_FREYA
 #include "openmc/fission_library.h"
 #endif
 
@@ -1095,7 +1095,7 @@ void sample_fission_neutron(
     site->delayed_group = group;
 
     // Sample time of emission of the delayed neutron.
-#ifdef OPENMC_FISSION_LIB
+#ifdef OPENMC_USE_FREYA
     // Spriggs 8-group consistent half-life model:
     //   Spriggs, Campbell & Piksaikin (2002), Prog. Nucl. Energy 41, 223-251.
     // The ENDF group (above) governs energy/angle sampling; the Spriggs model
