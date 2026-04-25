@@ -1096,18 +1096,23 @@ void sample_fission_neutron(
 
     // Sample time of emission of the delayed neutron.
 #ifdef OPENMC_USE_FREYA
-    // Spriggs 8-group consistent half-life model:
+    // Spriggs 8-group consistent half-life model for tabulated isotopes:
     //   Spriggs, Campbell & Piksaikin (2002), Prog. Nucl. Energy 41, 223-251.
     // The ENDF group (above) governs energy/angle sampling; the Spriggs model
     // governs the emission time.  The 8 lambda values are fixed to dominant
     // precursor half-lives and are isotope-independent.
+    // For isotopes not in the Spriggs table, the ENDF/B decay rate is used.
     {
       int ZA = 1000 * nuc->Z_ + nuc->A_;
       const auto* entry = fission_lib::find_entry(ZA);
-      if (!entry)
-        entry = fission_lib::fallback_entry(); // use U-235 for unknown isotopes
-      int g = fission_lib::sample_spriggs_group(entry, prn(p.current_seed()));
-      site->time -= std::log(prn(p.current_seed())) / fission_lib::spriggs_lambda[g];
+      double decay_rate;
+      if (entry) {
+        int g = fission_lib::sample_spriggs_group(entry, prn(p.current_seed()));
+        decay_rate = fission_lib::spriggs_lambda[g];
+      } else {
+        decay_rate = rx.products_[site->delayed_group].decay_rate_;
+      }
+      site->time -= std::log(prn(p.current_seed())) / decay_rate;
     }
 #else
     double decay_rate = rx.products_[site->delayed_group].decay_rate_;

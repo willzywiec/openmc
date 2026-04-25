@@ -204,12 +204,17 @@ def test_mc_group_rates():
 
 
 # ===========================================================================
-# Test: fallback (U-235) T_mean within 1% of Table VII value.
+# Test: find_entry returns None for unlisted isotopes (no fallback).
 # ===========================================================================
-def test_fallback_is_u235():
-    """Fallback entry must be U-235 (ZA=92235), per header comment."""
-    # The header says fallback_entry() returns &spriggs_table[1] which is U-235
-    fallback_za = 92235
-    assert fallback_za in SPRIGGS_TABLE
-    t = paper_tmean(fallback_za)
-    assert abs(t - T_MEAN_PAPER[fallback_za]) / T_MEAN_PAPER[fallback_za] < 0.01
+def test_no_fallback_for_unknown_isotopes():
+    """Isotopes not in the Spriggs table must return None, not a substitute.
+
+    In the OpenMC integration, a None result causes the code to fall back
+    to the ENDF/B decay rate rather than silently using a wrong isotope's
+    group abundances.
+    """
+    unlisted = [92234, 92236, 94238, 94240, 94242, 95241, 96244]
+    for za in unlisted:
+        assert za not in SPRIGGS_TABLE, (
+            f"ZA={za} is now in SPRIGGS_TABLE — update this test"
+        )

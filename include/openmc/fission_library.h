@@ -104,16 +104,6 @@ inline const SpriggsEntry* find_entry(int ZA)
 }
 
 // ---------------------------------------------------------------------------
-// fallback_entry: returns U-235 (the most commonly tabulated fissionable).
-// Used when the fissioning isotope is not in spriggs_table[].
-// ---------------------------------------------------------------------------
-inline const SpriggsEntry* fallback_entry()
-{
-  // U-235 is spriggs_table[1]
-  return &spriggs_table[1];
-}
-
-// ---------------------------------------------------------------------------
 // sample_spriggs_group: select a Spriggs group index in [0, NSPRIGGS)
 // using the inverse-CDF method on the group abundances.
 //
