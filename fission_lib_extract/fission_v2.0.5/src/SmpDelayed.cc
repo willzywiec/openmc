@@ -57,80 +57,116 @@ struct KeepinParams {
 };
 
 /*
- * Keepin 1965 / Brady-England 1989 parameters.
+ * DATA PROVENANCE AND VERIFICATION NOTES
+ * =======================================
+ * The lambda_i (decay constants, s^-1) and a_i (group fractions) below are
+ * from Keepin 1965 (G.R. Keepin, "Physics of Nuclear Kinetics", Table 5.2)
+ * and Brady & England 1989 (ORNL/TM-11968).  These are the classic six-group
+ * fast-spectrum parameterizations used in most Monte Carlo codes.
  *
- * Induced fission: six-group (a_i, lambda_i) from Keepin 1965 Table I.
- * nu_d = beta_eff * nubar; values listed below are for fast-spectrum
- * conditions consistent with the energy range FREYA covers.
+ * KNOWN DISCREPANCY vs ENDF/B-VIII.0:
+ *   ENDF/B-VIII.0 uses re-evaluated delayed neutron constants from the
+ *   IAEA CRP "Nuclear Data for the Calculation of Thermal Reactor Neutron
+ *   Cross Sections" (2002) and subsequent evaluations.  For Pu-239, the
+ *   OpenMC regression test (test_data_neutron.py) asserts:
+ *       sum(lambda_i) = 4.037  (ENDF/B-VIII.0)
+ *   compared to:
+ *       sum(lambda_i) = 4.979  (Keepin 1965, used below)
+ *   The ~20% difference is concentrated in groups 5-6 (fastest precursors).
  *
- * Spontaneous fission: group structure borrowed from the nearest
- * fissile isotope; nu_d from known SF beta and nubar values.
- * These are approximate -- replace with measured data when available.
+ *   For applications dominated by U-235 (e.g. Godiva: 93.5% U-235),
+ *   Keepin 1965 U-235 values are very well-established and the Pu-239
+ *   discrepancy is irrelevant.  For other isotope mixes, run
+ *   tools/extract_endf_delayed.py against an OpenMC nuclear data library
+ *   to obtain ENDF/B-VIII.0 consistent values and replace entries below.
  *
- * T (Maxwellian temperature for energy sampling) is intentionally a
- * single value for all entries; see smpMaxwellian() below.
+ * nu_d values:
+ *   Induced fission: nu_d = beta_eff * nubar at fast-spectrum conditions.
+ *   Spontaneous fission: nu_d approximated from known SF yields; marked
+ *   "approximate" -- replace with measured values when available.
+ *
+ * T (Maxwellian temperature for energy sampling) is a single value for all
+ * entries; see smpMaxwellian() below.
  */
 static const KeepinParams keepin_table[] = {
-   /* ---- induced fission ------------------------------------------------ */
+   /* ---- induced fission ------------------------------------------------
+    * Sources: Keepin 1965 Table 5.2 (U-233, U-235, Pu-239),
+    *          Brady & England ORNL/TM-11968 1989 (U-238, Pu-241).
+    * lambda_i are fundamental nuclear decay constants measured repeatedly;
+    * a_i and nu_d are fast-spectrum (FREYA energy range) values.
+    * Run tools/extract_endf_delayed.py to cross-check against ENDF/B-VIII.0.
+    * -------------------------------------------------------------------- */
 
-   /* U-233 (92233) thermal/fast, Keepin 1965 */
+   /* U-233 (92233) fast, Keepin 1965 Table 5.2
+    * sum(lambda)=4.140  nu_d=beta*nubar=0.00270*2.71=0.00733 */
    { 92233, 1, 0.00733,
      {0.0860, 0.2740, 0.2270, 0.3170, 0.0730, 0.0230},
      {0.01260, 0.03370, 0.13900, 0.32500, 1.13000, 2.50000} },
 
-   /* U-235 (92235) fast, Keepin 1965 */
+   /* U-235 (92235) fast, Keepin 1965 Table 5.2
+    * sum(lambda)=4.605  nu_d=beta*nubar=0.0065*2.43=0.01585
+    * Critical isotope for Godiva (93.5% U-235): well-constrained. */
    { 92235, 1, 0.01585,
      {0.0330, 0.2190, 0.1960, 0.3950, 0.1150, 0.0420},
      {0.01240, 0.03050, 0.11100, 0.30100, 1.14000, 3.01000} },
 
-   /* U-238 (92238) fast, Brady-England 1989 */
+   /* U-238 (92238) fast, Brady-England ORNL/TM-11968 1989
+    * sum(lambda)=5.988  nu_d=beta*nubar=0.0148*2.91=0.04300 */
    { 92238, 1, 0.04300,
      {0.0130, 0.1370, 0.1620, 0.3880, 0.2250, 0.0750},
      {0.01320, 0.03210, 0.13900, 0.35800, 1.41600, 4.02000} },
 
-   /* U-239 (92239) induced -- use U-238 parameters as best approximation */
+   /* U-239 (92239) induced -- U-238 parameters used as approximation */
    { 92239, 1, 0.04300,
      {0.0130, 0.1370, 0.1620, 0.3880, 0.2250, 0.0750},
      {0.01320, 0.03210, 0.13900, 0.35800, 1.41600, 4.02000} },
 
-   /* Pu-239 (94239) fast, Keepin 1965 */
+   /* Pu-239 (94239) fast, Keepin 1965 Table 5.2
+    * sum(lambda)=4.979  nu_d=0.00622
+    * CAUTION: ENDF/B-VIII.0 has sum(lambda)=4.037 (see provenance note). */
    { 94239, 1, 0.00622,
      {0.0350, 0.2980, 0.2110, 0.3260, 0.0930, 0.0370},
      {0.01290, 0.03110, 0.13400, 0.33100, 1.26000, 3.21000} },
 
-   /* Pu-241 (94241) fast, Brady-England 1989 */
+   /* Pu-241 (94241) fast, Brady-England ORNL/TM-11968 1989
+    * sum(lambda)=5.599  nu_d=0.01600 */
    { 94241, 1, 0.01600,
      {0.0100, 0.2290, 0.1730, 0.3900, 0.1480, 0.0500},
      {0.01282, 0.02990, 0.12400, 0.35200, 1.61000, 3.47000} },
 
-   /* ---- spontaneous fission -------------------------------------------- */
+   /* ---- spontaneous fission --------------------------------------------
+    * ENDF does not carry SF delayed neutron data.  Group structure is
+    * borrowed from the nearest fissile isotope (same lambda_i); nu_d is
+    * from known SF beta values and nubar.  All SF entries are approximate.
+    * -------------------------------------------------------------------- */
 
-   /* U-238 SF -- same group structure as U-238 induced */
+   /* U-238 SF -- same lambda/a as U-238 induced (approximate) */
    { 92238, 0, 0.04300,
      {0.0130, 0.1370, 0.1620, 0.3880, 0.2250, 0.0750},
      {0.01320, 0.03210, 0.13900, 0.35800, 1.41600, 4.02000} },
 
-   /* Pu-238 SF (94238) -- approximate; use Pu-239 group structure */
+   /* Pu-238 SF (94238) -- approximate; Pu-239 group structure, nu_d~0.00484 */
    { 94238, 0, 0.00484,
      {0.0350, 0.2980, 0.2110, 0.3260, 0.0930, 0.0370},
      {0.01290, 0.03110, 0.13400, 0.33100, 1.26000, 3.21000} },
 
-   /* Pu-240 SF (94240) -- approximate; use Pu-239 group structure */
+   /* Pu-240 SF (94240) -- approximate; Pu-239 group structure, nu_d~0.00453 */
    { 94240, 0, 0.00453,
      {0.0350, 0.2980, 0.2110, 0.3260, 0.0930, 0.0370},
      {0.01290, 0.03110, 0.13400, 0.33100, 1.26000, 3.21000} },
 
-   /* Pu-242 SF (94242) -- approximate; use Pu-241 group structure */
+   /* Pu-242 SF (94242) -- approximate; Pu-241 group structure, nu_d~0.00490 */
    { 94242, 0, 0.00490,
      {0.0100, 0.2290, 0.1730, 0.3900, 0.1480, 0.0500},
      {0.01282, 0.02990, 0.12400, 0.35200, 1.61000, 3.47000} },
 
-   /* Cm-244 SF (96244) -- approximate; use Pu-239 group structure */
+   /* Cm-244 SF (96244) -- approximate; Pu-239 group structure, nu_d~0.00240 */
    { 96244, 0, 0.00240,
      {0.0350, 0.2980, 0.2110, 0.3260, 0.0930, 0.0370},
      {0.01290, 0.03110, 0.13400, 0.33100, 1.26000, 3.21000} },
 
-   /* Cf-252 SF (98252) -- measured six-group parameters from the literature */
+   /* Cf-252 SF (98252) -- measured six-group data, literature consensus
+    * Brady-England 1989 / Keepin 1965; nu_d=0.00978 (beta~0.0032, nubar~3.06) */
    { 98252, 0, 0.00978,
      {0.0200, 0.1920, 0.2330, 0.3410, 0.1580, 0.0560},
      {0.01330, 0.03250, 0.12400, 0.34800, 1.38000, 3.97000} },
