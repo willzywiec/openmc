@@ -107,3 +107,4 @@ CMakeSettings.json
 # Python pickle files
 *.pkl
 alpha/runs_*/
+fission_lib_extract/fission_v2.0.5/build_test/
