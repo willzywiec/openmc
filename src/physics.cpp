@@ -27,6 +27,9 @@
 #include "openmc/tallies/tally.h"
 #include "openmc/thermal.h"
 #include "openmc/weight_windows.h"
+#ifdef OPENMC_FISSION_LIB
+#include "openmc/fission_library.h"
+#endif
 
 #include <fmt/core.h>
 
@@ -1091,9 +1094,25 @@ void sample_fission_neutron(
     // set the delayed group for the particle born from fission
     site->delayed_group = group;
 
-    // Sample time of emission based on decay constant of precursor
+    // Sample time of emission of the delayed neutron.
+#ifdef OPENMC_FISSION_LIB
+    // Spriggs 8-group consistent half-life model:
+    //   Spriggs, Campbell & Piksaikin (2002), Prog. Nucl. Energy 41, 223-251.
+    // The ENDF group (above) governs energy/angle sampling; the Spriggs model
+    // governs the emission time.  The 8 lambda values are fixed to dominant
+    // precursor half-lives and are isotope-independent.
+    {
+      int ZA = 1000 * nuc->Z_ + nuc->A_;
+      const auto* entry = fission_lib::find_entry(ZA);
+      if (!entry)
+        entry = fission_lib::fallback_entry(); // use U-235 for unknown isotopes
+      int g = fission_lib::sample_spriggs_group(entry, prn(p.current_seed()));
+      site->time -= std::log(prn(p.current_seed())) / fission_lib::spriggs_lambda[g];
+    }
+#else
     double decay_rate = rx.products_[site->delayed_group].decay_rate_;
     site->time -= std::log(prn(p.current_seed())) / decay_rate;
+#endif
 
   } else {
     // ====================================================================

@@ -38,6 +38,8 @@ option(OPENMC_USE_LIBMESH     "Enable support for libMesh unstructured mesh tall
 option(OPENMC_USE_MPI         "Enable MPI"                                           OFF)
 option(OPENMC_USE_UWUW        "Enable UWUW"                                          OFF)
 option(OPENMC_FORCE_VENDORED_LIBS "Explicitly use submodules defined in 'vendor'"    OFF)
+option(OPENMC_USE_FISSION_LIB
+       "Enable Spriggs 8-group delayed neutron model (LLNL Fission Library)"        OFF)
 
 message(STATUS "OPENMC_USE_OPENMP ${OPENMC_USE_OPENMP}")
 message(STATUS "OPENMC_BUILD_TESTS ${OPENMC_BUILD_TESTS}")
@@ -48,6 +50,7 @@ message(STATUS "OPENMC_USE_LIBMESH ${OPENMC_USE_LIBMESH}")
 message(STATUS "OPENMC_USE_MPI ${OPENMC_USE_MPI}")
 message(STATUS "OPENMC_USE_UWUW ${OPENMC_USE_UWUW}")
 message(STATUS "OPENMC_FORCE_VENDORED_LIBS ${OPENMC_FORCE_VENDORED_LIBS}")
+message(STATUS "OPENMC_USE_FISSION_LIB ${OPENMC_USE_FISSION_LIB}")
 
 # Warnings for deprecated options
 foreach(OLD_OPT IN ITEMS "openmp" "profile" "coverage" "dagmc" "libmesh")
@@ -533,6 +536,19 @@ endif()
 if(OPENMC_USE_LIBMESH)
   target_compile_definitions(libopenmc PRIVATE OPENMC_LIBMESH_ENABLED)
   target_link_libraries(libopenmc PkgConfig::LIBMESH)
+endif()
+
+if(OPENMC_USE_FISSION_LIB)
+  # Phase 1: Spriggs 8-group delayed neutron time constants (header-only).
+  # No external library link is required; all parameters are embedded in
+  # include/openmc/fission_library.h.
+  #
+  # Phase 2 (future): link libFission for FREYA correlated fission:
+  #   find_package(FissionLib REQUIRED)
+  #   target_link_libraries(libopenmc FissionLib::Fission)
+  #   target_include_directories(libopenmc PRIVATE ${FissionLib_INCLUDE_DIRS})
+  target_compile_definitions(libopenmc PRIVATE OPENMC_FISSION_LIB)
+  message(STATUS "Spriggs 8-group delayed neutron model enabled (LLNL Fission Library)")
 endif()
 
 if (PNG_FOUND)
