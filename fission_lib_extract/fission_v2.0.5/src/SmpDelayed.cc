@@ -54,17 +54,10 @@ Additional BSD Notice
  *
  * ABUNDANCES
  * ----------
- * The per-isotope abundances (a_i) below are computed by the Spriggs NNLS
- * expansion: the original Keepin 1965 / Brady-England 1989 six-group decay
- * curve for each isotope is re-fit to the 8-group fixed-lambda basis using
- * non-negative least squares (tools/expand_keepin_to_8group.py).  This is
- * the same procedure used to populate the JEFF-3.1.1 delayed neutron library.
- * Mean half-life is conserved to < 0.02% for all isotopes; RMS curve fit
- * error is < 0.025%.
- *
- * To update the abundances from measured fast-spectrum data (Piksaikin et al.
- * 2002, Prog. Nucl. Energy 41, 1-4), replace the a[] entries below with
- * values from that table, keeping the lambda[] array unchanged.
+ * The per-isotope abundances (a_i) are taken directly from the recommended
+ * fast-fission datasets in Table VII of Spriggs, Campbell & Piksaikin (2002).
+ * Each entry cites the specific dataset number from Spriggs & Campbell (1999),
+ * LA-UR-98-918.  The lambda[] array is isotope-independent and unchanged.
  *
  * ENERGY SPECTRA
  * --------------
@@ -116,77 +109,74 @@ struct SpriggsParams {
 /*
  * Per-isotope 8-group abundances.
  *
- * nu_d values:
- *   Induced: nu_d = beta_eff * nubar at fast-spectrum conditions.
- *   SF: approximated from known SF delayed fractions; all SF entries are
- *       approximate -- replace with measured values when available.
+ * nu_d: total delayed neutrons per fission at fast-spectrum conditions
+ *   (nu_d = beta_eff * nubar).  SF entries use known SF delayed fractions.
  *
- * Abundances: Spriggs NNLS expansion of Keepin 1965 / Brady-England 1989
- * 6-group fast-fission data onto the 8-group fixed-lambda basis.
- * See tools/expand_keepin_to_8group.py for the computation.
- * T_mean is conserved to < 0.02%; RMS curve error < 0.025%.
- *
- * To use Piksaikin et al. (2002) directly-measured 8-group abundances for
- * U-235, U-238, Pu-239, replace the a[] values for those isotopes with the
- * tabulated data from Prog. Nucl. Energy 41(1-4), Table 3.
+ * Abundances: Table VII recommended fast-fission datasets from
+ *   Spriggs, Campbell & Piksaikin (2002), Prog. Nucl. Energy 41, 223-251.
+ * Dataset numbers reference the Spriggs & Campbell (1999) compilation,
+ *   LA-UR-98-918.
+ * SF entries use induced-fission abundances of the nearest related isotope
+ *   as an approximation; Spriggs (2002) covers only neutron-induced fission.
  */
 static const SpriggsParams keepin_table[] = {
    /* ---- induced fission ------------------------------------------------ */
 
-   /* U-233 (92233) fast  nu_d=0.00733  T_mean=12.21 s
-    * Keepin-1965 6g expanded to Spriggs 8g; RMS_err=0.005% */
+   /* U-233 (92233) fast  nu_d=0.00733  T_mean=12.38 s
+    * Spriggs Table VII #42, Maksyutenko (1967), fast fission */
    { 92233, 1, 0.00733,
-     {0.0787, 0.1605, 0.1284, 0.1841, 0.3198, 0.0659, 0.0575, 0.0051} },
+     {0.0800, 0.1570, 0.1350, 0.2090, 0.3080, 0.0370, 0.0620, 0.0120} },
 
-   /* U-235 (92235) fast  nu_d=0.01585  T_mean=9.03 s
-    * Keepin-1965 6g expanded to Spriggs 8g; RMS_err=0.007%
+   /* U-235 (92235) fast  nu_d=0.01585  T_mean=9.10 s
+    * Spriggs Table VII #88, Piksaikin (1997), fast fission
     * Critical isotope for Godiva (93.5% U-235). */
    { 92235, 1, 0.01585,
-     {0.0338, 0.1489, 0.0970, 0.1939, 0.3336, 0.0875, 0.0829, 0.0224} },
+     {0.0340, 0.1500, 0.0990, 0.2000, 0.3120, 0.0930, 0.0870, 0.0250} },
 
-   /* U-238 (92238) fast  nu_d=0.04300  T_mean=5.32 s
-    * Brady-England-1989 6g expanded to Spriggs 8g; RMS_err=0.021% */
+   /* U-238 (92238) fast  nu_d=0.04300  T_mean=5.30 s
+    * Spriggs Table VII #118, Keepin (1957), fast fission */
    { 92238, 1, 0.04300,
-     {0.0094, 0.0948, 0.0515, 0.1180, 0.3230, 0.1713, 0.1433, 0.0887} },
+     {0.0080, 0.1040, 0.0380, 0.1370, 0.2940, 0.1980, 0.1280, 0.0930} },
 
    /* U-239 (92239) induced -- U-238 abundances used as approximation */
    { 92239, 1, 0.04300,
-     {0.0094, 0.0948, 0.0515, 0.1180, 0.3230, 0.1713, 0.1433, 0.0887} },
+     {0.0080, 0.1040, 0.0380, 0.1370, 0.2940, 0.1980, 0.1280, 0.0930} },
 
-   /* Pu-239 (94239) fast  nu_d=0.00622  T_mean=10.35 s
-    * Keepin-1965 6g expanded to Spriggs 8g; RMS_err=0.004% */
+   /* Pu-239 (94239) fast  nu_d=0.00622  T_mean=10.36 s
+    * Spriggs Table VII #207, Besant (1977), fast fission */
    { 94239, 1, 0.00622,
-     {0.0288, 0.2286, 0.0861, 0.1723, 0.3102, 0.0776, 0.0710, 0.0254} },
+     {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
 
-   /* Pu-241 (94241) fast  nu_d=0.01600  T_mean=7.66 s
-    * Brady-England-1989 6g expanded to Spriggs 8g; RMS_err=0.020% */
+   /* Pu-241 (94241) fast  nu_d=0.01600  T_mean=7.85 s
+    * Spriggs Table VII #230, Gudkov (1989), fast fission */
    { 94241, 1, 0.01600,
-     {0.0115, 0.1651, 0.0867, 0.1117, 0.3553, 0.0897, 0.1286, 0.0514} },
+     {0.0160, 0.1750, 0.0550, 0.1700, 0.2800, 0.1660, 0.1130, 0.0250} },
 
    /* ---- spontaneous fission -------------------------------------------- */
 
-   /* U-238 SF  nu_d=0.04300 -- same abundances as U-238 induced (approximate) */
+   /* U-238 SF  nu_d=0.04300 -- U-238 induced abundances (approximate) */
    { 92238, 0, 0.04300,
-     {0.0094, 0.0948, 0.0515, 0.1180, 0.3230, 0.1713, 0.1433, 0.0887} },
+     {0.0080, 0.1040, 0.0380, 0.1370, 0.2940, 0.1980, 0.1280, 0.0930} },
 
    /* Pu-238 SF (94238)  nu_d=0.00484 -- Pu-239 abundances (approximate) */
    { 94238, 0, 0.00484,
-     {0.0288, 0.2286, 0.0861, 0.1723, 0.3102, 0.0776, 0.0710, 0.0254} },
+     {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
 
    /* Pu-240 SF (94240)  nu_d=0.00453 -- Pu-239 abundances (approximate) */
    { 94240, 0, 0.00453,
-     {0.0288, 0.2286, 0.0861, 0.1723, 0.3102, 0.0776, 0.0710, 0.0254} },
+     {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
 
    /* Pu-242 SF (94242)  nu_d=0.00490 -- Pu-241 abundances (approximate) */
    { 94242, 0, 0.00490,
-     {0.0115, 0.1651, 0.0867, 0.1117, 0.3553, 0.0897, 0.1286, 0.0514} },
+     {0.0160, 0.1750, 0.0550, 0.1700, 0.2800, 0.1660, 0.1130, 0.0250} },
 
    /* Cm-244 SF (96244)  nu_d=0.00240 -- Pu-239 abundances (approximate) */
    { 96244, 0, 0.00240,
-     {0.0288, 0.2286, 0.0861, 0.1723, 0.3102, 0.0776, 0.0710, 0.0254} },
+     {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
 
-   /* Cf-252 SF (98252)  nu_d=0.00978  T_mean=7.21 s
-    * Keepin/Brady-England literature 6g expanded to Spriggs 8g; RMS_err=0.015% */
+   /* Cf-252 SF (98252)  nu_d=0.00978
+    * Spriggs (2002) Cf-252 dataset #245 (Chulick 1969) has +/-2400% on G3;
+    * abundances retained from Brady-England 6g NNLS expansion. */
    { 98252, 0, 0.00978,
      {0.0161, 0.1123, 0.1031, 0.2021, 0.2686, 0.1396, 0.0930, 0.0651} },
 };
