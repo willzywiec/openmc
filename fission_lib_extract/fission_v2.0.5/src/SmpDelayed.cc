@@ -61,12 +61,16 @@ Additional BSD Notice
  *
  * ENERGY SPECTRA
  * --------------
- * Maxwellian with T = 0.30 MeV, giving <E> = 0.45 MeV.  Group-resolved
- * spectra (Spriggs 1999, LA-UR-99-4000) can be substituted without changing
- * the API or group structure.
+ * For spontaneous fission: GEF-derived composite evaporation spectra from
+ *   T.J. Nel, sf-delayed-neutron-data (2025), GEF 2025/V1.2.
+ *   200-bin tabulated spectra, 0-10 MeV at 0.05 MeV resolution.
+ *   See gef_sf_spectra.h for data and sampling function.
+ * For neutron-induced fission (no GEF data yet): Maxwellian T = 0.30 MeV,
+ *   giving <E> = 0.45 MeV.
  */
 
 #include "fissionEvent.h"
+#include "gef_sf_spectra.h"
 #include <math.h>
 #include <string.h>
 
@@ -153,31 +157,90 @@ static const SpriggsParams keepin_table[] = {
      {0.0160, 0.1750, 0.0550, 0.1700, 0.2800, 0.1660, 0.1130, 0.0250} },
 
    /* ---- spontaneous fission -------------------------------------------- */
+   /*
+    * nu_d: GEF 2025/V1.2 values (T.J. Nel, sf-delayed-neutron-data, 2025).
+    * Group abundances a[]: used for Spriggs emission-time sampling only.
+    *   Measured SF group abundances are scarce; nearest induced-fission
+    *   relative is used as an approximation (noted per entry).
+    * Energy spectra: replaced at sampling time by GEF tabulated spectra
+    *   (see gef_sf_spectra.h); these a[] values do NOT affect energy.
+    */
 
-   /* U-238 SF  nu_d=0.04300 -- U-238 induced abundances (approximate) */
-   { 92238, 0, 0.04300,
+   /* U-234 SF (92234)  nu_d=7.296e-03 GEF -- U-238 induced timing (approx) */
+   { 92234, 0, 7.29544e-03,
      {0.0080, 0.1040, 0.0380, 0.1370, 0.2940, 0.1980, 0.1280, 0.0930} },
 
-   /* Pu-238 SF (94238)  nu_d=0.00484 -- Pu-239 abundances (approximate) */
-   { 94238, 0, 0.00484,
+   /* U-235 SF (92235)  nu_d=1.060e-02 GEF -- U-235 induced timing */
+   { 92235, 0, 1.05989e-02,
+     {0.0340, 0.1500, 0.0990, 0.2000, 0.3120, 0.0930, 0.0870, 0.0250} },
+
+   /* U-236 SF (92236)  nu_d=1.594e-02 GEF -- U-238 induced timing (approx) */
+   { 92236, 0, 1.59437e-02,
+     {0.0080, 0.1040, 0.0380, 0.1370, 0.2940, 0.1980, 0.1280, 0.0930} },
+
+   /* U-238 SF (92238)  nu_d=3.177e-02 GEF -- U-238 induced timing */
+   { 92238, 0, 3.17734e-02,
+     {0.0080, 0.1040, 0.0380, 0.1370, 0.2940, 0.1980, 0.1280, 0.0930} },
+
+   /* Pu-238 SF (94238)  nu_d=3.287e-03 GEF -- Pu-239 induced timing (approx) */
+   { 94238, 0, 3.28705e-03,
      {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
 
-   /* Pu-240 SF (94240)  nu_d=0.00453 -- Pu-239 abundances (approximate) */
-   { 94240, 0, 0.00453,
+   /* Pu-239 SF (94239)  nu_d=5.018e-03 GEF -- Pu-239 induced timing */
+   { 94239, 0, 5.01797e-03,
      {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
 
-   /* Pu-242 SF (94242)  nu_d=0.00490 -- Pu-241 abundances (approximate) */
-   { 94242, 0, 0.00490,
+   /* Pu-240 SF (94240)  nu_d=7.544e-03 GEF -- Pu-239 induced timing (approx) */
+   { 94240, 0, 7.54421e-03,
+     {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
+
+   /* Pu-241 SF (94241)  nu_d=1.124e-02 GEF -- Pu-241 induced timing */
+   { 94241, 0, 1.12369e-02,
      {0.0160, 0.1750, 0.0550, 0.1700, 0.2800, 0.1660, 0.1130, 0.0250} },
 
-   /* Cm-244 SF (96244)  nu_d=0.00240 -- Pu-239 abundances (approximate) */
-   { 96244, 0, 0.00240,
+   /* Pu-242 SF (94242)  nu_d=1.660e-02 GEF -- Pu-241 induced timing (approx) */
+   { 94242, 0, 1.66044e-02,
+     {0.0160, 0.1750, 0.0550, 0.1700, 0.2800, 0.1660, 0.1130, 0.0250} },
+
+   /* Am-241 SF (95241)  nu_d=4.073e-03 GEF -- Pu-239 induced timing (approx) */
+   { 95241, 0, 4.07329e-03,
      {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
 
-   /* Cf-252 SF (98252)  nu_d=0.00978
-    * Spriggs (2002) Cf-252 dataset #245 (Chulick 1969) has +/-2400% on G3;
-    * abundances retained from Brady-England 6g NNLS expansion. */
-   { 98252, 0, 0.00978,
+   /* Am-243 SF (95243)  nu_d=9.695e-03 GEF -- Pu-239 induced timing (approx) */
+   { 95243, 0, 9.69534e-03,
+     {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
+
+   /* Cm-242 SF (96242)  nu_d=1.195e-03 GEF -- Pu-239 induced timing (approx) */
+   { 96242, 0, 1.19454e-03,
+     {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
+
+   /* Cm-244 SF (96244)  nu_d=3.581e-03 GEF -- Pu-239 induced timing (approx) */
+   { 96244, 0, 3.58096e-03,
+     {0.0290, 0.2250, 0.0950, 0.1490, 0.3510, 0.0370, 0.0970, 0.0170} },
+
+   /* Cm-246 SF (96246)  nu_d=8.726e-03 GEF -- Pu-241 induced timing (approx) */
+   { 96246, 0, 8.72583e-03,
+     {0.0160, 0.1750, 0.0550, 0.1700, 0.2800, 0.1660, 0.1130, 0.0250} },
+
+   /* Cm-248 SF (96248)  nu_d=1.912e-02 GEF -- Pu-241 induced timing (approx) */
+   { 96248, 0, 1.91247e-02,
+     {0.0160, 0.1750, 0.0550, 0.1700, 0.2800, 0.1660, 0.1130, 0.0250} },
+
+   /* Bk-249 SF (97249)  nu_d=9.874e-03 GEF -- Cf-252 timing (approx) */
+   { 97249, 0, 9.87380e-03,
+     {0.0161, 0.1123, 0.1031, 0.2021, 0.2686, 0.1396, 0.0930, 0.0651} },
+
+   /* Cf-249 SF (98249)  nu_d=2.362e-03 GEF -- Cf-252 timing (approx) */
+   { 98249, 0, 2.36224e-03,
+     {0.0161, 0.1123, 0.1031, 0.2021, 0.2686, 0.1396, 0.0930, 0.0651} },
+
+   /* Cf-250 SF (98250)  nu_d=3.767e-03 GEF -- Cf-252 timing (approx) */
+   { 98250, 0, 3.76732e-03,
+     {0.0161, 0.1123, 0.1031, 0.2021, 0.2686, 0.1396, 0.0930, 0.0651} },
+
+   /* Cf-252 SF (98252)  nu_d=8.926e-03 GEF
+    * Brady-England 6g NNLS abundances retained for Spriggs timing. */
+   { 98252, 0, 8.92623e-03,
      {0.0161, 0.1123, 0.1031, 0.2021, 0.2686, 0.1396, 0.0930, 0.0651} },
 };
 
@@ -301,6 +364,13 @@ void fissionEvent::SmpDelayed(int isotope, double time, bool spontaneous) {
    }
    if (!params) return; /* isotope not tabulated -- skip silently */
 
+   /* For SF: look up GEF tabulated spectrum for energy sampling.
+    * If found, smpGEFSFEnergy() replaces the Maxwellian below.
+    * For induced fission (no GEF data yet): gef_spec stays NULL → Maxwellian. */
+   const GEFSFSpectrum* gef_spec = spontaneous
+                                   ? find_gef_sf_spectrum(isotope)
+                                   : NULL;
+
    /* --- sample total number of delayed neutrons from Poisson(nu_d) --- */
    int nd = smpPoisson(params->nu_d);
    if (nd <= 0) return;
@@ -328,9 +398,11 @@ void fissionEvent::SmpDelayed(int isotope, double time, bool spontaneous) {
       /* emission time: exponential with Spriggs group decay constant */
       double t_delay = -log(fisslibrng()) / spriggs_lambda[grp];
 
-      /* energy: Maxwellian spectrum */
-      double energy = smpMaxwellian(DELAYED_MAXWELLIAN_T);
-      if (energy < 1.0e-6) energy = 1.0e-6; /* protect against log(0) */
+      /* energy: GEF tabulated spectrum for SF; Maxwellian for induced fission */
+      double energy = gef_spec
+                      ? smpGEFSFEnergy(gef_spec, fisslibrng())
+                      : smpMaxwellian(DELAYED_MAXWELLIAN_T);
+      if (energy < 1.0e-6) energy = 1.0e-6;
       if (energy > 20.0)   energy = 20.0;
 
       neutronEnergies[idx]   = energy;
