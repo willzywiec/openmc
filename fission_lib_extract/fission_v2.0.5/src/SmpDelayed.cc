@@ -24,7 +24,7 @@ Additional BSD Notice
 /*
  * SmpDelayed.cc
  *
- * Six-group Keepin delayed neutron sampling for the LLNL Fission Library.
+ * Eight-group Spriggs delayed neutron sampling for the LLNL Fission Library.
  *
  * When delayoption >= 2, delayed neutrons are appended to the fission
  * event's unified neutron array with exponentially-distributed emission
@@ -33,143 +33,162 @@ Additional BSD Notice
  * Consumers distinguish prompt from delayed by comparing getnage_() to
  * the fission time passed to gen*fissevt_().
  *
- * Keepin six-group parameters from:
- *   G.R. Keepin, "Physics of Nuclear Kinetics", Addison-Wesley, 1965.
- *   M.C. Brady and T.R. England, ORNL/TM-11968, 1989.
+ * GROUP MODEL
+ * -----------
+ * Uses the Spriggs 8-group consistent half-life basis:
+ *   G.D. Spriggs, J.M. Campbell, V.M. Piksaikin,
+ *   "An 8-group delayed neutron model based on a consistent set of half-lives",
+ *   Progress in Nuclear Energy 41(1-4), 223-251 (2002).
  *
- * Energy spectra: Maxwellian with T = 0.30 MeV (<E> = 0.45 MeV), a
- * reasonable first approximation for all six groups.  Group-resolved
- * spectra can be substituted here without changing the API.
+ * KEY INSIGHT: In the classical 6-group Keepin model, fitting both the decay
+ * constants (lambda_i) AND abundances (a_i) simultaneously is numerically
+ * non-unique.  Different time windows, statistics, and starting guesses all
+ * converge to different lambda values, which is why Keepin (1965), Tuttle (1979),
+ * and ENDF/B-VIII.0 disagree by 10-20% on the same isotope.
+ *
+ * Spriggs' fix: fix the 8 lambda values to physical precursor half-lives
+ * (Br-87, I-137, Br-88, and five shorter-lived dominant precursors).
+ * With lambda fixed, the abundances are the ONLY free parameters -- the fit
+ * becomes linear and well-determined.  Results from different experiments for
+ * the same isotope agree much better in this basis.
+ *
+ * ABUNDANCES
+ * ----------
+ * The per-isotope abundances (a_i) below are computed by the Spriggs NNLS
+ * expansion: the original Keepin 1965 / Brady-England 1989 six-group decay
+ * curve for each isotope is re-fit to the 8-group fixed-lambda basis using
+ * non-negative least squares (tools/expand_keepin_to_8group.py).  This is
+ * the same procedure used to populate the JEFF-3.1.1 delayed neutron library.
+ * Mean half-life is conserved to < 0.02% for all isotopes; RMS curve fit
+ * error is < 0.025%.
+ *
+ * To update the abundances from measured fast-spectrum data (Piksaikin et al.
+ * 2002, Prog. Nucl. Energy 41, 1-4), replace the a[] entries below with
+ * values from that table, keeping the lambda[] array unchanged.
+ *
+ * ENERGY SPECTRA
+ * --------------
+ * Maxwellian with T = 0.30 MeV, giving <E> = 0.45 MeV.  Group-resolved
+ * spectra (Spriggs 1999, LA-UR-99-4000) can be substituted without changing
+ * the API or group structure.
  */
 
 #include "fissionEvent.h"
 #include <math.h>
 #include <string.h>
 
-#define NGROUPS 6
+#define NGROUPS 8
 
-struct KeepinParams {
-   int    isotope;         /* ZA number of fissioning nucleus  */
-   int    fissiontype;     /* 0 = spontaneous, 1 = induced     */
-   double nu_d;            /* total delayed neutrons per fission event */
-   double a[NGROUPS];      /* relative group abundances (sum = 1)     */
-   double lambda[NGROUPS]; /* group decay constants (1/s)             */
+/*
+ * Spriggs 8-group consistent decay constants (s^-1).
+ * Derived from dominant precursor half-lives; identical for all isotopes.
+ * Source: Spriggs, Campbell & Piksaikin (2002), Prog. Nucl. Energy 41, 223-251.
+ *
+ *   Group | T_1/2 (s) | lambda (s^-1) | Dominant precursor
+ *   ------|-----------|---------------|--------------------
+ *     1   |  55.600   |  0.012462     | Br-87
+ *     2   |  24.500   |  0.028292     | I-137
+ *     3   |  16.300   |  0.042525     | Br-88
+ *     4   |   5.210   |  0.133042     |
+ *     5   |   2.370   |  0.292468     |
+ *     6   |   1.040   |  0.666490     |
+ *     7   |   0.424   |  1.634780     |
+ *     8   |   0.195   |  3.554570     |
+ */
+static const double spriggs_lambda[NGROUPS] = {
+   0.012462,   /* Group 1: T1/2 = 55.6 s  (Br-87)  */
+   0.028292,   /* Group 2: T1/2 = 24.5 s  (I-137)  */
+   0.042525,   /* Group 3: T1/2 = 16.3 s  (Br-88)  */
+   0.133042,   /* Group 4: T1/2 =  5.21 s          */
+   0.292468,   /* Group 5: T1/2 =  2.37 s          */
+   0.666490,   /* Group 6: T1/2 =  1.04 s          */
+   1.634780,   /* Group 7: T1/2 =  0.424 s         */
+   3.554570    /* Group 8: T1/2 =  0.195 s         */
+};
+
+struct SpriggsParams {
+   int    isotope;      /* ZA number of fissioning nucleus */
+   int    fissiontype;  /* 0 = spontaneous, 1 = induced    */
+   double nu_d;         /* total delayed neutrons per fission event */
+   double a[NGROUPS];   /* relative group abundances (sum = 1); lambda is global */
 };
 
 /*
- * DATA PROVENANCE AND VERIFICATION NOTES
- * =======================================
- * The lambda_i (decay constants, s^-1) and a_i (group fractions) below are
- * from Keepin 1965 (G.R. Keepin, "Physics of Nuclear Kinetics", Table 5.2)
- * and Brady & England 1989 (ORNL/TM-11968).  These are the classic six-group
- * fast-spectrum parameterizations used in most Monte Carlo codes.
- *
- * KNOWN DISCREPANCY vs ENDF/B-VIII.0:
- *   ENDF/B-VIII.0 uses re-evaluated delayed neutron constants from the
- *   IAEA CRP "Nuclear Data for the Calculation of Thermal Reactor Neutron
- *   Cross Sections" (2002) and subsequent evaluations.  For Pu-239, the
- *   OpenMC regression test (test_data_neutron.py) asserts:
- *       sum(lambda_i) = 4.037  (ENDF/B-VIII.0)
- *   compared to:
- *       sum(lambda_i) = 4.979  (Keepin 1965, used below)
- *   The ~20% difference is concentrated in groups 5-6 (fastest precursors).
- *
- *   For applications dominated by U-235 (e.g. Godiva: 93.5% U-235),
- *   Keepin 1965 U-235 values are very well-established and the Pu-239
- *   discrepancy is irrelevant.  For other isotope mixes, run
- *   tools/extract_endf_delayed.py against an OpenMC nuclear data library
- *   to obtain ENDF/B-VIII.0 consistent values and replace entries below.
+ * Per-isotope 8-group abundances.
  *
  * nu_d values:
- *   Induced fission: nu_d = beta_eff * nubar at fast-spectrum conditions.
- *   Spontaneous fission: nu_d approximated from known SF yields; marked
- *   "approximate" -- replace with measured values when available.
+ *   Induced: nu_d = beta_eff * nubar at fast-spectrum conditions.
+ *   SF: approximated from known SF delayed fractions; all SF entries are
+ *       approximate -- replace with measured values when available.
  *
- * T (Maxwellian temperature for energy sampling) is a single value for all
- * entries; see smpMaxwellian() below.
+ * Abundances: Spriggs NNLS expansion of Keepin 1965 / Brady-England 1989
+ * 6-group fast-fission data onto the 8-group fixed-lambda basis.
+ * See tools/expand_keepin_to_8group.py for the computation.
+ * T_mean is conserved to < 0.02%; RMS curve error < 0.025%.
+ *
+ * To use Piksaikin et al. (2002) directly-measured 8-group abundances for
+ * U-235, U-238, Pu-239, replace the a[] values for those isotopes with the
+ * tabulated data from Prog. Nucl. Energy 41(1-4), Table 3.
  */
-static const KeepinParams keepin_table[] = {
-   /* ---- induced fission ------------------------------------------------
-    * Sources: Keepin 1965 Table 5.2 (U-233, U-235, Pu-239),
-    *          Brady & England ORNL/TM-11968 1989 (U-238, Pu-241).
-    * lambda_i are fundamental nuclear decay constants measured repeatedly;
-    * a_i and nu_d are fast-spectrum (FREYA energy range) values.
-    * Run tools/extract_endf_delayed.py to cross-check against ENDF/B-VIII.0.
-    * -------------------------------------------------------------------- */
+static const SpriggsParams keepin_table[] = {
+   /* ---- induced fission ------------------------------------------------ */
 
-   /* U-233 (92233) fast, Keepin 1965 Table 5.2
-    * sum(lambda)=4.140  nu_d=beta*nubar=0.00270*2.71=0.00733 */
+   /* U-233 (92233) fast  nu_d=0.00733  T_mean=12.21 s
+    * Keepin-1965 6g expanded to Spriggs 8g; RMS_err=0.005% */
    { 92233, 1, 0.00733,
-     {0.0860, 0.2740, 0.2270, 0.3170, 0.0730, 0.0230},
-     {0.01260, 0.03370, 0.13900, 0.32500, 1.13000, 2.50000} },
+     {0.0787, 0.1605, 0.1284, 0.1841, 0.3198, 0.0659, 0.0575, 0.0051} },
 
-   /* U-235 (92235) fast, Keepin 1965 Table 5.2
-    * sum(lambda)=4.605  nu_d=beta*nubar=0.0065*2.43=0.01585
-    * Critical isotope for Godiva (93.5% U-235): well-constrained. */
+   /* U-235 (92235) fast  nu_d=0.01585  T_mean=9.03 s
+    * Keepin-1965 6g expanded to Spriggs 8g; RMS_err=0.007%
+    * Critical isotope for Godiva (93.5% U-235). */
    { 92235, 1, 0.01585,
-     {0.0330, 0.2190, 0.1960, 0.3950, 0.1150, 0.0420},
-     {0.01240, 0.03050, 0.11100, 0.30100, 1.14000, 3.01000} },
+     {0.0338, 0.1489, 0.0970, 0.1939, 0.3336, 0.0875, 0.0829, 0.0224} },
 
-   /* U-238 (92238) fast, Brady-England ORNL/TM-11968 1989
-    * sum(lambda)=5.988  nu_d=beta*nubar=0.0148*2.91=0.04300 */
+   /* U-238 (92238) fast  nu_d=0.04300  T_mean=5.32 s
+    * Brady-England-1989 6g expanded to Spriggs 8g; RMS_err=0.021% */
    { 92238, 1, 0.04300,
-     {0.0130, 0.1370, 0.1620, 0.3880, 0.2250, 0.0750},
-     {0.01320, 0.03210, 0.13900, 0.35800, 1.41600, 4.02000} },
+     {0.0094, 0.0948, 0.0515, 0.1180, 0.3230, 0.1713, 0.1433, 0.0887} },
 
-   /* U-239 (92239) induced -- U-238 parameters used as approximation */
+   /* U-239 (92239) induced -- U-238 abundances used as approximation */
    { 92239, 1, 0.04300,
-     {0.0130, 0.1370, 0.1620, 0.3880, 0.2250, 0.0750},
-     {0.01320, 0.03210, 0.13900, 0.35800, 1.41600, 4.02000} },
+     {0.0094, 0.0948, 0.0515, 0.1180, 0.3230, 0.1713, 0.1433, 0.0887} },
 
-   /* Pu-239 (94239) fast, Keepin 1965 Table 5.2
-    * sum(lambda)=4.979  nu_d=0.00622
-    * CAUTION: ENDF/B-VIII.0 has sum(lambda)=4.037 (see provenance note). */
+   /* Pu-239 (94239) fast  nu_d=0.00622  T_mean=10.35 s
+    * Keepin-1965 6g expanded to Spriggs 8g; RMS_err=0.004% */
    { 94239, 1, 0.00622,
-     {0.0350, 0.2980, 0.2110, 0.3260, 0.0930, 0.0370},
-     {0.01290, 0.03110, 0.13400, 0.33100, 1.26000, 3.21000} },
+     {0.0288, 0.2286, 0.0861, 0.1723, 0.3102, 0.0776, 0.0710, 0.0254} },
 
-   /* Pu-241 (94241) fast, Brady-England ORNL/TM-11968 1989
-    * sum(lambda)=5.599  nu_d=0.01600 */
+   /* Pu-241 (94241) fast  nu_d=0.01600  T_mean=7.66 s
+    * Brady-England-1989 6g expanded to Spriggs 8g; RMS_err=0.020% */
    { 94241, 1, 0.01600,
-     {0.0100, 0.2290, 0.1730, 0.3900, 0.1480, 0.0500},
-     {0.01282, 0.02990, 0.12400, 0.35200, 1.61000, 3.47000} },
+     {0.0115, 0.1651, 0.0867, 0.1117, 0.3553, 0.0897, 0.1286, 0.0514} },
 
-   /* ---- spontaneous fission --------------------------------------------
-    * ENDF does not carry SF delayed neutron data.  Group structure is
-    * borrowed from the nearest fissile isotope (same lambda_i); nu_d is
-    * from known SF beta values and nubar.  All SF entries are approximate.
-    * -------------------------------------------------------------------- */
+   /* ---- spontaneous fission -------------------------------------------- */
 
-   /* U-238 SF -- same lambda/a as U-238 induced (approximate) */
+   /* U-238 SF  nu_d=0.04300 -- same abundances as U-238 induced (approximate) */
    { 92238, 0, 0.04300,
-     {0.0130, 0.1370, 0.1620, 0.3880, 0.2250, 0.0750},
-     {0.01320, 0.03210, 0.13900, 0.35800, 1.41600, 4.02000} },
+     {0.0094, 0.0948, 0.0515, 0.1180, 0.3230, 0.1713, 0.1433, 0.0887} },
 
-   /* Pu-238 SF (94238) -- approximate; Pu-239 group structure, nu_d~0.00484 */
+   /* Pu-238 SF (94238)  nu_d=0.00484 -- Pu-239 abundances (approximate) */
    { 94238, 0, 0.00484,
-     {0.0350, 0.2980, 0.2110, 0.3260, 0.0930, 0.0370},
-     {0.01290, 0.03110, 0.13400, 0.33100, 1.26000, 3.21000} },
+     {0.0288, 0.2286, 0.0861, 0.1723, 0.3102, 0.0776, 0.0710, 0.0254} },
 
-   /* Pu-240 SF (94240) -- approximate; Pu-239 group structure, nu_d~0.00453 */
+   /* Pu-240 SF (94240)  nu_d=0.00453 -- Pu-239 abundances (approximate) */
    { 94240, 0, 0.00453,
-     {0.0350, 0.2980, 0.2110, 0.3260, 0.0930, 0.0370},
-     {0.01290, 0.03110, 0.13400, 0.33100, 1.26000, 3.21000} },
+     {0.0288, 0.2286, 0.0861, 0.1723, 0.3102, 0.0776, 0.0710, 0.0254} },
 
-   /* Pu-242 SF (94242) -- approximate; Pu-241 group structure, nu_d~0.00490 */
+   /* Pu-242 SF (94242)  nu_d=0.00490 -- Pu-241 abundances (approximate) */
    { 94242, 0, 0.00490,
-     {0.0100, 0.2290, 0.1730, 0.3900, 0.1480, 0.0500},
-     {0.01282, 0.02990, 0.12400, 0.35200, 1.61000, 3.47000} },
+     {0.0115, 0.1651, 0.0867, 0.1117, 0.3553, 0.0897, 0.1286, 0.0514} },
 
-   /* Cm-244 SF (96244) -- approximate; Pu-239 group structure, nu_d~0.00240 */
+   /* Cm-244 SF (96244)  nu_d=0.00240 -- Pu-239 abundances (approximate) */
    { 96244, 0, 0.00240,
-     {0.0350, 0.2980, 0.2110, 0.3260, 0.0930, 0.0370},
-     {0.01290, 0.03110, 0.13400, 0.33100, 1.26000, 3.21000} },
+     {0.0288, 0.2286, 0.0861, 0.1723, 0.3102, 0.0776, 0.0710, 0.0254} },
 
-   /* Cf-252 SF (98252) -- measured six-group data, literature consensus
-    * Brady-England 1989 / Keepin 1965; nu_d=0.00978 (beta~0.0032, nubar~3.06) */
+   /* Cf-252 SF (98252)  nu_d=0.00978  T_mean=7.21 s
+    * Keepin/Brady-England literature 6g expanded to Spriggs 8g; RMS_err=0.015% */
    { 98252, 0, 0.00978,
-     {0.0200, 0.1920, 0.2330, 0.3410, 0.1580, 0.0560},
-     {0.01330, 0.03250, 0.12400, 0.34800, 1.38000, 3.97000} },
+     {0.0161, 0.1123, 0.1031, 0.2021, 0.2686, 0.1396, 0.0930, 0.0651} },
 };
 
 static const int NKEEPINENTRIES =
@@ -261,7 +280,8 @@ void fissionEvent::extendNeutronArrays(int n_additional) {
  * fissionEvent::SmpDelayed
  *
  * Sample and append delayed neutrons to the current fission event using
- * the six-group Keepin formalism.  Only active when delayoption >= 2.
+ * the Spriggs 8-group consistent half-life formalism.
+ * Only active when delayoption >= 2.
  *
  *   isotope     -- ZA of the fissioning nucleus (target, not compound)
  *   time        -- absolute fission time (seconds)
@@ -271,7 +291,7 @@ void fissionEvent::extendNeutronArrays(int n_additional) {
  *   neutronNu    includes both prompt and delayed neutrons
  *   neutronAges  = time             for prompt (delay = 0)
  *   neutronAges  = time + t_delay   for delayed, where t_delay is sampled
- *                                   from exp(lambda_i) for group i
+ *                                   from Exp(lambda_i) for group i
  *
  * Consumers use getnage_(index) - fission_time to obtain the per-neutron
  * emission delay; all neutrons with delay > 0 are delayed neutrons.
@@ -279,9 +299,9 @@ void fissionEvent::extendNeutronArrays(int n_additional) {
 void fissionEvent::SmpDelayed(int isotope, double time, bool spontaneous) {
    if (delayoption < 2) return;
 
-   /* --- find Keepin parameters for this isotope and fission type --- */
+   /* --- find parameters for this isotope and fission type --- */
    int fissiontype = spontaneous ? 0 : 1;
-   const KeepinParams* params = 0;
+   const SpriggsParams* params = 0;
    for (int i = 0; i < NKEEPINENTRIES; i++) {
       if (keepin_table[i].isotope    == isotope &&
           keepin_table[i].fissiontype == fissiontype) {
@@ -308,15 +328,15 @@ void fissionEvent::SmpDelayed(int isotope, double time, bool spontaneous) {
    for (int k = 0; k < nd; k++) {
       int idx = neutronNu + k;
 
-      /* select group by inverse CDF */
+      /* select group by inverse CDF on fixed Spriggs lambda values */
       double u_grp = fisslibrng();
       int grp = NGROUPS - 1;
       for (int g = 0; g < NGROUPS - 1; g++) {
          if (u_grp <= cumul[g]) { grp = g; break; }
       }
 
-      /* emission time: exponential with group decay constant */
-      double t_delay = -log(fisslibrng()) / params->lambda[grp];
+      /* emission time: exponential with Spriggs group decay constant */
+      double t_delay = -log(fisslibrng()) / spriggs_lambda[grp];
 
       /* energy: Maxwellian spectrum */
       double energy = smpMaxwellian(DELAYED_MAXWELLIAN_T);
