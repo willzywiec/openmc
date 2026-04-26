@@ -30,10 +30,8 @@ docs/source/_images/*.aux
 docs/source/pythonapi/generated/
 
 # Source build
-build
-build_freya
-build_no_freya
-fission_lib_extract/**/build*
+build*/
+vendor/fission/**/build*
 
 # build from src/utils/setup.py
 src/utils/build
@@ -107,7 +105,8 @@ CMakeSettings.json
 # Visual Studio Code configuration files
 .vscode/
 
+# Claude Code agent tools (cached/generated artifacts)
+.claude/cache/
+
 # Python pickle files
 *.pkl
-alpha/runs_*/
-fission_lib_extract/fission_v2.0.5/build_test/
