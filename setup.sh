@@ -15,12 +15,16 @@
 #       sourced. If you get "Permission denied", use: bash setup.sh
 #
 # Options:
-#   --xs-dir PATH       Path to cross section data directory (default: ../endfb80-hdf5)
-#   --skip-xs           Skip cross section data setup
-#   --with-mpi          Build with MPI support
-#   --build-type        Set build type (Debug|Release|RelWithDebInfo)
-#   --force-submodules  Force re-download of vendor submodules (fixes corrupted state)
-#   --help              Show this help message
+#   --xs-dir PATH        Path to cross section data directory (default: ../endfb80-hdf5)
+#   --skip-xs            Skip cross section data setup
+#   --with-mpi           Build with MPI support
+#   --with-fission-lib   Build the vendored LLNL Fission Library (FREYA / GEF /
+#                        Spriggs) and link OpenMC against it. Requires gfortran.
+#                        Enables: openmc.FreyaSFSource, settings.freya_analog,
+#                        Spriggs 8-group delayed neutrons, GEF SF spectra.
+#   --build-type         Set build type (Debug|Release|RelWithDebInfo)
+#   --force-submodules   Force re-download of vendor submodules (fixes corrupted state)
+#   --help               Show this help message
 ################################################################################
 
 # Fix Windows/WSL line endings at runtime if this file has CRLF
@@ -54,6 +58,7 @@ NC='\033[0m' # No Color
 # Default options
 SKIP_XS=false
 WITH_MPI=false
+WITH_FISSION_LIB=false
 BUILD_TYPE="RelWithDebInfo"
 INSTALL_PREFIX="${HOME}/.local"
 XS_DIR=""  # Will be set to default after SCRIPT_DIR is determined
@@ -105,6 +110,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --with-mpi)
             WITH_MPI=true
+            shift
+            ;;
+        --with-fission-lib)
+            WITH_FISSION_LIB=true
             shift
             ;;
         --build-type)
@@ -357,6 +366,74 @@ else
 fi
 
 ################################################################################
+# Build the vendored LLNL Fission Library (optional)
+################################################################################
+#
+# When --with-fission-lib is set, build fission_lib_extract/fission_v2.0.5/
+# first. Its Makefile produces lib/libFission.{so,a} which OpenMC's
+# FindFissionLib.cmake auto-discovers under fission_lib_extract/.
+#
+# Idempotent: skips if a freshly-built libFission already exists.
+
+FISSION_LIB_ROOT="${SCRIPT_DIR}/fission_lib_extract/fission_v2.0.5"
+FISSION_LIB_FOUND=""
+
+if [[ "${WITH_FISSION_LIB}" == true ]]; then
+    log_info "FREYA / fission library build requested..."
+
+    if [[ ! -d "${FISSION_LIB_ROOT}" ]]; then
+        log_error "Fission library source not found at ${FISSION_LIB_ROOT}"
+        log_error "Expected fission_lib_extract/fission_v2.0.5/ in this repo."
+        exit 1
+    fi
+
+    # Fortran compiler is required — fission lib's CMake disables FREYA without it.
+    if ! command -v gfortran &> /dev/null; then
+        log_error "--with-fission-lib requires gfortran (FREYA needs a Fortran compiler)."
+        log_error "Install with: apt-get install gfortran   (or your distro equivalent)"
+        exit 1
+    fi
+    log_info "Found gfortran: $(which gfortran)"
+
+    # Reuse a previous build if libFission is already present.
+    for ext in so dylib a; do
+        if [[ -f "${FISSION_LIB_ROOT}/lib/libFission.${ext}" ]]; then
+            FISSION_LIB_FOUND="${FISSION_LIB_ROOT}/lib/libFission.${ext}"
+            break
+        fi
+    done
+
+    if [[ -n "${FISSION_LIB_FOUND}" ]]; then
+        log_info "Reusing existing libFission at ${FISSION_LIB_FOUND}"
+    else
+        log_info "Building libFission (this can take a few minutes the first time)..."
+        (
+            cd "${FISSION_LIB_ROOT}"
+            # The bundled Makefile drives a CMake build inside ./build and installs
+            # to ./lib. It hard-codes CXX/CC to whichever g++/gcc are on PATH.
+            make
+        ) || {
+            log_error "Fission library build failed."
+            log_error "Check ${FISSION_LIB_ROOT}/build/ for compiler logs."
+            exit 1
+        }
+
+        for ext in so dylib a; do
+            if [[ -f "${FISSION_LIB_ROOT}/lib/libFission.${ext}" ]]; then
+                FISSION_LIB_FOUND="${FISSION_LIB_ROOT}/lib/libFission.${ext}"
+                break
+            fi
+        done
+        if [[ -z "${FISSION_LIB_FOUND}" ]]; then
+            log_error "Fission library built without producing libFission.{so,dylib,a}."
+            log_error "Inspect ${FISSION_LIB_ROOT}/build/ to diagnose."
+            exit 1
+        fi
+        log_success "Built libFission: ${FISSION_LIB_FOUND}"
+    fi
+fi
+
+################################################################################
 # Build OpenMC
 ################################################################################
 
@@ -382,6 +459,11 @@ CMAKE_OPTIONS=(
 if [[ "$WITH_MPI" == true ]]; then
     CMAKE_OPTIONS+=("-DOPENMC_USE_MPI=ON")
     log_info "MPI support enabled"
+fi
+
+if [[ "${WITH_FISSION_LIB}" == true ]]; then
+    CMAKE_OPTIONS+=("-DOPENMC_USE_FISSION_LIB=ON")
+    log_info "FREYA / Fission Library support enabled"
 fi
 
 cmake "${CMAKE_OPTIONS[@]}" ..
@@ -540,11 +622,24 @@ export PATH="${INSTALL_PREFIX}/bin:\${PATH}"
 
 # Set cross section data path (using absolute path)
 export OPENMC_CROSS_SECTIONS="${XS_DATA_DIR}/cross_sections.xml"
+$(if [[ "${WITH_FISSION_LIB}" == true ]]; then
+cat <<EOFI
+
+# FREYA / Fission Library was linked into this OpenMC build.
+# OPENMC_USE_FISSION_LIB lets the validation tests detect that.
+# FREYA_DATA_PATH overrides the compile-time data path if needed.
+export OPENMC_USE_FISSION_LIB=1
+export FREYA_DATA_PATH="${FISSION_LIB_ROOT}/data_freya"
+EOFI
+fi)
 
 echo "OpenMC environment configured:"
 echo "  OpenMC executable: \$(which openmc 2>/dev/null || echo 'not found in PATH')"
 echo "  Cross sections: \${OPENMC_CROSS_SECTIONS}"
 echo "  Python: \$(which python)"
+if [[ -n "\${OPENMC_USE_FISSION_LIB:-}" ]]; then
+    echo "  FREYA: enabled (data: \${FREYA_DATA_PATH})"
+fi
 EOF
 
 chmod +x "${ENV_SCRIPT}"
@@ -589,6 +684,7 @@ echo "  - Cross section data: ${XS_DATA_DIR}"
 echo "  - Python virtual environment: ${VENV_DIR}"
 echo "  - Build type: ${BUILD_TYPE}"
 echo "  - MPI support: $([ "$WITH_MPI" == true ] && echo "Enabled" || echo "Disabled")"
+echo "  - FREYA / Fission Library: $([ "$WITH_FISSION_LIB" == true ] && echo "Enabled (libFission: ${FISSION_LIB_FOUND})" || echo "Disabled")"
 echo ""
 echo "To use OpenMC in a new terminal, run:"
 echo "  cd ${SCRIPT_DIR}"
