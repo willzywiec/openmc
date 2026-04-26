@@ -600,7 +600,7 @@ FreyaSFSource::FreyaSFSource(pugi::xml_node node) : Source(node)
       int idx = k;
       SourceSite site;
       site.r            = position_;
-      site.particle     = ParticleType::neutron;
+      site.particle     = ParticleType::neutron();
       site.E            = getneng_(&idx) * 1e6;  // MeV → eV
       site.u            = Direction{getndircosu_(&idx),
                                     getndircosv_(&idx),
@@ -620,7 +620,7 @@ FreyaSFSource::FreyaSFSource(pugi::xml_node node) : Source(node)
         int idx = k;
         SourceSite site;
         site.r            = position_;
-        site.particle     = ParticleType::photon;
+        site.particle     = ParticleType::photon();
         site.E            = getpeng_(&idx) * 1e6;
         site.u            = Direction{getpdircosu_(&idx),
                                       getpdircosv_(&idx),

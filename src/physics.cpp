@@ -231,7 +231,7 @@ static void sample_mt460_delayed_photons(
 
     SourceSite gamma;
     gamma.r        = p.r();
-    gamma.particle = ParticleType::photon;
+    gamma.particle = ParticleType::photon();
     gamma.E        = data.energies[sel_l];
     gamma.u        = Direction{sin_th * std::cos(phi),
                                sin_th * std::sin(phi),
@@ -322,7 +322,7 @@ void bank_freya_analog_event(Particle& p, int i_nuclide,
         int idx = k;
         SourceSite gamma;
         gamma.r        = p.r();
-        gamma.particle = ParticleType::photon;
+        gamma.particle = ParticleType::photon();
         gamma.E        = getpeng_(&idx) * 1e6;
         gamma.u        = Direction{getpdircosu_(&idx),
                                    getpdircosv_(&idx),
@@ -352,7 +352,7 @@ void bank_freya_analog_event(Particle& p, int i_nuclide,
   for (const auto& fn : prompts) {
     SourceSite site;
     site.r            = p.r();
-    site.particle     = ParticleType::neutron;
+    site.particle     = ParticleType::neutron();
     site.time         = p.time();
     site.wgt          = per_nu_wgt;
     site.surf_id      = 0;
@@ -1492,7 +1492,7 @@ void sample_fission_neutron(
           int idx = k;
           SourceSite gamma;
           gamma.r        = p.r();
-          gamma.particle = ParticleType::photon;
+          gamma.particle = ParticleType::photon();
           gamma.E        = getpeng_(&idx) * 1e6;   // MeV → eV
           gamma.u        = Direction{getpdircosu_(&idx),
                                      getpdircosv_(&idx),
