@@ -249,6 +249,10 @@ static void sample_mt460_delayed_photons(
 // that the total prompt weight banked equals what the non-analog code would
 // have banked. Returns the number of prompt neutron sites successfully banked.
 //
+// nubar passed to FREYA is the physical tabulated ν̄ from nuclear data
+// (sampled internally), not create_fission_sites's biased expected-count
+// nu_t — see FREYA User Manual v2.0.2 §A.2.2.
+//
 // This function takes the place of the per-site sample_fission_neutron()
 // call and the subsequent banking step when settings::freya_analog is on.
 //
@@ -257,7 +261,7 @@ static void sample_mt460_delayed_photons(
 // per_nu_wgt). Both are written through the output parameters.
 //------------------------------------------------------------------------------
 static void bank_freya_analog_event(Particle& p, int i_nuclide,
-  int n_prompt_target, double nu_t, double weight, bool use_fission_bank,
+  int n_prompt_target, double weight, bool use_fission_bank,
   int& n_banked, double& wgt_banked, bool& fission_bank_full)
 {
   n_banked = 0;
@@ -267,6 +271,11 @@ static void bank_freya_analog_event(Particle& p, int i_nuclide,
 
   const auto& nuc = data::nuclides[i_nuclide];
   uint64_t* seed = p.current_seed();
+
+  // Physical nubar from the nuclear data (NOT create_fission_sites's
+  // weighted/biased expected-count nu_t). FREYA's genfissevtdir() expects
+  // the tabulated ν̄ — see FREYA User Manual v2.0.2 §A.2.2.
+  double nubar = nuc->nu(p.E(), Nuclide::EmissionMode::total);
 
   // Storage for FREYA event output. Allocated outside the critical section so
   // we don't append to the (lock-protected) fission bank while holding the
@@ -286,7 +295,7 @@ static void bank_freya_analog_event(Particle& p, int i_nuclide,
 #pragma omp critical(freya_event)
   {
     freya::set_seed(seed);
-    genfissevtdir_(&ZA_freya, &fiss_time, &nu_t, &eng_MeV, ndir);
+    genfissevtdir_(&ZA_freya, &fiss_time, &nubar, &eng_MeV, ndir);
     int nn = getnnu_();
     prompts.reserve(nn);
     for (int k = 0; k < nn; k++) {
@@ -539,7 +548,7 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   if (freya_analog && n_prompt_pending > 0) {
     bool fission_bank_full = false;
     bank_freya_analog_event(
-      p, i_nuclide, n_prompt_pending, nu_t, weight, use_fission_bank,
+      p, i_nuclide, n_prompt_pending, weight, use_fission_bank,
       n_freya_banked, wgt_freya_banked, fission_bank_full);
     n_sites_stored = n_sites_stored - n_prompt_pending + n_freya_banked;
   }

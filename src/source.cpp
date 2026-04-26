@@ -540,10 +540,17 @@ FreyaSFSource::FreyaSFSource(pugi::xml_node node) : Source(node)
   // Pre-bake n_events SF events into sites_. FREYA's global state is not
   // thread-safe, but construction is single-threaded so we don't need the
   // freya_event critical section here.
+  //
+  // FREYA signature (User Manual v2.0.2 §A.2.1):
+  //   void genspfissevt(int* isotope, double* time)
+  // We pass time = 0 since each cached site captures only the relative
+  // emission age via FREYA's internal sampling; absolute timing in the
+  // simulation is then governed by SourceSite.time, which we leave at 0.
   freya::set_seed(&seed);
+  double fiss_time = 0.0;
   for (int ev = 0; ev < n_events; ev++) {
     int za_local = za_;
-    genspfissevt_(&za_local);
+    genspfissevt_(&za_local, &fiss_time);
 
     int nn = getnnu_();
     for (int k = 0; k < nn; k++) {
