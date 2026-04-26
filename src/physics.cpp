@@ -29,6 +29,7 @@
 #include "openmc/weight_windows.h"
 #ifdef OPENMC_USE_FREYA
 #include "openmc/fission_library.h"
+#include "openmc/gef_induced_spectra.h"
 #endif
 
 #include <fmt/core.h>
@@ -1066,7 +1067,17 @@ void sample_fission_neutron(
   const auto& nuc {data::nuclides[i_nuclide]};
   double nu_t = nuc->nu(E_in, Nuclide::EmissionMode::total);
   double nu_d = nuc->nu(E_in, Nuclide::EmissionMode::delayed);
+
+#ifdef OPENMC_USE_FREYA
+  // Look up GEF induced fission spectrum for this target isotope.
+  // GEF nu_d overrides ENDF for beta; ENDF nu_d is still used for
+  // group-selection proportions (xi) so kinetics tagging is consistent.
+  const GEFIndSpectrum* gef_ind =
+      find_gef_ind_spectrum(1000 * nuc->Z_ + nuc->A_);
+  double beta = (gef_ind ? gef_ind->nu_d : nu_d) / nu_t;
+#else
   double beta = nu_d / nu_t;
+#endif
 
   if (prn(seed) < beta) {
     // ====================================================================
@@ -1131,11 +1142,22 @@ void sample_fission_neutron(
   // Track whether this neutron itself is delayed (not genealogy)
   site->is_delayed = (site->delayed_group > 0);
 
-  // sample from prompt neutron energy distribution
+  // sample from neutron energy distribution
   int n_sample = 0;
   double mu;
   while (true) {
+#ifdef OPENMC_USE_FREYA
+    // For delayed neutrons with GEF tabulated spectrum: use inverse-CDF
+    // sampling from the 200-bin GEF spectrum; angle is isotropic.
+    if (site->delayed_group > 0 && gef_ind) {
+      site->E = smpGEFIndEnergy(gef_ind, prn(seed));
+      mu = 1.0 - 2.0 * prn(seed);
+    } else {
+      rx.products_[site->delayed_group].sample(E_in, site->E, mu, seed);
+    }
+#else
     rx.products_[site->delayed_group].sample(E_in, site->E, mu, seed);
+#endif
 
     // resample if energy is greater than maximum neutron energy
     constexpr int neutron = static_cast<int>(ParticleType::neutron);
