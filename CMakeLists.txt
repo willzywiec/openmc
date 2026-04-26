@@ -379,6 +379,7 @@ list(APPEND libopenmc_SOURCES
   src/particle_data.cpp
   src/particle_restart.cpp
   src/photon.cpp
+  src/freya_interface.cpp
   src/physics.cpp
   src/physics_common.cpp
   src/physics_mg.cpp
@@ -539,16 +540,31 @@ if(OPENMC_USE_LIBMESH)
 endif()
 
 if(OPENMC_USE_FREYA)
-  # Phase 1: Spriggs 8-group delayed neutron time constants (header-only).
-  # No external library link is required; all parameters are embedded in
-  # include/openmc/fission_library.h.
-  #
-  # Phase 2 (future): link libFission for FREYA correlated fission:
-  #   find_package(FissionLib REQUIRED)
-  #   target_link_libraries(libopenmc FissionLib::Fission)
-  #   target_include_directories(libopenmc PRIVATE ${FissionLib_INCLUDE_DIRS})
-  target_compile_definitions(libopenmc PRIVATE OPENMC_USE_FREYA)
-  message(STATUS "Spriggs 8-group delayed neutron model enabled (LLNL Fission Library / FREYA)")
+  # Phase 1: Spriggs 8-group delayed neutron timing + GEF energy spectra (header-only).
+  # Phase 2: FREYA correlated prompt fission via libFission.
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+  find_package(FissionLib REQUIRED)
+
+  # Default FREYA data path: the data_freya directory next to libFission.
+  # Overridable at runtime via $FREYA_DATA_PATH environment variable.
+  get_filename_component(_fission_lib_dir "${FissionLib_LIBRARY}" DIRECTORY)
+  set(FREYA_DATA_DEFAULT_PATH "${_fission_lib_dir}/../data_freya"
+      CACHE PATH "Default path to FREYA data directory")
+  get_filename_component(FREYA_DATA_DEFAULT_PATH "${FREYA_DATA_DEFAULT_PATH}" ABSOLUTE)
+
+  target_compile_definitions(libopenmc PRIVATE
+      OPENMC_USE_FREYA
+      FREYA_DATA_DEFAULT_PATH="${FREYA_DATA_DEFAULT_PATH}")
+  target_link_libraries(libopenmc FissionLib::Fission)
+  target_include_directories(libopenmc PRIVATE ${FissionLib_INCLUDE_DIRS})
+
+  # Fortran runtime needed for FREYA (compiled Fortran code in libFission).
+  enable_language(Fortran)
+  target_link_libraries(libopenmc gfortran)
+
+  message(STATUS "FREYA correlated fission enabled (libFission + FREYA data)")
+  message(STATUS "  libFission: ${FissionLib_LIBRARY}")
+  message(STATUS "  FREYA data: ${FREYA_DATA_DEFAULT_PATH}")
 endif()
 
 if (PNG_FOUND)

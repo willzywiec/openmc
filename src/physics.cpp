@@ -29,7 +29,9 @@
 #include "openmc/weight_windows.h"
 #ifdef OPENMC_USE_FREYA
 #include "openmc/fission_library.h"
+#include "openmc/freya_interface.h"
 #include "openmc/gef_induced_spectra.h"
+#include "Fission.h"
 #endif
 
 #include <fmt/core.h>
@@ -175,6 +177,12 @@ void sample_neutron_reaction(Particle& p)
 
 void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
 {
+#ifdef OPENMC_USE_FREYA
+  // Ensure FREYA is initialised before the first fission event is generated.
+  // freya::init() is idempotent (std::call_once internally).
+  freya::init();
+#endif
+
   // If uniform fission source weighting is turned on, we increase or decrease
   // the expected number of fission sites produced
   double weight = settings::ufs_on ? ufs_get_weight(p) : 1.0;
@@ -1142,13 +1150,45 @@ void sample_fission_neutron(
   // Track whether this neutron itself is delayed (not genealogy)
   site->is_delayed = (site->delayed_group > 0);
 
+#ifdef OPENMC_USE_FREYA
+  // -----------------------------------------------------------------------
+  // FREYA correlated prompt fission: energy + direction in lab frame.
+  // FREYA's global state is not thread-safe; use a critical section.
+  // For delayed neutrons the GEF tabulated spectrum path (below) is used.
+  // -----------------------------------------------------------------------
+  if (site->delayed_group == 0) {
+    double eng_MeV   = E_in * 1e-6;              // eV → MeV
+    double fiss_time = p.time();
+    double ndir[3]   = {p.u().x, p.u().y, p.u().z};
+    int    ZA_freya  = 1000 * nuc->Z_ + nuc->A_;
+    bool   freya_ok  = false;
+
+#pragma omp critical(freya_event)
+    {
+      freya::set_seed(seed);
+      genfissevtdir_(&ZA_freya, &fiss_time, &nu_t, &eng_MeV, ndir);
+      int nn = getnnu_();
+      if (nn > 0) {
+        int idx = 0;
+        site->E  = getneng_(&idx) * 1e6;         // MeV → eV
+        site->u  = Direction{getndircosu_(&idx),
+                             getndircosv_(&idx),
+                             getndircosw_(&idx)};
+        freya_ok = true;
+      }
+    }
+
+    if (freya_ok) return;
+    // FREYA returned 0 neutrons (shouldn't happen) — fall through to ENDF.
+  }
+#endif
+
   // sample from neutron energy distribution
   int n_sample = 0;
   double mu;
   while (true) {
 #ifdef OPENMC_USE_FREYA
-    // For delayed neutrons with GEF tabulated spectrum: use inverse-CDF
-    // sampling from the 200-bin GEF spectrum; angle is isotropic.
+    // Delayed neutrons: GEF tabulated spectrum (isotropic angle).
     if (site->delayed_group > 0 && gef_ind) {
       site->E = smpGEFIndEnergy(gef_ind, prn(seed));
       mu = 1.0 - 2.0 * prn(seed);

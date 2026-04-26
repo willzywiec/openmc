@@ -47,9 +47,6 @@ find_library(FissionLib_LIBRARY
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(FissionLib
   REQUIRED_VARS FissionLib_LIBRARY FissionLib_INCLUDE_DIR
-  FAIL_MESSAGE
-    "LLNL Fission Library not found. Set -DFISSION_LIB_DIR=/path/to/fission_v2.0.5 "
-    "and ensure 'make install' has been run in that directory."
 )
 
 if(FissionLib_FOUND)
