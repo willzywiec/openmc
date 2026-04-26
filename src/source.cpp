@@ -35,6 +35,16 @@
 #include "openmc/string_utils.h"
 #include "openmc/xml_interface.h"
 
+#ifdef OPENMC_USE_FISSION_LIB
+#include "openmc/freya_interface.h"
+#ifndef FREYA
+#define FREYA
+#endif
+#include "Fission.h"
+#endif
+
+#include <sstream>
+
 namespace openmc {
 
 //==============================================================================
@@ -81,6 +91,13 @@ unique_ptr<Source> Source::create(pugi::xml_node node)
       return make_unique<CompiledSourceWrapper>(node);
     } else if (source_type == "mesh") {
       return make_unique<MeshSource>(node);
+    } else if (source_type == "freya_sf") {
+#ifdef OPENMC_USE_FISSION_LIB
+      return make_unique<FreyaSFSource>(node);
+#else
+      fatal_error("Source type 'freya_sf' requires OpenMC built with "
+                  "OPENMC_USE_FISSION_LIB.");
+#endif
     } else {
       fatal_error(fmt::format("Invalid source type '{}' found.", source_type));
     }
@@ -468,6 +485,121 @@ SourceSite FileSource::sample(uint64_t* seed) const
   size_t i_site = sites_.size() * prn(seed);
   return sites_[i_site];
 }
+
+//==============================================================================
+// FreyaSFSource implementation
+//==============================================================================
+
+#ifdef OPENMC_USE_FISSION_LIB
+FreyaSFSource::FreyaSFSource(pugi::xml_node node) : Source(node)
+{
+  // Required: target nuclide ZAID (e.g., 98252 for Cf-252).
+  if (!check_for_node(node, "za")) {
+    fatal_error("freya_sf source: missing required 'za' element (target ZAID).");
+  }
+  za_ = std::stoi(get_node_value(node, "za"));
+
+  // Required: position (3 floats, space-separated).
+  if (!check_for_node(node, "position")) {
+    fatal_error("freya_sf source: missing required 'position' element.");
+  }
+  {
+    std::istringstream iss(get_node_value(node, "position"));
+    if (!(iss >> position_.x >> position_.y >> position_.z)) {
+      fatal_error("freya_sf source: 'position' must contain three floats.");
+    }
+  }
+
+  // Optional: bake-time event count (default 10000). For typical NDA runs
+  // this should be >= settings::particles to avoid excessive resampling.
+  int n_events = 10000;
+  if (check_for_node(node, "n_events")) {
+    n_events = std::stoi(get_node_value(node, "n_events"));
+    if (n_events <= 0) {
+      fatal_error("freya_sf source: 'n_events' must be positive.");
+    }
+  }
+
+  // Optional: include prompt photons in the source bank (default false).
+  include_photons_ = false;
+  if (check_for_node(node, "include_photons")) {
+    include_photons_ = get_node_value_bool(node, "include_photons");
+  }
+
+  // Optional: deterministic seed for the FREYA pre-bake (default 1).
+  uint64_t seed = 1;
+  if (check_for_node(node, "seed")) {
+    seed = std::stoull(get_node_value(node, "seed"));
+  }
+
+  freya::init();
+  if (!freya::is_initialized()) {
+    fatal_error("freya_sf source: FREYA failed to initialize.");
+  }
+
+  // Pre-bake n_events SF events into sites_. FREYA's global state is not
+  // thread-safe, but construction is single-threaded so we don't need the
+  // freya_event critical section here.
+  freya::set_seed(&seed);
+  for (int ev = 0; ev < n_events; ev++) {
+    int za_local = za_;
+    genspfissevt_(&za_local);
+
+    int nn = getnnu_();
+    for (int k = 0; k < nn; k++) {
+      int idx = k;
+      SourceSite site;
+      site.r            = position_;
+      site.particle     = ParticleType::neutron;
+      site.E            = getneng_(&idx) * 1e6;  // MeV → eV
+      site.u            = Direction{getndircosu_(&idx),
+                                    getndircosv_(&idx),
+                                    getndircosw_(&idx)};
+      site.time         = 0.0;
+      site.wgt          = 1.0;
+      site.delayed_group = 0;
+      site.is_delayed   = false;
+      site.parent_id    = ev;
+      site.progeny_id   = k;
+      sites_.push_back(site);
+    }
+
+    if (include_photons_) {
+      int np = getpnu_();
+      for (int k = 0; k < np; k++) {
+        int idx = k;
+        SourceSite site;
+        site.r            = position_;
+        site.particle     = ParticleType::photon;
+        site.E            = getpeng_(&idx) * 1e6;
+        site.u            = Direction{getpdircosu_(&idx),
+                                      getpdircosv_(&idx),
+                                      getpdircosw_(&idx)};
+        site.time         = 0.0;
+        site.wgt          = 1.0;
+        site.delayed_group = 0;
+        site.is_delayed   = false;
+        site.parent_id    = ev;
+        site.progeny_id   = nn + k;
+        sites_.push_back(site);
+      }
+    }
+  }
+
+  if (sites_.empty()) {
+    fatal_error(fmt::format(
+      "freya_sf source: FREYA returned no neutrons over {} attempted SF "
+      "events for ZAID {}. Check that this isotope has SF data in FREYA's "
+      "data tables.", n_events, za_));
+  }
+}
+
+SourceSite FreyaSFSource::sample(uint64_t* seed) const
+{
+  size_t i = sites_.size() * prn(seed);
+  return sites_[i];
+}
+#endif // OPENMC_USE_FISSION_LIB
 
 //==============================================================================
 // CompiledSourceWrapper implementation

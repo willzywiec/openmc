@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Sequence
 from enum import IntEnum
-from numbers import Real
+from numbers import Integral, Real
 from pathlib import Path
 import warnings
 from typing import Any
@@ -202,6 +202,8 @@ class SourceBase(ABC):
                 return FileSource.from_xml_element(elem)
             elif source_type == 'mesh':
                 return MeshSource.from_xml_element(elem, meshes)
+            elif source_type == 'freya_sf':
+                return FreyaSFSource.from_xml_element(elem)
             else:
                 raise ValueError(
                     f'Source type {source_type} is not recognized')
@@ -895,6 +897,148 @@ class FileSource(SourceBase):
         if strength is not None:
             kwargs['strength'] = float(strength)
 
+        return cls(**kwargs)
+
+
+class FreyaSFSource(SourceBase):
+    """Spontaneous-fission source backed by FREYA's correlated event generator.
+
+    Calls FREYA's ``genspfissevt_`` for the requested SF nuclide at construction
+    time on the C++ side and pre-bakes ``n_events`` correlated events into a
+    flat source bank. ``sample()`` then draws sites uniformly from this bank.
+    Within-event correlations are recoverable post-hoc by grouping source
+    sites that share ``parent_id``; ``parent_id`` is set to the FREYA event
+    index when the source bank is built.
+
+    Requires OpenMC built with ``OPENMC_USE_FISSION_LIB`` and the requested
+    nuclide must have SF data in FREYA (Cf-252, Cm-244, Pu-238/240/242, etc.).
+
+    Parameters
+    ----------
+    za : int
+        Target nuclide ZAID (1000 * Z + A), e.g. 98252 for Cf-252.
+    position : sequence of float
+        Spatial origin ``(x, y, z)`` in cm.
+    n_events : int, optional
+        Number of FREYA SF events to pre-bake. For typical NDA runs, choose
+        ``n_events`` such that the resulting source bank size (~ ``<n_n>`` *
+        ``n_events``) exceeds the per-generation particle count, so that
+        each source particle is sampled essentially without replacement.
+        Default 10000.
+    include_photons : bool, optional
+        If True, also bank prompt photons from each FREYA event. Default
+        False (neutrons only).
+    seed : int, optional
+        Deterministic seed for the pre-bake. Default 1.
+    strength : float, optional
+        Source strength (default 1.0). For physical units, set this to the
+        SF emission rate (n/s + photons/s if include_photons, else n/s).
+    constraints : dict, optional
+        Same as :class:`openmc.SourceBase`.
+
+    Attributes
+    ----------
+    type : str
+        Always ``'freya_sf'``.
+    """
+
+    def __init__(
+        self,
+        za: int,
+        position: tuple[float, float, float] = (0.0, 0.0, 0.0),
+        *,
+        n_events: int = 10000,
+        include_photons: bool = False,
+        seed: int = 1,
+        strength: float = 1.0,
+        constraints: dict[str, Any] | None = None,
+    ):
+        super().__init__(strength=strength, constraints=constraints)
+        self.za = za
+        self.position = position
+        self.n_events = n_events
+        self.include_photons = include_photons
+        self.seed = seed
+
+    @property
+    def type(self) -> str:
+        return 'freya_sf'
+
+    @property
+    def za(self) -> int:
+        return self._za
+
+    @za.setter
+    def za(self, value: int):
+        cv.check_type('FREYA SF target ZAID', value, Integral)
+        cv.check_greater_than('FREYA SF target ZAID', value, 0)
+        self._za = int(value)
+
+    @property
+    def position(self) -> tuple[float, float, float]:
+        return self._position
+
+    @position.setter
+    def position(self, value):
+        cv.check_type('FREYA SF position', value, Iterable, Real)
+        seq = tuple(float(v) for v in value)
+        if len(seq) != 3:
+            raise ValueError(
+                f'FREYA SF position must have 3 entries, got {len(seq)}')
+        self._position = seq
+
+    @property
+    def n_events(self) -> int:
+        return self._n_events
+
+    @n_events.setter
+    def n_events(self, value: int):
+        cv.check_type('FREYA SF n_events', value, Integral)
+        cv.check_greater_than('FREYA SF n_events', value, 0)
+        self._n_events = int(value)
+
+    @property
+    def include_photons(self) -> bool:
+        return self._include_photons
+
+    @include_photons.setter
+    def include_photons(self, value: bool):
+        cv.check_type('FREYA SF include_photons', value, bool)
+        self._include_photons = value
+
+    @property
+    def seed(self) -> int:
+        return self._seed
+
+    @seed.setter
+    def seed(self, value: int):
+        cv.check_type('FREYA SF seed', value, Integral)
+        cv.check_greater_than('FREYA SF seed', value, 0, equality=True)
+        self._seed = int(value)
+
+    def populate_xml_element(self, element):
+        ET.SubElement(element, 'za').text = str(self.za)
+        ET.SubElement(element, 'position').text = \
+            ' '.join(str(c) for c in self.position)
+        ET.SubElement(element, 'n_events').text = str(self.n_events)
+        ET.SubElement(element, 'include_photons').text = \
+            str(self.include_photons).lower()
+        ET.SubElement(element, 'seed').text = str(self.seed)
+
+    @classmethod
+    def from_xml_element(cls, elem: ET.Element) -> openmc.FreyaSFSource:
+        kwargs: dict[str, Any] = {'constraints': cls._get_constraints(elem)}
+        kwargs['za'] = int(get_text(elem, 'za'))
+        pos_text = get_text(elem, 'position')
+        kwargs['position'] = tuple(float(v) for v in pos_text.split())
+        if (val := get_text(elem, 'n_events')) is not None:
+            kwargs['n_events'] = int(val)
+        if (val := get_text(elem, 'include_photons')) is not None:
+            kwargs['include_photons'] = val.lower() in ('true', '1', 'yes')
+        if (val := get_text(elem, 'seed')) is not None:
+            kwargs['seed'] = int(val)
+        if (val := get_text(elem, 'strength')) is not None:
+            kwargs['strength'] = float(val)
         return cls(**kwargs)
 
 

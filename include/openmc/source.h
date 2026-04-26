@@ -204,6 +204,35 @@ private:
 
 typedef unique_ptr<Source> create_compiled_source_t(std::string parameters);
 
+#ifdef OPENMC_USE_FISSION_LIB
+//==============================================================================
+//! Spontaneous-fission source backed by FREYA's correlated event generator.
+//!
+//! At construction we draw \p n_events SF events from FREYA (via
+//! genspfissevt_) for the requested isotope and pre-bake all emitted prompt
+//! neutrons (and optionally prompt photons) into a flat vector. sample()
+//! draws one site uniformly at random from that vector.
+//!
+//! This preserves FREYA's multiplicity *distribution* (each cached event
+//! contributes its full n_n + n_p particles to the buffer) and within-event
+//! correlations are recoverable post-hoc via parent_id, which we set to the
+//! event index. To avoid heavy resampling, set n_events such that the total
+//! cached particle count exceeds settings::particles per generation.
+//==============================================================================
+class FreyaSFSource : public Source {
+public:
+  explicit FreyaSFSource(pugi::xml_node node);
+
+  SourceSite sample(uint64_t* seed) const override;
+
+private:
+  int za_;                       //!< target ZAID, e.g. 98252 for Cf-252
+  Position position_;            //!< fission location
+  bool include_photons_;         //!< emit prompt gammas alongside neutrons
+  vector<SourceSite> sites_;     //!< pre-baked event particles
+};
+#endif // OPENMC_USE_FISSION_LIB
+
 //==============================================================================
 //! Mesh-based source with different distributions for each element
 //==============================================================================
