@@ -1,4 +1,4 @@
-#ifdef OPENMC_USE_FREYA
+#ifdef OPENMC_USE_FRIGGA
 
 #include "openmc/freya_interface.h"
 #include "openmc/random_lcg.h"   // prn()
@@ -97,4 +97,4 @@ bool is_initialized()
 } // namespace freya
 } // namespace openmc
 
-#endif // OPENMC_USE_FREYA
+#endif // OPENMC_USE_FRIGGA

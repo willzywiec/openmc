@@ -38,8 +38,8 @@ option(OPENMC_USE_LIBMESH     "Enable support for libMesh unstructured mesh tall
 option(OPENMC_USE_MPI         "Enable MPI"                                           OFF)
 option(OPENMC_USE_UWUW        "Enable UWUW"                                          OFF)
 option(OPENMC_FORCE_VENDORED_LIBS "Explicitly use submodules defined in 'vendor'"    OFF)
-option(OPENMC_USE_FREYA
-       "Enable Spriggs 8-group delayed neutron model (LLNL Fission Library / FREYA)" OFF)
+option(OPENMC_USE_FRIGGA
+       "Enable FRIGGA (FREYA + Spriggs + GEF + LLNL Fission Library) integrated fission physics" OFF)
 
 message(STATUS "OPENMC_USE_OPENMP ${OPENMC_USE_OPENMP}")
 message(STATUS "OPENMC_BUILD_TESTS ${OPENMC_BUILD_TESTS}")
@@ -50,7 +50,7 @@ message(STATUS "OPENMC_USE_LIBMESH ${OPENMC_USE_LIBMESH}")
 message(STATUS "OPENMC_USE_MPI ${OPENMC_USE_MPI}")
 message(STATUS "OPENMC_USE_UWUW ${OPENMC_USE_UWUW}")
 message(STATUS "OPENMC_FORCE_VENDORED_LIBS ${OPENMC_FORCE_VENDORED_LIBS}")
-message(STATUS "OPENMC_USE_FREYA ${OPENMC_USE_FREYA}")
+message(STATUS "OPENMC_USE_FRIGGA ${OPENMC_USE_FRIGGA}")
 
 # Warnings for deprecated options
 foreach(OLD_OPT IN ITEMS "openmp" "profile" "coverage" "dagmc" "libmesh")
@@ -539,7 +539,7 @@ if(OPENMC_USE_LIBMESH)
   target_link_libraries(libopenmc PkgConfig::LIBMESH)
 endif()
 
-if(OPENMC_USE_FREYA)
+if(OPENMC_USE_FRIGGA)
   # Phase 1: Spriggs 8-group delayed neutron timing + GEF energy spectra (header-only).
   # Phase 2: FREYA correlated prompt fission via libFission.
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -553,7 +553,7 @@ if(OPENMC_USE_FREYA)
   get_filename_component(FREYA_DATA_DEFAULT_PATH "${FREYA_DATA_DEFAULT_PATH}" ABSOLUTE)
 
   target_compile_definitions(libopenmc PRIVATE
-      OPENMC_USE_FREYA
+      OPENMC_USE_FRIGGA
       FREYA_DATA_DEFAULT_PATH="${FREYA_DATA_DEFAULT_PATH}")
   target_link_libraries(libopenmc FissionLib::Fission)
   target_include_directories(libopenmc PRIVATE ${FissionLib_INCLUDE_DIRS})
@@ -562,7 +562,7 @@ if(OPENMC_USE_FREYA)
   enable_language(Fortran)
   target_link_libraries(libopenmc gfortran)
 
-  message(STATUS "FREYA correlated fission enabled (libFission + FREYA data)")
+  message(STATUS "FRIGGA fission physics enabled (FREYA + Spriggs + GEF)")
   message(STATUS "  libFission: ${FissionLib_LIBRARY}")
   message(STATUS "  FREYA data: ${FREYA_DATA_DEFAULT_PATH}")
 endif()
