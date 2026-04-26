@@ -161,8 +161,8 @@ In addition to the standard :math:`k`-eigenvalue, OpenMC can calculate the alpha
 eigenvalue (:math:`\alpha`), which represents the time constant governing the
 exponential growth or decay of the prompt neutron population. The alpha
 eigenvalue depends on the effective delayed neutron fraction
-:math:`\beta_\text{eff}` and the IFP-weighted prompt generation time
-:math:`\Lambda_p`.
+:math:`\beta_\text{eff}` and the IFP-weighted prompt neutron lifetime
+:math:`\ell_p`.
 
 Two forms of the alpha eigenvalue are reported, where :math:`k_p = k_\text{eff}
 \cdot (1 - \beta_\text{eff})` is the prompt multiplication factor:
@@ -172,13 +172,13 @@ Two forms of the alpha eigenvalue are reported, where :math:`k_p = k_\text{eff}
 
    .. math::
 
-       \alpha_\text{dc} = \frac{-\beta_\text{eff}}{\Lambda_p \cdot k_p}
+       \alpha_\text{dc} = \frac{-\beta_\text{eff}}{\ell_p}
 
 2. The **static alpha** uses the system's actual reactivity state:
 
    .. math::
 
-       \alpha = \frac{k_p - 1}{\Lambda_p \cdot k_p}
+       \alpha = \frac{k_p - 1}{\ell_p}
 
 A negative :math:`\alpha` indicates that prompt neutrons are decaying (the
 system is below prompt critical), :math:`\alpha = 0` corresponds to prompt
@@ -252,11 +252,20 @@ IFP-weighted lifetime to the IFP normalization, divided by :math:`k_\text{eff}`:
 
     \Lambda_\text{eff} = \frac{S_\text{ifp-time-numerator}}{S_\text{ifp-denominator} \times k_\text{eff}}
 
-The prompt generation time :math:`\Lambda_p` uses the prompt-only scores:
+The prompt neutron lifetime :math:`\ell_p` is obtained directly from the
+prompt-only IFP scores:
 
 .. math::
 
-    \Lambda_p = \frac{S_\text{ifp-prompt-time-numerator}}{S_\text{ifp-prompt-denominator} \times k_\text{eff}}
+    \ell_p = \frac{S_\text{ifp-prompt-time-numerator}}{S_\text{ifp-prompt-denominator}}
+
+The prompt generation time :math:`\Lambda_p` is then defined as
+:math:`\ell_p / k_p` and is reported for comparison with other codes; it is
+not used in the alpha eigenvalue calculation itself:
+
+.. math::
+
+    \Lambda_p = \frac{\ell_p}{k_p}
 
 The effective delayed neutron fraction is obtained from the prompt
 :math:`k`-eigenvalue:
@@ -268,14 +277,14 @@ The effective delayed neutron fraction is obtained from the prompt
 where :math:`k_\text{prompt}` is scored using a tracklength estimator that
 excludes delayed neutron contributions.
 
-With these three quantities and the prompt multiplication factor
+With these quantities and the prompt multiplication factor
 :math:`k_p = k_\text{eff} \cdot (1 - \beta_\text{eff})`, the two alpha
-eigenvalues are computed as:
+eigenvalues are computed directly from :math:`\ell_p`:
 
 .. math::
 
-    \alpha_\text{dc} &= \frac{-\beta_\text{eff}}{\Lambda_p \cdot k_p} \\
-    \alpha &= \frac{k_p - 1}{\Lambda_p \cdot k_p}
+    \alpha_\text{dc} &= \frac{-\beta_\text{eff}}{\ell_p} \\
+    \alpha &= \frac{k_p - 1}{\ell_p}
 
 Uncertainties on all derived quantities are computed via standard error
 propagation from the tally variances and the variance of

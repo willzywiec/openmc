@@ -2,23 +2,24 @@
 
 ## Overview
 
-The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates two forms of the alpha eigenvalue using the IFP (Iterated Fission Probability) method:
+The alpha eigenvalue (α) represents the time rate of change of the neutron population in a nuclear system. OpenMC calculates two forms of the alpha eigenvalue directly from the IFP-weighted prompt neutron lifetime ℓ_p:
 
 **Delayed critical alpha** (assumes ρ = 0, i.e., k_eff = 1):
 ```
-α_dc = −β_eff / (Λ_p · k_p)
+α_dc = −β_eff / ℓ_p
 ```
 
 **Static alpha** (uses actual reactivity state):
 ```
-α = (k_p − 1) / (Λ_p · k_p)
+α = (k_p − 1) / ℓ_p
 ```
 
 **Definitions:**
 - **k_eff** = effective multiplication factor
 - **k_p** = prompt multiplication factor = k_eff · (1 − β_eff)
 - **β_eff** = effective delayed neutron fraction (from k-prompt)
-- **Λ_p** = IFP-weighted prompt generation time
+- **ℓ_p** = IFP-weighted prompt neutron lifetime
+- **Λ_p** = IFP-weighted prompt generation time = ℓ_p / k_p (reported only; not used in α)
 
 ---
 
@@ -34,9 +35,10 @@ The alpha eigenvalue describes prompt neutron population dynamics:
 The kinetics parameters are computed using two methods:
 
 ```
-β_eff = (k - k_prompt) / k          (from k-prompt)
-Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)   (from IFP)
-Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)   (from IFP)
+β_eff = (k - k_prompt) / k                                          (from k-prompt)
+Λ_eff = ifp-time-numerator        / (ifp-denominator × k_eff)        (from IFP)
+ℓ_p   = ifp-prompt-time-numerator /  ifp-prompt-denominator          (from IFP)
+Λ_p   = ℓ_p / k_p                                                    (reported only)
 ```
 
 The β_eff is calculated from the difference between total k-effective and prompt k-effective. The Λ_eff and Λ_p use the IFP (Iterated Fission Probability) method which properly accounts for the importance of neutrons at different energies and positions.
@@ -91,14 +93,18 @@ For each active generation, `calculate_kinetics_parameters()` computes:
 beta_eff = (keff - keff_prompt) / keff;
 ```
 
-#### Step 2: Generation Times
+#### Step 2: Generation Time and Prompt Neutron Lifetime
 
 ```cpp
 // Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 lambda_eff_ifp = ifp_time_num / (ifp_denom * keff);
 
-// Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)
-lambda_p_ifp = ifp_prompt_time_num / (ifp_prompt_denom * keff);
+// ℓ_p = ifp-prompt-time-numerator / ifp-prompt-denominator
+double lp = ifp_prompt_time_num / ifp_prompt_denom;
+lifetime_p_ifp = lp;
+
+// Λ_p = ℓ_p / k_p (reported only; not used in α)
+lambda_p_ifp = lp / kp;
 ```
 
 #### Step 3: Alpha Eigenvalues
@@ -107,11 +113,11 @@ lambda_p_ifp = ifp_prompt_time_num / (ifp_prompt_denom * keff);
 // k_p = k_eff · (1 − β_eff)
 double kp = k * (1.0 - beta);
 
-// Delayed critical: α_dc = −β_eff / (Λ_p · k_p)
-alpha_dc_ifp = -beta / (Lp * kp);
+// Delayed critical: α_dc = −β_eff / ℓ_p
+alpha_dc_ifp = -beta / lp;
 
-// Static: α = (k_p − 1) / (Λ_p · k_p)
-alpha_ifp = (kp - 1.0) / (Lp * kp);
+// Static: α = (k_p − 1) / ℓ_p
+alpha_ifp = (kp - 1.0) / lp;
 ```
 
 ### 4. Uncertainty Propagation
@@ -128,14 +134,16 @@ Standard deviations are calculated using error propagation:
 σ_Λ² ≈ (∂Λ/∂num)² σ_num² + (∂Λ/∂denom)² σ_denom² + (∂Λ/∂k)² σ_k²
 ```
 
-**For α_dc = (k_p − k) / (Λ_p · k_p):**
+**For α_dc = −β_eff / ℓ_p:**
 ```
-σ_α² ≈ (k/(Λ_p·k_p²))² σ_kp² + (−1/(Λ_p·k_p))² σ_k² + (−α_dc/Λ_p)² σ_Λp²
+σ_α_dc² ≈ (1/ℓ_p)² σ_β² + (β_eff/ℓ_p²)² σ_ℓp²
 ```
 
-**For α = (k_p − 1) / (Λ_p · k_p):**
+**For α = (k_p − 1) / ℓ_p, with k_p = k_eff · (1 − β_eff):**
 ```
-σ_α² ≈ (1/(Λ_p·k_p²))² σ_kp² + (−α/Λ_p)² σ_Λp²
+σ_α² ≈ ((1 − β_eff)/ℓ_p)² σ_k²
+     + (k_eff/ℓ_p)²        σ_β²
+     + ((k_p − 1)/ℓ_p²)²    σ_ℓp²
 ```
 
 ---
@@ -147,14 +155,15 @@ For a typical fast system (Godiva) near critical:
 **Given:**
 - k = 1.0001
 - β_eff = 0.0065
-- Λ_p = 5.7 × 10⁻⁹ seconds
+- ℓ_p = 5.66 × 10⁻⁹ seconds
 - k_p = k · (1 − β_eff) = 1.0001 × 0.9935 ≈ 0.99360
+- Λ_p = ℓ_p / k_p ≈ 5.70 × 10⁻⁹ seconds
 
 **Calculate:**
 ```
-α_dc = −β_eff / (Λ_p · k_p) = −0.0065 / (5.7e-9 × 0.99360) ≈ −1.15e6 s⁻¹
+α_dc = −β_eff / ℓ_p   = −0.0065      / 5.66e-9 ≈ −1.15e6 s⁻¹
 
-α = (k_p − 1) / (Λ_p · k_p) = (0.99360 − 1.0) / (5.7e-9 × 0.99360) ≈ −1.13e6 s⁻¹
+α    = (k_p − 1) / ℓ_p = (0.99360 − 1) / 5.66e-9 ≈ −1.13e6 s⁻¹
 ```
 
 The negative alpha (with ρ < β_eff) indicates the system is subcritical on the prompt timescale - prompt neutrons decay, but delayed neutrons sustain the chain reaction.

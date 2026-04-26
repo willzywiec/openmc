@@ -4,29 +4,31 @@ This guide explains how to use OpenMC's alpha eigenvalue calculation capability 
 
 ## Overview
 
-The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates two forms of the alpha eigenvalue using the prompt generation time Λ_p from the IFP method:
+The alpha eigenvalue (α) describes the time-dependent behavior of the neutron population in a nuclear system. OpenMC calculates two forms of the alpha eigenvalue directly from the prompt neutron lifetime ℓ_p, computed via the IFP method:
 
 **Delayed critical alpha** (assumes the system is exactly delayed critical, i.e., ρ = 0):
 ```
-α_dc = −β_eff / (Λ_p · k_p)
+α_dc = −β_eff / ℓ_p
 ```
 
 **Actual alpha** (uses the system's actual reactivity state):
 ```
-α = (k_p − 1) / (Λ_p · k_p)
+α = (k_p − 1) / ℓ_p
 ```
 
 Where:
 - **k_eff**: Effective multiplication factor
 - **k_p**: Prompt multiplication factor = k_eff · (1 − β_eff)
 - **β_eff**: Effective delayed neutron fraction (from k-prompt)
-- **Λ_p**: IFP-weighted prompt generation time
+- **ℓ_p**: IFP-weighted prompt neutron lifetime
+- **Λ_p**: IFP-weighted prompt generation time, ℓ_p / k_p (reported only; not used in α)
 
 The kinetics parameters are computed as:
 ```
 β_eff = (k - k_prompt) / k
 Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
-Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)
+ℓ_p   = ifp-prompt-time-numerator / ifp-prompt-denominator
+Λ_p   = ℓ_p / k_p
 ```
 
 ### Physical Interpretation
@@ -239,19 +241,24 @@ When running OpenMC with alpha calculations enabled, the output will include a k
 Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
 ```
 
-**Λ_p (Prompt Generation Time)**: Also calculated using IFP, but using prompt-only scores:
+**ℓ_p (Prompt Neutron Lifetime)**: Calculated directly from the prompt-only IFP scores; no division by k:
 ```
-Λ_p = ifp-prompt-time-numerator / (ifp-prompt-denominator × k_eff)
+ℓ_p = ifp-prompt-time-numerator / ifp-prompt-denominator
+```
+
+**Λ_p (Prompt Generation Time)**: Reported for comparison with other codes; not used in the α calculation:
+```
+Λ_p = ℓ_p / k_p
 ```
 
 **α_dc (Delayed Critical Alpha)**: Assumes the system is exactly delayed critical (ρ = 0):
 ```
-α_dc = −β_eff / (Λ_p · k_p)
+α_dc = −β_eff / ℓ_p
 ```
 
 **α (Actual Alpha)**: Uses the system's actual reactivity:
 ```
-α = (k_p − 1) / (Λ_p · k_p)
+α = (k_p − 1) / ℓ_p
 ```
 
 where `k_p = k_eff · (1 − β_eff)` is the prompt multiplication factor.
