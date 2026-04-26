@@ -4,7 +4,7 @@
 # correlated fission model and Spriggs 8-group delayed neutron sampling.
 #
 # Usage:
-#   cmake -DOPENMC_USE_FRIGGA=ON \
+#   cmake -DOPENMC_USE_FISSION_LIB=ON \
 #         -DFISSION_LIB_DIR=/path/to/fission_v2.0.5 ..
 #
 # Variables set by this module:

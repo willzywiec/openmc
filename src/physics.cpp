@@ -27,7 +27,7 @@
 #include "openmc/tallies/tally.h"
 #include "openmc/thermal.h"
 #include "openmc/weight_windows.h"
-#ifdef OPENMC_USE_FRIGGA
+#ifdef OPENMC_USE_FISSION_LIB
 #include "openmc/fission_library.h"
 #include "openmc/freya_interface.h"
 #include "openmc/gef_induced_spectra.h"
@@ -240,7 +240,7 @@ static void sample_mt460_delayed_photons(
 
 void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
 {
-#ifdef OPENMC_USE_FRIGGA
+#ifdef OPENMC_USE_FISSION_LIB
   // Ensure FREYA is initialised before the first fission event is generated.
   // freya::init() is idempotent (std::call_once internally).
   freya::init();
@@ -1156,7 +1156,7 @@ void sample_fission_neutron(
   double nu_t = nuc->nu(E_in, Nuclide::EmissionMode::total);
   double nu_d = nuc->nu(E_in, Nuclide::EmissionMode::delayed);
 
-#ifdef OPENMC_USE_FRIGGA
+#ifdef OPENMC_USE_FISSION_LIB
   // Look up GEF induced fission spectrum for this target isotope.
   // GEF nu_d overrides ENDF for beta; ENDF nu_d is still used for
   // group-selection proportions (xi) so kinetics tagging is consistent.
@@ -1194,7 +1194,7 @@ void sample_fission_neutron(
     site->delayed_group = group;
 
     // Sample time of emission of the delayed neutron.
-#ifdef OPENMC_USE_FRIGGA
+#ifdef OPENMC_USE_FISSION_LIB
     // Spriggs 8-group consistent half-life model for tabulated isotopes:
     //   Spriggs, Campbell & Piksaikin (2002), Prog. Nucl. Energy 41, 223-251.
     // The ENDF group (above) governs energy/angle sampling; the Spriggs model
@@ -1230,7 +1230,7 @@ void sample_fission_neutron(
   // Track whether this neutron itself is delayed (not genealogy)
   site->is_delayed = (site->delayed_group > 0);
 
-#ifdef OPENMC_USE_FRIGGA
+#ifdef OPENMC_USE_FISSION_LIB
   // -----------------------------------------------------------------------
   // FREYA correlated prompt fission: energy + direction in lab frame.
   // FREYA's global state is not thread-safe; use a critical section.
@@ -1288,7 +1288,7 @@ void sample_fission_neutron(
   int n_sample = 0;
   double mu;
   while (true) {
-#ifdef OPENMC_USE_FRIGGA
+#ifdef OPENMC_USE_FISSION_LIB
     // Delayed neutrons: GEF tabulated spectrum (isotropic angle).
     if (site->delayed_group > 0 && gef_ind) {
       site->E = smpGEFIndEnergy(gef_ind, prn(seed));

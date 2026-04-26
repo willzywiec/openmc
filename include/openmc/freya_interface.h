@@ -1,7 +1,7 @@
 /* freya_interface.h
  *
  * Thin wrapper around the LLNL Fission Library (FREYA) for use in OpenMC.
- * Only compiled when OPENMC_USE_FRIGGA is defined.
+ * Only compiled when OPENMC_USE_FISSION_LIB is defined.
  *
  * Initialization:
  *   Call freya_init() once before any fission event generation.
@@ -17,7 +17,7 @@
 #ifndef OPENMC_FREYA_INTERFACE_H
 #define OPENMC_FREYA_INTERFACE_H
 
-#ifdef OPENMC_USE_FRIGGA
+#ifdef OPENMC_USE_FISSION_LIB
 
 #include <cstdint>
 
@@ -39,5 +39,5 @@ bool is_initialized();
 } // namespace freya
 } // namespace openmc
 
-#endif // OPENMC_USE_FRIGGA
+#endif // OPENMC_USE_FISSION_LIB
 #endif // OPENMC_FREYA_INTERFACE_H
