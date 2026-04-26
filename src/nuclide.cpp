@@ -348,6 +348,18 @@ Nuclide::Nuclide(hid_t group, const vector<double>& temperature)
     close_group(fer_group);
   }
 
+  // ENDF MT=460 delayed fission photon emission data, if present.
+  // Schema: three 1D datasets of equal length n_lines:
+  //   energies, decay_constants, yields.
+  if (object_exists(group, "delayed_photons_mt460")) {
+    hid_t dp = open_group(group, "delayed_photons_mt460");
+    delayed_photons_mt460_ = make_unique<DelayedPhotonData>();
+    read_dataset(dp, "energies",        delayed_photons_mt460_->energies);
+    read_dataset(dp, "decay_constants", delayed_photons_mt460_->decay_constants);
+    read_dataset(dp, "yields",          delayed_photons_mt460_->yields);
+    close_group(dp);
+  }
+
   this->create_derived(prompt_photons_.get(), delayed_photons_.get());
 }
 

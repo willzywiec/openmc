@@ -31,6 +31,9 @@ docs/source/pythonapi/generated/
 
 # Source build
 build
+build_freya
+build_no_freya
+fission_lib_extract/**/build*
 
 # build from src/utils/setup.py
 src/utils/build
@@ -107,3 +110,4 @@ CMakeSettings.json
 # Python pickle files
 *.pkl
 alpha/runs_*/
+fission_lib_extract/fission_v2.0.5/build_test/

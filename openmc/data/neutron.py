@@ -105,6 +105,7 @@ class IncidentNeutron(EqualityMixin):
         self.kTs = kTs
         self.energy = {}
         self._fission_energy = None
+        self._delayed_photons_mt460 = None  # ENDF MT=460 LO=1 data, if present
         self.reactions = {}
         self._urr = {}
         self._resonances = None
@@ -429,6 +430,16 @@ class IncidentNeutron(EqualityMixin):
                 fer_group = g.create_group('fission_energy_release')
                 self.fission_energy.to_hdf5(fer_group)
 
+            # Write MT=460 delayed fission photon data, if present.
+            # Schema (read by src/nuclide.cpp): three 1D datasets of
+            # equal length n_lines.
+            if self._delayed_photons_mt460 is not None:
+                dp = g.create_group('delayed_photons_mt460')
+                d = self._delayed_photons_mt460
+                dp.create_dataset('energies',        data=d['energies'])
+                dp.create_dataset('decay_constants', data=d['decay_constants'])
+                dp.create_dataset('yields',          data=d['yields'])
+
     @classmethod
     def from_hdf5(cls, group_or_filename):
         """Generate continuous-energy neutron interaction data from HDF5 group
@@ -724,6 +735,12 @@ class IncidentNeutron(EqualityMixin):
         # fission)
         if (1, 458) in ev.section:
             data.fission_energy = FissionEnergyRelease.from_endf(ev, data)
+
+        # Read MT=460 delayed fission photon emission data, if present.
+        # Stored as a flat dict on the IncidentNeutron object; serialized
+        # alongside fission_energy_release in to_hdf5().
+        from .reaction import _get_delayed_photons_mt460
+        data._delayed_photons_mt460 = _get_delayed_photons_mt460(ev)
 
         data._evaluation = ev
         return data

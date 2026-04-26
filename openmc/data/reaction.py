@@ -502,6 +502,66 @@ def _get_fission_products_endf(ev):
     return products, derived_products
 
 
+def _get_delayed_photons_mt460(ev):
+    """Parse ENDF MF=1, MT=460 delayed fission photon emission data.
+
+    Supports the LO=1 (discrete photon energies with per-line decay
+    constants) representation only. Returns ``None`` if MT=460 is absent
+    or uses an unsupported format.
+
+    The LO=1 layout per the ENDF-6 manual:
+
+      HEAD  : ZA, AWR, LO=1, 0, NG, 0
+      TAB1  : Eg, lambda_g, g, 0, NR, NP / interp / E_in -> Y_g
+              (one TAB1 per photon line g = 1..NG)
+
+    For each photon line we keep the energy, the decay constant, and the
+    yield evaluated at thermal energy (0.0253 eV) — energy dependence is
+    discarded since the C++ side stores constant yields. Adjust if a
+    different representative energy is desired.
+
+    Parameters
+    ----------
+    ev : openmc.data.endf.Evaluation
+
+    Returns
+    -------
+    dict or None
+        ``{'energies': [...], 'decay_constants': [...], 'yields': [...]}``
+        with all three lists of length NG (eV, s^-1, dimensionless).
+    """
+    if (1, 460) not in ev.section:
+        return None
+
+    file_obj = StringIO(ev.section[1, 460])
+    items = get_head_record(file_obj)
+    lo, ng = items[2], items[4]
+    if lo != 1:
+        warn(f'MT=460 LO={lo} not supported; skipping delayed photon data.')
+        return None
+
+    energies = []
+    decay_constants = []
+    yields = []
+    for _ in range(ng):
+        params, yield_ = get_tab1_record(file_obj)
+        # params = [C1=Eg, C2=lambda_g, L1, L2, NR, NP] per the ENDF spec.
+        e_g = params[0]
+        lam_g = params[1]
+        # Use thermal energy for the yield evaluation; MT=460 yields are
+        # only weakly energy-dependent for the actinides.
+        y_g = float(yield_(0.0253))
+        energies.append(e_g)
+        decay_constants.append(lam_g)
+        yields.append(y_g)
+
+    return {
+        'energies': np.asarray(energies, dtype=float),
+        'decay_constants': np.asarray(decay_constants, dtype=float),
+        'yields': np.asarray(yields, dtype=float),
+    }
+
+
 def _get_activation_products(ev, rx):
     """Generate activation products from an ENDF evaluation
 

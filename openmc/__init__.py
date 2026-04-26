@@ -17,6 +17,7 @@ from openmc.surface import *
 from openmc.universe import *
 from openmc.dagmc import *
 from openmc.source import *
+from openmc.source_alphanso import *
 from openmc.settings import *
 from openmc.lattice import *
 from openmc.filter import *

@@ -38,6 +38,8 @@ option(OPENMC_USE_LIBMESH     "Enable support for libMesh unstructured mesh tall
 option(OPENMC_USE_MPI         "Enable MPI"                                           OFF)
 option(OPENMC_USE_UWUW        "Enable UWUW"                                          OFF)
 option(OPENMC_FORCE_VENDORED_LIBS "Explicitly use submodules defined in 'vendor'"    OFF)
+option(OPENMC_USE_FISSION_LIB
+       "Enable LLNL Fission Library: FREYA correlated prompt fission + Spriggs/GEF delayed neutrons" OFF)
 
 message(STATUS "OPENMC_USE_OPENMP ${OPENMC_USE_OPENMP}")
 message(STATUS "OPENMC_BUILD_TESTS ${OPENMC_BUILD_TESTS}")
@@ -48,6 +50,7 @@ message(STATUS "OPENMC_USE_LIBMESH ${OPENMC_USE_LIBMESH}")
 message(STATUS "OPENMC_USE_MPI ${OPENMC_USE_MPI}")
 message(STATUS "OPENMC_USE_UWUW ${OPENMC_USE_UWUW}")
 message(STATUS "OPENMC_FORCE_VENDORED_LIBS ${OPENMC_FORCE_VENDORED_LIBS}")
+message(STATUS "OPENMC_USE_FISSION_LIB ${OPENMC_USE_FISSION_LIB}")
 
 # Warnings for deprecated options
 foreach(OLD_OPT IN ITEMS "openmp" "profile" "coverage" "dagmc" "libmesh")
@@ -376,6 +379,7 @@ list(APPEND libopenmc_SOURCES
   src/particle_data.cpp
   src/particle_restart.cpp
   src/photon.cpp
+  src/freya_interface.cpp
   src/physics.cpp
   src/physics_common.cpp
   src/physics_mg.cpp
@@ -533,6 +537,34 @@ endif()
 if(OPENMC_USE_LIBMESH)
   target_compile_definitions(libopenmc PRIVATE OPENMC_LIBMESH_ENABLED)
   target_link_libraries(libopenmc PkgConfig::LIBMESH)
+endif()
+
+if(OPENMC_USE_FISSION_LIB)
+  # Phase 1: Spriggs 8-group delayed neutron timing + GEF energy spectra (header-only).
+  # Phase 2: FREYA correlated prompt fission via libFission.
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+  find_package(FissionLib REQUIRED)
+
+  # Default FREYA data path: the data_freya directory next to libFission.
+  # Overridable at runtime via $FREYA_DATA_PATH environment variable.
+  get_filename_component(_fission_lib_dir "${FissionLib_LIBRARY}" DIRECTORY)
+  set(FREYA_DATA_DEFAULT_PATH "${_fission_lib_dir}/../data_freya"
+      CACHE PATH "Default path to FREYA data directory")
+  get_filename_component(FREYA_DATA_DEFAULT_PATH "${FREYA_DATA_DEFAULT_PATH}" ABSOLUTE)
+
+  target_compile_definitions(libopenmc PRIVATE
+      OPENMC_USE_FISSION_LIB
+      FREYA_DATA_DEFAULT_PATH="${FREYA_DATA_DEFAULT_PATH}")
+  target_link_libraries(libopenmc FissionLib::Fission)
+  target_include_directories(libopenmc PRIVATE ${FissionLib_INCLUDE_DIRS})
+
+  # Fortran runtime needed for FREYA (compiled Fortran code in libFission).
+  enable_language(Fortran)
+  target_link_libraries(libopenmc gfortran)
+
+  message(STATUS "LLNL Fission Library enabled (FREYA correlated prompt + Spriggs/GEF delayed)")
+  message(STATUS "  libFission: ${FissionLib_LIBRARY}")
+  message(STATUS "  FREYA data: ${FREYA_DATA_DEFAULT_PATH}")
 endif()
 
 if (PNG_FOUND)

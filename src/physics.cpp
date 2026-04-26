@@ -27,6 +27,12 @@
 #include "openmc/tallies/tally.h"
 #include "openmc/thermal.h"
 #include "openmc/weight_windows.h"
+#ifdef OPENMC_USE_FISSION_LIB
+#include "openmc/fission_library.h"
+#include "openmc/freya_interface.h"
+#include "openmc/gef_induced_spectra.h"
+#include "Fission.h"
+#endif
 
 #include <fmt/core.h>
 
@@ -169,8 +175,77 @@ void sample_neutron_reaction(Particle& p)
   }
 }
 
+// ---------------------------------------------------------------------------
+// MT=460 delayed fission photon sampling.
+// Called once per fission event (not per neutron site). Samples a Poisson
+// number of delayed photons, then for each photon samples (group, line)
+// jointly weighted by yields(g, l), assigns photon energy = energies[l],
+// emission delay = -ln(u)/decay_constants[g], and isotropic direction.
+// Banked as ParticleType::photon on the particle's secondary bank.
+// ---------------------------------------------------------------------------
+static void sample_mt460_delayed_photons(
+  Particle& p, const Nuclide::DelayedPhotonData& data, double weight)
+{
+  uint64_t* seed = p.current_seed();
+  const auto n_lines = data.energies.size();
+
+  double total = 0.0;
+  for (std::size_t l = 0; l < n_lines; ++l) total += data.yields[l];
+  if (total <= 0.0) return;
+
+  // Poisson sample around the expected photon count
+  // (Knuth's algorithm; total is typically O(10) for fission).
+  int n_photons;
+  {
+    double L = std::exp(-total);
+    int    k = 0;
+    double q = 1.0;
+    do {
+      ++k;
+      q *= prn(seed);
+    } while (q > L && k < 1000);
+    n_photons = k - 1;
+  }
+  if (n_photons == 0) return;
+
+  for (int k = 0; k < n_photons; ++k) {
+    // Sample line l by inverse-CDF on yields.
+    double xi    = prn(seed) * total;
+    double cumul = 0.0;
+    std::size_t sel_l = n_lines - 1;
+    for (std::size_t l = 0; l < n_lines; ++l) {
+      cumul += data.yields[l];
+      if (xi <= cumul) { sel_l = l; break; }
+    }
+
+    double t_delay = -std::log(prn(seed)) / data.decay_constants[sel_l];
+
+    // Isotropic emission direction
+    double mu     = 1.0 - 2.0 * prn(seed);
+    double phi    = 2.0 * PI * prn(seed);
+    double sin_th = std::sqrt(std::max(0.0, 1.0 - mu * mu));
+
+    SourceSite gamma;
+    gamma.r        = p.r();
+    gamma.particle = ParticleType::photon;
+    gamma.E        = data.energies[sel_l];
+    gamma.u        = Direction{sin_th * std::cos(phi),
+                               sin_th * std::sin(phi),
+                               mu};
+    gamma.time     = p.time() + t_delay;
+    gamma.wgt      = 1.0 / weight;
+    p.secondary_bank().push_back(gamma);
+  }
+}
+
 void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
 {
+#ifdef OPENMC_USE_FISSION_LIB
+  // Ensure FREYA is initialised before the first fission event is generated.
+  // freya::init() is idempotent (std::call_once internally).
+  freya::init();
+#endif
+
   // If uniform fission source weighting is turned on, we increase or decrease
   // the expected number of fission sites produced
   double weight = settings::ufs_on ? ufs_get_weight(p) : 1.0;
@@ -206,6 +281,11 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   // fission bank or the secondary particle bank
   int n_sites_stored;
 
+  // Bank FREYA-correlated prompt photons exactly once per fission event,
+  // on the first prompt neutron call (so a single FREYA event's photon set
+  // represents this fission, not multiplied by the number of bank slots).
+  bool bank_freya_photons = true;
+
   for (n_sites_stored = 0; n_sites_stored < nu; n_sites_stored++) {
     // Initialize fission site object with particle data
     SourceSite site;
@@ -216,7 +296,8 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
     site.surf_id = 0;
 
     // Sample delayed group and angle/energy for fission reaction
-    sample_fission_neutron(i_nuclide, rx, &site, p);
+    sample_fission_neutron(i_nuclide, rx, &site, p, bank_freya_photons);
+    if (site.delayed_group == 0) bank_freya_photons = false;
 
     // Reject site if it exceeds time cutoff
     if (site.delayed_group > 0) {
@@ -293,6 +374,16 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   p.wgt_bank() = nu / weight;
   for (size_t d = 0; d < MAX_DELAYED_GROUPS; d++) {
     p.n_delayed_bank(d) = nu_d[d];
+  }
+
+  // Phase 6: emit ENDF MT=460 delayed fission photons (once per fission).
+  // Independent of FREYA — the prompt photon path uses FREYA when enabled.
+  if (settings::photon_transport) {
+    const auto& nuc = data::nuclides[i_nuclide];
+    if (nuc->delayed_photons_mt460_) {
+      sample_mt460_delayed_photons(
+        p, *nuc->delayed_photons_mt460_, weight);
+    }
   }
 }
 
@@ -1053,7 +1144,8 @@ Direction sample_cxs_target_velocity(
 }
 
 void sample_fission_neutron(
-  int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p)
+  int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p,
+  bool bank_freya_photons)
 {
   // Get attributes of particle
   double E_in = p.E();
@@ -1063,7 +1155,17 @@ void sample_fission_neutron(
   const auto& nuc {data::nuclides[i_nuclide]};
   double nu_t = nuc->nu(E_in, Nuclide::EmissionMode::total);
   double nu_d = nuc->nu(E_in, Nuclide::EmissionMode::delayed);
+
+#ifdef OPENMC_USE_FISSION_LIB
+  // Look up GEF induced fission spectrum for this target isotope.
+  // GEF nu_d overrides ENDF for beta; ENDF nu_d is still used for
+  // group-selection proportions (xi) so kinetics tagging is consistent.
+  const GEFIndSpectrum* gef_ind =
+      find_gef_ind_spectrum(1000 * nuc->Z_ + nuc->A_);
+  double beta = (gef_ind ? gef_ind->nu_d : nu_d) / nu_t;
+#else
   double beta = nu_d / nu_t;
+#endif
 
   if (prn(seed) < beta) {
     // ====================================================================
@@ -1091,9 +1193,30 @@ void sample_fission_neutron(
     // set the delayed group for the particle born from fission
     site->delayed_group = group;
 
-    // Sample time of emission based on decay constant of precursor
+    // Sample time of emission of the delayed neutron.
+#ifdef OPENMC_USE_FISSION_LIB
+    // Spriggs 8-group consistent half-life model for tabulated isotopes:
+    //   Spriggs, Campbell & Piksaikin (2002), Prog. Nucl. Energy 41, 223-251.
+    // The ENDF group (above) governs energy/angle sampling; the Spriggs model
+    // governs the emission time.  The 8 lambda values are fixed to dominant
+    // precursor half-lives and are isotope-independent.
+    // For isotopes not in the Spriggs table, the ENDF/B decay rate is used.
+    {
+      int ZA = 1000 * nuc->Z_ + nuc->A_;
+      const auto* entry = fission_lib::find_entry(ZA);
+      double decay_rate;
+      if (entry) {
+        int g = fission_lib::sample_spriggs_group(entry, prn(p.current_seed()));
+        decay_rate = fission_lib::spriggs_lambda[g];
+      } else {
+        decay_rate = rx.products_[site->delayed_group].decay_rate_;
+      }
+      site->time -= std::log(prn(p.current_seed())) / decay_rate;
+    }
+#else
     double decay_rate = rx.products_[site->delayed_group].decay_rate_;
     site->time -= std::log(prn(p.current_seed())) / decay_rate;
+#endif
 
   } else {
     // ====================================================================
@@ -1107,11 +1230,75 @@ void sample_fission_neutron(
   // Track whether this neutron itself is delayed (not genealogy)
   site->is_delayed = (site->delayed_group > 0);
 
-  // sample from prompt neutron energy distribution
+#ifdef OPENMC_USE_FISSION_LIB
+  // -----------------------------------------------------------------------
+  // FREYA correlated prompt fission: energy + direction in lab frame.
+  // FREYA's global state is not thread-safe; use a critical section.
+  // For delayed neutrons the GEF tabulated spectrum path (below) is used.
+  // -----------------------------------------------------------------------
+  if (site->delayed_group == 0) {
+    double eng_MeV   = E_in * 1e-6;              // eV → MeV
+    double fiss_time = p.time();
+    double ndir[3]   = {p.u().x, p.u().y, p.u().z};
+    int    ZA_freya  = 1000 * nuc->Z_ + nuc->A_;
+    bool   freya_ok  = false;
+
+#pragma omp critical(freya_event)
+    {
+      freya::set_seed(seed);
+      genfissevtdir_(&ZA_freya, &fiss_time, &nu_t, &eng_MeV, ndir);
+      int nn = getnnu_();
+      if (nn > 0) {
+        int idx = 0;
+        site->E  = getneng_(&idx) * 1e6;         // MeV → eV
+        site->u  = Direction{getndircosu_(&idx),
+                             getndircosv_(&idx),
+                             getndircosw_(&idx)};
+        freya_ok = true;
+      }
+
+      // Phase 3: bank correlated prompt photons from this FREYA event.
+      // Done inside the same critical section because FREYA's photon state
+      // is overwritten by the next genfissevtdir_() call. Only the first
+      // prompt neutron of each fission banks photons (caller controls).
+      if (freya_ok && bank_freya_photons && settings::photon_transport) {
+        int np = getpnu_();
+        for (int k = 0; k < np; k++) {
+          int idx = k;
+          SourceSite gamma;
+          gamma.r        = p.r();
+          gamma.particle = ParticleType::photon;
+          gamma.E        = getpeng_(&idx) * 1e6;   // MeV → eV
+          gamma.u        = Direction{getpdircosu_(&idx),
+                                     getpdircosv_(&idx),
+                                     getpdircosw_(&idx)};
+          gamma.time     = p.time();
+          gamma.wgt      = p.wgt();
+          p.secondary_bank().push_back(gamma);
+        }
+      }
+    }
+
+    if (freya_ok) return;
+    // FREYA returned 0 neutrons (shouldn't happen) — fall through to ENDF.
+  }
+#endif
+
+  // sample from neutron energy distribution
   int n_sample = 0;
   double mu;
   while (true) {
+#ifdef OPENMC_USE_FISSION_LIB
+    // Delayed neutrons: GEF tabulated spectrum (isotropic angle).
+    if (site->delayed_group > 0 && gef_ind) {
+      site->E = smpGEFIndEnergy(gef_ind, prn(seed));
+      mu = 1.0 - 2.0 * prn(seed);
+    } else {
+      rx.products_[site->delayed_group].sample(E_in, site->E, mu, seed);
+    }
+#else
     rx.products_[site->delayed_group].sample(E_in, site->E, mu, seed);
+#endif
 
     // resample if energy is greater than maximum neutron energy
     constexpr int neutron = static_cast<int>(ParticleType::neutron);

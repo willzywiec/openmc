@@ -115,6 +115,23 @@ public:
   unique_ptr<Function1D> fragments_;       //!< Fission fragment energy release
   unique_ptr<Function1D> betas_;           //!< Delayed beta energy release
 
+  // ENDF MT=460 delayed fission photon emission data (LO=1 representation).
+  // Each photon line l has its own energy, decay constant, and yield.
+  //   energies[l]         : photon line energies [eV]
+  //   decay_constants[l]  : decay constant lambda_l [s^-1]
+  //   yields[l]           : cumulative photons emitted per fission from line l
+  //                         (treated as energy-independent — evaluated at the
+  //                          stored representative incident energy)
+  // Total expected delayed photons per fission = sum_l yields[l].
+  // At fission: sample line l weighted by yields[l]; emission delay =
+  //             -ln(u)/decay_constants[l]; photon energy = energies[l].
+  struct DelayedPhotonData {
+    vector<double> energies;
+    vector<double> decay_constants;
+    vector<double> yields;
+  };
+  unique_ptr<DelayedPhotonData> delayed_photons_mt460_;
+
   // Resonance scattering information
   bool resonant_ {false};
   vector<double> energy_0K_;
