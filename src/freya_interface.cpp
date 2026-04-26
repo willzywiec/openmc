@@ -23,32 +23,28 @@
 namespace openmc {
 namespace freya {
 
-// --------------------------------------------------------------------------
-// Internal state
-// --------------------------------------------------------------------------
+namespace {
 
-static bool          g_initialized = false;
-static std::once_flag g_init_flag;
+// Translation-unit-local state.
+bool initialized = false;
+std::once_flag init_flag;
 
-// Per-call seed pointer: set before each genfissevt_() call so the callback
-// advances the same LCG stream as the rest of OpenMC.
-static thread_local uint64_t* g_seed = nullptr;
+// Per-thread seed pointer: set before each genfissevt_() call so the RNG
+// callback advances the same LCG stream as the rest of OpenMC.
+thread_local uint64_t* seed_ptr = nullptr;
 
-// --------------------------------------------------------------------------
 // RNG callback registered with FREYA via setrngd_().
 // Must have signature: double (*)(void).
-// --------------------------------------------------------------------------
-static double freya_rng_callback()
+double rng_callback()
 {
-  return prn(g_seed);
+  return prn(seed_ptr);
 }
 
-// --------------------------------------------------------------------------
-// init() — idempotent, thread-safe via std::call_once.
-// --------------------------------------------------------------------------
+} // anonymous namespace
+
 void init(const char* data_path)
 {
-  std::call_once(g_init_flag, [data_path]() {
+  std::call_once(init_flag, [data_path]() {
     // Resolve data directory
     const char* path = data_path;
     if (!path || path[0] == '\0')
@@ -65,7 +61,7 @@ void init(const char* data_path)
     }
 
     // Bind OpenMC's LCG to FREYA
-    setrngd_(freya_rng_callback);
+    setrngd_(rng_callback);
 
     // Enable full FREYA correlated fission model (correlation option 3).
     // For isotopes not in FREYA the library reverts to option 0 automatically.
@@ -76,7 +72,7 @@ void init(const char* data_path)
     int delay = 0;
     setdelay_(&delay);
 
-    g_initialized = true;
+    initialized = true;
 
     write_message("FREYA correlated fission model initialized.", 6);
     if (path && path[0] != '\0')
@@ -86,12 +82,12 @@ void init(const char* data_path)
 
 void set_seed(uint64_t* seed)
 {
-  g_seed = seed;
+  seed_ptr = seed;
 }
 
 bool is_initialized()
 {
-  return g_initialized;
+  return initialized;
 }
 
 } // namespace freya

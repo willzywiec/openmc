@@ -940,6 +940,20 @@ class FreyaSFSource(SourceBase):
     ----------
     type : str
         Always ``'freya_sf'``.
+    za : int
+        Target nuclide ZAID.
+    position : tuple of float
+        Spatial origin ``(x, y, z)`` in cm.
+    n_events : int
+        Number of FREYA SF events pre-baked into the source bank.
+    include_photons : bool
+        Whether prompt photons are also banked from each FREYA event.
+    seed : int
+        Deterministic seed used to drive the pre-bake.
+    strength : float
+        Strength of the source.
+    constraints : dict
+        Constraints on sampled source particles. See :class:`SourceBase`.
     """
 
     def __init__(

@@ -240,7 +240,9 @@ static void sample_mt460_delayed_photons(
 }
 
 #ifdef OPENMC_USE_FISSION_LIB
-//------------------------------------------------------------------------------
+namespace {
+
+//==============================================================================
 // Bank a full FREYA fission event in analog mode.
 //
 // Calls FREYA once for the entire fission, retrieves all nn correlated prompt
@@ -259,8 +261,9 @@ static void sample_mt460_delayed_photons(
 // On return, n_banked is the count of prompt sites successfully banked and
 // wgt_banked is the total weight contributed by those sites (= n_banked *
 // per_nu_wgt). Both are written through the output parameters.
-//------------------------------------------------------------------------------
-static void bank_freya_analog_event(Particle& p, int i_nuclide,
+//==============================================================================
+
+void bank_freya_analog_event(Particle& p, int i_nuclide,
   int n_prompt_target, double weight, bool use_fission_bank,
   int& n_banked, double& wgt_banked, bool& fission_bank_full)
 {
@@ -393,6 +396,8 @@ static void bank_freya_analog_event(Particle& p, int i_nuclide,
     wgt_banked += per_nu_wgt;
   }
 }
+
+} // anonymous namespace
 #endif // OPENMC_USE_FISSION_LIB
 
 void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
