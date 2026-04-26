@@ -29,9 +29,9 @@ Configure with the option enabled:
     cmake -DOPENMC_USE_FISSION_LIB=ON ..
     make -j
 
-The FREYA data tables (``data_freya/``) ship with the vendored fission
-library at ``fission_lib_extract/fission_v2.0.5/``. The compiled-in path
-is set by CMake; runtime override via ``$FREYA_DATA_PATH``.
+The FREYA data tables ship with the vendored fission library at
+``vendor/fission/data_freya/``. The compiled-in path is set by CMake;
+runtime override via ``$FREYA_DATA_PATH``.
 
 Verify a build is FREYA-aware by setting any FREYA-specific Python
 setting and running an XML export — the C++ side fatal-errors if the
@@ -49,7 +49,7 @@ Correlated prompt photons (FREYA)           Always on when ``settings.photon_tra
 ENDF MT=460 delayed fission photons         Always on when ``settings.photon_transport = True``.
 Spriggs 8-group delayed neutron emission    Always on (replaces 6-group Keepin half-lives).
 GEF tabulated SF / induced-fission spectra  Always on (replaces Watt/Maxwellian fallbacks).
-ALPHANSO (α,n) source helper                ``openmc.alphanso_source(...)`` (Python only)
+ALPHANSO (α,n) source helper                ``openmc.model.alphanso_source(...)`` (Python only)
 Full-analog FREYA mode (Phase 4)            ``settings.freya_analog = True``
 FREYA-correlated SF source (Phase 5)        ``openmc.FreyaSFSource(...)``
 α eigenvalue + IFP-weighted ℓ_p, β_eff      ``settings.calculate_alpha = True``

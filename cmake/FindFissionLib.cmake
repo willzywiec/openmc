@@ -5,7 +5,7 @@
 #
 # Usage:
 #   cmake -DOPENMC_USE_FISSION_LIB=ON \
-#         -DFISSION_LIB_DIR=/path/to/fission_v2.0.5 ..
+#         -DFISSION_LIB_DIR=/path/to/fission ..
 #
 # Variables set by this module:
 #   FissionLib_FOUND          -- TRUE if the library was found
@@ -18,7 +18,7 @@
 # Search hints (in order):
 #   1. FISSION_LIB_DIR  CMake variable or environment variable
 #   2. Standard system paths (/usr/local, /usr)
-#   3. The fission_lib_extract directory in this repository
+#   3. The vendored copy under vendor/fission/ in this repository
 
 find_path(FissionLib_INCLUDE_DIR
   NAMES fissionEvent.h
@@ -27,7 +27,7 @@ find_path(FissionLib_INCLUDE_DIR
     ${FISSION_LIB_DIR}/include
     $ENV{FISSION_LIB_DIR}
     $ENV{FISSION_LIB_DIR}/include
-    ${CMAKE_SOURCE_DIR}/fission_lib_extract/fission_v2.0.5/include
+    ${CMAKE_SOURCE_DIR}/vendor/fission/include
   PATH_SUFFIXES include fission_lib/include
   DOC "Directory containing fissionEvent.h"
 )
@@ -39,7 +39,7 @@ find_library(FissionLib_LIBRARY
     ${FISSION_LIB_DIR}/lib
     $ENV{FISSION_LIB_DIR}
     $ENV{FISSION_LIB_DIR}/lib
-    ${CMAKE_SOURCE_DIR}/fission_lib_extract/fission_v2.0.5/lib
+    ${CMAKE_SOURCE_DIR}/vendor/fission/lib
   PATH_SUFFIXES lib
   DOC "Path to libFission shared library"
 )

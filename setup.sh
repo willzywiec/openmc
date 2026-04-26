@@ -369,13 +369,13 @@ fi
 # Build the vendored LLNL Fission Library (optional)
 ################################################################################
 #
-# When --with-fission-lib is set, build fission_lib_extract/fission_v2.0.5/
-# first. Its Makefile produces lib/libFission.{so,a} which OpenMC's
-# FindFissionLib.cmake auto-discovers under fission_lib_extract/.
+# When --with-fission-lib is set, build vendor/fission/ first. Its bundled
+# Makefile produces lib/libFission.{so,a} which OpenMC's FindFissionLib.cmake
+# auto-discovers under vendor/fission/.
 #
 # Idempotent: skips if a freshly-built libFission already exists.
 
-FISSION_LIB_ROOT="${SCRIPT_DIR}/fission_lib_extract/fission_v2.0.5"
+FISSION_LIB_ROOT="${SCRIPT_DIR}/vendor/fission"
 FISSION_LIB_FOUND=""
 
 if [[ "${WITH_FISSION_LIB}" == true ]]; then
@@ -383,7 +383,7 @@ if [[ "${WITH_FISSION_LIB}" == true ]]; then
 
     if [[ ! -d "${FISSION_LIB_ROOT}" ]]; then
         log_error "Fission library source not found at ${FISSION_LIB_ROOT}"
-        log_error "Expected fission_lib_extract/fission_v2.0.5/ in this repo."
+        log_error "Expected vendor/fission/ in this repo."
         exit 1
     fi
 
