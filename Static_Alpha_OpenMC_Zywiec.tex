@@ -1,0 +1,591 @@
+\documentclass[12pt,preprint]{elsarticle}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage[margin=1in]{geometry}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-\do.\do_}
+\journal{Nuclear Science and Engineering}
+\begin{document}
+\begin{frontmatter}
+\title{Rossi-$\alpha$ Benchmark Validation of a Static Alpha Eigenvalue Capability in OpenMC}
+\author[llnl]{William Zywiec\corref{cor1}}
+\ead{zywiec1@llnl.gov}
+\author[llnl]{Alessandro Ingegno}
+\author[llnl]{David Heinrichs}
+\author[mit]{Benoit Forget}
+\cortext[cor1]{Corresponding author.}
+\address[llnl]{Lawrence Livermore National Laboratory, Livermore, CA 94550, USA}
+\address[mit]{Massachusetts Institute of Technology, Cambridge, MA 02139, USA}
+
+
+\begin{abstract}
+A static alpha eigenvalue capability was implemented in a modified version of the open-source Monte Carlo radiation transport code OpenMC and validated against Rossi-$\alpha$ measurements from 21 delayed-critical benchmark experiments and 33 subcritical configurations spanning fast, intermediate, and thermal systems with $^{233}$U, HEU, IEU, LEU, and plutonium fuels. The effective delayed neutron fraction was calculated using the $k$-prompt method, and the prompt neutron lifetime was calculated using the iterated fission probability method, both evaluated within the standard $k$-eigenvalue power iteration. The delayed-critical alpha eigenvalue was calculated from these quantities using the point kinetics equation $\alpha_{\mathrm{dc}} = -\beta_{\mathrm{eff}} / \ell_p$. Agreement was generally within 10\% for fast metal systems and within 5\% for thermal solution systems. Subcritical extrapolation studies derived from the SHE-8 and STACY benchmark families show that $\alpha_{\mathrm{dc}}$ remains stable as the system is driven subcritical.
+\end{abstract}
+
+\begin{keyword}
+OpenMC \sep Monte Carlo \sep alpha eigenvalue \sep Rossi-$\alpha$ \sep iterated fission probability
+\end{keyword}
+\end{frontmatter}
+
+
+
+\section{Introduction}\label{sec:intro}
+
+The Rossi-$\alpha$ parameter characterizes the exponential rate of change in the prompt neutron population of a fissioning system near delayed critical~\cite{orndoff1957}. It is the prompt neutron decay constant, equivalently the fundamental-mode alpha eigenvalue of the time-dependent transport equation. Because it depends on both the effective delayed neutron fraction and the prompt neutron lifetime, it is particularly sensitive to the energy spectrum of the system and serves as a useful validation observable for Monte Carlo radiation transport calculations.
+
+In this work, two forms of the alpha eigenvalue are distinguished. The delayed-critical alpha eigenvalue, $\alpha_{\mathrm{dc}} = -\beta_{\mathrm{eff}} / \ell_p$, is the value at exact delayed critical regardless of the system's actual reactivity state, and is the quantity measured in Rossi-$\alpha$ experiments. The static alpha eigenvalue, $\alpha = (k_p - 1) / \ell_p$, includes the effect of the system's actual reactivity and equals $\alpha_{\mathrm{dc}}$ only when $k_{\mathrm{eff}} = 1$.
+
+Kiedrowski et al.~\cite{kiedrowski2011} implemented adjoint-weighted kinetics parameter tallies in MCNP5 using the iterated fission probability (IFP) method. Mosteller and Kiedrowski~\cite{mosteller2011} subsequently developed a 13-benchmark Rossi-$\alpha$ validation suite that has become a standard reference. Lepp\"anen et al.~\cite{leppanen2014} implemented a similar capability in Serpent~2 and validated it against 31 critical configurations. Romero-Barrientos et al.~\cite{romero2022} modified OpenMC to include time-dependent capabilities and calculated kinetics parameters for 18 benchmarks using the $k$-prompt method and pulsed neutron techniques.
+
+In this paper, an independent implementation of the static alpha eigenvalue in a modified version of OpenMC~\cite{zywiec_openmc,romano2015} is described. The $k$-prompt method is used to calculate $\beta_{\mathrm{eff}}$, the IFP method is used to calculate $\ell_p$, and the alpha eigenvalue is calculated from these quantities using the point kinetics approximation. The results are compared to 21 delayed-critical Rossi-$\alpha$ values from the ICSBEP Handbook~\cite{icsbep}, the CSEWG Benchmark Book~\cite{csewg}, and other experimental sources~\cite{tonoike2002,takano1985}.
+
+\section{Theory and Implementation}\label{sec:theory}
+
+The static alpha eigenvalue capability was implemented in a fork of OpenMC~\cite{romano2015}. The modified code is publicly available.\footnote{\url{https://github.com/willzywiec/openmc}} The implementation calculates the prompt neutron lifetime $\ell_p$ and the effective delayed neutron fraction $\beta_{\mathrm{eff}}$ within the standard $k$-eigenvalue power iteration, then calculates the alpha eigenvalue directly from these two quantities using the point kinetics approximation. The prompt neutron generation time $\Lambda_p$ is also calculated for reporting purposes but is not used in the alpha eigenvalue calculation itself.
+
+The point kinetics approximation assumes that the neutron flux is separable into spatial and temporal components:
+\begin{equation}
+\Psi(\mathbf{r}, \hat{\Omega}, E, t) = \psi(\mathbf{r}, \hat{\Omega}, E) \, T(t),
+\end{equation}
+where the temporal amplitude function takes the form $T(t) = T(0) \, e^{\alpha t}$. Two quantities are required to evaluate the prompt neutron decay constant: the effective delayed neutron fraction $\beta_{\mathrm{eff}}$ and the prompt neutron lifetime $\ell_p$.
+
+The effective delayed neutron fraction is calculated using the $k$-prompt method~\cite{meulekamp2006}:
+\begin{equation}
+\beta_{\mathrm{eff}} = \frac{k_{\mathrm{eff}} - k_p}{k_{\mathrm{eff}}}
+\label{eq:beff}
+\end{equation}
+where $k_{\mathrm{eff}}$ is the effective multiplication factor that counts all fission neutrons and $k_p$ is the prompt multiplication factor that counts only prompt fission neutrons. Both quantities are tallied each active generation of the $k$-eigenvalue simulation, and the uncertainty on $\beta_{\mathrm{eff}}$ is propagated from the uncertainties on both $k_{\mathrm{eff}}$ and $k_p$. The prompt multiplication factor is equivalently
+\begin{equation}
+k_p = k_{\mathrm{eff}} (1 - \beta_{\mathrm{eff}})
+\label{eq:kp}
+\end{equation}
+
+The prompt neutron lifetime $\ell_p$ is the mean time between a prompt neutron's birth and its next interaction that either produces a fission or removes it from the system. It is calculated using the iterated fission probability (IFP) method~\cite{kiedrowski2011,nauchi2010}, which provides adjoint-weighted kinetics parameters without requiring an explicit solution of the adjoint transport equation. Each fission neutron carries a rolling genealogy window of $N_{\mathrm{IFP}} = 10$ generations, recording the ancestor's lifetime and whether it was born as a prompt or delayed neutron. The IFP-weighted prompt neutron lifetime is
+\begin{equation}
+\ell_p = \frac{\displaystyle\sum_{k \in k_p} \ell_k^{(N)} \cdot w_k}{\displaystyle\sum_{k \in k_p} w_k}
+\label{eq:ellp_ifp}
+\end{equation}
+where $\ell_k^{(N)}$ is the lifetime of neutron $k$'s ancestor emitted $N$ generations earlier, $w_k$ is the neutron weight, and both sums run over all neutrons in a given generation whose $N$-th ancestor was a prompt neutron. The uncertainty on $\ell_p$ depends only on these two IFP tallies.
+
+With $\beta_{\mathrm{eff}}$ and $\ell_p$ in hand, the prompt neutron decay constant is calculated using the point kinetics approximation:
+\begin{equation}
+\alpha = \frac{k_p - 1}{\ell_p}
+\label{eq:alpha_static}
+\end{equation}
+When a system is at delayed critical ($k_{\mathrm{eff}} = 1$, $k_p = 1 - \beta_{\mathrm{eff}}$), the prompt neutron population decays because $k_p < 1$. Substituting $k_p - 1 = -\beta_{\mathrm{eff}}$ into Eq.~(\ref{eq:alpha_static}) gives the delayed-critical alpha eigenvalue:
+\begin{equation}
+\alpha_{\mathrm{dc}} = \frac{-\beta_{\mathrm{eff}}}{\ell_p}
+\label{eq:alpha_dc}
+\end{equation}
+The uncertainty on $\alpha_{\mathrm{dc}}$ depends on $\sigma(\beta_{\mathrm{eff}})$ and $\sigma(\ell_p)$. The uncertainty on $\alpha$ (Eq.~\ref{eq:alpha_static}) additionally depends on $\sigma(k_{\mathrm{eff}})$ through $k_p$.
+
+The prompt neutron generation time is related to the prompt lifetime by
+\begin{equation}
+\Lambda_p = \frac{\ell_p}{k_p}
+\label{eq:gentime}
+\end{equation}
+and is reported in the output for comparison with other codes. Its uncertainty receives the full chain-rule treatment through $k_p$.
+
+The alpha eigenvalue calculated via Eqs.~(\ref{eq:alpha_dc}) and~(\ref{eq:alpha_static}) is a derived quantity from $k$-eigenvalue tallies rather than a directly simulated time-dependent eigenvalue. For systems near delayed critical, the point kinetics approximation is well justified and $\alpha_{\mathrm{dc}}$ closely approximates the true time-dependent alpha eigenvalue. As systems become more deeply subcritical (below $k_{\mathrm{eff}} \approx 0.95$), higher spatial and energy modes may contribute more to the time-dependent response~\cite{spriggs1997}.
+
+\section{Benchmarks}\label{sec:benchmarks}
+
+The 21 delayed-critical benchmarks are listed in Table~\ref{tab:benchmarks}. The suite spans $^{233}$U, HEU, IEU, LEU, and plutonium fuels, with fast, intermediate, and thermal spectra. Reflector materials include natural uranium, depleted uranium, thorium, copper, graphite, and water. All OpenMC calculations were performed using ENDF/B-VIII.0 cross sections with 50 inactive and 4,950 active batches of 50,000 source neutrons per batch.
+
+\begin{table}[H]
+\centering
+\caption{Delayed-critical benchmarks.}
+\label{tab:benchmarks}
+\footnotesize
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Name & ICSBEP ID & Fuel & Spectrum & Description \\
+\midrule
+Godiva       & HMF001   & HEU       & Fast         & Bare sphere of HEU \\
+Flattop-25   & HMF028   & HEU       & Fast         & HEU sphere, nat-U reflector \\
+Zeus-1       & HMI006-1 & HEU       & Intermediate & HEU/graphite, Cu reflector \\
+Zeus-5       & HMF073-1 & HEU       & Fast         & HEU platters, Cu reflector \\
+Zeus-6       & HMF072-1 & HEU       & Fast         & HEU/steel, Cu reflector \\
+Big Ten      & IMF007-1 & IEU       & Fast         & IEU cylinders, DU reflector \\
+Winco        & HST038-1 & HEU soln. & Thermal      & Coaxial slab tanks, UNH soln. \\
+Jezebel-Pu   & PMF001   & Pu        & Fast         & Bare sphere of Pu \\
+Flattop-Pu   & PMF006   & Pu        & Fast         & Pu sphere, nat-U reflector \\
+Thor         & PMF008   & Pu        & Fast         & Pu sphere, Th reflector \\
+Jezebel-233  & UMF001-1 & $^{233}$U & Fast         & Bare sphere of $^{233}$U \\
+Flattop-23   & UMF006-1 & $^{233}$U & Fast         & $^{233}$U sphere, nat-U reflector \\
+RA-6         & ICT014-2 & IEU       & Thermal      & Open pool research reactor \\
+SHE-8        & ---      & LEU       & Thermal      & Graphite-matrix LEU fuel \\
+SHEBA-II     & LST001-1 & LEU soln. & Thermal      & Cyl.\ tank, UF soln. \\
+STACY-029    & LST004-2 & LEU soln. & Thermal      & Water-refl.\ cyl.\ tank, UNH soln. \\
+STACY-033    & LST004-3 & LEU soln. & Thermal      & Water-refl.\ cyl.\ tank, UNH soln. \\
+STACY-046    & LST004-5 & LEU soln. & Thermal      & Water-refl.\ cyl.\ tank, UNH soln. \\
+STACY-030    & LST007-2 & LEU soln. & Thermal      & Unreflected cyl.\ tank, UNH soln. \\
+STACY-125    & LST016-3 & LEU soln. & Thermal      & Water-refl.\ slab tanks, UNH soln. \\
+STACY-215    & LST021-1 & LEU soln. & Thermal      & Unreflected cyl.\ tank, UNH soln. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+An additional 33 subcritical configurations from the SHE-8 and STACY benchmarks were analyzed by inserting absorbers (SHE-8) or reducing solution height (STACY). These are summarized in Table~\ref{tab:subcrit_benchmarks}.
+
+\begin{table}[H]
+\centering
+\caption{Subcritical configurations.}
+\label{tab:subcrit_benchmarks}
+\footnotesize
+\begin{tabular}{@{}lccl@{}}
+\toprule
+Parent & Cases & $k_{\mathrm{eff}}$ range & Method \\
+\midrule
+SHE-8    & 5  & 0.900--0.973 & Gray/black absorber insertion \\
+STACY-029 & 5 & 0.977--1.000 & Solution height reduction \\
+STACY-033 & 3 & 0.990--0.998 & Solution height reduction \\
+STACY-046 & 5 & 0.966--1.001 & Solution height reduction \\
+STACY-030 & 5 & 0.969--0.996 & Solution height reduction \\
+STACY-125 & 5 & 0.990--1.004 & Solution height reduction \\
+STACY-215 & 5 & 0.984--0.995 & Solution height reduction \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The calculated kinetics parameters for the 21 delayed-critical benchmarks are given in Table~\ref{tab:kinetics}. The kinetics parameters for the subcritical configurations are presented alongside the alpha eigenvalue results in Tables~\ref{tab:she8_subcrit} through~\ref{tab:stacy215}.
+
+
+\begin{table}[H]
+\centering
+\caption{Calculated kinetics parameters at delayed critical.}
+\label{tab:kinetics}
+\footnotesize
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Name & OpenMC $k_{\mathrm{eff}}^*$ & OpenMC $k_p^*$ & OpenMC $\beta_{\mathrm{eff}}$ (pcm) & OpenMC $\ell_p$ & $\Lambda_p$ & Units \\
+\midrule
+Godiva      & 1.00013 & 0.99368 & $645 \pm 8$ & $5.594 \pm 0.003$ & $5.629 \pm 0.003$ & $\times 10^{-9}$ s \\
+Flattop-25  & 1.00088 & 0.99463 & $625 \pm 9$ & $1.714 \pm 0.001$ & $1.723 \pm 0.001$ & $\times 10^{-8}$ s \\
+Zeus-1      & 0.99576 & 0.98846 & $733 \pm 12$ & $1.999 \pm 0.002$ & $2.022 \pm 0.002$ & $\times 10^{-6}$ s \\
+Zeus-5      & 1.00200 & 0.99522 & $676 \pm 10$ & $6.436 \pm 0.007$ & $6.468 \pm 0.007$ & $\times 10^{-8}$ s \\
+Zeus-6      & 1.00419 & 0.99734 & $682 \pm 9$ & $1.673 \pm 0.001$ & $1.678 \pm 0.001$ & $\times 10^{-7}$ s \\
+Big Ten     & 1.00427 & 0.99723 & $701 \pm 8$ & $6.056 \pm 0.003$ & $6.073 \pm 0.003$ & $\times 10^{-8}$ s \\
+Winco       & 0.99465 & 0.98648 & $821 \pm 14$ & $7.359 \pm 0.003$ & $7.460 \pm 0.004$ & $\times 10^{-6}$ s \\
+Jezebel-Pu  & 0.99976 & 0.99793 & $183 \pm 7$ & $2.820 \pm 0.002$ & $2.826 \pm 0.002$ & $\times 10^{-9}$ s \\
+Flattop-Pu  & 0.99965 & 0.99706 & $259 \pm 9$ & $1.304 \pm 0.001$ & $1.308 \pm 0.001$ & $\times 10^{-8}$ s \\
+Thor        & 0.99743 & 0.99539 & $205 \pm 8$ & $9.852 \pm 0.010$ & $9.898 \pm 0.010$ & $\times 10^{-9}$ s \\
+Jezebel-233 & 1.00052 & 0.99758 & $294 \pm 7$ & $2.723 \pm 0.001$ & $2.730 \pm 0.001$ & $\times 10^{-9}$ s \\
+Flattop-23  & 1.00001 & 0.99662 & $339 \pm 9$ & $1.246 \pm 0.001$ & $1.251 \pm 0.001$ & $\times 10^{-8}$ s \\
+RA-6        & 1.00482 & 0.99740 & $738 \pm 21$ & $4.307 \pm 0.005$ & $4.317 \pm 0.005$ & $\times 10^{-5}$ s \\
+SHE-8       & 1.00271 & 0.99561 & $707 \pm 14$ & $1.082 \pm 0.001$ & $1.087 \pm 0.001$ & $\times 10^{-3}$ s \\
+SHEBA-II    & 1.00903 & 1.00139 & $756 \pm 13$ & $3.994 \pm 0.002$ & $3.989 \pm 0.002$ & $\times 10^{-5}$ s \\
+STACY-029   & 1.00190 & 0.99465 & $723 \pm 12$ & $5.927 \pm 0.002$ & $5.959 \pm 0.003$ & $\times 10^{-5}$ s \\
+STACY-033   & 0.99985 & 0.99269 & $717 \pm 11$ & $6.215 \pm 0.002$ & $6.260 \pm 0.003$ & $\times 10^{-5}$ s \\
+STACY-046   & 1.00209 & 0.99500 & $708 \pm 11$ & $6.691 \pm 0.003$ & $6.725 \pm 0.003$ & $\times 10^{-5}$ s \\
+STACY-030   & 0.99758 & 0.99029 & $731 \pm 12$ & $5.799 \pm 0.002$ & $5.855 \pm 0.002$ & $\times 10^{-5}$ s \\
+STACY-125   & 1.00480 & 0.99738 & $739 \pm 12$ & $4.865 \pm 0.002$ & $4.878 \pm 0.002$ & $\times 10^{-5}$ s \\
+STACY-215   & 0.99784 & 0.99069 & $716 \pm 11$ & $6.623 \pm 0.003$ & $6.685 \pm 0.003$ & $\times 10^{-5}$ s \\
+\bottomrule
+\multicolumn{7}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ and $k_p$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+
+\section{Results}\label{sec:results}
+
+\subsection{Alpha Eigenvalue Comparison}
+
+The comparison of measured and calculated $\alpha_{\mathrm{dc}}$ values is presented in Table~\ref{tab:alpha_comparison} and Fig.~\ref{fig:ce_ratio}. For the six STACY thermal solution benchmarks, C/E ratios range from 0.988 to 0.996. SHE-8 agrees to within 0.2\% of the measured value. Among the fast metal systems, most benchmarks agree within 5-10\%, comparable to results reported by Mosteller~\cite{mosteller2011} and Lepp\"anen~\cite{leppanen2014}. The three Zeus benchmarks remain outliers, as discussed in Section~\ref{sec:zeus}.
+
+For benchmarks whose calculated $k_{\mathrm{eff}}$ is close to unity, $\alpha_{\mathrm{dc}}$ and $\alpha_{\mathrm{static}}$ are nearly identical. When $k_{\mathrm{eff}}$ departs from unity, the two diverge: $\alpha_{\mathrm{static}}$ reflects the actual reactivity state of the model, while $\alpha_{\mathrm{dc}}$ projects to the delayed-critical condition regardless of the model's reactivity.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{fig_ce_ratio.pdf}
+\caption{C/E for $\alpha_{\mathrm{dc}}$ across all 21 benchmarks ($^\ast$See Section~\ref{sec:zeus}).}
+\label{fig:ce_ratio}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Measured and calculated $\alpha_{\mathrm{dc}}$ at delayed critical.}
+\label{tab:alpha_comparison}
+\footnotesize
+\begin{tabular}{@{}lccrcc@{}}
+\toprule
+Name & Measured $\alpha_{\mathrm{dc}}$ & OpenMC $\alpha_{\mathrm{dc}}$ & C/E & OpenMC $\alpha_{\mathrm{static}}$ & Units (s$^{-1}$) \\
+\midrule
+Godiva       & $-1.110 \pm 0.020$ & $-1.153 \pm 0.014$ & 1.038 & $-1.118 \pm 0.018$ & $\times 10^6$ \\
+Flattop-25   & $-0.382 \pm 0.002$ & $-0.364 \pm 0.005$ & 0.954 & $-0.314 \pm 0.006$ & $\times 10^6$ \\
+Zeus-1       & $-0.338 \pm 0.008$ & $-0.367 \pm 0.006$ & 1.084 & $-0.572 \pm 0.007$ & $\times 10^4$ \\
+Zeus-5       & $-7.960 \pm 0.080$ & $-10.507 \pm 0.149$ & 1.320 & $-7.482 \pm 0.182$ & $\times 10^4$ \\
+Zeus-6       & $-3.730 \pm 0.050$ & $-4.079 \pm 0.056$ & 1.094 & $-1.595 \pm 0.069$ & $\times 10^4$ \\
+Big Ten      & $-0.117 \pm 0.001$ & $-0.116 \pm 0.001$ & 0.989 & $-0.045 \pm 0.002$ & $\times 10^6$ \\
+Winco        & $-11.090 \pm 0.030$ & $-11.154 \pm 0.196$ & 1.006 & $-18.399 \pm 0.238$ & $\times 10^2$ \\
+Jezebel-Pu   & $-0.640 \pm 0.010$ & $-0.650 \pm 0.025$ & 1.016 & $-0.730 \pm 0.031$ & $\times 10^6$ \\
+Flattop-Pu   & $-0.214 \pm 0.005$ & $-0.199 \pm 0.007$ & 0.929 & $-0.222 \pm 0.008$ & $\times 10^6$ \\
+Thor         & $-0.190 \pm 0.010$ & $-0.208 \pm 0.008$ & 1.092 & $-0.466 \pm 0.010$ & $\times 10^6$ \\
+Jezebel-233  & $-1.000 \pm 0.010$ & $-1.081 \pm 0.027$ & 1.081 & $-0.876 \pm 0.033$ & $\times 10^6$ \\
+Flattop-23   & $-0.267 \pm 0.005$ & $-0.272 \pm 0.007$ & 1.019 & $-0.269 \pm 0.009$ & $\times 10^6$ \\
+RA-6         & $-1.808 \pm 0.009$ & $-1.715 \pm 0.050$ & 0.948 & $-0.578 \pm 0.061$ & $\times 10^2$ \\
+SHE-8        & $-7.010 \pm 0.340$ & $-6.536 \pm 0.129$ & 0.932 & $-4.035 \pm 0.159$ & $\times 10^0$ \\
+SHEBA-II     & $-2.003 \pm 0.036$ & $-1.894 \pm 0.032$ & 0.946 & $\phantom{-}0.339 \pm 0.039$ & $\times 10^2$ \\
+STACY-029    & $-1.227 \pm 0.041$ & $-1.220 \pm 0.020$ & 0.995 & $-0.909 \pm 0.024$ & $\times 10^2$ \\
+STACY-033    & $-1.167 \pm 0.039$ & $-1.153 \pm 0.018$ & 0.988 & $-1.166 \pm 0.023$ & $\times 10^2$ \\
+STACY-046    & $-1.062 \pm 0.037$ & $-1.058 \pm 0.016$ & 0.996 & $-0.758 \pm 0.020$ & $\times 10^2$ \\
+STACY-030    & $-1.268 \pm 0.029$ & $-1.260 \pm 0.020$ & 0.994 & $-1.666 \pm 0.024$ & $\times 10^2$ \\
+STACY-125    & $-1.528 \pm 0.026$ & $-1.518 \pm 0.024$ & 0.993 & $-0.525 \pm 0.030$ & $\times 10^2$ \\
+STACY-215    & $-1.092 \pm 0.018$ & $-1.081 \pm 0.017$ & 0.990 & $-1.406 \pm 0.021$ & $\times 10^2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Comparison with Published Results}
+
+Tables~\ref{tab:literature}--\ref{tab:lit_lambda} compare the OpenMC results from this work with previously published values from MCNP5~\cite{mosteller2011}, Serpent~2~\cite{leppanen2014}, and OpenMC(TD)~\cite{romero2022}. The OpenMC values are broadly consistent with all three codes. Remaining differences reflect differences in nuclear data libraries (ENDF/B-VIII.0 in this work, ENDF/B-VII.0 for Mosteller, JEFF-3.1.1 for Lepp\"anen, and ENDF/B-VII.1 for Romero-Barrientos) and in the methods used to calculate the underlying kinetics parameters. Mosteller reports only $\alpha_{\mathrm{dc}}$ and does not tabulate $\beta_{\mathrm{eff}}$ and $\Lambda_p$ separately.
+
+\begin{table}[H]
+\centering
+\caption{$\alpha_{\mathrm{dc}}$ comparison with published values.}
+\label{tab:literature}
+\footnotesize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Name & OpenMC $\alpha_{\mathrm{dc}}$ & MCNP5 $\alpha_{\mathrm{dc}}$~\cite{mosteller2011} & Serpent~2 $\alpha_{\mathrm{dc}}$~\cite{leppanen2014} & OpenMC(TD) $\alpha_{\mathrm{dc}}$~\cite{romero2022} & Units (s$^{-1}$) \\
+\midrule
+Godiva       & $-1.153 \pm 0.014$ & $-1.130 \pm 0.010$ & ---                 & $-1.110 \pm 0.020$ & $\times 10^6$ \\
+Flattop-25   & $-0.364 \pm 0.005$ & $-0.397 \pm 0.002$ & ---                 & ---                & $\times 10^6$ \\
+Zeus-1       & $-0.367 \pm 0.006$ & $-0.363 \pm 0.002$ & ---                 & ---                & $\times 10^4$ \\
+Zeus-5       & $-10.507 \pm 0.149$  & $-10.760 \pm 0.070$  & ---                 & ---                & $\times 10^4$ \\
+Zeus-6       & $-4.079 \pm 0.056$ & $-4.140 \pm 0.030$ & ---                 & ---                & $\times 10^4$ \\
+Big Ten      & $-0.116 \pm 0.001$ & $-0.118 \pm 0.001$ & $-0.120 \pm 0.001$  & $-0.110 \pm 0.002$ & $\times 10^6$ \\
+Winco        & $-11.154 \pm 0.196$ & ---                & $-11.220 \pm 0.050$   & ---                & $\times 10^2$ \\
+Jezebel-Pu   & $-0.650 \pm 0.025$ & $-0.650 \pm 0.010$ & ---                 & $-0.628 \pm 0.028$ & $\times 10^6$ \\
+Flattop-Pu   & $-0.199 \pm 0.007$ & $-0.210 \pm 0.003$ & ---                 & ---                & $\times 10^6$ \\
+Thor         & $-0.208 \pm 0.008$ & $-0.200 \pm 0.010$ & ---                 & ---                & $\times 10^6$ \\
+Jezebel-233  & $-1.081 \pm 0.027$ & $-1.080 \pm 0.010$ & ---                 & ---                & $\times 10^6$ \\
+Flattop-23   & $-0.272 \pm 0.007$ & $-0.302 \pm 0.004$ & ---                 & $-0.268 \pm 0.016$ & $\times 10^6$ \\
+RA-6         & $-1.715 \pm 0.050$ & ---                 & ---                 & $-1.724 \pm 0.027$ & $\times 10^2$ \\
+SHE-8        & $-6.536 \pm 0.129$ & ---                 & $-6.428 \pm 0.028$  & ---                & $\times 10^0$ \\
+SHEBA-II     & $-1.894 \pm 0.032$ & ---                 & $-2.113 \pm 0.009$  & ---                & $\times 10^2$ \\
+STACY-029    & $-1.220 \pm 0.020$ & ---                 & $-1.263 \pm 0.006$  & $-1.154 \pm 0.014$ & $\times 10^2$ \\
+STACY-033    & $-1.153 \pm 0.018$ & ---                 & $-1.186 \pm 0.005$  & $-1.101 \pm 0.012$ & $\times 10^2$ \\
+STACY-046    & $-1.058 \pm 0.016$ & ---                 & $-1.091 \pm 0.005$  & $-1.005 \pm 0.015$ & $\times 10^2$ \\
+STACY-030    & $-1.260 \pm 0.020$ & ---                 & $-1.285 \pm 0.005$  & $-1.197 \pm 0.014$ & $\times 10^2$ \\
+STACY-125    & $-1.518 \pm 0.024$ & ---                 & $-1.566 \pm 0.007$  & $-1.464 \pm 0.017$ & $\times 10^2$ \\
+STACY-215    & $-1.081 \pm 0.017$ & ---                 & $-1.109 \pm 0.005$  & ---                & $\times 10^2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{$\beta_{\mathrm{eff}}$ comparison (pcm).}
+\label{tab:lit_beff}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Name & OpenMC $\beta_{\mathrm{eff}}$ & Serpent~2 $\beta_{\mathrm{eff}}$~\cite{leppanen2014} & OpenMC(TD) $\beta_{\mathrm{eff}}$~\cite{romero2022} \\
+\midrule
+Godiva       & $645 \pm 8$        & $644 \pm 3$    & $633 \pm 7$    \\
+Flattop-25   & $625 \pm 9$        & $693 \pm 3$    & $688 \pm 8$    \\
+Zeus-1       & $733 \pm 12$       & ---            & ---            \\
+Zeus-5       & $676 \pm 10$       & ---            & ---            \\
+Zeus-6       & $682 \pm 9$        & ---            & ---            \\
+Big Ten      & $701 \pm 8$        & $731 \pm 3$    & $696 \pm 7$    \\
+Winco        & $821 \pm 14$       & $847 \pm 4$    & ---            \\
+Jezebel-Pu   & $183 \pm 7$        & $189 \pm 2$    & $181 \pm 7$    \\
+Flattop-Pu   & $259 \pm 9$        & $285 \pm 2$    & $280 \pm 8$    \\
+Thor         & $205 \pm 8$        & ---            & ---            \\
+Jezebel-233  & $294 \pm 7$        & $290 \pm 2$    & $293 \pm 7$    \\
+Flattop-23   & $339 \pm 9$        & $378 \pm 3$    & $357 \pm 8$    \\
+RA-6         & $738 \pm 21$       & ---            & $769 \pm 14$   \\
+SHE-8        & $707 \pm 14$       & $719 \pm 3$    & ---            \\
+SHEBA-II     & $756 \pm 13$       & $791 \pm 3$    & ---            \\
+STACY-029    & $723 \pm 12$       & $752 \pm 3$    & $713 \pm 8$    \\
+STACY-033    & $717 \pm 11$       & $741 \pm 3$    & $718 \pm 8$    \\
+STACY-046    & $708 \pm 11$       & $733 \pm 3$    & $709 \pm 8$    \\
+STACY-030    & $731 \pm 12$       & $752 \pm 3$    & $736 \pm 8$    \\
+STACY-125    & $739 \pm 12$       & $764 \pm 3$    & $753 \pm 8$    \\
+STACY-215    & $716 \pm 11$       & $740 \pm 3$    & ---            \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{$\Lambda_p$ comparison.}
+\label{tab:lit_lambda}
+\footnotesize
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+Name & OpenMC $\Lambda_p$ & Serpent~2 $\Lambda_p$~\cite{leppanen2014} & OpenMC(TD) $\Lambda_p$~\cite{romero2022} & Units \\
+\midrule
+Godiva       & $5.629 \pm 0.003$ & $5.711 \pm 0.004$      & $5.699 \pm 0.095$      & $\times 10^{-9}$ s \\
+Flattop-25   & $1.723 \pm 0.001$ & $1.743 \pm 0.002$      & $1.936 \pm 0.006$      & $\times 10^{-8}$ s \\
+Zeus-1       & $2.022 \pm 0.002$ & ---                    & ---                    & $\times 10^{-6}$ s \\
+Zeus-5       & $6.468 \pm 0.007$ & ---                    & ---                    & $\times 10^{-8}$ s \\
+Zeus-6       & $1.678 \pm 0.001$ & ---                    & ---                    & $\times 10^{-7}$ s \\
+Big Ten      & $6.073 \pm 0.003$ & $6.147 \pm 0.004$      & $6.338 \pm 0.010$      & $\times 10^{-8}$ s \\
+Winco        & $7.460 \pm 0.004$ & $7.553 \pm 0.004$      & ---                    & $\times 10^{-6}$ s \\
+Jezebel-Pu   & $2.826 \pm 0.002$ & $2.806 \pm 0.002$      & $2.879 \pm 0.060$      & $\times 10^{-9}$ s \\
+Flattop-Pu   & $1.308 \pm 0.001$ & $1.295 \pm 0.002$      & $1.394 \pm 0.008$      & $\times 10^{-8}$ s \\
+Thor         & $9.898 \pm 0.010$ & ---                    & ---                    & $\times 10^{-9}$ s \\
+Jezebel-233  & $2.730 \pm 0.001$ & $2.652 \pm 0.002$      & $2.760 \pm 0.018$      & $\times 10^{-9}$ s \\
+Flattop-23   & $1.251 \pm 0.001$ & $1.243 \pm 0.002$      & $1.330 \pm 0.007$      & $\times 10^{-8}$ s \\
+RA-6         & $4.317 \pm 0.005$ & ---                    & $3.757 \pm 0.027$      & $\times 10^{-5}$ s \\
+SHE-8        & $1.087 \pm 0.001$ & $1.121 \pm 0.001$      & ---                    & $\times 10^{-3}$ s \\
+SHEBA-II     & $3.989 \pm 0.002$ & $3.747 \pm 0.001$      & ---                    & $\times 10^{-5}$ s \\
+STACY-029    & $5.959 \pm 0.003$ & $5.956 \pm 0.002$      & $6.147 \pm 0.038$      & $\times 10^{-5}$ s \\
+STACY-033    & $6.260 \pm 0.003$ & $6.271 \pm 0.003$      & $6.456 \pm 0.038$      & $\times 10^{-5}$ s \\
+STACY-046    & $6.725 \pm 0.003$ & $6.718 \pm 0.003$      & $6.993 \pm 0.039$      & $\times 10^{-5}$ s \\
+STACY-030    & $5.855 \pm 0.002$ & $5.857 \pm 0.002$      & $5.860 \pm 0.032$      & $\times 10^{-5}$ s \\
+STACY-125    & $4.878 \pm 0.002$ & $4.880 \pm 0.002$      & $5.111 \pm 0.033$      & $\times 10^{-5}$ s \\
+STACY-215    & $6.685 \pm 0.003$ & $6.680 \pm 0.003$      & ---                    & $\times 10^{-5}$ s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Note on the Zeus Benchmarks}\label{sec:zeus}
+
+The three Zeus benchmarks (Zeus-1, Zeus-5, and Zeus-6) are consistent outliers in the Rossi-$\alpha$ validation suite. All three are copper-reflected HEU systems that were assembled on the Comet vertical lift machine at the National Criticality Experiments Research Center. Zeus-5 shows the largest discrepancy: the measured $\alpha_{\mathrm{dc}}$ is $(-7.960 \pm 0.080) \times 10^4$~s$^{-1}$, while the OpenMC value from this work is $(-10.507 \pm 0.149) \times 10^4$~s$^{-1}$, consistent with Mosteller's MCNP value of $(-10.760 \pm 0.070) \times 10^4$~s$^{-1}$. Zeus-1 and Zeus-6 show smaller but qualitatively similar overpredictions. The source of this discrepancy is not well understood.
+
+One observation is that the OpenMC model of Zeus-5 calculates $k_{\mathrm{eff}} = 1.00200$, slightly supercritical, and the corresponding $\alpha_{\mathrm{static}}$ at this reactivity state is $(-7.482 \pm 0.182) \times 10^4$~s$^{-1}$, which is substantially closer to the measured value than $\alpha_{\mathrm{dc}}$. This pattern is also present, to a lesser degree, in Zeus-1 and Zeus-6.
+
+The recent CERBERUS experiment campaign~\cite{kostelac2026} provides further context. CERBERUS used the same HEU fuel plates and copper reflector as the original Zeus experiments, reconfigured on the Comet vertical lift machine. Kostelac et al.\ measured the prompt neutron decay constant via the cross power spectral density (CPSD) method using in-core $^3$He proportional counters and ex-core organic scintillators at delayed critical and four subcritical states. The extrapolated $\alpha_{\mathrm{dc}}$ values were $-53{,}863 \pm 632$~s$^{-1}$ ($^3$He) and $-51{,}882 \pm 3{,}071$~s$^{-1}$ (scintillators), while MCNP KOPTS with ENDF/B-VIII.0 yielded $-62{,}544 \pm 177$~s$^{-1}$, an overprediction of approximately 18\%. During the 3.5-hour delayed-critical measurement, operator intervention was required multiple times to stabilize the diverging neutron population by adjusting the platen position in increments of approximately 1~mil (0.0254~mm)~\cite{kostelac2026}.
+
+To investigate the sensitivity of the Zeus-5 alpha eigenvalue to the assembly gap between the upper and lower halves, a series of calculations were performed in which the gap was increased from the benchmark specification (closed) in 0.5~mm increments. The results are presented in Table~\ref{tab:zeus5_gap}. As the gap opens, the system becomes less reactive and $\alpha_{\mathrm{static}}$ decreases, while $\alpha_{\mathrm{dc}}$ remains approximately constant. At a gap of 1.0~mm (highlighted), $k_{\mathrm{eff}} \approx 1.0$ and $\alpha_{\mathrm{static}}$ converges to $\alpha_{\mathrm{dc}}$.
+
+\begin{table}[H]
+\centering
+\caption{Calculated Zeus-5 gap sensitivity.}
+\label{tab:zeus5_gap}
+\footnotesize
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Gap & $k_{\mathrm{eff}}^*$ & $k_p^*$ & $\alpha_{\mathrm{dc}}$ & $\alpha_{\mathrm{static}}$ & Units (s$^{-1}$) \\
+\midrule
+Benchmark & 1.00200 & 0.99522 & $-10.507 \pm 0.149$ & $-7.482 \pm 0.182$ & $\times 10^4$ \\
+0.5 mm    & 1.00103 & 0.99426 & $-10.469 \pm 0.227$ & $-8.768 \pm 0.278$ & $\times 10^4$ \\
+\rowcolor{orange!15}
+1.0 mm    & 0.99993 & 0.99318 & $-10.351 \pm 0.231$ & $-10.226 \pm 0.283$ & $\times 10^4$ \\
+1.5 mm    & 0.99885 & 0.99207 & $-10.378 \pm 0.224$ & $-12.065 \pm 0.274$ & $\times 10^4$ \\
+\bottomrule
+\multicolumn{5}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+\subsection{SHE-8 Subcritical Extrapolation}
+
+SHE-8 is a hexagonal graphite-matrix core with LEU fuel rods distributed in between graphite rods, characterized by a prompt neutron generation time on the order of $10^{-3}$~s. To test the stability of $\alpha_{\mathrm{dc}}$ as a function of subcriticality, a series of measurements were performed with gray and black absorber insertions that reduce $k_{\mathrm{eff}}$ from approximately 1.002 down to 0.900. The results are presented in Table~\ref{tab:she8_subcrit} and Fig.~\ref{fig:she8}.
+
+At the critical configuration, the calculated $\alpha_{\mathrm{dc}}$ is within 7\% of the measured value of $-7.01 \pm 0.34$~s$^{-1}$~\cite{takano1985}. As subcriticality increases, $\alpha_{\mathrm{dc}}$ varies only from $-6.0$ to $-6.5$~s$^{-1}$ over a 10\% range in $k_{\mathrm{eff}}$, while $\alpha_{\mathrm{static}}$ diverges to $-90.38$~s$^{-1}$ at $k_{\mathrm{eff}} = 0.89994$. A linear extrapolation of $\alpha_{\mathrm{static}}$ to $k_{\mathrm{eff}} = 1.0$ recovers the measured value, confirming internal consistency.
+
+\begin{table}[H]
+\centering
+\caption{SHE-8 subcritical series. Extrapolated $\alpha_{\mathrm{dc}} = -7.28$~s$^{-1}$.}
+\label{tab:she8_subcrit}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Configuration & OpenMC $k_{\mathrm{eff}}^*$ & $\alpha_{\mathrm{measured}}$ & OpenMC $\alpha_{\mathrm{static}}$ & OpenMC $\alpha_{\mathrm{dc}}$ & Units (s$^{-1}$) \\
+\midrule
+Critical                  & 1.00271 & $-7.01 \pm 0.34$   & $-4.03 \pm 0.16$  & $-6.536 \pm 0.129$ & $\times 10^0$ \\
+Gray absorber ($\times$1)     & 0.97267 & $-35.92 \pm 0.29$      & $-30.89 \pm 0.15$              & $-6.358 \pm 0.128$ & $\times 10^0$ \\
+Gray absorber ($\times$3)     & 0.94613 & $-55.62 \pm 0.37$      & $-53.51 \pm 0.15$              & $-6.219 \pm 0.126$ & $\times 10^0$ \\
+Gray absorber ($\times$5)     & 0.92429 & $-70.62 \pm 0.70$      & $-71.31 \pm 0.15$              & $-6.080 \pm 0.127$ & $\times 10^0$ \\
+Gray absorber ($\times$7)     & 0.89994 & $-84.42 \pm 0.78$      & $-90.38 \pm 0.15$              & $-5.964 \pm 0.125$ & $\times 10^0$ \\
+Black absorber                & 0.91959 & $-78.70 \pm 0.92$      & $-75.05 \pm 0.15$              & $-6.060 \pm 0.125$ & $\times 10^0$ \\
+\bottomrule
+\multicolumn{6}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.78\textwidth]{fig_she8_extrapolation.pdf}
+\caption{SHE-8: OpenMC $\alpha_{\mathrm{dc}}$ and $\alpha_{\mathrm{static}}$ as a function of $k_{\mathrm{eff}}$.}
+\label{fig:she8}
+\end{figure}
+
+\subsection{STACY Subcritical Extrapolation}
+
+For each of six STACY configurations, subcritical cases were generated by progressively reducing the solution height. Tonoike et al.~\cite{tonoike2002} measured the prompt neutron decay constant at various subcritical solution levels using the pulsed neutron source (PNS) method. Where the OpenMC subcritical configurations correspond to Tonoike solution levels at comparable $k_{\mathrm{eff}}$ values, the measured prompt decay constants are included in Tables~\ref{tab:stacy029} through~\ref{tab:stacy215}. The critical-configuration $\alpha_{\mathrm{dc}}$ values, obtained by Tonoike et al.\ by extrapolation of the subcritical measurements to zero reactivity, are listed in the header of each table. Figure~\ref{fig:stacy} shows the subcritical extrapolation for all six STACY configurations.
+
+In every case, the OpenMC $\alpha_{\mathrm{dc}}$ remains approximately constant across the subcritical range, varying by less than 2\% over a 3\% range in $k_{\mathrm{eff}}$. The OpenMC $\alpha_{\mathrm{static}}$ values diverge linearly with subcriticality, in good agreement with the Tonoike PNS measurements at comparable subcritical states.
+
+\begin{table}[H]
+\centering\caption{STACY-029 subcritical series. Extrapolated $\alpha_{\mathrm{dc}} = -1.224 \times 10^2$~s$^{-1}$.}\label{tab:stacy029}\footnotesize
+\begin{tabular}{@{}lrccccc@{}}
+\toprule
+Case & Level (mm) & OpenMC $k_{\mathrm{eff}}^*$ & $\alpha_{\mathrm{measured}}$~\cite{tonoike2002} & OpenMC $\alpha_{\mathrm{static}}$ & OpenMC $\alpha_{\mathrm{dc}}$ & Units (s$^{-1}$) \\
+\midrule
+LST004-2 & 467.0 & 1.00190 & $-1.227 \pm 0.041$ & $-0.909 \pm 0.024$ & $-1.220 \pm 0.020$ & $\times 10^2$ \\
+LST004-2a & 462.0 & 1.00022 & $-1.480 \pm 0.053$ & $-1.185 \pm 0.024$ & $-1.221 \pm 0.019$ & $\times 10^2$ \\
+LST004-2b & 456.5 & 0.99850 & $-1.805 \pm 0.046$ & $-1.472 \pm 0.024$ & $-1.220 \pm 0.020$ & $\times 10^2$ \\
+LST004-2c & 437.0 & 0.99142 & $-2.959 \pm 0.045$ & $-2.666 \pm 0.024$ & $-1.225 \pm 0.019$ & $\times 10^2$ \\
+LST004-2d & 422.3 & 0.98548 & $-3.923 \pm 0.072$ & $-3.667 \pm 0.023$ & $-1.228 \pm 0.019$ & $\times 10^2$ \\
+LST004-2e & 402.0 & 0.97659 & $-5.385 \pm 0.155$ & $-5.157 \pm 0.024$ & $-1.233 \pm 0.020$ & $\times 10^2$ \\
+\bottomrule
+\multicolumn{7}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering\caption{STACY-033 subcritical series. Extrapolated $\alpha_{\mathrm{dc}} = -1.148 \times 10^2$~s$^{-1}$.}\label{tab:stacy033}\footnotesize
+\begin{tabular}{@{}lrccccc@{}}
+\toprule
+Case & Level (mm) & OpenMC $k_{\mathrm{eff}}^*$ & $\alpha_{\mathrm{measured}}$~\cite{tonoike2002} & OpenMC $\alpha_{\mathrm{static}}$ & OpenMC $\alpha_{\mathrm{dc}}$ & Units (s$^{-1}$) \\
+\midrule
+LST004-3 & 529.3 & 0.99985 & $-1.167 \pm 0.039$ & $-1.166 \pm 0.023$ & $-1.153 \pm 0.018$ & $\times 10^2$ \\
+LST004-3a & 523.1 & 0.99830 & $-1.411 \pm 0.040$ & $-1.436 \pm 0.022$ & $-1.158 \pm 0.018$ & $\times 10^2$ \\
+LST004-3b & 514.2 & 0.99604 & $-1.764 \pm 0.030$ & $-1.778 \pm 0.022$ & $-1.157 \pm 0.018$ & $\times 10^2$ \\
+LST004-3c & 491.1 & 0.98993 & $-2.779 \pm 0.055$ & $-2.771 \pm 0.022$ & $-1.159 \pm 0.018$ & $\times 10^2$ \\
+\bottomrule
+\multicolumn{7}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering\caption{STACY-046 subcritical series. Extrapolated $\alpha_{\mathrm{dc}} = -1.061 \times 10^2$~s$^{-1}$.}\label{tab:stacy046}\footnotesize
+\begin{tabular}{@{}lrccccc@{}}
+\toprule
+Case & Level (mm) & OpenMC $k_{\mathrm{eff}}^*$ & $\alpha_{\mathrm{measured}}$~\cite{tonoike2002} & OpenMC $\alpha_{\mathrm{static}}$ & OpenMC $\alpha_{\mathrm{dc}}$ & Units (s$^{-1}$) \\
+\midrule
+LST004-5 & 785.6 & 1.00209 & $-1.062 \pm 0.037$ & $-0.758 \pm 0.020$ & $-1.058 \pm 0.016$ & $\times 10^2$ \\
+LST004-5a & 770.0 & 1.00062 & $-1.278 \pm 0.094$ & $-0.972 \pm 0.020$ & $-1.059 \pm 0.017$ & $\times 10^2$ \\
+LST004-5b & 750.1 & 0.99893 & $-1.532 \pm 0.028$ & $-1.213 \pm 0.020$ & $-1.058 \pm 0.017$ & $\times 10^2$ \\
+LST004-5c & 704.8 & 0.99415 & $-2.251 \pm 0.040$ & $-1.928 \pm 0.020$ & $-1.060 \pm 0.017$ & $\times 10^2$ \\
+LST004-5d & 648.8 & 0.98701 & $-3.312 \pm 0.096$ & $-2.996 \pm 0.020$ & $-1.065 \pm 0.017$ & $\times 10^2$ \\
+LST004-5e & 530.4 & 0.96558 & $-6.458 \pm 0.336$ & $-6.197 \pm 0.020$ & $-1.076 \pm 0.017$ & $\times 10^2$ \\
+\bottomrule
+\multicolumn{7}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering\caption{STACY-030 subcritical series. Extrapolated $\alpha_{\mathrm{dc}} = -1.253 \times 10^2$~s$^{-1}$.}\label{tab:stacy030}\footnotesize
+\begin{tabular}{@{}lrccccc@{}}
+\toprule
+Case & Level (mm) & OpenMC $k_{\mathrm{eff}}^*$ & $\alpha_{\mathrm{measured}}$~\cite{tonoike2002} & OpenMC $\alpha_{\mathrm{static}}$ & OpenMC $\alpha_{\mathrm{dc}}$ & Units (s$^{-1}$) \\
+\midrule
+LST007-2 & 542.0 & 0.99758 & $-1.268 \pm 0.029$ & $-1.666 \pm 0.024$ & $-1.260 \pm 0.020$ & $\times 10^2$ \\
+LST007-2a & 536.3 & 0.99619 & $-1.495 \pm 0.032$ & $-1.906 \pm 0.024$ & $-1.260 \pm 0.020$ & $\times 10^2$ \\
+LST007-2b & 527.2 & 0.99393 & $-1.867 \pm 0.042$ & $-2.314 \pm 0.025$ & $-1.261 \pm 0.021$ & $\times 10^2$ \\
+LST007-2c & 506.4 & 0.98836 & $-2.772 \pm 0.045$ & $-3.256 \pm 0.025$ & $-1.265 \pm 0.020$ & $\times 10^2$ \\
+LST007-2d & 477.3 & 0.97965 & $-4.247 \pm 0.055$ & $-4.772 \pm 0.025$ & $-1.273 \pm 0.021$ & $\times 10^2$ \\
+LST007-2e & 447.2 & 0.96928 & $-6.057 \pm 0.182$ & $-6.552 \pm 0.024$ & $-1.278 \pm 0.020$ & $\times 10^2$ \\
+\bottomrule
+\multicolumn{7}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering\caption{STACY-125 subcritical series. Extrapolated $\alpha_{\mathrm{dc}} = -1.514 \times 10^2$~s$^{-1}$.}\label{tab:stacy125}\footnotesize
+\begin{tabular}{@{}lrccccc@{}}
+\toprule
+Case & Level (mm) & OpenMC $k_{\mathrm{eff}}^*$ & $\alpha_{\mathrm{measured}}$~\cite{tonoike2002} & OpenMC $\alpha_{\mathrm{static}}$ & OpenMC $\alpha_{\mathrm{dc}}$ & Units (s$^{-1}$) \\
+\midrule
+LST016-3 & 513.7 & 1.00480 & $-1.528 \pm 0.026$ & $-0.525 \pm 0.030$ & $-1.518 \pm 0.024$ & $\times 10^2$ \\
+LST016-3a & 509.9 & 1.00378 & $-1.704 \pm 0.029$ & $-0.731 \pm 0.030$ & $-1.515 \pm 0.025$ & $\times 10^2$ \\
+LST016-3b & 506.0 & 1.00294 & $-1.925 \pm 0.048$ & $-0.918 \pm 0.030$ & $-1.517 \pm 0.025$ & $\times 10^2$ \\
+LST016-3c & 494.6 & 0.99980 & $-2.522 \pm 0.029$ & $-1.551 \pm 0.030$ & $-1.520 \pm 0.025$ & $\times 10^2$ \\
+LST016-3d & 480.3 & 0.99590 & $-3.324 \pm 0.030$ & $-2.355 \pm 0.030$ & $-1.525 \pm 0.025$ & $\times 10^2$ \\
+LST016-3e & 460.4 & 0.98998 & $-4.522 \pm 0.066$ & $-3.580 \pm 0.030$ & $-1.528 \pm 0.025$ & $\times 10^2$ \\
+\bottomrule
+\multicolumn{7}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering\caption{STACY-215 subcritical series. Extrapolated $\alpha_{\mathrm{dc}} = -1.081 \times 10^2$~s$^{-1}$.}\label{tab:stacy215}\footnotesize
+\begin{tabular}{@{}lrccccc@{}}
+\toprule
+Case & Level (mm) & OpenMC $k_{\mathrm{eff}}^*$ & $\alpha_{\mathrm{measured}}$~\cite{tonoike2002} & OpenMC $\alpha_{\mathrm{static}}$ & OpenMC $\alpha_{\mathrm{dc}}$ & Units (s$^{-1}$) \\
+\midrule
+LST021-1 & 439.8 & 0.99784 & $-1.092 \pm 0.018$ & $-1.406 \pm 0.021$ & $-1.081 \pm 0.017$ & $\times 10^2$ \\
+LST021-1a & 433.6 & 0.99540 & $-1.450 \pm 0.018$ & $-1.770 \pm 0.021$ & $-1.080 \pm 0.017$ & $\times 10^2$ \\
+LST021-1b & 428.6 & 0.99330 & $-1.764 \pm 0.019$ & $-2.085 \pm 0.020$ & $-1.082 \pm 0.017$ & $\times 10^2$ \\
+LST021-1c & 421.9 & 0.99051 & $-2.189 \pm 0.021$ & $-2.508 \pm 0.021$ & $-1.086 \pm 0.017$ & $\times 10^2$ \\
+LST021-1d & 414.4 & 0.98712 & $-2.668 \pm 0.019$ & $-3.012 \pm 0.021$ & $-1.088 \pm 0.017$ & $\times 10^2$ \\
+LST021-1e & 406.5 & 0.98345 & $-3.211 \pm 0.023$ & $-3.564 \pm 0.021$ & $-1.089 \pm 0.017$ & $\times 10^2$ \\
+\bottomrule
+\multicolumn{7}{@{}l}{\footnotesize $^*$Statistical uncertainty on $k_{\mathrm{eff}}$ is $< 0.0001$ for all cases.} \\
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{fig_stacy_extrapolation.pdf}
+\caption{STACY subcritical extrapolation.}
+\label{fig:stacy}
+\end{figure}
+
+\section{Conclusions}\label{sec:conclusions}
+
+Alpha eigenvalue and beta-effective calculations were performed for 21 delayed-critical benchmark experiments and 33 subcritical configurations using a modified version of the open-source Monte Carlo radiation transport code OpenMC. Beta-effective was calculated using the $k$-prompt method, and the prompt neutron lifetime was calculated using the iterated fission probability method. The delayed-critical alpha eigenvalue was calculated from these quantities using the point kinetics approximation.
+
+The calculated $\alpha_{\mathrm{dc}}$ values agree with experimentally measured Rossi-$\alpha$ values to within 1--5\% for the six STACY thermal solution benchmarks, with C/E ratios ranging from 0.988 to 0.996. For fast metal systems such as Godiva, Big Ten, Jezebel, and the Flattop series, agreement is generally within 5--10\%, comparable to previously published results from MCNP5 and Serpent~2. The three Zeus copper-reflected benchmarks remain outliers, with Zeus-5 showing a C/E of 1.32 for $\alpha_{\mathrm{dc}}$.
+
+Subcritical extrapolation studies for SHE-8 and the STACY series confirm that the IFP-based kinetics parameters track the fundamental mode characteristics of the fissile material rather than the boundary conditions. In both cases, $\alpha_{\mathrm{dc}}$ remains approximately constant as the system is driven subcritical, while $\alpha_{\mathrm{static}}$ diverges linearly with subcriticality as expected from the point kinetics approximation. For the STACY series, the calculated $\alpha_{\mathrm{static}}$ values are in good agreement with the subcritical prompt neutron decay constants measured by Tonoike et al.~\cite{tonoike2002} using the pulsed neutron source method.
+
+Comparison with previously published results from MCNP5, Serpent~2, and OpenMC(TD) shows broad consistency across all four codes, with remaining differences attributable to differences in nuclear data libraries and in the methods used to calculate the underlying kinetics parameters.
+
+\section*{Acknowledgments}
+
+This work was performed under the auspices of the U.S.\ Department of Energy by Lawrence Livermore National Laboratory under Contract DE-AC52-07NA27344. The corresponding author would like to thank Greg Spriggs for a discussion of his work on Rossi-$\alpha$ and $\beta_{\mathrm{eff}}$ measurements of critical experiments.
+
+\begin{thebibliography}{99}
+
+\bibitem{orndoff1957}
+Orndoff, J.\ D. ``Prompt Neutron Periods of Metal Critical Assemblies.'' \textit{Nuclear Science and Engineering} 2, no.\ 4 (1957): 450--460.
+
+\bibitem{kiedrowski2011}
+Kiedrowski, B.\ C., F.\ B.\ Brown, and P.\ P.\ H.\ Wilson. ``Adjoint-Weighted Tallies for $k$-Eigenvalue Calculations with Continuous-Energy Monte Carlo.'' \textit{Nuclear Science and Engineering} 168, no.\ 3 (2011): 226--241.
+
+\bibitem{mosteller2011}
+Mosteller, R.\ D., and B.\ C.\ Kiedrowski. ``The Rossi Alpha Validation Suite for MCNP.'' Los Alamos National Laboratory, LA-UR-11-04409, 2011.
+
+\bibitem{leppanen2014}
+Lepp\"anen, J., M.\ Aufiero, E.\ Fridman, R.\ Rachamin, and S.\ van der Marck. ``Calculation of Effective Point Kinetics Parameters in the Serpent 2 Monte Carlo Code.'' \textit{Annals of Nuclear Energy} 65 (2014): 272--279.
+
+\bibitem{romero2022}
+Romero-Barrientos, J., J.\ I.\ M\'arquez Dami\'an, F.\ Molina, M.\ Zambra, P.\ Aguilera, F.\ L\'opez-Usquiano, B.\ Parra, and A.\ Ruiz. ``Calculation of Kinetic Parameters $\beta_{\mathrm{eff}}$ and $\Lambda$ with Modified Open Source Monte Carlo Code OpenMC(TD).'' \textit{Nuclear Engineering and Technology} 54, no.\ 3 (2022): 811--816.
+
+\bibitem{zywiec_openmc}
+Zywiec, W.\ J. ``OpenMC with Static Alpha Eigenvalue Capability.'' GitHub repository, 2026. \url{https://github.com/willzywiec/openmc}.
+
+\bibitem{romano2015}
+Romano, P.\ K., N.\ E.\ Horelik, B.\ R.\ Herman, A.\ G.\ Nelson, B.\ Forget, and K.\ Smith. ``OpenMC: A State-of-the-Art Monte Carlo Code for Research and Development.'' \textit{Annals of Nuclear Energy} 82 (2015): 90--97.
+
+\bibitem{meulekamp2006}
+Meulekamp, R.\ K., and S.\ C.\ van der Marck. ``Calculating the Effective Delayed Neutron Fraction with Monte Carlo.'' \textit{Nuclear Science and Engineering} 152, no.\ 2 (2006): 142--148.
+
+\bibitem{nauchi2010}
+Nauchi, Y., and T.\ Kameyama. ``Development of Calculation Technique for Iterated Fission Probability and Reactor Kinetic Parameters Using Continuous-Energy Monte Carlo Method.'' \textit{Journal of Nuclear Science and Technology} 47, no.\ 10 (2010): 977--990.
+
+\bibitem{icsbep}
+Nuclear Energy Agency. \textit{International Handbook of Evaluated Criticality Safety Benchmark Experiments}. NEA/NSC/DOC(95)03, 2023 Edition. Paris: OECD Nuclear Energy Agency.
+
+\bibitem{csewg}
+Cross Section Evaluation Working Group. \textit{CSEWG Benchmark Specifications}. BNL-19302, ENDF-202. Upton, NY: Brookhaven National Laboratory, 1986.
+
+\bibitem{tonoike2002}
+Tonoike, K., Y.\ Miyoshi, T.\ Kikuchi, and T.\ Yamamoto. ``Kinetic Parameter $\beta_{\mathrm{eff}}/\ell$ Measurement on Low Enriched Uranyl Nitrate Solution with Single Unit Cores of STACY.'' \textit{Journal of Nuclear Science and Technology} 39, no.\ 11 (2002): 1227--1236.
+
+\bibitem{takano1985}
+Takano, M., M.\ Hirano, R.\ Shindo, and T.\ Doi. ``Analysis of SHE Critical Experiments by Neutronic Design Codes for Experimental Very High Temperature.'' \textit{Journal of Nuclear Science and Technology} 22, no.\ 5 (1985): 358--370.
+
+\bibitem{kostelac2026}
+Kostelac, C., R.\ Weldon, N.\ Whitman, N.\ Thompson, T.\ Cutler, K.\ Amundson, and A.\ Alajo. ``Neutron Noise Measurements of a Fast HEU Copper System.'' \textit{Nuclear Science and Engineering} 200, Suppl.\ 1 (2026): S565--S573.
+
+\bibitem{spriggs1997}
+Spriggs, G.\ D., K.\ L.\ Adams, and D.\ K.\ Parsons. ``On the Definition of Neutron Lifetimes in Multiplying and Non-Multiplying Systems.'' Los Alamos National Laboratory, LA-UR-97-1073, 1997.
+
+\bibitem{spriggs1999}
+Spriggs, G.\ D., and J.\ M.\ Campbell. ``An Unfolding Method for Estimating Kinetics Parameters from Rossi-$\alpha$ Measurements.'' \textit{Nuclear Science and Engineering} 131, no.\ 1 (1999): 97--105.
+
+\end{thebibliography}
+
+\end{document}
