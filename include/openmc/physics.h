@@ -81,7 +81,8 @@ Direction sample_cxs_target_velocity(
   double awr, double E, Direction u, double kT, uint64_t* seed);
 
 void sample_fission_neutron(
-  int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p);
+  int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p,
+  bool bank_freya_photons = false);
 
 //! handles all reactions with a single secondary neutron (other than fission),
 //! i.e. level scattering, (n,np), (n,na), etc.

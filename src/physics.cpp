@@ -218,6 +218,11 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   // fission bank or the secondary particle bank
   int n_sites_stored;
 
+  // Bank FREYA-correlated prompt photons exactly once per fission event,
+  // on the first prompt neutron call (so a single FREYA event's photon set
+  // represents this fission, not multiplied by the number of bank slots).
+  bool bank_freya_photons = true;
+
   for (n_sites_stored = 0; n_sites_stored < nu; n_sites_stored++) {
     // Initialize fission site object with particle data
     SourceSite site;
@@ -228,7 +233,8 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
     site.surf_id = 0;
 
     // Sample delayed group and angle/energy for fission reaction
-    sample_fission_neutron(i_nuclide, rx, &site, p);
+    sample_fission_neutron(i_nuclide, rx, &site, p, bank_freya_photons);
+    if (site.delayed_group == 0) bank_freya_photons = false;
 
     // Reject site if it exceeds time cutoff
     if (site.delayed_group > 0) {
@@ -1065,7 +1071,8 @@ Direction sample_cxs_target_velocity(
 }
 
 void sample_fission_neutron(
-  int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p)
+  int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p,
+  bool bank_freya_photons)
 {
   // Get attributes of particle
   double E_in = p.E();
@@ -1175,6 +1182,27 @@ void sample_fission_neutron(
                              getndircosv_(&idx),
                              getndircosw_(&idx)};
         freya_ok = true;
+      }
+
+      // Phase 3: bank correlated prompt photons from this FREYA event.
+      // Done inside the same critical section because FREYA's photon state
+      // is overwritten by the next genfissevtdir_() call. Only the first
+      // prompt neutron of each fission banks photons (caller controls).
+      if (freya_ok && bank_freya_photons && settings::photon_transport) {
+        int np = getpnu_();
+        for (int k = 0; k < np; k++) {
+          int idx = k;
+          SourceSite gamma;
+          gamma.r        = p.r();
+          gamma.particle = ParticleType::photon;
+          gamma.E        = getpeng_(&idx) * 1e6;   // MeV → eV
+          gamma.u        = Direction{getpdircosu_(&idx),
+                                     getpdircosv_(&idx),
+                                     getpdircosw_(&idx)};
+          gamma.time     = p.time();
+          gamma.wgt      = p.wgt();
+          p.secondary_bank().push_back(gamma);
+        }
       }
     }
 
