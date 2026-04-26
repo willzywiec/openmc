@@ -80,9 +80,16 @@ Direction sample_target_velocity(const Nuclide& nuc, double E, Direction u,
 Direction sample_cxs_target_velocity(
   double awr, double E, Direction u, double kT, uint64_t* seed);
 
+//! Sample one fission neutron's properties (delayed-vs-prompt, energy, angle).
+//!
+//! When \p defer_prompt_sampling is true and the sampled neutron is prompt,
+//! only the delayed_group flag is set; energy/direction are left untouched and
+//! FREYA is not invoked. The caller is responsible for filling in the prompt
+//! neutron's kinematics later (used by full-analog FREYA mode, which calls
+//! FREYA once per fission event and banks all nn correlated neutrons together).
 void sample_fission_neutron(
   int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p,
-  bool bank_freya_photons = false);
+  bool bank_freya_photons = false, bool defer_prompt_sampling = false);
 
 //! handles all reactions with a single secondary neutron (other than fission),
 //! i.e. level scattering, (n,np), (n,na), etc.

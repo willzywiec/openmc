@@ -58,6 +58,7 @@ bool event_based {false};
 bool ifp_on {false};
 bool calculate_prompt_k {false};
 bool calculate_alpha {false};
+bool freya_analog {false};
 bool legendre_to_tabular {true};
 bool material_cell_offsets {true};
 bool output_summary {true};
@@ -613,6 +614,18 @@ void read_settings_xml(pugi::xml_node root)
                   "multigroup mode");
     }
   }
+
+  // Full-analog FREYA mode: call FREYA once per fission event and bank all
+  // nn correlated prompt neutrons (vs. the default single-neutron behaviour).
+#ifdef OPENMC_USE_FISSION_LIB
+  if (check_for_node(root, "freya_analog")) {
+    freya_analog = get_node_value_bool(root, "freya_analog");
+  }
+#else
+  if (check_for_node(root, "freya_analog")) {
+    fatal_error("freya_analog requires OpenMC built with OPENMC_USE_FISSION_LIB.");
+  }
+#endif
 
   // Number of bins for logarithmic grid
   if (check_for_node(root, "log_grid_bins")) {

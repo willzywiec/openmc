@@ -430,6 +430,10 @@ class Settings:
         self._calculate_prompt_k = None
         self._calculate_alpha = None
 
+        # Full-analog FREYA mode (Phase 4): bank all nn correlated prompt
+        # neutrons per fission event instead of just the first one.
+        self._freya_analog = None
+
         # Collision track feature
         self._collision_track = {}
 
@@ -1244,6 +1248,16 @@ class Settings:
                     self._ifp_n_generation = 10
 
     @property
+    def freya_analog(self) -> bool:
+        return self._freya_analog
+
+    @freya_analog.setter
+    def freya_analog(self, freya_analog: bool):
+        cv.check_type('Whether to use full-analog FREYA fission sampling',
+                      freya_analog, bool)
+        self._freya_analog = freya_analog
+
+    @property
     def delayed_photon_scaling(self) -> bool:
         return self._delayed_photon_scaling
 
@@ -1838,6 +1852,11 @@ class Settings:
             if self._calculate_alpha is not None:
                 subelement = ET.SubElement(element, "calculate_alpha")
                 subelement.text = str(self._calculate_alpha).lower()
+
+    def _create_freya_analog_subelement(self, root):
+        if self._freya_analog is not None:
+            element = ET.SubElement(root, "freya_analog")
+            element.text = str(self._freya_analog).lower()
 
     def _create_ufs_mesh_subelement(self, root, mesh_memo=None):
         if self.ufs_mesh is None:
@@ -2581,6 +2600,7 @@ class Settings:
         self._create_trace_subelement(element)
         self._create_track_subelement(element)
         self._create_kinetics_subelement(element)
+        self._create_freya_analog_subelement(element)
         self._create_ufs_mesh_subelement(element, mesh_memo)
         self._create_resonance_scattering_subelement(element)
         self._create_volume_calcs_subelement(element)

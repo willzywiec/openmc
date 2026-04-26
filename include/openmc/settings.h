@@ -74,6 +74,8 @@ extern bool ifp_on; //!< Use IFP for kinetics parameters?
 extern bool
   calculate_prompt_k; //!< calculate k_prompt for delayed neutron kinetics?
 extern bool calculate_alpha; //!< calculate alpha eigenvalue (requires IFP)?
+extern bool freya_analog;        //!< full-analog FREYA: bank all nn prompt
+                                 //!< neutrons per fission event (vs. one)
 extern bool legendre_to_tabular; //!< convert Legendre distributions to tabular?
 extern bool material_cell_offsets;   //!< create material cells offsets?
 extern "C" bool output_summary;      //!< write summary.h5?

@@ -38,6 +38,7 @@
 
 #include <algorithm> // for max, min, max_element
 #include <cmath>     // for sqrt, exp, log, abs, copysign
+#include <vector>    // analog FREYA event buffer
 #include <xtensor/xview.hpp>
 
 namespace openmc {
@@ -238,6 +239,153 @@ static void sample_mt460_delayed_photons(
   }
 }
 
+#ifdef OPENMC_USE_FISSION_LIB
+//------------------------------------------------------------------------------
+// Bank a full FREYA fission event in analog mode.
+//
+// Calls FREYA once for the entire fission, retrieves all nn correlated prompt
+// neutrons (and their prompt photons), and appends them to the fission /
+// secondary bank with weight (n_prompt_target / nn) / weight per neutron, so
+// that the total prompt weight banked equals what the non-analog code would
+// have banked. Returns the number of prompt neutron sites successfully banked.
+//
+// This function takes the place of the per-site sample_fission_neutron()
+// call and the subsequent banking step when settings::freya_analog is on.
+//
+// On return, n_banked is the count of prompt sites successfully banked and
+// wgt_banked is the total weight contributed by those sites (= n_banked *
+// per_nu_wgt). Both are written through the output parameters.
+//------------------------------------------------------------------------------
+static void bank_freya_analog_event(Particle& p, int i_nuclide,
+  int n_prompt_target, double nu_t, double weight, bool use_fission_bank,
+  int& n_banked, double& wgt_banked, bool& fission_bank_full)
+{
+  n_banked = 0;
+  wgt_banked = 0.0;
+  if (n_prompt_target <= 0)
+    return;
+
+  const auto& nuc = data::nuclides[i_nuclide];
+  uint64_t* seed = p.current_seed();
+
+  // Storage for FREYA event output. Allocated outside the critical section so
+  // we don't append to the (lock-protected) fission bank while holding the
+  // FREYA lock.
+  struct FreyaNeutron {
+    double E;       // [eV]
+    Direction u;
+  };
+  std::vector<FreyaNeutron> prompts;
+  std::vector<SourceSite> photons;
+
+  double eng_MeV   = p.E() * 1e-6;
+  double fiss_time = p.time();
+  double ndir[3]   = {p.u().x, p.u().y, p.u().z};
+  int    ZA_freya  = 1000 * nuc->Z_ + nuc->A_;
+
+#pragma omp critical(freya_event)
+  {
+    freya::set_seed(seed);
+    genfissevtdir_(&ZA_freya, &fiss_time, &nu_t, &eng_MeV, ndir);
+    int nn = getnnu_();
+    prompts.reserve(nn);
+    for (int k = 0; k < nn; k++) {
+      int idx = k;
+      FreyaNeutron fn;
+      fn.E = getneng_(&idx) * 1e6;
+      fn.u = Direction{getndircosu_(&idx),
+                       getndircosv_(&idx),
+                       getndircosw_(&idx)};
+      prompts.push_back(fn);
+    }
+
+    // Bank correlated prompt photons (Phase 3 path), once per FREYA event.
+    if (!prompts.empty() && settings::photon_transport) {
+      int np = getpnu_();
+      photons.reserve(np);
+      for (int k = 0; k < np; k++) {
+        int idx = k;
+        SourceSite gamma;
+        gamma.r        = p.r();
+        gamma.particle = ParticleType::photon;
+        gamma.E        = getpeng_(&idx) * 1e6;
+        gamma.u        = Direction{getpdircosu_(&idx),
+                                   getpdircosv_(&idx),
+                                   getpdircosw_(&idx)};
+        gamma.time     = p.time();
+        gamma.wgt      = p.wgt();
+        photons.push_back(gamma);
+      }
+    }
+  } // freya_event critical section ends
+
+  if (prompts.empty())
+    return;
+
+  // Per-neutron weight: rescale FREYA's nn back to the target prompt count so
+  // that total banked weight matches the non-analog path exactly.
+  double per_nu_wgt =
+    static_cast<double>(n_prompt_target) /
+    static_cast<double>(prompts.size()) / weight;
+
+  // Push photons through the secondary bank — these aren't fission sites so
+  // they don't count toward the fission-bank fill warning.
+  for (auto& gamma : photons) {
+    p.secondary_bank().push_back(gamma);
+  }
+
+  for (const auto& fn : prompts) {
+    SourceSite site;
+    site.r            = p.r();
+    site.particle     = ParticleType::neutron;
+    site.time         = p.time();
+    site.wgt          = per_nu_wgt;
+    site.surf_id      = 0;
+    site.E            = fn.E;
+    site.u            = fn.u;
+    site.delayed_group = 0;
+    site.is_delayed   = false;
+    site.parent_id    = p.id();
+    site.progeny_id   = p.n_progeny()++;
+
+    if (use_fission_bank) {
+      int64_t idx = simulation::fission_bank.thread_safe_append(site);
+      if (idx == -1) {
+        static bool warning_printed = false;
+        if (!warning_printed) {
+#pragma omp critical(FissionBankWarning)
+          {
+            if (!warning_printed) {
+              warning(
+                "The shared fission bank is full. Additional fission sites "
+                "created in this generation will not be banked. Results may be "
+                "non-deterministic.");
+              warning_printed = true;
+            }
+          }
+        }
+        p.n_progeny()--;
+        fission_bank_full = true;
+        break;
+      }
+      if (settings::ifp_on) {
+        ifp(p, idx);
+      }
+    } else {
+      p.secondary_bank().push_back(site);
+    }
+
+    NuBank& nu_bank_entry = p.nu_bank().emplace_back();
+    nu_bank_entry.wgt = site.wgt;
+    nu_bank_entry.E = site.E;
+    nu_bank_entry.delayed_group = 0;
+
+    n_banked++;
+    wgt_banked += per_nu_wgt;
+  }
+}
+#endif // OPENMC_USE_FISSION_LIB
+
 void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
 {
 #ifdef OPENMC_USE_FISSION_LIB
@@ -277,14 +425,28 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   // or the secondary particle bank.
   bool use_fission_bank = (settings::run_mode == RunMode::EIGENVALUE);
 
+  // Full-analog FREYA mode: defer prompt-neutron kinematic sampling so a
+  // single FREYA event drives all nn correlated prompt neutrons together.
+  // We still iterate nu times here to draw the per-slot delayed/prompt
+  // outcome (Bernoulli with mean = beta_eff), preserving the same expected
+  // number of delayed neutrons as the standard path.
+  bool freya_analog = false;
+#ifdef OPENMC_USE_FISSION_LIB
+  freya_analog = settings::freya_analog && freya::is_initialized();
+#endif
+
   // Counter for the number of fission sites successfully stored to the shared
   // fission bank or the secondary particle bank
   int n_sites_stored;
 
+  // Number of prompt slots accumulated for the analog FREYA call.
+  int n_prompt_pending = 0;
+
   // Bank FREYA-correlated prompt photons exactly once per fission event,
   // on the first prompt neutron call (so a single FREYA event's photon set
   // represents this fission, not multiplied by the number of bank slots).
-  bool bank_freya_photons = true;
+  // Suppressed in analog mode — the analog helper handles photon banking.
+  bool bank_freya_photons = !freya_analog;
 
   for (n_sites_stored = 0; n_sites_stored < nu; n_sites_stored++) {
     // Initialize fission site object with particle data
@@ -295,9 +457,18 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
     site.wgt = 1. / weight;
     site.surf_id = 0;
 
-    // Sample delayed group and angle/energy for fission reaction
-    sample_fission_neutron(i_nuclide, rx, &site, p, bank_freya_photons);
-    if (site.delayed_group == 0) bank_freya_photons = false;
+    // Sample delayed group and angle/energy for fission reaction. In analog
+    // mode, prompt-neutron kinematics are deferred to the FREYA batch call.
+    sample_fission_neutron(i_nuclide, rx, &site, p, bank_freya_photons,
+      /*defer_prompt_sampling=*/freya_analog);
+    if (!freya_analog && site.delayed_group == 0) bank_freya_photons = false;
+
+    if (freya_analog && site.delayed_group == 0) {
+      // Defer banking; the FREYA event below will fill in this slot's prompt
+      // kinematics together with the rest of the correlated event.
+      n_prompt_pending++;
+      continue;
+    }
 
     // Reject site if it exceeds time cutoff
     if (site.delayed_group > 0) {
@@ -358,6 +529,22 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
     nu_bank_entry.delayed_group = site.delayed_group;
   }
 
+#ifdef OPENMC_USE_FISSION_LIB
+  // Analog FREYA: emit one correlated prompt event covering the deferred
+  // slots. The deferred prompt iterations inflated n_sites_stored via the
+  // for-loop's increment (continue jumps to the update expression); subtract
+  // those off and add back the count of neutrons FREYA actually banked.
+  int n_freya_banked = 0;
+  double wgt_freya_banked = 0.0;
+  if (freya_analog && n_prompt_pending > 0) {
+    bool fission_bank_full = false;
+    bank_freya_analog_event(
+      p, i_nuclide, n_prompt_pending, nu_t, weight, use_fission_bank,
+      n_freya_banked, wgt_freya_banked, fission_bank_full);
+    n_sites_stored = n_sites_stored - n_prompt_pending + n_freya_banked;
+  }
+#endif
+
   // If shared fission bank was full, and no fissions could be added,
   // set the particle fission flag to false.
   if (n_sites_stored == 0) {
@@ -369,9 +556,21 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   // bank was not found to be full then these values are already equivalent.
   nu = n_sites_stored;
 
-  // Store the total weight banked for analog fission tallies
+  // Store the total weight banked for analog fission tallies. In the standard
+  // path each banked site has weight 1/weight, so total = nu/weight. In analog
+  // FREYA mode delayed sites carry 1/weight and FREYA prompt sites carry
+  // (n_prompt_pending/n_freya_banked)/weight; sum them explicitly.
   p.n_bank() = nu;
+#ifdef OPENMC_USE_FISSION_LIB
+  if (freya_analog) {
+    int n_delayed_banked = nu - n_freya_banked;
+    p.wgt_bank() = n_delayed_banked / weight + wgt_freya_banked;
+  } else {
+    p.wgt_bank() = nu / weight;
+  }
+#else
   p.wgt_bank() = nu / weight;
+#endif
   for (size_t d = 0; d < MAX_DELAYED_GROUPS; d++) {
     p.n_delayed_bank(d) = nu_d[d];
   }
@@ -1145,7 +1344,7 @@ Direction sample_cxs_target_velocity(
 
 void sample_fission_neutron(
   int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p,
-  bool bank_freya_photons)
+  bool bank_freya_photons, bool defer_prompt_sampling)
 {
   // Get attributes of particle
   double E_in = p.E();
@@ -1229,6 +1428,13 @@ void sample_fission_neutron(
   // Set delayed neutron flag for kinetics calculations
   // Track whether this neutron itself is delayed (not genealogy)
   site->is_delayed = (site->delayed_group > 0);
+
+  // Full-analog FREYA mode: leave prompt-neutron kinematics unsampled. The
+  // caller will invoke FREYA once for the whole fission event and fill in
+  // energy/direction for all nn correlated neutrons together.
+  if (defer_prompt_sampling && site->delayed_group == 0) {
+    return;
+  }
 
 #ifdef OPENMC_USE_FISSION_LIB
   // -----------------------------------------------------------------------
