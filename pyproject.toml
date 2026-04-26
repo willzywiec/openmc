@@ -46,7 +46,8 @@ docs = [
     "sphinx-numfig",
     "jupyter",
     "sphinxcontrib-svg2pdfconverter",
-    "sphinx-rtd-theme"
+    "sphinx-rtd-theme",
+    "myst-parser"
 ]
 test = [
     "packaging",

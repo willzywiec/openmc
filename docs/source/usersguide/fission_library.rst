@@ -115,7 +115,7 @@ multiplicity for the requested isotope.
 
 Supported SF isotopes (from FREYA's ``data_freya/*sf*`` tables):
 
-- 252-Cf, 244-Cm, 238-Pu, 240-Pu, 242-Pu
+- 238-U, 238-Pu, 240-Pu, 242-Pu, 244-Cm, 252-Cf
 
 For other SF emitters, FREYA reverts to its uncorrelated fallback
 (see FREYA User Manual v2.0.2 §A.1.7); ``FreyaSFSource`` will fatal-error
@@ -137,9 +137,10 @@ statepoint then carries:
 - ``lambda_p_ifp``: IFP-weighted prompt generation time
   :math:`\Lambda_p = \ell_p / k_p` (reported only; not used in α)
 
-See :ref:`methods_alpha_eigenvalue` for the full derivation, and
-``Static_Alpha_OpenMC_Zywiec.tex`` at the repo root for the validation
-study (21 delayed-critical + 33 subcritical benchmarks).
+See :ref:`methods_alpha_eigenvalue` for the full derivation. The capability
+has been validated against 21 delayed-critical + 33 subcritical Rossi-α
+benchmarks (Zywiec, "Rossi-α Benchmark Validation of a Static Alpha
+Eigenvalue Capability in OpenMC", 2026).
 
 
 Approximations and known limitations
@@ -174,11 +175,10 @@ transport, this would be a separate addition.
 Validating against benchmarks
 -----------------------------
 
-The vendored paper ``Static_Alpha_OpenMC_Zywiec.tex`` is the canonical
-validation against Rossi-α measurements (21 delayed-critical + 33
-subcritical configurations spanning :math:`^{233}`\ U, HEU, IEU, LEU,
-and plutonium fuels). Agreement is 1–5 % for thermal solution systems,
-5–10 % for fast metal systems.
+The Zywiec 2026 study (cited above) is the canonical validation against
+Rossi-α measurements: 21 delayed-critical + 33 subcritical configurations
+spanning :math:`^{233}`\ U, HEU, IEU, LEU, and plutonium fuels. Agreement
+is 1–5 % for thermal solution systems, 5–10 % for fast metal systems.
 
 Repository-side regression coverage:
 

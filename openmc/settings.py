@@ -2337,6 +2337,11 @@ class Settings:
         if text is not None:
             self.ifp_n_generation = int(text)
 
+    def _freya_analog_from_xml_element(self, root):
+        text = get_text(root, 'freya_analog')
+        if text is not None:
+            self.freya_analog = text.lower() in ('true', '1', 'yes')
+
     def _tabular_legendre_from_xml_element(self, root):
         elem = root.find('tabular_legendre')
         if elem is not None:
@@ -2713,6 +2718,7 @@ class Settings:
         settings._no_reduce_from_xml_element(elem)
         settings._verbosity_from_xml_element(elem)
         settings._ifp_n_generation_from_xml_element(elem)
+        settings._freya_analog_from_xml_element(elem)
         settings._tabular_legendre_from_xml_element(elem)
         settings._temperature_from_xml_element(elem)
         settings._trace_from_xml_element(elem)

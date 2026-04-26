@@ -265,7 +265,7 @@ namespace {
 
 void bank_freya_analog_event(Particle& p, int i_nuclide,
   int n_prompt_target, double weight, bool use_fission_bank,
-  int& n_banked, double& wgt_banked, bool& fission_bank_full)
+  int& n_banked, double& wgt_banked)
 {
   n_banked = 0;
   wgt_banked = 0.0;
@@ -377,7 +377,6 @@ void bank_freya_analog_event(Particle& p, int i_nuclide,
           }
         }
         p.n_progeny()--;
-        fission_bank_full = true;
         break;
       }
       if (settings::ifp_on) {
@@ -551,10 +550,9 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   int n_freya_banked = 0;
   double wgt_freya_banked = 0.0;
   if (freya_analog && n_prompt_pending > 0) {
-    bool fission_bank_full = false;
     bank_freya_analog_event(
       p, i_nuclide, n_prompt_pending, weight, use_fission_bank,
-      n_freya_banked, wgt_freya_banked, fission_bank_full);
+      n_freya_banked, wgt_freya_banked);
     n_sites_stored = n_sites_stored - n_prompt_pending + n_freya_banked;
   }
 #endif

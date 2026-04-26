@@ -11,8 +11,9 @@ Without those, the tests are skipped — they can't even run, let alone
 assert numbers. With them, the tests assert *coarse* sanity bounds, not
 benchmark-grade reference values; the latter is a paper-scale effort.
 For tighter regression coverage, see the Zywiec 2026 paper validation
-(``Static_Alpha_OpenMC_Zywiec.tex`` at the repo root) which compares
-21 + 33 benchmark configurations against measured Rossi-α data.
+(``Rossi-alpha Benchmark Validation of a Static Alpha Eigenvalue
+Capability in OpenMC``) which compares 21 + 33 benchmark configurations
+against measured Rossi-α data.
 """
 
 import os
@@ -99,10 +100,11 @@ def test_freya_analog_alpha_eigenvalue_signs(run_in_tmpdir):
 
 
 @needs_freya
-@pytest.mark.parametrize('za', [98252, 96244, 94240])
+@pytest.mark.parametrize('za', [92238, 94238, 94240, 94242, 96244, 98252])
 def test_freya_sf_source_runs(run_in_tmpdir, za):
-    """Phase 5 smoke: FreyaSFSource for Cf-252, Cm-244, Pu-240 builds a
-    populated source bank and a fixed-source run completes."""
+    """Phase 5 smoke: FreyaSFSource for each FREYA-supported SF isotope
+    (U-238, Pu-238, Pu-240, Pu-242, Cm-244, Cf-252 per react.dat) builds
+    a populated source bank and a fixed-source run completes."""
     material = openmc.Material()
     material.add_nuclide('H1', 1.0)
     material.set_density('g/cm3', 1.0)
