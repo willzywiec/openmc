@@ -175,6 +175,69 @@ void sample_neutron_reaction(Particle& p)
   }
 }
 
+// ---------------------------------------------------------------------------
+// MT=460 delayed fission photon sampling.
+// Called once per fission event (not per neutron site). Samples a Poisson
+// number of delayed photons, then for each photon samples (group, line)
+// jointly weighted by yields(g, l), assigns photon energy = energies[l],
+// emission delay = -ln(u)/decay_constants[g], and isotropic direction.
+// Banked as ParticleType::photon on the particle's secondary bank.
+// ---------------------------------------------------------------------------
+static void sample_mt460_delayed_photons(
+  Particle& p, const Nuclide::DelayedPhotonData& data, double weight)
+{
+  uint64_t* seed = p.current_seed();
+  const auto n_lines = data.energies.size();
+
+  double total = 0.0;
+  for (std::size_t l = 0; l < n_lines; ++l) total += data.yields[l];
+  if (total <= 0.0) return;
+
+  // Poisson sample around the expected photon count
+  // (Knuth's algorithm; total is typically O(10) for fission).
+  int n_photons;
+  {
+    double L = std::exp(-total);
+    int    k = 0;
+    double q = 1.0;
+    do {
+      ++k;
+      q *= prn(seed);
+    } while (q > L && k < 1000);
+    n_photons = k - 1;
+  }
+  if (n_photons == 0) return;
+
+  for (int k = 0; k < n_photons; ++k) {
+    // Sample line l by inverse-CDF on yields.
+    double xi    = prn(seed) * total;
+    double cumul = 0.0;
+    std::size_t sel_l = n_lines - 1;
+    for (std::size_t l = 0; l < n_lines; ++l) {
+      cumul += data.yields[l];
+      if (xi <= cumul) { sel_l = l; break; }
+    }
+
+    double t_delay = -std::log(prn(seed)) / data.decay_constants[sel_l];
+
+    // Isotropic emission direction
+    double mu     = 1.0 - 2.0 * prn(seed);
+    double phi    = 2.0 * PI * prn(seed);
+    double sin_th = std::sqrt(std::max(0.0, 1.0 - mu * mu));
+
+    SourceSite gamma;
+    gamma.r        = p.r();
+    gamma.particle = ParticleType::photon;
+    gamma.E        = data.energies[sel_l];
+    gamma.u        = Direction{sin_th * std::cos(phi),
+                               sin_th * std::sin(phi),
+                               mu};
+    gamma.time     = p.time() + t_delay;
+    gamma.wgt      = 1.0 / weight;
+    p.secondary_bank().push_back(gamma);
+  }
+}
+
 void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
 {
 #ifdef OPENMC_USE_FREYA
@@ -311,6 +374,16 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   p.wgt_bank() = nu / weight;
   for (size_t d = 0; d < MAX_DELAYED_GROUPS; d++) {
     p.n_delayed_bank(d) = nu_d[d];
+  }
+
+  // Phase 6: emit ENDF MT=460 delayed fission photons (once per fission).
+  // Independent of FREYA — the prompt photon path uses FREYA when enabled.
+  if (settings::photon_transport) {
+    const auto& nuc = data::nuclides[i_nuclide];
+    if (nuc->delayed_photons_mt460_) {
+      sample_mt460_delayed_photons(
+        p, *nuc->delayed_photons_mt460_, weight);
+    }
   }
 }
 
