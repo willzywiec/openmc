@@ -55,6 +55,14 @@ vector<vector<int>> ifp_fission_delayed_group_bank;
 
 vector<vector<double>> ifp_fission_lifetime_bank;
 
+vector<vector<Position>> ifp_source_position_bank;
+
+vector<vector<double>> ifp_source_E_born_bank;
+
+vector<vector<Position>> ifp_fission_position_bank;
+
+vector<vector<double>> ifp_fission_E_born_bank;
+
 // Each entry in this vector corresponds to the number of progeny produced
 // this generation for the particle located at that index. This vector is
 // used to efficiently sort the fission bank after each iteration.
@@ -77,6 +85,10 @@ void free_memory_bank()
   simulation::ifp_source_lifetime_bank.clear();
   simulation::ifp_fission_delayed_group_bank.clear();
   simulation::ifp_fission_lifetime_bank.clear();
+  simulation::ifp_source_position_bank.clear();
+  simulation::ifp_source_E_born_bank.clear();
+  simulation::ifp_fission_position_bank.clear();
+  simulation::ifp_fission_E_born_bank.clear();
 }
 
 void init_fission_bank(int64_t max)
@@ -111,6 +123,8 @@ void sort_fission_bank()
   vector<SourceSite> sorted_bank_holder;
   vector<vector<int>> sorted_ifp_delayed_group_bank;
   vector<vector<double>> sorted_ifp_lifetime_bank;
+  vector<vector<Position>> sorted_ifp_position_bank;
+  vector<vector<double>> sorted_ifp_E_born_bank;
 
   // If there is not enough space, allocate a temporary vector and point to it
   if (simulation::fission_bank.size() >
@@ -124,6 +138,10 @@ void sort_fission_bank()
   if (settings::ifp_on) {
     allocate_temporary_vector_ifp(
       sorted_ifp_delayed_group_bank, sorted_ifp_lifetime_bank);
+    if (settings::ifp_track_phase_space) {
+      allocate_temporary_vector_ifp_phase_space(
+        sorted_ifp_position_bank, sorted_ifp_E_born_bank);
+    }
   }
 
   // Use parent and progeny indices to sort fission bank
@@ -139,6 +157,10 @@ void sort_fission_bank()
     if (settings::ifp_on) {
       copy_ifp_data_from_fission_banks(
         i, sorted_ifp_delayed_group_bank[idx], sorted_ifp_lifetime_bank[idx]);
+      if (settings::ifp_track_phase_space) {
+        copy_ifp_phase_space_from_fission_banks(
+          i, sorted_ifp_position_bank[idx], sorted_ifp_E_born_bank[idx]);
+      }
     }
   }
 
@@ -148,6 +170,10 @@ void sort_fission_bank()
   if (settings::ifp_on) {
     copy_ifp_data_to_fission_banks(
       sorted_ifp_delayed_group_bank.data(), sorted_ifp_lifetime_bank.data());
+    if (settings::ifp_track_phase_space) {
+      copy_ifp_phase_space_to_fission_banks(
+        sorted_ifp_position_bank.data(), sorted_ifp_E_born_bank.data());
+    }
   }
 }
 

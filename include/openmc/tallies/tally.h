@@ -215,6 +215,7 @@ extern vector<int> active_collision_tallies;
 extern vector<int> active_meshsurf_tallies;
 extern vector<int> active_surface_tallies;
 extern vector<int> active_pulse_height_tallies;
+extern vector<int> active_ifp_importance_tallies;
 extern vector<int> pulse_height_cells;
 extern vector<double> time_grid;
 

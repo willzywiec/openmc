@@ -352,6 +352,10 @@ public:
   Position& r_born() { return r_born_; }
   const Position& r_born() const { return r_born_; }
 
+  // Energy at birth (eV)
+  double& E_born() { return E_born_; }
+  const double& E_born() const { return E_born_; }
+
   // Coordinates of last collision or reflective/periodic surface
   // crossing for current tallies
   Position& r_last_current() { return r_last_current_; }
@@ -426,6 +430,7 @@ private:
   vector<int> cell_last_; //!< coordinates for all levels
 
   Position r_born_;         //!< coordinates at birth
+  double E_born_ {0.0};     //!< energy at birth in [eV] (used by IFP importance)
   Position r_last_current_; //!< coordinates of the last collision or
                             //!< reflective/periodic surface crossing for
                             //!< current tallies

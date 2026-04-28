@@ -56,6 +56,7 @@ bool delayed_photon_scaling {true};
 bool entropy_on {false};
 bool event_based {false};
 bool ifp_on {false};
+bool ifp_track_phase_space {false};
 bool calculate_prompt_k {false};
 bool calculate_alpha {false};
 bool legendre_to_tabular {true};

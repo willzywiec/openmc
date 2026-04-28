@@ -108,6 +108,7 @@ _SCORES = {
     -18: 'ifp-time-numerator', -19: 'ifp-beta-numerator',
     -20: 'ifp-denominator',
     -21: 'ifp-prompt-time-numerator', -22: 'ifp-prompt-denominator',
+    -23: 'ifp-importance',
 }
 _ESTIMATORS = {
     0: 'analog', 1: 'tracklength', 2: 'collision'

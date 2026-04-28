@@ -4,6 +4,7 @@
 #include "openmc/message_passing.h"
 #include "openmc/particle.h"
 #include "openmc/particle_data.h"
+#include "openmc/position.h"
 #include "openmc/settings.h"
 
 namespace openmc {
@@ -181,6 +182,52 @@ void allocate_temporary_vector_ifp(
 //! \param[in] lifetimes_ptr Pointer to lifetimes
 void copy_ifp_data_to_fission_banks(
   const vector<int>* delayed_groups_ptr, const vector<double>* lifetimes_ptr);
+
+//! Phase-space chain helpers (used by `ifp-importance`).
+//!
+//! Each helper mirrors the corresponding delayed-group/lifetime helper but
+//! operates on the position / birth-energy banks that are populated when
+//! `settings::ifp_track_phase_space` is true.
+
+//! Append the originator's birth phase space to a progeny's chain.
+void ifp_phase_space(const Particle& p, int64_t idx);
+
+//! Retrieve phase-space chains for a fission-bank slot.
+void copy_ifp_phase_space_from_fission_banks(
+  int i_bank, vector<Position>& positions, vector<double>& energies);
+
+//! Allocate scratch chains sized to the current fission bank.
+void allocate_temporary_vector_ifp_phase_space(
+  vector<vector<Position>>& positions, vector<vector<double>>& energies);
+
+//! Copy reordered phase-space chains back into the fission bank.
+void copy_ifp_phase_space_to_fission_banks(
+  const vector<Position>* positions_ptr, const vector<double>* energies_ptr);
+
+#ifdef OPENMC_MPI
+
+void send_ifp_phase_space(int64_t idx, int64_t n, int n_generation, int neighbor,
+  vector<MPI_Request>& requests, const vector<vector<Position>>& positions,
+  vector<double>& send_positions_xyz, const vector<vector<double>>& energies,
+  vector<double>& send_energies);
+
+void receive_ifp_phase_space(int64_t idx, int64_t n, int n_generation,
+  int neighbor, vector<MPI_Request>& requests,
+  vector<double>& positions_xyz, vector<double>& energies);
+
+void deserialize_ifp_phase_space(int n_generation,
+  const vector<DeserializationInfo>& deserialization,
+  const vector<double>& positions_xyz, const vector<double>& energies);
+
+void copy_partial_ifp_phase_space_to_source_banks(int64_t idx, int n,
+  int64_t i_bank, const vector<vector<Position>>& positions,
+  const vector<vector<double>>& energies);
+
+#endif
+
+void copy_complete_ifp_phase_space_to_source_banks(
+  const vector<vector<Position>>& positions,
+  const vector<vector<double>>& energies);
 
 } // namespace openmc
 

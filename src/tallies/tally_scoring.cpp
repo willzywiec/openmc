@@ -4,6 +4,7 @@
 #include "openmc/capi.h"
 #include "openmc/constants.h"
 #include "openmc/error.h"
+#include "openmc/geometry.h"
 #include "openmc/ifp.h"
 #include "openmc/material.h"
 #include "openmc/mgxs_interface.h"
@@ -2573,6 +2574,102 @@ void score_tracklength_tally(Particle& p, double distance)
   score_tracklength_tally_general(p, flux, model::active_tracklength_tallies);
 }
 
+void score_ifp_importance_tally(Particle& p)
+{
+  if (!settings::ifp_on || !settings::ifp_track_phase_space) return;
+  if (model::active_ifp_importance_tallies.empty()) return;
+  if (p.type() != ParticleType::neutron || !p.fission()) return;
+
+  const auto& positions =
+    simulation::ifp_source_position_bank[p.current_work() - 1];
+  const auto& energies =
+    simulation::ifp_source_E_born_bank[p.current_work() - 1];
+  if (positions.size() != static_cast<size_t>(settings::ifp_n_generation))
+    return;
+
+  const Position r_origin = positions[0];
+  const double E_origin = energies[0];
+  const double score = p.wgt_last();
+
+  // Save the descendant's state that filter binning may inspect, including
+  // the coord stack populated by the geometry walk.
+  Position saved_r = p.r();
+  Position saved_r_last = p.r_last();
+  double saved_E = p.E();
+  double saved_E_last = p.E_last();
+  int saved_n_coord = p.n_coord();
+  int saved_n_coord_last = p.n_coord_last();
+  int saved_material = p.material();
+
+  // Save per-level coord and cell_last for restoration.
+  int saved_levels = std::max(saved_n_coord, saved_n_coord_last);
+  vector<LocalCoord> saved_coord(saved_levels);
+  vector<int> saved_cell_last(saved_levels);
+  for (int j = 0; j < saved_levels; ++j) {
+    saved_coord[j] = p.coord(j);
+    saved_cell_last[j] = p.cell_last(j);
+  }
+
+  // Substitute the originator's birth phase space and re-walk the geometry so
+  // cell / mesh / universe filters bin against (r_origin, E_origin).
+  for (int j = 0; j < saved_n_coord; ++j) p.coord(j).reset();
+  p.n_coord() = 1;
+  p.coord(0).r() = r_origin;
+  p.coord(0).u() = p.u();   // direction is not part of the binning grid here
+  p.r() = r_origin;
+  p.r_last() = r_origin;
+  p.E() = E_origin;
+  p.E_last() = E_origin;
+
+  bool found = exhaustive_find_cell(p);
+  if (found) {
+    for (int j = 0; j < p.n_coord(); ++j) {
+      p.cell_last(j) = p.coord(j).cell();
+    }
+    p.n_coord_last() = p.n_coord();
+  }
+
+  // Reset filter matches so FilterBinIter recomputes them against the
+  // substituted state.
+  for (auto& match : p.filter_matches()) match.bins_present_ = false;
+
+  if (found) {
+    for (auto i_tally : model::active_ifp_importance_tallies) {
+      Tally& tally {*model::tallies[i_tally]};
+
+      auto filter_iter = FilterBinIter(tally, p);
+      auto end = FilterBinIter(tally, true, &p.filter_matches());
+
+      for (; filter_iter != end; ++filter_iter) {
+        auto filter_index = filter_iter.index_;
+        auto filter_weight = filter_iter.weight_;
+#pragma omp atomic
+        tally.results_(filter_index, 0, TallyResult::VALUE) +=
+          score * filter_weight;
+      }
+
+      // Reset matches between tallies (next iteration will rebuild them).
+      for (auto& match : p.filter_matches()) match.bins_present_ = false;
+    }
+  }
+
+  // Restore descendant state.
+  p.n_coord() = saved_n_coord;
+  p.n_coord_last() = saved_n_coord_last;
+  for (int j = 0; j < saved_levels; ++j) {
+    p.coord(j) = saved_coord[j];
+    p.cell_last(j) = saved_cell_last[j];
+  }
+  p.r() = saved_r;
+  p.r_last() = saved_r_last;
+  p.E() = saved_E;
+  p.E_last() = saved_E_last;
+  p.material() = saved_material;
+
+  // Clear matches so the regular score paths recompute them.
+  for (auto& match : p.filter_matches()) match.bins_present_ = false;
+}
+
 void score_collision_tally(Particle& p)
 {
   // Determine the collision estimate of the flux
@@ -2650,6 +2747,9 @@ void score_collision_tally(Particle& p)
   // Reset all the filter matches for the next tally event.
   for (auto& match : p.filter_matches())
     match.bins_present_ = false;
+
+  // Score ifp-importance tallies (filter-binned by originator phase space).
+  score_ifp_importance_tally(p);
 }
 
 void score_surface_tally(Particle& p, const vector<int>& tallies)

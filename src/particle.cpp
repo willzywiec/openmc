@@ -286,6 +286,7 @@ void Particle::from_source(const SourceSite* src)
     E() = data::mg.energy_bin_avg_[g()];
   }
   E_last() = E();
+  E_born() = E();
   time() = src->time;
   time_last() = src->time;
   parent_nuclide() = src->parent_nuclide;

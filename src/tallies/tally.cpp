@@ -64,6 +64,7 @@ vector<int> active_collision_tallies;
 vector<int> active_meshsurf_tallies;
 vector<int> active_surface_tallies;
 vector<int> active_pulse_height_tallies;
+vector<int> active_ifp_importance_tallies;
 vector<int> pulse_height_cells;
 vector<double> time_grid;
 } // namespace model
@@ -193,12 +194,18 @@ Tally::Tally(pugi::xml_node node)
   if (!settings::ifp_on) {
     // Determine if this tally has an IFP score
     bool has_ifp_score = false;
+    bool has_ifp_importance = false;
     for (int score : scores_) {
       if (score == SCORE_IFP_TIME_NUM || score == SCORE_IFP_BETA_NUM ||
-          score == SCORE_IFP_DENOM) {
+          score == SCORE_IFP_DENOM || score == SCORE_IFP_IMPORTANCE) {
         has_ifp_score = true;
-        break;
       }
+      if (score == SCORE_IFP_IMPORTANCE) {
+        has_ifp_importance = true;
+      }
+    }
+    if (has_ifp_importance) {
+      settings::ifp_track_phase_space = true;
     }
 
     // Check for errors
@@ -242,6 +249,11 @@ Tally::Tally(pugi::xml_node node)
         } else if (settings::ifp_parameter == IFPParameter::GenerationTime) {
           settings::ifp_parameter = IFPParameter::Both;
         }
+        break;
+      case SCORE_IFP_IMPORTANCE:
+        // Phase-space tracking lives alongside the existing parameter modes;
+        // the chain length is shared.
+        settings::ifp_track_phase_space = true;
         break;
       }
     }
@@ -657,6 +669,40 @@ void Tally::set_scores(const vector<std::string>& scores)
     case SCORE_IFP_BETA_NUM:
     case SCORE_IFP_DENOM:
       estimator_ = TallyEstimator::COLLISION;
+      break;
+
+    case SCORE_IFP_IMPORTANCE:
+      estimator_ = TallyEstimator::COLLISION;
+      // Filter binning for ifp-importance is performed against the
+      // originator's birth phase space, not against the descendant's
+      // current state. To avoid silently misbinning other scores in
+      // the same tally, require that ifp-importance be the only score.
+      if (scores.size() != 1) {
+        fatal_error("'ifp-importance' must be the only score in its tally; "
+                    "filter bins are computed from the originator's birth "
+                    "phase space, which is incorrect for any other score.");
+      }
+      // Reject filters whose bins refer to a descendant's outgoing state
+      // rather than the originator's birth state.
+      for (auto i_filt : filters_) {
+        const auto* filt = model::tally_filters[i_filt].get();
+        switch (filt->type()) {
+        case FilterType::ENERGY_OUT:
+        case FilterType::DELAYED_GROUP:
+        case FilterType::SURFACE:
+        case FilterType::MESH_SURFACE:
+        case FilterType::LEGENDRE:
+        case FilterType::SPATIAL_LEGENDRE:
+        case FilterType::ZERNIKE:
+        case FilterType::ZERNIKE_RADIAL:
+          fatal_error(fmt::format(
+            "Filter type {} is not compatible with the 'ifp-importance' score.",
+            static_cast<int>(filt->type())));
+          break;
+        default:
+          break;
+        }
+      }
       break;
     }
 
@@ -1147,6 +1193,7 @@ void setup_active_tallies()
   model::active_meshsurf_tallies.clear();
   model::active_surface_tallies.clear();
   model::active_pulse_height_tallies.clear();
+  model::active_ifp_importance_tallies.clear();
   model::time_grid.clear();
 
   for (auto i = 0; i < model::tallies.size(); ++i) {
@@ -1157,6 +1204,16 @@ void setup_active_tallies()
       bool mesh_present = (tally.get_filter<MeshFilter>() ||
                            tally.get_filter<MeshMaterialFilter>());
       auto time_filter = tally.get_filter<TimeFilter>();
+
+      // Route ifp-importance tallies to their own active list. Validation in
+      // set_scores enforces that ifp-importance is the only score, so this
+      // check is sufficient.
+      if (tally.scores_.size() == 1 &&
+          tally.scores_[0] == SCORE_IFP_IMPORTANCE) {
+        model::active_ifp_importance_tallies.push_back(i);
+        continue;
+      }
+
       switch (tally.type_) {
 
       case TallyType::VOLUME:
@@ -1211,6 +1268,7 @@ void free_memory_tally()
   model::active_meshsurf_tallies.clear();
   model::active_surface_tallies.clear();
   model::active_pulse_height_tallies.clear();
+  model::active_ifp_importance_tallies.clear();
   model::time_grid.clear();
 
   model::tally_map.clear();

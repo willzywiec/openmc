@@ -41,6 +41,20 @@ void ifp(const Particle& p, int64_t idx)
       simulation::ifp_source_lifetime_bank[p.current_work() - 1];
     simulation::ifp_fission_lifetime_bank[idx] = _ifp(p.lifetime(), lifetimes);
   }
+  if (settings::ifp_track_phase_space) {
+    ifp_phase_space(p, idx);
+  }
+}
+
+void ifp_phase_space(const Particle& p, int64_t idx)
+{
+  const auto& positions =
+    simulation::ifp_source_position_bank[p.current_work() - 1];
+  simulation::ifp_fission_position_bank[idx] = _ifp(p.r_born(), positions);
+
+  const auto& energies =
+    simulation::ifp_source_E_born_bank[p.current_work() - 1];
+  simulation::ifp_fission_E_born_bank[idx] = _ifp(p.E_born(), energies);
 }
 
 void resize_simulation_ifp_banks()
@@ -49,6 +63,12 @@ void resize_simulation_ifp_banks()
     simulation::ifp_source_lifetime_bank, simulation::work_per_rank);
   resize_ifp_data(simulation::ifp_fission_delayed_group_bank,
     simulation::ifp_fission_lifetime_bank, 3 * simulation::work_per_rank);
+  if (settings::ifp_track_phase_space) {
+    simulation::ifp_source_position_bank.resize(simulation::work_per_rank);
+    simulation::ifp_source_E_born_bank.resize(simulation::work_per_rank);
+    simulation::ifp_fission_position_bank.resize(3 * simulation::work_per_rank);
+    simulation::ifp_fission_E_born_bank.resize(3 * simulation::work_per_rank);
+  }
 }
 
 void copy_ifp_data_from_fission_banks(
@@ -60,6 +80,13 @@ void copy_ifp_data_from_fission_banks(
   if (is_generation_time_or_both()) {
     lifetimes = simulation::ifp_fission_lifetime_bank[i_bank];
   }
+}
+
+void copy_ifp_phase_space_from_fission_banks(
+  int i_bank, vector<Position>& positions, vector<double>& energies)
+{
+  positions = simulation::ifp_fission_position_bank[i_bank];
+  energies = simulation::ifp_fission_E_born_bank[i_bank];
 }
 
 #ifdef OPENMC_MPI
@@ -147,6 +174,85 @@ void copy_partial_ifp_data_to_source_banks(int64_t idx, int n, int64_t i_bank,
   }
 }
 
+void copy_partial_ifp_phase_space_to_source_banks(int64_t idx, int n,
+  int64_t i_bank, const vector<vector<Position>>& positions,
+  const vector<vector<double>>& energies)
+{
+  std::copy(&positions[idx], &positions[idx + n],
+    &simulation::ifp_source_position_bank[i_bank]);
+  std::copy(&energies[idx], &energies[idx + n],
+    &simulation::ifp_source_E_born_bank[i_bank]);
+}
+
+void send_ifp_phase_space(int64_t idx, int64_t n, int n_generation, int neighbor,
+  vector<MPI_Request>& requests, const vector<vector<Position>>& positions,
+  vector<double>& send_positions_xyz, const vector<vector<double>>& energies,
+  vector<double>& send_energies)
+{
+  // Pack chains into flat send buffers (3 doubles per Position entry).
+  for (int64_t i = idx; i < idx + n; i++) {
+    for (int g = 0; g < n_generation; g++) {
+      const Position& r = positions[i][g];
+      send_positions_xyz[3 * (i * n_generation + g) + 0] = r.x;
+      send_positions_xyz[3 * (i * n_generation + g) + 1] = r.y;
+      send_positions_xyz[3 * (i * n_generation + g) + 2] = r.z;
+    }
+    std::copy(energies[i].begin(), energies[i].end(),
+      send_energies.begin() + i * n_generation);
+  }
+
+  requests.emplace_back();
+  MPI_Isend(&send_positions_xyz[3 * n_generation * idx],
+    3 * n_generation * static_cast<int>(n), MPI_DOUBLE, neighbor, mpi::rank,
+    mpi::intracomm, &requests.back());
+
+  requests.emplace_back();
+  MPI_Isend(&send_energies[n_generation * idx],
+    n_generation * static_cast<int>(n), MPI_DOUBLE, neighbor, mpi::rank,
+    mpi::intracomm, &requests.back());
+}
+
+void receive_ifp_phase_space(int64_t idx, int64_t n, int n_generation,
+  int neighbor, vector<MPI_Request>& requests,
+  vector<double>& positions_xyz, vector<double>& energies)
+{
+  requests.emplace_back();
+  MPI_Irecv(&positions_xyz[3 * n_generation * idx],
+    3 * n_generation * static_cast<int>(n), MPI_DOUBLE, neighbor, neighbor,
+    mpi::intracomm, &requests.back());
+
+  requests.emplace_back();
+  MPI_Irecv(&energies[n_generation * idx],
+    n_generation * static_cast<int>(n), MPI_DOUBLE, neighbor, neighbor,
+    mpi::intracomm, &requests.back());
+}
+
+void deserialize_ifp_phase_space(int n_generation,
+  const vector<DeserializationInfo>& deserialization,
+  const vector<double>& positions_xyz, const vector<double>& energies)
+{
+  for (auto info : deserialization) {
+    int64_t index_local = info.index_local;
+    int64_t n = info.n;
+
+    for (int64_t i = index_local; i < index_local + n; i++) {
+      vector<Position> positions_received;
+      positions_received.reserve(n_generation);
+      for (int g = 0; g < n_generation; g++) {
+        positions_received.emplace_back(
+          positions_xyz[3 * (i * n_generation + g) + 0],
+          positions_xyz[3 * (i * n_generation + g) + 1],
+          positions_xyz[3 * (i * n_generation + g) + 2]);
+      }
+      simulation::ifp_source_position_bank[i] = std::move(positions_received);
+
+      vector<double> energies_received(energies.begin() + n_generation * i,
+        energies.begin() + n_generation * (i + 1));
+      simulation::ifp_source_E_born_bank[i] = std::move(energies_received);
+    }
+  }
+}
+
 void deserialize_ifp_info(int n_generation,
   const vector<DeserializationInfo>& deserialization,
   const vector<int>& delayed_groups, const vector<double>& lifetimes)
@@ -188,6 +294,16 @@ void copy_complete_ifp_data_to_source_banks(
   }
 }
 
+void copy_complete_ifp_phase_space_to_source_banks(
+  const vector<vector<Position>>& positions,
+  const vector<vector<double>>& energies)
+{
+  std::copy(positions.data(), positions.data() + settings::n_particles,
+    simulation::ifp_source_position_bank.begin());
+  std::copy(energies.data(), energies.data() + settings::n_particles,
+    simulation::ifp_source_E_born_bank.begin());
+}
+
 void allocate_temporary_vector_ifp(
   vector<vector<int>>& delayed_groups, vector<vector<double>>& lifetimes)
 {
@@ -197,6 +313,13 @@ void allocate_temporary_vector_ifp(
   if (is_generation_time_or_both()) {
     lifetimes.resize(simulation::fission_bank.size());
   }
+}
+
+void allocate_temporary_vector_ifp_phase_space(
+  vector<vector<Position>>& positions, vector<vector<double>>& energies)
+{
+  positions.resize(simulation::fission_bank.size());
+  energies.resize(simulation::fission_bank.size());
 }
 
 void copy_ifp_data_to_fission_banks(const vector<int>* const delayed_groups_ptr,
@@ -211,6 +334,15 @@ void copy_ifp_data_to_fission_banks(const vector<int>* const delayed_groups_ptr,
     std::copy(lifetimes_ptr, lifetimes_ptr + simulation::fission_bank.size(),
       simulation::ifp_fission_lifetime_bank.data());
   }
+}
+
+void copy_ifp_phase_space_to_fission_banks(
+  const vector<Position>* positions_ptr, const vector<double>* energies_ptr)
+{
+  std::copy(positions_ptr, positions_ptr + simulation::fission_bank.size(),
+    simulation::ifp_fission_position_bank.data());
+  std::copy(energies_ptr, energies_ptr + simulation::fission_bank.size(),
+    simulation::ifp_fission_E_born_bank.data());
 }
 
 } // namespace openmc

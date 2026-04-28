@@ -71,6 +71,8 @@ extern "C" bool entropy_on; //!< calculate Shannon entropy?
 extern "C" bool
   event_based;      //!< use event-based mode (instead of history-based)
 extern bool ifp_on; //!< Use IFP for kinetics parameters?
+extern bool ifp_track_phase_space; //!< Store originator's birth phase space in
+                                   //!< the IFP chain (needed for ifp-importance)
 extern bool
   calculate_prompt_k; //!< calculate k_prompt for delayed neutron kinetics?
 extern bool calculate_alpha; //!< calculate alpha eigenvalue (requires IFP)?

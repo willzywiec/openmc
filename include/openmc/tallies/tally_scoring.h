@@ -67,6 +67,14 @@ private:
 //! \param p The particle being tracked
 void score_collision_tally(Particle& p);
 
+//! Score the ifp-importance tallies for a fissioning neutron whose IFP chain
+//! has reached the asymptotic generation depth.  Filter bins are computed
+//! from the originator's birth phase space (oldest entry of the chain),
+//! not from the descendant's current state.
+//
+//! \param p The fissioning particle being tracked
+void score_ifp_importance_tally(Particle& p);
+
 //! Score tallies based on a simple count of events (for continuous energy).
 //
 //! Analog tallies are triggered at every collision, not every event.

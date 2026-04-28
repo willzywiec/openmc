@@ -328,7 +328,9 @@ enum TallyScore {
   SCORE_IFP_BETA_NUM = -19,                  // IFP delayed fraction numerator
   SCORE_IFP_DENOM = -20,                     // IFP common denominator
   SCORE_IFP_PROMPT_TIME_NUM = -21,           // IFP prompt lifetime numerator
-  SCORE_IFP_PROMPT_DENOM = -22               // IFP prompt denominator
+  SCORE_IFP_PROMPT_DENOM = -22,              // IFP prompt denominator
+  SCORE_IFP_IMPORTANCE = -23                 // IFP progeny weight binned by
+                                             // originator's birth phase space
 };
 
 // Global tally parameters

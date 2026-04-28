@@ -32,6 +32,14 @@ extern vector<vector<int>> ifp_fission_delayed_group_bank;
 
 extern vector<vector<double>> ifp_fission_lifetime_bank;
 
+// Phase-space banks for `ifp-importance`. The chain at index i, generation k
+// holds the position / energy at which the k-th ancestor of source neutron i
+// was born. Only allocated when settings::ifp_track_phase_space is true.
+extern vector<vector<Position>> ifp_source_position_bank;
+extern vector<vector<double>> ifp_source_E_born_bank;
+extern vector<vector<Position>> ifp_fission_position_bank;
+extern vector<vector<double>> ifp_fission_E_born_bank;
+
 extern vector<int64_t> progeny_per_particle;
 
 } // namespace simulation

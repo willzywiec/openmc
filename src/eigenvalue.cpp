@@ -200,9 +200,15 @@ void synchronize_bank()
   // Temporary banks for IFP
   vector<vector<int>> temp_delayed_groups;
   vector<vector<double>> temp_lifetimes;
+  vector<vector<Position>> temp_positions;
+  vector<vector<double>> temp_E_born;
   if (settings::ifp_on) {
     resize_ifp_data(
       temp_delayed_groups, temp_lifetimes, 3 * simulation::work_per_rank);
+    if (settings::ifp_track_phase_space) {
+      temp_positions.resize(3 * simulation::work_per_rank);
+      temp_E_born.resize(3 * simulation::work_per_rank);
+    }
   }
 
   // ==========================================================================
@@ -232,6 +238,10 @@ void synchronize_bank()
     if (settings::ifp_on) {
       copy_ifp_data_from_fission_banks(
         idx, temp_delayed_groups[index_temp], temp_lifetimes[index_temp]);
+      if (settings::ifp_track_phase_space) {
+        copy_ifp_phase_space_from_fission_banks(
+          idx, temp_positions[index_temp], temp_E_born[index_temp]);
+      }
     }
     ++index_temp;
 
@@ -282,6 +292,8 @@ void synchronize_bank()
   // IFP send buffers
   vector<int> send_delayed_groups;
   vector<double> send_lifetimes;
+  vector<double> send_positions_xyz;
+  vector<double> send_energies;
 
   if (start < settings::n_particles) {
     // Determine the index of the processor which has the first part of the
@@ -293,6 +305,12 @@ void synchronize_bank()
     if (settings::ifp_on && mpi::n_procs > 1) {
       resize_ifp_data(send_delayed_groups, send_lifetimes,
         ifp_n_generation * 3 * simulation::work_per_rank);
+      if (settings::ifp_track_phase_space) {
+        send_positions_xyz.resize(
+          3 * ifp_n_generation * 3 * simulation::work_per_rank);
+        send_energies.resize(
+          ifp_n_generation * 3 * simulation::work_per_rank);
+      }
     }
 
     while (start < finish) {
@@ -313,6 +331,11 @@ void synchronize_bank()
           send_ifp_info(index_local, n, ifp_n_generation, neighbor, requests,
             temp_delayed_groups, send_delayed_groups, temp_lifetimes,
             send_lifetimes);
+          if (settings::ifp_track_phase_space) {
+            send_ifp_phase_space(index_local, n, ifp_n_generation, neighbor,
+              requests, temp_positions, send_positions_xyz, temp_E_born,
+              send_energies);
+          }
         }
       }
 
@@ -338,6 +361,8 @@ void synchronize_bank()
   // IFP receive buffers
   vector<int> recv_delayed_groups;
   vector<double> recv_lifetimes;
+  vector<double> recv_positions_xyz;
+  vector<double> recv_energies;
   vector<DeserializationInfo> deserialization_info;
 
   // Determine what process has the source sites that will need to be stored at
@@ -355,6 +380,11 @@ void synchronize_bank()
   if (settings::ifp_on && mpi::n_procs > 1) {
     resize_ifp_data(recv_delayed_groups, recv_lifetimes,
       ifp_n_generation * simulation::work_per_rank);
+    if (settings::ifp_track_phase_space) {
+      recv_positions_xyz.resize(
+        3 * ifp_n_generation * simulation::work_per_rank);
+      recv_energies.resize(ifp_n_generation * simulation::work_per_rank);
+    }
   }
 
   while (start < simulation::work_index[mpi::rank + 1]) {
@@ -380,6 +410,10 @@ void synchronize_bank()
         // Receive IFP data
         receive_ifp_data(index_local, n, ifp_n_generation, neighbor, requests,
           recv_delayed_groups, recv_lifetimes, deserialization_info);
+        if (settings::ifp_track_phase_space) {
+          receive_ifp_phase_space(index_local, n, ifp_n_generation, neighbor,
+            requests, recv_positions_xyz, recv_energies);
+        }
       }
 
     } else {
@@ -393,6 +427,10 @@ void synchronize_bank()
       if (settings::ifp_on) {
         copy_partial_ifp_data_to_source_banks(
           index_temp, n, index_local, temp_delayed_groups, temp_lifetimes);
+        if (settings::ifp_track_phase_space) {
+          copy_partial_ifp_phase_space_to_source_banks(
+            index_temp, n, index_local, temp_positions, temp_E_born);
+        }
       }
     }
 
@@ -412,6 +450,10 @@ void synchronize_bank()
   if (settings::ifp_on) {
     deserialize_ifp_info(ifp_n_generation, deserialization_info,
       recv_delayed_groups, recv_lifetimes);
+    if (settings::ifp_track_phase_space) {
+      deserialize_ifp_phase_space(ifp_n_generation, deserialization_info,
+        recv_positions_xyz, recv_energies);
+    }
   }
 
 #else
@@ -419,6 +461,10 @@ void synchronize_bank()
     simulation::source_bank.begin());
   if (settings::ifp_on) {
     copy_complete_ifp_data_to_source_banks(temp_delayed_groups, temp_lifetimes);
+    if (settings::ifp_track_phase_space) {
+      copy_complete_ifp_phase_space_to_source_banks(
+        temp_positions, temp_E_born);
+    }
   }
 #endif
 
