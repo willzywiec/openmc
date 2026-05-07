@@ -89,6 +89,8 @@ int openmc_finalize()
   settings::event_based = false;
   settings::ifp_on = false;
   settings::ifp_track_phase_space = false;
+  settings::ifp_track_position = false;
+  settings::ifp_importance_cap = 0.0;
   settings::ifp_n_generation = -1;
   settings::ifp_parameter = IFPParameter::None;
   settings::calculate_prompt_k = false;

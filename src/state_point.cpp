@@ -216,6 +216,23 @@ extern "C" int openmc_statepoint_write(const char* filename, bool* write_source)
           write_dataset(tally_group, "estimator", "collision");
         }
 
+        // Stamp IFP provenance so postprocessors know the chain depth that
+        // produced this tally.
+        for (int score : tally->scores_) {
+          if (score == SCORE_IFP_IMPORTANCE || score == SCORE_IFP_BETA_NUM ||
+              score == SCORE_IFP_TIME_NUM || score == SCORE_IFP_DENOM ||
+              score == SCORE_IFP_PROMPT_TIME_NUM ||
+              score == SCORE_IFP_PROMPT_DENOM) {
+            write_attribute(
+              tally_group, "ifp_n_generation", settings::ifp_n_generation);
+            if (score == SCORE_IFP_IMPORTANCE) {
+              write_attribute(tally_group, "ifp_track_phase_space",
+                settings::ifp_track_phase_space ? 1 : 0);
+            }
+            break;
+          }
+        }
+
         write_dataset(tally_group, "n_realizations", tally->n_realizations_);
 
         // Write the ID of each filter attached to this tally

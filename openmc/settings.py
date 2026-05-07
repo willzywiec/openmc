@@ -425,6 +425,7 @@ class Settings:
 
         # Iterated Fission Probability
         self._ifp_n_generation = None
+        self._ifp_importance_cap = None
 
         # Delayed neutron kinetics calculations
         self._calculate_prompt_k = None
@@ -987,6 +988,25 @@ class Settings:
             cv.check_type("number of generations", ifp_n_generation, Integral)
             cv.check_greater_than("number of generations", ifp_n_generation, 0)
         self._ifp_n_generation = ifp_n_generation
+
+    @property
+    def ifp_importance_cap(self) -> float | None:
+        """Per-history cap on ifp-importance contributions.
+
+        If set to a positive value, each per-history contribution to an
+        ``ifp-importance`` tally is truncated at this value. Used as a
+        variance-reduction safeguard against the heavy-tailed IFP estimator.
+        ``None`` or 0 disables truncation.
+        """
+        return self._ifp_importance_cap
+
+    @ifp_importance_cap.setter
+    def ifp_importance_cap(self, value):
+        if value is not None:
+            cv.check_type("ifp_importance_cap", value, Real)
+            cv.check_greater_than("ifp_importance_cap", value, 0.0,
+                                  equality=True)
+        self._ifp_importance_cap = value
 
     @property
     def tabular_legendre(self) -> dict:
@@ -1799,6 +1819,11 @@ class Settings:
             element = ET.SubElement(root, "ifp_n_generation")
             element.text = str(self._ifp_n_generation)
 
+    def _create_ifp_importance_cap_subelement(self, root):
+        if self._ifp_importance_cap is not None:
+            element = ET.SubElement(root, "ifp_importance_cap")
+            element.text = str(self._ifp_importance_cap)
+
     def _create_tabular_legendre_subelements(self, root):
         if self.tabular_legendre:
             element = ET.SubElement(root, "tabular_legendre")
@@ -2318,6 +2343,11 @@ class Settings:
         if text is not None:
             self.ifp_n_generation = int(text)
 
+    def _ifp_importance_cap_from_xml_element(self, root):
+        text = get_text(root, 'ifp_importance_cap')
+        if text is not None:
+            self.ifp_importance_cap = float(text)
+
     def _tabular_legendre_from_xml_element(self, root):
         elem = root.find('tabular_legendre')
         if elem is not None:
@@ -2576,6 +2606,7 @@ class Settings:
         self._create_no_reduce_subelement(element)
         self._create_verbosity_subelement(element)
         self._create_ifp_n_generation_subelement(element)
+        self._create_ifp_importance_cap_subelement(element)
         self._create_tabular_legendre_subelements(element)
         self._create_temperature_subelements(element)
         self._create_trace_subelement(element)
@@ -2693,6 +2724,7 @@ class Settings:
         settings._no_reduce_from_xml_element(elem)
         settings._verbosity_from_xml_element(elem)
         settings._ifp_n_generation_from_xml_element(elem)
+        settings._ifp_importance_cap_from_xml_element(elem)
         settings._tabular_legendre_from_xml_element(elem)
         settings._temperature_from_xml_element(elem)
         settings._trace_from_xml_element(elem)

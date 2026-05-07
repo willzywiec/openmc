@@ -55,6 +55,46 @@ are needed to compute kinetics parameters in OpenMC:
 
 |
 
+A fourth IFP-derived score, ``ifp-importance``, exposes the per-neutron progeny
+counts as a binned tally instead of collapsing them into the scalar inner
+products above.  When a tally has filters such as :class:`openmc.MeshFilter`
+and :class:`openmc.EnergyFilter`, the score accumulates the asymptotic-generation
+progeny weight binned by the **originator's birth phase space**, producing the
+adjoint flux :math:`\phi^{\dagger}(r, E)` up to a normalization constant:
+
+.. math::
+    :label: ifp_importance
+
+    \phi^{\dagger}(r, E) \;\propto\;
+    \sum_{\substack{\text{N-th gen.}\\ \text{descendants fissioning}}}
+    w \cdot \mathbb{1}\bigl[ (r_{\text{born}}^{(0)}, E_{\text{born}}^{(0)}) \in
+    \text{bin}(r, E) \bigr].
+
+The tally must contain :math:`\texttt{ifp-importance}` as its sole score; filter
+binning uses the originator's coordinates, which would mis-bin any other score
+in the same tally.  Filters that depend on the descendant's outgoing state
+(``EnergyoutFilter``, ``DelayedGroupFilter``, surface filters, expansion filters)
+are rejected at tally construction.
+
+A convenience helper builds a default mesh + energy tally automatically::
+
+    model.add_ifp_importance_tally(mesh_dimension=(30, 30, 30))
+
+The result can be retrieved from the statepoint with::
+
+    with openmc.StatePoint(output_path) as sp:
+        result = sp.get_importance_function()
+        phi_dagger = result.mean      # shape (nx, ny, nz, n_energy)
+        sigma      = result.std_dev
+
+A useful self-consistency check is that the spatial+energy sum of the
+``ifp-importance`` map equals the scalar ``ifp-denominator`` to within the
+statistical uncertainty.  For absolute validation against deterministic
+adjoint codes, see the Godiva benchmark in
+``examples/ifp_importance_godiva/``.
+
+
+
 .. note:: Because the memory footprint of additional data is generally non-negligible
     with IFP, it is recommended to choose the value for ``ifp_n_generation`` carefully.
     For example, using one generation for both kinetics parameters corresponds to store

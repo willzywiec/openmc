@@ -682,25 +682,47 @@ void Tally::set_scores(const vector<std::string>& scores)
                     "filter bins are computed from the originator's birth "
                     "phase space, which is incorrect for any other score.");
       }
-      // Reject filters whose bins refer to a descendant's outgoing state
-      // rather than the originator's birth state.
-      for (auto i_filt : filters_) {
-        const auto* filt = model::tally_filters[i_filt].get();
-        switch (filt->type()) {
-        case FilterType::ENERGY_OUT:
-        case FilterType::DELAYED_GROUP:
-        case FilterType::SURFACE:
-        case FilterType::MESH_SURFACE:
-        case FilterType::LEGENDRE:
-        case FilterType::SPATIAL_LEGENDRE:
-        case FilterType::ZERNIKE:
-        case FilterType::ZERNIKE_RADIAL:
-          fatal_error(fmt::format(
-            "Filter type {} is not compatible with the 'ifp-importance' score.",
-            static_cast<int>(filt->type())));
-          break;
-        default:
-          break;
+      // Reject filters whose bins refer to a descendant's outgoing state,
+      // and detect whether any filter requires the originator's spatial
+      // coordinates (so we can skip the position bank when only energy
+      // filters are in play).
+      {
+        bool needs_position = false;
+        for (auto i_filt : filters_) {
+          const auto* filt = model::tally_filters[i_filt].get();
+          switch (filt->type()) {
+          case FilterType::ENERGY_OUT:
+          case FilterType::DELAYED_GROUP:
+          case FilterType::SURFACE:
+          case FilterType::MESH_SURFACE:
+          case FilterType::LEGENDRE:
+          case FilterType::SPATIAL_LEGENDRE:
+          case FilterType::ZERNIKE:
+          case FilterType::ZERNIKE_RADIAL:
+            fatal_error(fmt::format(
+              "Filter type {} is not compatible with the 'ifp-importance' "
+              "score.",
+              static_cast<int>(filt->type())));
+            break;
+          case FilterType::MESH:
+          case FilterType::MESHBORN:
+          case FilterType::MESH_MATERIAL:
+          case FilterType::CELL:
+          case FilterType::CELLBORN:
+          case FilterType::CELLFROM:
+          case FilterType::CELL_INSTANCE:
+          case FilterType::DISTRIBCELL:
+          case FilterType::UNIVERSE:
+          case FilterType::MATERIAL:
+          case FilterType::MATERIALFROM:
+            needs_position = true;
+            break;
+          default:
+            break;
+          }
+        }
+        if (needs_position) {
+          settings::ifp_track_position = true;
         }
       }
       break;

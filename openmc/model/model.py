@@ -266,6 +266,71 @@ class Model:
             denom_tally.scores = ['ifp-denominator']
             self.tallies.append(denom_tally)
 
+    def add_ifp_importance_tally(
+        self,
+        mesh: openmc.MeshBase | None = None,
+        mesh_dimension: tuple[int, int, int] = (30, 30, 30),
+        energy_groups: str | np.ndarray | None = None,
+        name: str = 'ifp-importance',
+    ) -> openmc.Tally:
+        """Add a binned ifp-importance tally to the model.
+
+        The score :class:`ifp-importance` accumulates the asymptotic-generation
+        progeny weight tracked by the IFP machinery, binned by the originator's
+        birth phase space, producing the adjoint flux :math:`\\phi^{\\dagger}(r, E)`
+        on the requested grid.
+
+        If the model already contains a tally with this score, that tally is
+        returned instead of creating a duplicate.
+
+        Parameters
+        ----------
+        mesh : openmc.MeshBase, optional
+            Spatial mesh defining the (r) bins. If None, a regular cartesian
+            mesh is auto-fit to the geometry's bounding box at
+            ``mesh_dimension`` resolution.
+        mesh_dimension : tuple of int, optional
+            Number of bins along each axis when ``mesh`` is None.
+        energy_groups : str or numpy.ndarray, optional
+            Energy group structure. Accepts:
+              * an array of group boundaries in eV (length n_groups + 1)
+              * the string name of a built-in structure (any value accepted by
+                :class:`openmc.mgxs.EnergyGroups`)
+              * None, which uses 20 logarithmically spaced groups from
+                1e-5 eV to 20 MeV.
+        name : str, optional
+            Name to assign to the tally.
+
+        Returns
+        -------
+        openmc.Tally
+            The tally that was added (or already present).
+
+        """
+        for t in self.tallies:
+            if 'ifp-importance' in t.scores:
+                return t
+
+        if mesh is None:
+            bb = self.geometry.bounding_box
+            mesh = openmc.RegularMesh()
+            mesh.dimension = mesh_dimension
+            mesh.lower_left = bb[0]
+            mesh.upper_right = bb[1]
+
+        if energy_groups is None:
+            bins = np.logspace(-5, np.log10(2.0e7), 21)
+        elif isinstance(energy_groups, str):
+            bins = openmc.mgxs.EnergyGroups(energy_groups).group_edges
+        else:
+            bins = np.asarray(energy_groups, dtype=float)
+
+        tally = openmc.Tally(name=name)
+        tally.scores = ['ifp-importance']
+        tally.filters = [openmc.MeshFilter(mesh), openmc.EnergyFilter(bins)]
+        self.tallies.append(tally)
+        return tally
+
     @classmethod
     def from_xml(
         cls,

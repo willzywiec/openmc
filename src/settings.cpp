@@ -57,6 +57,8 @@ bool entropy_on {false};
 bool event_based {false};
 bool ifp_on {false};
 bool ifp_track_phase_space {false};
+bool ifp_track_position {false};
+double ifp_importance_cap {0.0};
 bool calculate_prompt_k {false};
 bool calculate_alpha {false};
 bool legendre_to_tabular {true};
@@ -571,6 +573,16 @@ void read_settings_xml(pugi::xml_node root)
       if (ifp_n_generation > n_inactive) {
         fatal_error("'ifp_n_generation' must be lower than or equal to the "
                     "number of inactive cycles.");
+      }
+    }
+
+    // Optional cap on per-history ifp-importance contributions for variance
+    // reduction against heavy-tailed IFP estimators.
+    if (check_for_node(root, "ifp_importance_cap")) {
+      ifp_importance_cap =
+        std::stod(get_node_value(root, "ifp_importance_cap"));
+      if (ifp_importance_cap < 0.0) {
+        fatal_error("'ifp_importance_cap' must be non-negative.");
       }
     }
   }

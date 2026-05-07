@@ -73,6 +73,16 @@ extern "C" bool
 extern bool ifp_on; //!< Use IFP for kinetics parameters?
 extern bool ifp_track_phase_space; //!< Store originator's birth phase space in
                                    //!< the IFP chain (needed for ifp-importance)
+extern bool ifp_track_position;    //!< Within phase-space tracking, also store
+                                   //!< originator's birth position. Set to
+                                   //!< false when ifp-importance tallies use
+                                   //!< only energy-domain filters, to avoid
+                                   //!< allocating the (3 doubles)*N*N_part
+                                   //!< position bank.
+extern double ifp_importance_cap;  //!< If > 0, cap each per-history
+                                   //!< ifp-importance contribution at this
+                                   //!< value (variance-reduction safeguard
+                                   //!< against heavy-tailed IFP estimators)
 extern bool
   calculate_prompt_k; //!< calculate k_prompt for delayed neutron kinetics?
 extern bool calculate_alpha; //!< calculate alpha eigenvalue (requires IFP)?

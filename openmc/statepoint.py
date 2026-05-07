@@ -18,6 +18,62 @@ _VERSION_STATEPOINT = 18
 
 
 KineticsParameters = namedtuple("KineticsParameters", ["generation_time", "beta_effective"])
+ImportanceFunction = namedtuple(
+    "ImportanceFunction",
+    ["mean", "std_dev", "mesh", "energy_bins", "ifp_n_generation"])
+
+
+def adjoint_weighted_shannon_entropy(forward, adjoint):
+    """Compute the adjoint-weighted Shannon entropy of a fission source.
+
+    The standard Shannon entropy used for source convergence diagnostics
+    weights spatial bins by the forward source distribution alone:
+
+    .. math::
+        H = -\\sum_i s_i \\log_2 s_i
+
+    The adjoint-weighted variant weights bins by their contribution to
+    :math:`k_{\\text{eff}}`, giving a sharper convergence indicator
+    (Kiedrowski 2017, Brown et al.):
+
+    .. math::
+        H^{\\dagger} = -\\sum_i p_i \\log_2 p_i,\\qquad
+        p_i = \\frac{s_i \\phi^{\\dagger}_i}{\\sum_j s_j \\phi^{\\dagger}_j}.
+
+    Parameters
+    ----------
+    forward : numpy.ndarray
+        Forward fission source distribution per spatial bin. Any shape;
+        typically an entropy-mesh tally of fission rate or fission source
+        weight.
+    adjoint : numpy.ndarray
+        Adjoint flux per spatial bin. Must broadcast against ``forward``.
+        Typically the spatial integral (over energy) of an
+        ``ifp-importance`` tally on the same mesh.
+
+    Returns
+    -------
+    float
+        :math:`H^{\\dagger}` in bits. Zero if the weighted distribution is
+        degenerate (all mass in one bin) or empty.
+
+    """
+    forward = np.asarray(forward, dtype=float).ravel()
+    adjoint = np.asarray(adjoint, dtype=float).ravel()
+    if forward.shape != adjoint.shape:
+        raise ValueError(
+            f"forward and adjoint must have identical shape "
+            f"(got {forward.shape} vs {adjoint.shape}).")
+
+    weighted = forward * adjoint
+    weighted = np.clip(weighted, 0.0, None)   # negative values are noise
+    total = weighted.sum()
+    if total <= 0.0:
+        return 0.0
+
+    p = weighted / total
+    nz = p > 0.0
+    return float(-np.sum(p[nz] * np.log2(p[nz])))
 
 
 class StatePoint:
@@ -866,3 +922,91 @@ class StatePoint:
                 beta_effective = beta_effective[0]
 
         return KineticsParameters(generation_time, beta_effective)
+
+    def get_importance_function(
+        self,
+        tally_id: int | None = None,
+        tally_name: str | None = None,
+    ):
+        """Retrieve the binned IFP importance function :math:`\\phi^{\\dagger}(r, E)`.
+
+        Locates the tally containing the ``ifp-importance`` score, reads its
+        results, and reshapes them according to the (Mesh, Energy) filter
+        layout.
+
+        Parameters
+        ----------
+        tally_id : int, optional
+            Numeric ID of the tally. If both ``tally_id`` and ``tally_name``
+            are None, the first tally containing ``ifp-importance`` is used.
+        tally_name : str, optional
+            Name of the tally. Used only if ``tally_id`` is None.
+
+        Returns
+        -------
+        ImportanceFunction
+            A named tuple with fields:
+              * ``mean`` (numpy.ndarray): shape ``(nx, ny, nz, n_energy)``
+                if a 3-D mesh is used, with the energy axis last.
+              * ``std_dev`` (numpy.ndarray): same shape.
+              * ``mesh`` (openmc.MeshBase): the spatial mesh.
+              * ``energy_bins`` (numpy.ndarray): energy group boundaries (eV).
+              * ``ifp_n_generation`` (int or None): chain depth used.
+
+        Raises
+        ------
+        LookupError
+            If no matching ``ifp-importance`` tally is found.
+
+        """
+        # Locate the tally.
+        candidates = [t for t in self.tallies.values()
+                      if 'ifp-importance' in t.scores]
+        if tally_id is not None:
+            candidates = [t for t in candidates if t.id == tally_id]
+        elif tally_name is not None:
+            candidates = [t for t in candidates if t.name == tally_name]
+
+        if not candidates:
+            raise LookupError("No tally with score 'ifp-importance' found.")
+        tally = candidates[0]
+
+        # Extract Mesh and Energy filters.
+        mesh_filter = next(
+            (f for f in tally.filters if isinstance(f, openmc.MeshFilter)), None)
+        energy_filter = next(
+            (f for f in tally.filters
+             if isinstance(f, openmc.EnergyFilter)), None)
+
+        if mesh_filter is None or energy_filter is None:
+            raise ValueError(
+                "ifp-importance tally must have both a MeshFilter and an "
+                "EnergyFilter to be reshaped by get_importance_function. "
+                "Use tally.get_values(...) directly for other filter layouts.")
+
+        mesh = mesh_filter.mesh
+        n_energy = energy_filter.num_bins
+        spatial_shape = tuple(mesh.dimension)
+
+        flat_mean = tally.mean.ravel()
+        flat_std = tally.std_dev.ravel()
+
+        target_shape = spatial_shape + (n_energy,)
+        mean = flat_mean.reshape(target_shape)
+        std_dev = flat_std.reshape(target_shape)
+
+        # Read optional metadata stored on the tally HDF5 group.
+        n_gen = None
+        tally_path = f"tallies/tally {tally.id}"
+        if tally_path in self._f:
+            attrs = self._f[tally_path].attrs
+            if 'ifp_n_generation' in attrs:
+                n_gen = int(attrs['ifp_n_generation'])
+
+        return ImportanceFunction(
+            mean=mean,
+            std_dev=std_dev,
+            mesh=mesh,
+            energy_bins=np.asarray(energy_filter.bins),
+            ifp_n_generation=n_gen,
+        )
