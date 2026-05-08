@@ -33,6 +33,7 @@
 #include "openmc/tensor.h"
 #include <algorithm> // for max, min, max_element
 #include <cmath>     // for sqrt, exp, log, abs, copysign
+#include <vector>
 
 namespace openmc {
 
@@ -104,7 +105,9 @@ void collision(Particle& p)
 
 void sample_neutron_reaction(Particle& p)
 {
-  // Sample a nuclide within the material
+  // Alpha eigenvalue calculation uses generation k_eff measurements
+  // Cross sections are not modified during alpha calculations
+
   int i_nuclide = sample_nuclide(p);
 
   // Save which nuclide particle had collision with
@@ -172,6 +175,7 @@ void sample_neutron_reaction(Particle& p)
 
 void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
 {
+
   // If uniform fission source weighting is turned on, we increase or decrease
   // the expected number of fission sites produced
   double weight = settings::ufs_on ? ufs_get_weight(p) : 1.0;
@@ -216,7 +220,7 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
     site.wgt = 1. / weight;
     site.surf_id = 0;
 
-    // Sample delayed group and angle/energy for fission reaction
+    // Sample delayed group and angle/energy for fission reaction.
     sample_fission_neutron(i_nuclide, rx, &site, p);
 
     // Reject site if it exceeds time cutoff
@@ -235,10 +239,20 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
     if (use_fission_bank) {
       int64_t idx = simulation::fission_bank.thread_safe_append(site);
       if (idx == -1) {
-        warning(
-          "The shared fission bank is full. Additional fission sites created "
-          "in this generation will not be banked. Results may be "
-          "non-deterministic.");
+        // Use a static flag to ensure warning is only printed once per rank
+        static bool warning_printed = false;
+        if (!warning_printed) {
+#pragma omp critical(FissionBankWarning)
+          {
+            if (!warning_printed) {
+              warning(
+                "The shared fission bank is full. Additional fission sites "
+                "created in this generation will not be banked. Results may be "
+                "non-deterministic.");
+              warning_printed = true;
+            }
+          }
+        }
 
         // Decrement number of particle progeny as storage was unsuccessful.
         // This step is needed so that the sum of all progeny is equal to the
@@ -269,6 +283,7 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
     nu_bank_entry.delayed_group = site.delayed_group;
   }
 
+
   // If shared fission bank was full, and no fissions could be added,
   // set the particle fission flag to false.
   if (n_sites_stored == 0) {
@@ -280,9 +295,8 @@ void create_fission_sites(Particle& p, int i_nuclide, const Reaction& rx)
   // bank was not found to be full then these values are already equivalent.
   nu = n_sites_stored;
 
-  // Store the total weight banked for analog fission tallies
+  // Store the total weight banked for analog fission tallies.
   p.n_bank() = nu;
-  p.wgt_bank() = nu / weight;
   for (size_t d = 0; d < MAX_DELAYED_GROUPS; d++) {
     p.n_delayed_bank(d) = nu_d[d];
   }
@@ -1058,7 +1072,7 @@ void sample_fission_neutron(
   const auto& nuc {data::nuclides[i_nuclide]};
   double nu_t = nuc->nu(E_in, Nuclide::EmissionMode::total);
   double nu_d = nuc->nu(E_in, Nuclide::EmissionMode::delayed);
-  double beta = nu_d / nu_t;
+
 
   if (prn(seed) < beta) {
     // ====================================================================
@@ -1086,9 +1100,7 @@ void sample_fission_neutron(
     // set the delayed group for the particle born from fission
     site->delayed_group = group;
 
-    // Sample time of emission based on decay constant of precursor
-    double decay_rate = rx.products_[site->delayed_group].decay_rate_;
-    site->time -= std::log(prn(p.current_seed())) / decay_rate;
+    // Sample time of emission of the delayed neutron.
 
   } else {
     // ====================================================================
@@ -1098,11 +1110,14 @@ void sample_fission_neutron(
     site->delayed_group = 0;
   }
 
-  // sample from prompt neutron energy distribution
+  // Set delayed neutron flag for kinetics calculations
+  // Track whether this neutron itself is delayed (not genealogy)
+  site->is_delayed = (site->delayed_group > 0);
+
+  // sample from neutron energy distribution
   int n_sample = 0;
   double mu;
   while (true) {
-    rx.products_[site->delayed_group].sample(E_in, site->E, mu, seed);
 
     // resample if energy is greater than maximum neutron energy
     int neutron = ParticleType::neutron().transport_index();

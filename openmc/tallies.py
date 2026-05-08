@@ -16,23 +16,6 @@ from scipy.stats import chi2, norm
 
 import openmc
 import openmc.checkvalue as cv
-from openmc.filter import (
-    Filter, 
-    DistribcellFilter, 
-    EnergyFunctionFilter, 
-    DelayedGroupFilter, 
-    FilterMeta, 
-    MeshFilter,
-    MeshBornFilter,
-)
-from openmc.arithmetic import (
-    CrossFilter, 
-    AggregateFilter,
-    CrossScore,
-    AggregateScore,
-    CrossNuclide,
-    AggregateNuclide,
-)
 from ._sparse_compat import lil_array
 from ._xml import clean_indentation, get_elem_list, get_text
 from .mixin import IDManagerMixin
@@ -48,9 +31,9 @@ _PRODUCT_TYPES = ['tensor', 'entrywise']
 
 # The following indicate acceptable types when setting Tally.scores,
 # Tally.nuclides, and Tally.filters
-_SCORE_CLASSES = (str, CrossScore, AggregateScore)
-_NUCLIDE_CLASSES = (str, CrossNuclide, AggregateNuclide)
-_FILTER_CLASSES = (Filter, CrossFilter, AggregateFilter)
+_SCORE_CLASSES = (str, openmc.CrossScore, openmc.AggregateScore)
+_NUCLIDE_CLASSES = (str, openmc.CrossNuclide, openmc.AggregateNuclide)
+_FILTER_CLASSES = (openmc.Filter, openmc.CrossFilter, openmc.AggregateFilter)
 
 # Valid types of estimators
 ESTIMATOR_TYPES = {'tracklength', 'collision', 'analog'}
@@ -438,7 +421,7 @@ class Tally(IDManagerMixin):
             self._num_realizations = int(group['n_realizations'][()])
 
             for filt in self.filters:
-                if isinstance(filt, DistribcellFilter):
+                if isinstance(filt, openmc.DistribcellFilter):
                     filter_group = f[f'tallies/filters/filter {filt.id}']
                     filt._num_bins = int(filter_group['n_bins'][()])
 
@@ -1106,8 +1089,8 @@ class Tally(IDManagerMixin):
             return False
 
         # Return False if only one tally has a delayed group filter
-        tally1_dg = self.contains_filter(DelayedGroupFilter)
-        tally2_dg = other.contains_filter(DelayedGroupFilter)
+        tally1_dg = self.contains_filter(openmc.DelayedGroupFilter)
+        tally2_dg = other.contains_filter(openmc.DelayedGroupFilter)
         if tally1_dg != tally2_dg:
             return False
 
@@ -1619,7 +1602,7 @@ class Tally(IDManagerMixin):
 
             # Also check to see if the desired filter is wrapped up in an
             # aggregate
-            elif isinstance(test_filter, AggregateFilter):
+            elif isinstance(test_filter, openmc.AggregateFilter):
                 if isinstance(test_filter.aggregate_filter, filter_type):
                     return test_filter
 
@@ -1721,7 +1704,7 @@ class Tally(IDManagerMixin):
 
         """
 
-        cv.check_type('filters', filters, Iterable, FilterMeta)
+        cv.check_type('filters', filters, Iterable, openmc.FilterMeta)
         cv.check_type('filter_bins', filter_bins, Iterable, tuple)
 
         # If user did not specify any specific Filters, use them all
@@ -1804,7 +1787,7 @@ class Tally(IDManagerMixin):
         """
 
         for score in scores:
-            if not isinstance(score, (str, CrossScore)):
+            if not isinstance(score, (str, openmc.CrossScore)):
                 msg = f'Unable to get score indices for score "{score}" in ' \
                       f'ID="{self.id}" since it is not a string or CrossScore ' \
                       'Tally'
@@ -2001,9 +1984,9 @@ class Tally(IDManagerMixin):
             column_name = 'score'
 
             for score in self.scores:
-                if isinstance(score, (str, CrossScore)):
+                if isinstance(score, (str, openmc.CrossScore)):
                     scores.append(str(score))
-                elif isinstance(score, AggregateScore):
+                elif isinstance(score, openmc.AggregateScore):
                     scores.append(score.name)
                     column_name = f'{score.aggregate_op}(score)'
 
@@ -2103,7 +2086,7 @@ class Tally(IDManagerMixin):
         for i, f in enumerate(self.filters):
             if expand_dims:
                 # Mesh filter indices are backwards so we need to flip them
-                if type(f) in {MeshFilter, MeshBornFilter}:
+                if type(f) in {openmc.MeshFilter, openmc.MeshBornFilter}:
                     fshape = f.shape[::-1]
                     new_shape += fshape
                     idx0, idx1 = i, i + len(fshape) - 1
@@ -2290,7 +2273,7 @@ class Tally(IDManagerMixin):
         else:
             all_filters = [self_copy.filters, other_copy.filters]
             for self_filter, other_filter in product(*all_filters):
-                new_filter = CrossFilter(self_filter, other_filter,
+                new_filter = openmc.CrossFilter(self_filter, other_filter,
                                                 binary_op)
                 new_tally.filters.append(new_filter)
 
@@ -2301,7 +2284,7 @@ class Tally(IDManagerMixin):
         else:
             all_nuclides = [self_copy.nuclides, other_copy.nuclides]
             for self_nuclide, other_nuclide in product(*all_nuclides):
-                new_nuclide = CrossNuclide(self_nuclide, other_nuclide,
+                new_nuclide = openmc.CrossNuclide(self_nuclide, other_nuclide,
                                                   binary_op)
                 new_tally.nuclides.append(new_nuclide)
 
@@ -2312,9 +2295,9 @@ class Tally(IDManagerMixin):
                 if score1 == score2:
                     return score1
                 else:
-                    return CrossScore(score1, score2, binary_op)
+                    return openmc.CrossScore(score1, score2, binary_op)
             else:
-                return CrossScore(score1, score2, binary_op)
+                return openmc.CrossScore(score1, score2, binary_op)
 
         # Add scores to the new tally
         if score_product == 'entrywise':
@@ -2523,16 +2506,16 @@ class Tally(IDManagerMixin):
 
         # Construct lists of tuples for the bins in each of the two filters
         filters = [type(filter1), type(filter2)]
-        if isinstance(filter1, DistribcellFilter):
+        if isinstance(filter1, openmc.DistribcellFilter):
             filter1_bins = [b for b in range(filter1.num_bins)]
-        elif isinstance(filter1, EnergyFunctionFilter):
+        elif isinstance(filter1, openmc.EnergyFunctionFilter):
             filter1_bins = [None]
         else:
             filter1_bins = filter1.bins
 
-        if isinstance(filter2, DistribcellFilter):
+        if isinstance(filter2, openmc.DistribcellFilter):
             filter2_bins = [b for b in range(filter2.num_bins)]
-        elif isinstance(filter2, EnergyFunctionFilter):
+        elif isinstance(filter2, openmc.EnergyFunctionFilter):
             filter2_bins = [None]
         else:
             filter2_bins = filter2.bins
@@ -2665,11 +2648,11 @@ class Tally(IDManagerMixin):
             raise ValueError(msg)
 
         # Check that the scores are valid
-        if not isinstance(score1, (str, CrossScore)):
+        if not isinstance(score1, (str, openmc.CrossScore)):
             msg = 'Unable to swap score1 "{}" in Tally ID="{}" since it is ' \
                   'not a string or CrossScore'.format(score1, self.id)
             raise ValueError(msg)
-        elif not isinstance(score2, (str, CrossScore)):
+        elif not isinstance(score2, (str, openmc.CrossScore)):
             msg = 'Unable to swap score2 "{}" in Tally ID="{}" since it is ' \
                   'not a string or CrossScore'.format(score2, self.id)
             raise ValueError(msg)
@@ -3313,7 +3296,7 @@ class Tally(IDManagerMixin):
                 new_filter.bins = [f.bins[i] for i in bin_indices]
 
                 # Set number of bins manually for mesh/distribcell filters
-                if filter_type is DistribcellFilter:
+                if filter_type is openmc.DistribcellFilter:
                     new_filter._num_bins = f._num_bins
 
                 # Replace existing filter with new one
@@ -3379,16 +3362,16 @@ class Tally(IDManagerMixin):
         std_dev = self.get_reshaped_data(value='std_dev')
 
         # Sum across any filter bins specified by the user
-        if isinstance(filter_type, FilterMeta):
+        if isinstance(filter_type, openmc.FilterMeta):
             find_filter = self.find_filter(filter_type)
 
             # If user did not specify filter bins, sum across all bins
             if len(filter_bins) == 0:
                 bin_indices = np.arange(find_filter.num_bins)
 
-                if isinstance(find_filter, DistribcellFilter):
+                if isinstance(find_filter, openmc.DistribcellFilter):
                     filter_bins = np.arange(find_filter.num_bins)
-                elif isinstance(find_filter, EnergyFunctionFilter):
+                elif isinstance(find_filter, openmc.EnergyFunctionFilter):
                     filter_bins = [None]
                 else:
                     filter_bins = find_filter.bins
@@ -3417,7 +3400,7 @@ class Tally(IDManagerMixin):
 
                     # Add AggregateFilter to the tally sum
                     if not remove_filter:
-                        filter_sum = AggregateFilter(self_filter,
+                        filter_sum = openmc.AggregateFilter(self_filter,
                             [tuple(filter_bins)], 'sum')
                         tally_sum.filters.append(filter_sum)
 
@@ -3440,7 +3423,7 @@ class Tally(IDManagerMixin):
             std_dev = np.sqrt(std_dev)
 
             # Add AggregateNuclide to the tally sum
-            nuclide_sum = AggregateNuclide(nuclides, 'sum')
+            nuclide_sum = openmc.AggregateNuclide(nuclides, 'sum')
             tally_sum.nuclides.append(nuclide_sum)
 
         # Add a copy of this tally's nuclides to the tally sum
@@ -3458,7 +3441,7 @@ class Tally(IDManagerMixin):
             std_dev = np.sqrt(std_dev)
 
             # Add AggregateScore to the tally sum
-            score_sum = AggregateScore(scores, 'sum')
+            score_sum = openmc.AggregateScore(scores, 'sum')
             tally_sum.scores.append(score_sum)
 
         # Add a copy of this tally's scores to the tally sum
@@ -3531,16 +3514,16 @@ class Tally(IDManagerMixin):
         std_dev = self.get_reshaped_data(value='std_dev')
 
         # Average across any filter bins specified by the user
-        if isinstance(filter_type, FilterMeta):
+        if isinstance(filter_type, openmc.FilterMeta):
             find_filter = self.find_filter(filter_type)
 
             # If user did not specify filter bins, average across all bins
             if len(filter_bins) == 0:
                 bin_indices = np.arange(find_filter.num_bins)
 
-                if isinstance(find_filter, DistribcellFilter):
+                if isinstance(find_filter, openmc.DistribcellFilter):
                     filter_bins = np.arange(find_filter.num_bins)
-                elif isinstance(find_filter, EnergyFunctionFilter):
+                elif isinstance(find_filter, openmc.EnergyFunctionFilter):
                     filter_bins = [None]
                 else:
                     filter_bins = find_filter.bins
@@ -3570,7 +3553,7 @@ class Tally(IDManagerMixin):
 
                     # Add AggregateFilter to the tally avg
                     if not remove_filter:
-                        filter_sum = AggregateFilter(self_filter,
+                        filter_sum = openmc.AggregateFilter(self_filter,
                             [tuple(filter_bins)], 'avg')
                         tally_avg.filters.append(filter_sum)
 
@@ -3594,7 +3577,7 @@ class Tally(IDManagerMixin):
             std_dev = np.sqrt(std_dev)
 
             # Add AggregateNuclide to the tally avg
-            nuclide_avg = AggregateNuclide(nuclides, 'avg')
+            nuclide_avg = openmc.AggregateNuclide(nuclides, 'avg')
             tally_avg.nuclides.append(nuclide_avg)
 
         # Add a copy of this tally's nuclides to the tally avg
@@ -3613,7 +3596,7 @@ class Tally(IDManagerMixin):
             std_dev = np.sqrt(std_dev)
 
             # Add AggregateScore to the tally avg
-            score_sum = AggregateScore(scores, 'avg')
+            score_sum = openmc.AggregateScore(scores, 'avg')
             tally_avg.scores.append(score_sum)
 
         # Add a copy of this tally's scores to the tally avg
@@ -3803,7 +3786,7 @@ class Tallies(cv.CheckedList):
         already_written = memo if memo else set()
         for tally in self:
             for f in tally.filters:
-                if isinstance(f, MeshFilter):
+                if isinstance(f, openmc.MeshFilter):
                     if f.mesh.id in already_written:
                         continue
                     if len(f.mesh.name) > 0:
@@ -3898,7 +3881,7 @@ class Tallies(cv.CheckedList):
         # Read filter elements
         filters = {}
         for e in elem.findall('filter'):
-            filter = Filter.from_xml_element(e, meshes=meshes)
+            filter = openmc.Filter.from_xml_element(e, meshes=meshes)
             filters[filter.id] = filter
 
         # Read derivative elements

@@ -35,6 +35,9 @@
 #include "openmc/string_utils.h"
 #include "openmc/xml_interface.h"
 
+
+#include <sstream>
+
 namespace openmc {
 
 std::atomic<int64_t> source_n_accept {0};
@@ -61,8 +64,6 @@ void validate_particle_type(ParticleType type, const std::string& context)
 namespace model {
 
 vector<unique_ptr<Source>> external_sources;
-
-vector<unique_ptr<Source>> adjoint_sources;
 
 DiscreteIndex external_sources_probability;
 
@@ -712,7 +713,6 @@ SourceSite sample_external_source(uint64_t* seed)
 void free_memory_source()
 {
   model::external_sources.clear();
-  model::adjoint_sources.clear();
   reset_source_rejection_counters();
 }
 

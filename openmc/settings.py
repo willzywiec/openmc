@@ -84,6 +84,22 @@ class Settings:
         'survival_normalization' is a bool indicating whether or not the weight
         cutoff parameters will be applied relative to the particle's starting
         weight or to its current weight.
+    gravity : dict
+        Dictionary defining gravitational acceleration settings. The dictionary
+        may have the following keys: 'enabled' (bool) to enable/disable gravity,
+        and 'acceleration' (list of 3 floats) to set the gravity vector in
+        cm/s^2. For example: {'enabled': True, 'acceleration': [0.0, 0.0, -980.0]}
+        applies Earth's gravity in the -z direction.
+    bloch_airy : dict
+        Dictionary defining Bloch-Airy quantum gravitational bound state settings
+        for ultracold neutron (UCN) simulations. The dictionary may have the
+        following keys: 'enabled' (bool) to enable/disable the Bloch-Airy model,
+        and 'energy_threshold' (float) to set the maximum neutron energy in eV
+        below which quantum effects are applied (default: 300e-9 eV = 300 neV).
+        When enabled, neutrons below the energy threshold will have their
+        trajectories modified to follow quantum probability distributions based
+        on Airy functions, and surface reflections will enforce quantized states.
+        Requires gravity to also be enabled.
     delayed_photon_scaling : bool
         Indicate whether to scale the fission photon yield by (EGP + EGD)/EGP
         where EGP is the energy release of prompt photons and EGD is the energy
@@ -236,9 +252,6 @@ class Settings:
             stabilization, which may be desirable as stronger diagonal stabilization
             also tends to dampen the convergence rate of the solver, thus requiring
             more iterations to converge.
-        :adjoint_source:
-            Source object used to define localized adjoint source/detector response 
-            function.
 
         .. versionadded:: 0.15.0
     resonance_scattering : dict
@@ -437,6 +450,10 @@ class Settings:
         # Iterated Fission Probability
         self._ifp_n_generation = None
 
+        # Delayed neutron kinetics calculations
+        self._calculate_prompt_k = None
+        self._calculate_alpha = None
+
         # Collision track feature
         self._collision_track = {}
 
@@ -460,6 +477,12 @@ class Settings:
 
         # Cutoff subelement
         self._cutoff = None
+
+        # Gravity subelement
+        self._gravity = None
+
+        # Bloch-Airy quantum gravitational states subelement
+        self._bloch_airy = None
 
         # Uniform fission source subelement
         self._ufs_mesh = None
@@ -1149,6 +1172,51 @@ class Settings:
         self._cutoff = cutoff
 
     @property
+    def gravity(self) -> dict:
+        return self._gravity
+
+    @gravity.setter
+    def gravity(self, gravity: dict):
+        if not isinstance(gravity, Mapping):
+            msg = f'Unable to set gravity from "{gravity}" which is not a '\
+                'Python dictionary'
+            raise ValueError(msg)
+
+        # Validate gravity dictionary
+        if 'enabled' in gravity:
+            cv.check_type('gravity enabled', gravity['enabled'], bool)
+        if 'acceleration' in gravity:
+            cv.check_type('gravity acceleration', gravity['acceleration'], Iterable)
+            accel = list(gravity['acceleration'])
+            if len(accel) != 3:
+                raise ValueError('Gravity acceleration must have 3 components (x, y, z)')
+            for i, val in enumerate(accel):
+                cv.check_type(f'gravity acceleration[{i}]', val, Real)
+
+        self._gravity = gravity
+
+    @property
+    def bloch_airy(self) -> dict:
+        return self._bloch_airy
+
+    @bloch_airy.setter
+    def bloch_airy(self, bloch_airy: dict):
+        if not isinstance(bloch_airy, Mapping):
+            msg = f'Unable to set bloch_airy from "{bloch_airy}" which is not a '\
+                'Python dictionary'
+            raise ValueError(msg)
+
+        # Validate bloch_airy dictionary
+        if 'enabled' in bloch_airy:
+            cv.check_type('bloch_airy enabled', bloch_airy['enabled'], bool)
+        if 'energy_threshold' in bloch_airy:
+            cv.check_type('bloch_airy energy_threshold', bloch_airy['energy_threshold'], Real)
+            if bloch_airy['energy_threshold'] <= 0:
+                raise ValueError('Bloch-Airy energy threshold must be positive')
+
+        self._bloch_airy = bloch_airy
+
+    @property
     def ufs_mesh(self) -> RegularMesh:
         return self._ufs_mesh
 
@@ -1220,6 +1288,36 @@ class Settings:
         cv.check_type('Whether create only prompt neutrons',
                       create_delayed_neutrons, bool)
         self._create_delayed_neutrons = create_delayed_neutrons
+
+    @property
+    def calculate_prompt_k(self) -> bool:
+        return self._calculate_prompt_k
+
+    @calculate_prompt_k.setter
+    def calculate_prompt_k(self, calculate_prompt_k: bool):
+        cv.check_type('Whether to calculate prompt k-effective',
+                      calculate_prompt_k, bool)
+        self._calculate_prompt_k = calculate_prompt_k
+
+    @property
+    def calculate_alpha(self) -> bool:
+        return self._calculate_alpha
+
+    @calculate_alpha.setter
+    def calculate_alpha(self, calculate_alpha: bool):
+        cv.check_type('Whether to calculate alpha eigenvalue',
+                      calculate_alpha, bool)
+        self._calculate_alpha = calculate_alpha
+        # Alpha calculation requires k_prompt and IFP
+        if calculate_alpha:
+            self._calculate_prompt_k = True
+            # Enable IFP with default generations if not already set.
+            # Must not exceed number of inactive cycles (C++ validation).
+            if self._ifp_n_generation is None:
+                if self._inactive is not None and self._inactive > 0:
+                    self._ifp_n_generation = min(10, self._inactive)
+                else:
+                    self._ifp_n_generation = 10
 
     @property
     def delayed_photon_scaling(self) -> bool:
@@ -1424,14 +1522,6 @@ class Settings:
                 cv.check_type('diagonal stabilization rho', value, Real)
                 cv.check_greater_than('diagonal stabilization rho',
                                       value, 0.0, True)
-            elif key == 'adjoint_source':
-                if not isinstance(value, MutableSequence):
-                    value = [value]
-                for source in value:
-                    if not isinstance(source, SourceBase):
-                        raise ValueError(
-                            f'Invalid adjoint source type: {type(source)}. '
-                            'Expected openmc.SourceBase.')
             else:
                 raise ValueError(f'Unable to set random ray to "{key}" which is '
                                  'unsupported by OpenMC')
@@ -1725,6 +1815,27 @@ class Settings:
                 subelement.text = str(value) if key != 'survival_normalization' \
                     else str(value).lower()
 
+    def _create_gravity_subelement(self, root):
+        if self._gravity is not None:
+            element = ET.SubElement(root, "gravity")
+            if 'enabled' in self._gravity:
+                subelement = ET.SubElement(element, "enabled")
+                subelement.text = str(self._gravity['enabled']).lower()
+            if 'acceleration' in self._gravity:
+                subelement = ET.SubElement(element, "acceleration")
+                accel = self._gravity['acceleration']
+                subelement.text = ' '.join(str(x) for x in accel)
+
+    def _create_bloch_airy_subelement(self, root):
+        if self._bloch_airy is not None:
+            element = ET.SubElement(root, "bloch_airy")
+            if 'enabled' in self._bloch_airy:
+                subelement = ET.SubElement(element, "enabled")
+                subelement.text = str(self._bloch_airy['enabled']).lower()
+            if 'energy_threshold' in self._bloch_airy:
+                subelement = ET.SubElement(element, "energy_threshold")
+                subelement.text = str(self._bloch_airy['energy_threshold'])
+
     def _create_entropy_mesh_subelement(self, root, mesh_memo=None):
         if self.entropy_mesh is None:
             return
@@ -1814,6 +1925,16 @@ class Settings:
         if self._track is not None:
             element = ET.SubElement(root, "track")
             element.text = ' '.join(map(str, itertools.chain(*self._track)))
+
+    def _create_kinetics_subelement(self, root):
+        if self._calculate_prompt_k is not None or self._calculate_alpha is not None:
+            element = ET.SubElement(root, "kinetics")
+            if self._calculate_prompt_k is not None:
+                subelement = ET.SubElement(element, "calculate_prompt_k")
+                subelement.text = str(self._calculate_prompt_k).lower()
+            if self._calculate_alpha is not None:
+                subelement = ET.SubElement(element, "calculate_alpha")
+                subelement.text = str(self._calculate_alpha).lower()
 
     def _create_ufs_mesh_subelement(self, root, mesh_memo=None):
         if self.ufs_mesh is None:
@@ -1984,12 +2105,11 @@ class Settings:
             element = ET.SubElement(root, "random_ray")
             for key, value in self._random_ray.items():
                 if key == 'ray_source' and isinstance(value, SourceBase):
-                    subelement = ET.SubElement(element, 'ray_source')
                     source_element = value.to_xml_element()
                     if source_element.find('bias') is not None:
                         raise RuntimeError(
                             "Ray source distributions should not be biased.")
-                    subelement.append(source_element)
+                    element.append(source_element)
 
                 elif key == 'source_region_meshes':
                     subelement = ET.SubElement(element, 'source_region_meshes')
@@ -2007,20 +2127,8 @@ class Settings:
                         path = f"./mesh[@id='{mesh.id}']"
                         if root.find(path) is None:
                             root.append(mesh.to_xml_element())
-                            if mesh_memo is not None:    
+                            if mesh_memo is not None:
                                 mesh_memo.add(mesh.id)
-                elif key == 'adjoint_source':
-                    subelement = ET.SubElement(element, 'adjoint_source')
-                    # Check that all entries are valid SourceBase instances, in case 
-                    # the random_ray setter was not used to populate dict entries.
-                    if not isinstance(value, MutableSequence):
-                        value = [value]
-                    for source in value:
-                        if not isinstance(source, SourceBase):
-                            raise ValueError(
-                                f'Invalid adjoint source type: {type(source)}. '
-                                'Expected openmc.SourceBase.')
-                        subelement.append(source.to_xml_element())
                 elif isinstance(value, bool):
                     subelement = ET.SubElement(element, key)
                     subelement.text = str(value).lower()
@@ -2269,6 +2377,28 @@ class Settings:
                     else:
                         self.cutoff[key] = float(value)
 
+    def _gravity_from_xml_element(self, root):
+        elem = root.find('gravity')
+        if elem is not None:
+            self.gravity = {}
+            enabled_text = get_text(elem, 'enabled')
+            if enabled_text is not None:
+                self.gravity['enabled'] = enabled_text in ('true', '1')
+            accel_text = get_text(elem, 'acceleration')
+            if accel_text is not None:
+                self.gravity['acceleration'] = [float(x) for x in accel_text.split()]
+
+    def _bloch_airy_from_xml_element(self, root):
+        elem = root.find('bloch_airy')
+        if elem is not None:
+            self.bloch_airy = {}
+            enabled_text = get_text(elem, 'enabled')
+            if enabled_text is not None:
+                self.bloch_airy['enabled'] = enabled_text in ('true', '1')
+            threshold_text = get_text(elem, 'energy_threshold')
+            if threshold_text is not None:
+                self.bloch_airy['energy_threshold'] = float(threshold_text)
+
     def _entropy_mesh_from_xml_element(self, root, meshes):
         text = get_text(root, 'entropy_mesh')
         if text is None:
@@ -2467,9 +2597,8 @@ class Settings:
             for child in elem:
                 if child.tag in ('distance_inactive', 'distance_active', 'diagonal_stabilization_rho'):
                     self.random_ray[child.tag] = float(child.text)
-                elif child.tag == 'ray_source':
-                    source_element = child.find('source')
-                    source = SourceBase.from_xml_element(source_element)
+                elif child.tag == 'source':
+                    source = SourceBase.from_xml_element(child)
                     if child.find('bias') is not None:
                         raise RuntimeError(
                             "Ray source distributions should not be biased.")
@@ -2486,12 +2615,6 @@ class Settings:
                     self.random_ray['adjoint'] = (
                         child.text in ('true', '1')
                     )
-                elif child.tag == 'adjoint_source':
-                    self.random_ray['adjoint_source'] = []
-                    for subelem in child.findall('source'):
-                        src = SourceBase.from_xml_element(subelem)
-                        # add newly constructed source object to the list
-                        self.random_ray['adjoint_source'].append(src)
                 elif child.tag == 'sample_method':
                     self.random_ray['sample_method'] = child.text
                 elif child.tag == 'source_region_meshes':
@@ -2573,6 +2696,8 @@ class Settings:
         self._create_surface_grazing_ratio_subelement(element)
         self._create_survival_biasing_subelement(element)
         self._create_cutoff_subelement(element)
+        self._create_gravity_subelement(element)
+        self._create_bloch_airy_subelement(element)
         self._create_entropy_mesh_subelement(element, mesh_memo)
         self._create_trigger_subelement(element)
         self._create_no_reduce_subelement(element)
@@ -2583,6 +2708,7 @@ class Settings:
         self._create_properties_file_element(element)
         self._create_trace_subelement(element)
         self._create_track_subelement(element)
+        self._create_kinetics_subelement(element)
         self._create_ufs_mesh_subelement(element, mesh_memo)
         self._create_resonance_scattering_subelement(element)
         self._create_volume_calcs_subelement(element)
@@ -2691,6 +2817,8 @@ class Settings:
         settings._surface_grazing_ratio_from_xml_element(elem)
         settings._survival_biasing_from_xml_element(elem)
         settings._cutoff_from_xml_element(elem)
+        settings._gravity_from_xml_element(elem)
+        settings._bloch_airy_from_xml_element(elem)
         settings._entropy_mesh_from_xml_element(elem, meshes)
         settings._trigger_from_xml_element(elem)
         settings._no_reduce_from_xml_element(elem)

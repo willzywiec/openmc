@@ -80,6 +80,7 @@ Direction sample_target_velocity(const Nuclide& nuc, double E, Direction u,
 Direction sample_cxs_target_velocity(
   double awr, double E, Direction u, double kT, uint64_t* seed);
 
+//! Sample one fission neutron's properties (delayed-vs-prompt, energy, angle).
 void sample_fission_neutron(
   int i_nuclide, const Reaction& rx, SourceSite* site, Particle& p);
 

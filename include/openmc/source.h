@@ -43,7 +43,6 @@ class Source;
 namespace model {
 
 extern vector<unique_ptr<Source>> external_sources;
-extern vector<unique_ptr<Source>> adjoint_sources;
 
 // Probability distribution for selecting external sources
 extern DiscreteIndex external_sources_probability;
@@ -213,6 +212,7 @@ private:
 };
 
 typedef unique_ptr<Source> create_compiled_source_t(std::string parameters);
+
 
 //==============================================================================
 //! Mesh-based source with different distributions for each element

@@ -88,6 +88,11 @@ int openmc_finalize()
   settings::time_cutoff = {INFTY, INFTY, INFTY, INFTY};
   settings::entropy_on = false;
   settings::event_based = false;
+  settings::ifp_on = false;
+  settings::ifp_n_generation = -1;
+  settings::ifp_parameter = IFPParameter::None;
+  settings::calculate_prompt_k = false;
+  settings::calculate_alpha = false;
   settings::free_gas_threshold = 400.0;
   settings::gen_per_batch = 1;
   settings::legendre_to_tabular = true;
@@ -176,6 +181,13 @@ int openmc_finalize()
   // Deallocate arrays
   free_memory();
 
+  // Reset kinetics tally index (tally was freed in free_memory_tally)
+  simulation::kinetics_tally_index = -1;
+
+  // Reset k_prompt accumulators
+  simulation::k_prompt_sum = 0.0;
+  simulation::k_prompt_sum_sq = 0.0;
+
 #ifdef OPENMC_LIBMESH_ENABLED
   settings::libmesh_init.reset();
 #endif
@@ -213,6 +225,9 @@ int openmc_reset()
   simulation::k_abs_tra = 0.0;
   simulation::k_sum = {0.0, 0.0};
   simulation::satisfy_triggers = false;
+
+  // Reset prompt k-effective global tally
+  global_tally_prompt_tracklength = 0.0;
 
   settings::cmfd_run = false;
 

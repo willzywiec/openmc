@@ -6,14 +6,17 @@
 #include <fmt/core.h>
 
 #include "openmc/bank.h"
+#include "openmc/bloch_airy.h"
 #include "openmc/capi.h"
 #include "openmc/cell.h"
 #include "openmc/collision_track.h"
 #include "openmc/constants.h"
 #include "openmc/dagmc.h"
+#include "openmc/eigenvalue.h"
 #include "openmc/error.h"
 #include "openmc/geometry.h"
 #include "openmc/hdf5_interface.h"
+#include "openmc/ifp.h"
 #include "openmc/lattice.h"
 #include "openmc/material.h"
 #include "openmc/message_passing.h"
@@ -75,6 +78,144 @@ double Particle::mass() const
     return MASS_ELECTRON_EV;
   default:
     return this->type().mass() * AMU_EV;
+  }
+}
+
+void Particle::apply_gravity(double dt, double distance)
+{
+  // Only apply gravity if enabled
+  if (!settings::gravity_enabled || dt <= 0.0)
+    return;
+
+  // Get particle mass in eV/c^2
+  double mass;
+  switch (this->type()) {
+  case ParticleType::neutron:
+    mass = MASS_NEUTRON_EV;
+    break;
+  case ParticleType::photon:
+    mass = 0.0; // Photons have no mass, no gravitational acceleration
+    return;
+  case ParticleType::electron:
+  case ParticleType::positron:
+    mass = MASS_ELECTRON_EV;
+    break;
+  }
+
+  // Skip if particle has no mass
+  if (mass == 0.0)
+    return;
+
+  // Store initial position for energy calculation
+  Position r_initial = r();
+
+  // Check if Bloch-Airy quantum effects should be applied
+  bool use_bloch_airy = should_apply_bloch_airy(
+    static_cast<int>(this->type()), this->E());
+
+  if (use_bloch_airy) {
+    // Apply Bloch-Airy quantum gravitational model for ultracold neutrons
+    // The height distribution follows |ψ_n(z)|² instead of classical trajectory
+
+    // Calculate gravity magnitude
+    double g_mag = std::sqrt(
+      settings::gravity_accel[0] * settings::gravity_accel[0] +
+      settings::gravity_accel[1] * settings::gravity_accel[1] +
+      settings::gravity_accel[2] * settings::gravity_accel[2]);
+
+    // Calculate gravitational length scale z₀
+    double z0 = gravitational_length_scale(mass, g_mag);
+
+    // Determine quantum state from current energy
+    int n = determine_quantum_state(this->E(), mass, g_mag);
+
+    // Sample height from quantum probability distribution |ψ_n(z)|²
+    uint64_t* seed = current_seed();
+    double z_quantum = sample_quantum_height(n, z0, seed);
+
+    // Determine gravity direction (normalized)
+    Direction g_dir;
+    if (g_mag > 0.0) {
+      g_dir.x = settings::gravity_accel[0] / g_mag;
+      g_dir.y = settings::gravity_accel[1] / g_mag;
+      g_dir.z = settings::gravity_accel[2] / g_mag;
+    } else {
+      g_dir = {0.0, 0.0, -1.0};
+    }
+
+    // Apply quantum height offset perpendicular to gravity
+    // The quantum sampling gives height above the mirror surface
+    // We modify the position component along the gravity direction
+    for (int j = 0; j < n_coord(); ++j) {
+      // Add the quantum height perturbation (opposite to gravity direction)
+      coord(j).r().x -= g_dir.x * z_quantum;
+      coord(j).r().y -= g_dir.y * z_quantum;
+      coord(j).r().z -= g_dir.z * z_quantum;
+    }
+
+    // Quantize energy to the nearest quantum level
+    double E_quantum = quantum_energy_level(n, mass, g_mag);
+    E() = E_quantum;
+
+  } else {
+    // Apply classical gravitational position correction
+    // The particle has already moved in a straight line by distance
+    // Now add the gravitational deflection: r_correction = 0.5 * g * dt^2
+    for (int j = 0; j < n_coord(); ++j) {
+      coord(j).r().x += 0.5 * settings::gravity_accel[0] * dt * dt;
+      coord(j).r().y += 0.5 * settings::gravity_accel[1] * dt * dt;
+      coord(j).r().z += 0.5 * settings::gravity_accel[2] * dt * dt;
+    }
+  }
+
+  // Update velocity direction for next step
+  // v_final = v_initial + g * dt
+  double initial_speed = this->speed();
+  Direction v_initial = u() * initial_speed;
+
+  // Add gravity contribution to velocity
+  v_initial.x += settings::gravity_accel[0] * dt;
+  v_initial.y += settings::gravity_accel[1] * dt;
+  v_initial.z += settings::gravity_accel[2] * dt;
+
+  // Calculate new speed and direction
+  double new_speed = v_initial.norm();
+  if (new_speed > 0.0) {
+    // Update direction
+    for (int j = 0; j < n_coord(); ++j) {
+      coord(j).u() = v_initial / new_speed;
+    }
+
+    // Calculate change in gravitational potential energy
+    // dE_potential = m * g_vector · dr
+    Position dr = r() - r_initial;
+    double g_dot_dr = settings::gravity_accel[0] * dr.x +
+                      settings::gravity_accel[1] * dr.y +
+                      settings::gravity_accel[2] * dr.z;
+
+    // Convert mass from eV/c^2 to kg
+    const double EV_TO_JOULE = 1.602176634e-19;
+    const double C_SQUARED = C_LIGHT * C_LIGHT; // cm^2/s^2
+    double mass_kg = (mass * EV_TO_JOULE) / (C_SQUARED / 1e4); // Convert c in cm/s to m/s
+
+    // Potential energy change in Joules
+    double dE_potential_J = mass_kg * g_dot_dr / 100.0; // Convert cm to m
+
+    // Convert to eV and update particle energy
+    double dE_potential_eV = dE_potential_J / EV_TO_JOULE;
+
+    // Energy conservation: E_kinetic_new = E_kinetic_old - dE_potential
+    // (losing kinetic energy when moving against gravity)
+    // Skip energy update if using Bloch-Airy (energy already quantized)
+    if (!use_bloch_airy) {
+      E() -= dE_potential_eV;
+    }
+
+    // Check if particle energy became negative or too low
+    if (E() < settings::energy_cutoff[static_cast<int>(type())]) {
+      // Particle has insufficient energy, mark for termination
+      wgt() = 0.0;
+    }
   }
 }
 
@@ -163,6 +304,10 @@ void Particle::from_source(const SourceSite* src)
   parent_nuclide() = src->parent_nuclide;
   delayed_group() = src->delayed_group;
 
+  // Initialize delayed neutron flag for kinetics calculations
+  // Track whether this neutron itself is delayed (not genealogy)
+  is_delayed() = (src->delayed_group > 0);
+
   // Convert signed surface ID to signed index
   if (src->surf_id != SURFACE_NONE) {
     int index_plus_one = model::surface_map[std::abs(src->surf_id)] + 1;
@@ -240,6 +385,9 @@ void Particle::event_calculate_xs()
     macro_xs().fission = 0.0;
     macro_xs().nu_fission = 0.0;
   }
+
+  // Alpha eigenvalue calculation uses generation k_eff measurements
+  // Cross sections are not modified during alpha calculations
 }
 
 void Particle::event_advance()
@@ -272,6 +420,9 @@ void Particle::event_advance()
   this->time() += dt;
   this->lifetime() += dt;
 
+  // Apply gravitational acceleration
+  this->apply_gravity(dt, distance);
+
   // Score timed track-length tallies
   if (!model::active_timed_tracklength_tallies.empty()) {
     score_timed_tracklength_tally(*this, distance);
@@ -285,6 +436,12 @@ void Particle::event_advance()
   // Score track-length estimate of k-eff
   if (settings::run_mode == RunMode::EIGENVALUE && type().is_neutron()) {
     keff_tally_tracklength() += wgt() * distance * macro_xs().nu_fission;
+
+    // Score track-length estimate of k_prompt (prompt neutrons only)
+    if (settings::calculate_prompt_k && !is_delayed()) {
+      keff_prompt_tally_tracklength() +=
+        wgt() * distance * macro_xs().nu_fission;
+    }
   }
 
   // Score flux derivative accumulators for differential tallies.
@@ -419,6 +576,12 @@ void Particle::event_collide()
   // Reset fission logical
   fission() = false;
 
+  // NOTE: Do NOT reset is_delayed() flag here!
+  // Once a neutron is delayed, it remains delayed throughout its lifetime.
+  // The delayed status is intrinsic to the neutron itself, not just its birth.
+  // This is important for kinetics calculations where we track prompt chains
+  // separately from delayed neutrons.
+
   // Save coordinates for tallying purposes
   r_last_current() = r();
 
@@ -527,12 +690,15 @@ void Particle::event_death()
   global_tally_tracklength += keff_tally_tracklength();
 #pragma omp atomic
   global_tally_leakage += keff_tally_leakage();
+#pragma omp atomic
+  global_tally_prompt_tracklength += keff_prompt_tally_tracklength();
 
   // Reset particle tallies once accumulated
   keff_tally_absorption() = 0.0;
   keff_tally_collision() = 0.0;
   keff_tally_tracklength() = 0.0;
   keff_tally_leakage() = 0.0;
+  keff_prompt_tally_tracklength() = 0.0;
 
   if (!model::active_pulse_height_tallies.empty()) {
     score_pulse_height_tally(*this, model::active_pulse_height_tallies);

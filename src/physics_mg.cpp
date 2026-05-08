@@ -164,6 +164,10 @@ void create_fission_sites(Particle& p)
     // of the code, 0 is prompt.
     site.delayed_group = dg + 1;
 
+    // Set delayed neutron flag for kinetics calculations
+    // Track whether this neutron itself is delayed (not genealogy)
+    site.is_delayed = (site.delayed_group > 0);
+
     // If delayed product production, sample time of emission
     if (dg != -1) {
       auto& macro_xs = data::mg.macro_xs_[p.material()];
@@ -186,10 +190,20 @@ void create_fission_sites(Particle& p)
     if (use_fission_bank) {
       int64_t idx = simulation::fission_bank.thread_safe_append(site);
       if (idx == -1) {
-        warning(
-          "The shared fission bank is full. Additional fission sites created "
-          "in this generation will not be banked. Results may be "
-          "non-deterministic.");
+        // Use a static flag to ensure warning is only printed once per rank
+        static bool warning_printed = false;
+        if (!warning_printed) {
+#pragma omp critical(FissionBankWarning)
+          {
+            if (!warning_printed) {
+              warning(
+                "The shared fission bank is full. Additional fission sites "
+                "created in this generation will not be banked. Results may be "
+                "non-deterministic.");
+              warning_printed = true;
+            }
+          }
+        }
 
         // Decrement number of particle progeny as storage was unsuccessful.
         // This step is needed so that the sum of all progeny is equal to the

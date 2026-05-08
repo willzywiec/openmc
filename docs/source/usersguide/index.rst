@@ -23,6 +23,9 @@ essential aspects of using OpenMC to perform simulations.
     depletion
     decay_sources
     kinetics
+    alpha_eigenvalues
+    revolution
+    gravity_experimental_benchmarks
     scripts
     processing
     parallel

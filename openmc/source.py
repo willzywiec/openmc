@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from collections.abc import Iterable, Sequence
-from numbers import Real
+from numbers import Integral, Real
 from pathlib import Path
 import warnings
 from typing import Any
@@ -894,8 +894,6 @@ class FileSource(SourceBase):
             kwargs['strength'] = float(strength)
 
         return cls(**kwargs)
-
-
 
 
 class SourceParticle:

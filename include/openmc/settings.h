@@ -71,6 +71,9 @@ extern "C" bool entropy_on; //!< calculate Shannon entropy?
 extern "C" bool
   event_based;      //!< use event-based mode (instead of history-based)
 extern bool ifp_on; //!< Use IFP for kinetics parameters?
+extern bool
+  calculate_prompt_k; //!< calculate k_prompt for delayed neutron kinetics?
+extern bool calculate_alpha; //!< calculate alpha eigenvalue (requires IFP)?
 extern bool legendre_to_tabular; //!< convert Legendre distributions to tabular?
 extern bool material_cell_offsets;   //!< create material cells offsets?
 extern "C" bool output_summary;      //!< write summary.h5?
@@ -143,6 +146,15 @@ extern array<double, 4>
   energy_cutoff; //!< Energy cutoff in [eV] for each particle type
 extern array<double, 4>
   time_cutoff; //!< Time cutoff in [s] for each particle type
+
+// Gravity settings
+extern bool gravity_enabled;           //!< Enable gravity physics
+extern array<double, 3> gravity_accel; //!< Gravity acceleration vector [cm/s^2]
+
+// Bloch-Airy quantum gravitational bound state settings
+extern bool bloch_airy_enabled;        //!< Enable Bloch-Airy quantum model for UCN
+extern double bloch_airy_energy_threshold; //!< Max energy [eV] for quantum effects
+
 extern int
   ifp_n_generation; //!< Number of generation for Iterated Fission Probability
 extern IFPParameter

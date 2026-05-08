@@ -310,6 +310,93 @@ class StatePoint:
             return None
 
     @property
+    def k_prompt_generation(self):
+        """Prompt k-effective for each batch/generation."""
+        if self.run_mode == 'eigenvalue' and 'k_prompt_generation' in self._f:
+            return self._f['k_prompt_generation'][()]
+        else:
+            return None
+
+    @property
+    def k_prompt(self):
+        """Combined prompt k-effective estimator with uncertainty."""
+        if self.run_mode == 'eigenvalue' and 'k_prompt' in self._f:
+            return ufloat(*self._f['k_prompt'][()])
+        else:
+            return None
+
+    @property
+    def beta_eff(self):
+        """Effective delayed neutron fraction with uncertainty."""
+        if self.run_mode == 'eigenvalue' and 'beta_eff' in self._f:
+            return ufloat(*self._f['beta_eff'][()])
+        else:
+            return None
+
+    @property
+    def lambda_eff_ifp(self):
+        """IFP-weighted effective generation time (Λ_eff) with uncertainty.
+
+        The effective generation time computed using the Iterated Fission
+        Probability (IFP) method: Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+        """
+        if self.run_mode == 'eigenvalue' and 'lambda_eff_ifp' in self._f:
+            return ufloat(*self._f['lambda_eff_ifp'][()])
+        else:
+            return None
+
+    @property
+    def lifetime_p_ifp(self):
+        """IFP-weighted prompt neutron lifetime (ℓ_p) with uncertainty.
+
+        The prompt neutron lifetime computed using the Iterated Fission
+        Probability (IFP) method: ℓ_p = ifp-prompt-time-numerator /
+        ifp-prompt-denominator, considering only prompt neutron chains.
+        """
+        if self.run_mode == 'eigenvalue' and 'lifetime_p_ifp' in self._f:
+            return ufloat(*self._f['lifetime_p_ifp'][()])
+        else:
+            return None
+
+    @property
+    def lambda_p_ifp(self):
+        """IFP-weighted prompt generation time (Λ_p) with uncertainty.
+
+        The prompt generation time computed using the Iterated Fission
+        Probability (IFP) method: Λ_p = ℓ_p / k_p, considering only
+        prompt neutron chains.
+        """
+        if self.run_mode == 'eigenvalue' and 'lambda_p_ifp' in self._f:
+            return ufloat(*self._f['lambda_p_ifp'][()])
+        else:
+            return None
+
+    @property
+    def alpha_dc_ifp(self):
+        """IFP-weighted alpha eigenvalue at delayed critical with uncertainty.
+
+        Calculated as: α_dc = −β_eff / ℓ_p
+        where ℓ_p is the IFP-weighted prompt neutron lifetime.
+        """
+        if self.run_mode == 'eigenvalue' and 'alpha_dc_ifp' in self._f:
+            return ufloat(*self._f['alpha_dc_ifp'][()])
+        else:
+            return None
+
+    @property
+    def alpha_ifp(self):
+        """IFP-weighted alpha eigenvalue at actual reactivity with uncertainty.
+
+        Calculated as: α = (k_p − 1) / ℓ_p
+        where ℓ_p is the IFP-weighted prompt neutron lifetime and
+        k_p = k_eff · (1 − β_eff) is the prompt multiplication factor.
+        """
+        if self.run_mode == 'eigenvalue' and 'alpha_ifp' in self._f:
+            return ufloat(*self._f['alpha_ifp'][()])
+        else:
+            return None
+
+    @property
     def meshes(self):
         if not self._meshes_read:
             mesh_group = self._f['tallies/meshes']

@@ -56,6 +56,8 @@ bool delayed_photon_scaling {true};
 bool entropy_on {false};
 bool event_based {false};
 bool ifp_on {false};
+bool calculate_prompt_k {false};
+bool calculate_alpha {false};
 bool legendre_to_tabular {true};
 bool material_cell_offsets {true};
 bool output_summary {true};
@@ -112,6 +114,15 @@ int max_particle_events {1000000};
 ElectronTreatment electron_treatment {ElectronTreatment::TTB};
 array<double, 4> energy_cutoff {0.0, 1000.0, 0.0, 0.0};
 array<double, 4> time_cutoff {INFTY, INFTY, INFTY, INFTY};
+
+// Gravity settings
+bool gravity_enabled {false};
+array<double, 3> gravity_accel {0.0, 0.0, -980.0}; // Default: Earth gravity in -z
+
+// Bloch-Airy quantum gravitational bound state settings
+bool bloch_airy_enabled {false};
+double bloch_airy_energy_threshold {300.0e-9}; // Default: 300 neV
+
 int ifp_n_generation {-1};
 IFPParameter ifp_parameter {IFPParameter::None};
 int legendre_to_tabular_points {C_NONE};
@@ -280,9 +291,8 @@ void get_run_parameters(pugi::xml_node node_base)
     } else {
       fatal_error("Specify random ray inactive distance in settings XML");
     }
-    if (check_for_node(random_ray_node, "ray_source")) {
-      xml_node ray_source_node = random_ray_node.child("ray_source");
-      xml_node source_node = ray_source_node.child("source");
+    if (check_for_node(random_ray_node, "source")) {
+      xml_node source_node = random_ray_node.child("source");
       // Get point to list of <source> elements and make sure there is at least
       // one
       RandomRay::ray_source_ = Source::create(source_node);
@@ -368,13 +378,6 @@ void get_run_parameters(pugi::xml_node node_base)
           FlatSourceDomain::diagonal_stabilization_rho_ > 1.0) {
         fatal_error("Random ray diagonal stabilization rho factor must be "
                     "between 0 and 1");
-      }
-    }
-    if (check_for_node(random_ray_node, "adjoint_source")) {
-      pugi::xml_node adj_source_node = random_ray_node.child("adjoint_source");
-      for (pugi::xml_node source_node : adj_source_node.children("source")) {
-        // Find any local adjoint sources
-        model::adjoint_sources.push_back(Source::create(source_node));
       }
     }
   }
@@ -760,6 +763,29 @@ void read_settings_xml(pugi::xml_node root)
     }
   }
 
+  // Gravity settings
+  if (check_for_node(root, "gravity")) {
+    auto node_gravity = root.child("gravity");
+    gravity_enabled = get_node_value_bool(node_gravity, "enabled");
+    if (check_for_node(node_gravity, "acceleration")) {
+      auto accel = get_node_array<double>(node_gravity, "acceleration");
+      if (accel.size() != 3) {
+        fatal_error("Gravity acceleration must have 3 components (x, y, z).");
+      }
+      gravity_accel = {accel[0], accel[1], accel[2]};
+    }
+  }
+
+  // Bloch-Airy quantum gravitational bound state settings
+  if (check_for_node(root, "bloch_airy")) {
+    auto node_bloch_airy = root.child("bloch_airy");
+    bloch_airy_enabled = get_node_value_bool(node_bloch_airy, "enabled");
+    if (check_for_node(node_bloch_airy, "energy_threshold")) {
+      bloch_airy_energy_threshold =
+        std::stod(get_node_value(node_bloch_airy, "energy_threshold"));
+    }
+  }
+
   // read properties from file
   if (check_for_node(root, "properties_file")) {
     properties_file = get_node_value(root, "properties_file");
@@ -853,6 +879,29 @@ void read_settings_xml(pugi::xml_node root)
       "Specifying a UFS mesh via the <uniform_fs> element "
       "is deprecated. Please create a mesh using <mesh> and then reference "
       "it by specifying its ID in a <ufs_mesh> element.");
+  }
+
+  // Delayed neutron kinetics calculations
+  if (check_for_node(root, "kinetics")) {
+    auto node_kinetics = root.child("kinetics");
+    if (check_for_node(node_kinetics, "calculate_prompt_k")) {
+      calculate_prompt_k =
+        get_node_value_bool(node_kinetics, "calculate_prompt_k");
+    }
+    if (check_for_node(node_kinetics, "calculate_alpha")) {
+      calculate_alpha = get_node_value_bool(node_kinetics, "calculate_alpha");
+      // Alpha calculation requires k_prompt and IFP
+      if (calculate_alpha) {
+        calculate_prompt_k = true;
+        // Enable IFP with default generations if not already set
+        if (ifp_n_generation <= 0) {
+          // Use 10 generations or half of inactive batches, whichever is smaller
+          ifp_n_generation = std::min(10, n_inactive > 0 ? n_inactive / 2 : 10);
+          if (ifp_n_generation < 1) ifp_n_generation = 1;
+        }
+        ifp_on = true;
+      }
+    }
   }
 
   // Check if the user has specified to write state points
@@ -1282,16 +1331,6 @@ void read_settings_xml(pugi::xml_node root)
       if (wwg->on_the_fly_) {
         settings::weight_windows_on = true;
         break;
-      }
-    }
-    // If any weight window generators have local FW-CADIS target tallies,
-    // user-defined adjoint sources cannot be used at the same time.
-    if (!model::adjoint_sources.empty()) {
-      for (const auto& wwg : variance_reduction::weight_windows_generators) {
-        if (!wwg->targets_.empty()) {
-          fatal_error("Cannot use both user-defined adjoint sources and "
-                      "FW-CADIS target tallies at the same time.");
-        }
       }
     }
   }

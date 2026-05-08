@@ -45,7 +45,8 @@ docs = [
     "sphinx-numfig",
     "jupyter",
     "sphinxcontrib-svg2pdfconverter",
-    "sphinx-rtd-theme"
+    "sphinx-rtd-theme",
+    "myst-parser"
 ]
 test = [
     "packaging",
@@ -69,7 +70,7 @@ include = ['openmc*']
 exclude = ['tests*']
 
 [tool.setuptools.package-data]
-"openmc.data.dose" = ["**/*.txt", "*.h5"]
+"openmc.data.dose" = ["**/*.txt"]
 "openmc.data" = ["*.txt", "*.DAT", "*.json", "*.h5"]
 "openmc.lib" = ["libopenmc.dylib", "libopenmc.so"]
 

@@ -321,6 +321,7 @@ void print_build_info()
   std::string png(n);
   std::string profiling(n);
   std::string coverage(n);
+  std::string mcpl(n);
   std::string uwuw(n);
   std::string strict_fp(n);
 
@@ -335,6 +336,9 @@ void print_build_info()
 #endif
 #ifdef OPENMC_LIBMESH_ENABLED
   libmesh = y;
+#endif
+#ifdef OPENMC_MCPL
+  mcpl = y;
 #endif
 #ifdef USE_LIBPNG
   png = y;
@@ -365,6 +369,7 @@ void print_build_info()
     fmt::print("PNG support:           {}\n", png);
     fmt::print("DAGMC support:         {}\n", dagmc);
     fmt::print("libMesh support:       {}\n", libmesh);
+    fmt::print("MCPL support:          {}\n", mcpl);
     fmt::print("Coverage testing:      {}\n", coverage);
     fmt::print("Profiling flags:       {}\n", profiling);
     fmt::print("UWUW support:          {}\n", uwuw);
@@ -543,24 +548,47 @@ void print_results()
   if (n > 1) {
     if (settings::run_mode == RunMode::EIGENVALUE) {
       std::tie(mean, stdev) = mean_stdev(&gt(GlobalTally::K_COLLISION, 0), n);
-      fmt::print(" k-effective (Collision)     = {:.5f} +/- {:.5f}\n", mean,
+      fmt::print(" k-effective (Collision)    = {:.5f} +/- {:.5f}\n", mean,
         t_n1 * stdev);
       std::tie(mean, stdev) = mean_stdev(&gt(GlobalTally::K_TRACKLENGTH, 0), n);
-      fmt::print(" k-effective (Track-length)  = {:.5f} +/- {:.5f}\n", mean,
+      fmt::print(" k-effective (Track-length) = {:.5f} +/- {:.5f}\n", mean,
         t_n1 * stdev);
       std::tie(mean, stdev) = mean_stdev(&gt(GlobalTally::K_ABSORPTION, 0), n);
-      fmt::print(" k-effective (Absorption)    = {:.5f} +/- {:.5f}\n", mean,
+      fmt::print(" k-effective (Absorption)   = {:.5f} +/- {:.5f}\n", mean,
         t_n1 * stdev);
       if (n > 3) {
         double k_combined[2];
         openmc_get_keff(k_combined);
-        fmt::print(" Combined k-effective        = {:.5f} +/- {:.5f}\n",
+        fmt::print(" Combined k-effective       = {:.5f} +/- {:.5f}\n",
           k_combined[0], k_combined[1]);
       }
     }
     std::tie(mean, stdev) = mean_stdev(&gt(GlobalTally::LEAKAGE, 0), n);
     fmt::print(
-      " Leakage Fraction            = {:.5f} +/- {:.5f}\n", mean, t_n1 * stdev);
+      " Leakage Fraction           = {:.5f} +/- {:.5f}\n", mean, t_n1 * stdev);
+
+    // Print delayed neutron kinetics parameters if calculated
+    if (settings::run_mode == RunMode::EIGENVALUE &&
+        settings::calculate_prompt_k) {
+      fmt::print(" k-prompt                   = {:.5f} +/- {:.5f}\n",
+        simulation::keff_prompt, t_n1 * simulation::keff_prompt_std);
+      fmt::print(" Beta-effective             = {:.5f} +/- {:.5f}\n",
+        simulation::beta_eff, t_n1 * simulation::beta_eff_std);
+      // IFP-weighted alpha eigenvalue (requires IFP to be enabled)
+      if (settings::calculate_alpha && settings::ifp_on &&
+          simulation::lambda_eff_ifp > 0.0) {
+        fmt::print(" Lambda-effective (IFP)     = {:.5e} +/- {:.5e} seconds\n",
+          simulation::lambda_eff_ifp, t_n1 * simulation::lambda_eff_ifp_std);
+        fmt::print(" Lambda-prompt (IFP)        = {:.5e} +/- {:.5e} seconds\n",
+          simulation::lambda_p_ifp, t_n1 * simulation::lambda_p_ifp_std);
+        fmt::print(" Lifetime-prompt (IFP)      = {:.5e} +/- {:.5e} seconds\n",
+          simulation::lifetime_p_ifp, t_n1 * simulation::lifetime_p_ifp_std);
+        fmt::print(" Alpha (Delayed Critical)   = {:.5e} +/- {:.5e} 1/seconds\n",
+          simulation::alpha_dc_ifp, t_n1 * simulation::alpha_dc_ifp_std);
+        fmt::print(" Alpha (Static)             = {:.5e} +/- {:.5e} 1/seconds\n",
+          simulation::alpha_ifp, t_n1 * simulation::alpha_ifp_std);
+      }
+    }
   } else {
     if (mpi::master)
       warning("Could not compute uncertainties -- only one "
@@ -576,6 +604,29 @@ void print_results()
     }
     fmt::print(" Leakage Fraction           = {:.5f}\n",
       gt(GlobalTally::LEAKAGE, TallyResult::SUM) / n);
+
+    // Print delayed neutron kinetics parameters if calculated (n=1 case)
+    if (settings::run_mode == RunMode::EIGENVALUE &&
+        settings::calculate_prompt_k) {
+      fmt::print(
+        " k-prompt                   = {:.5f}\n", simulation::keff_prompt);
+      fmt::print(
+        " Beta-effective             = {:.5f}\n", simulation::beta_eff);
+      // IFP-weighted alpha eigenvalue (requires IFP to be enabled)
+      if (settings::calculate_alpha && settings::ifp_on &&
+          simulation::lambda_eff_ifp > 0.0) {
+        fmt::print(" Lambda-effective (IFP)     = {:.5e} seconds\n",
+          simulation::lambda_eff_ifp);
+        fmt::print(" Lambda-prompt (IFP)        = {:.5e} seconds\n",
+          simulation::lambda_p_ifp);
+        fmt::print(" Lifetime-prompt (IFP)      = {:.5e} seconds\n",
+          simulation::lifetime_p_ifp);
+        fmt::print(" Alpha (Delayed Critical)   = {:.5e} 1/seconds\n",
+          simulation::alpha_dc_ifp);
+        fmt::print(" Alpha (Static)             = {:.5e} 1/seconds\n",
+          simulation::alpha_ifp);
+      }
+    }
   }
   fmt::print("\n");
   std::fflush(stdout);

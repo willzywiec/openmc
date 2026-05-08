@@ -1,1 +1,4 @@
 .git_archival.txt  export-subst
+
+# Ensure shell scripts always use LF line endings (prevents issues on WSL/Windows)
+*.sh text eol=lf

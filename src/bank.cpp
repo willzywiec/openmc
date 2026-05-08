@@ -85,7 +85,7 @@ void sort_fission_bank()
   // bank for each parent particle id
   std::exclusive_scan(simulation::progeny_per_particle.begin(),
     simulation::progeny_per_particle.end(),
-    simulation::progeny_per_particle.begin(), 0);
+    simulation::progeny_per_particle.begin(), static_cast<int64_t>(0));
 
   // We need a scratch vector to make permutation of the fission bank into
   // sorted order easy. Under normal usage conditions, the fission bank is

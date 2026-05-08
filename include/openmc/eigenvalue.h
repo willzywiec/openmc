@@ -4,6 +4,8 @@
 #ifndef OPENMC_EIGENVALUE_H
 #define OPENMC_EIGENVALUE_H
 
+#include <algorithm>
+#include <cmath>
 #include <cstdint> // for int64_t
 
 #include "openmc/tensor.h"
@@ -26,6 +28,37 @@ extern array<double, 2> k_sum; //!< Used to reduce sum and sum_sq
 extern vector<double> entropy; //!< Shannon entropy at each generation
 extern tensor::Tensor<double> source_frac; //!< Source fraction for UFS
 
+// Delayed neutron kinetics parameters
+extern double keff_prompt_generation; //!< Single-generation k_prompt
+extern vector<double> k_prompt;       //!< k_prompt for each generation
+extern double keff_prompt;            //!< Mean k_prompt over active generations
+extern double keff_prompt_std;        //!< Standard deviation of k_prompt
+extern double beta_eff;               //!< Effective delayed neutron fraction
+extern double beta_eff_std;           //!< Standard deviation of beta_eff
+
+// IFP-weighted generation times and alpha eigenvalue
+// Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)
+// ℓ_p = ifp-prompt-time-numerator / ifp-prompt-denominator
+// Λ_p = ℓ_p / k_p
+// α_dc = −β_eff / ℓ_p,  α = (k_p − 1) / ℓ_p
+extern double alpha_dc_ifp;           //!< α at delayed critical from IFP-weighted Λ_p [/s]
+extern double alpha_dc_ifp_std;      //!< Standard deviation of α_dc_ifp
+extern double alpha_ifp;              //!< α at actual reactivity state [/s]
+extern double alpha_ifp_std;          //!< Standard deviation of α_ifp
+extern double lambda_eff_ifp;         //!< IFP-weighted generation time Λ_eff [s]
+extern double lambda_eff_ifp_std;     //!< Standard deviation of Λ_eff
+extern double lifetime_p_ifp;          //!< IFP-weighted prompt neutron lifetime ℓ_p [s]
+extern double lifetime_p_ifp_std;     //!< Standard deviation of ℓ_p
+extern double lambda_p_ifp;           //!< IFP-weighted prompt generation time Λ_p [s]
+extern double lambda_p_ifp_std;       //!< Standard deviation of Λ_p
+
+// Index of internal kinetics tally (for alpha calculations using IFP scores)
+extern int kinetics_tally_index;
+
+// Accumulators for k_prompt statistics
+extern double k_prompt_sum;
+extern double k_prompt_sum_sq;
+
 } // namespace simulation
 
 //==============================================================================
@@ -35,12 +68,26 @@ extern tensor::Tensor<double> source_frac; //!< Source fraction for UFS
 //! Collect/normalize the tracklength keff from each process
 void calculate_generation_keff();
 
+//! Collect/normalize the tracklength k_prompt from each process
+void calculate_generation_prompt_keff();
+
 //! Calculate mean/standard deviation of keff during active generations
 //!
 //! This function sets the global variables keff and keff_std which represent
 //! the mean and standard deviation of the mean of k-effective over active
 //! generations. It also broadcasts the value from the master process.
 void calculate_average_keff();
+
+//! Calculate delayed neutron kinetics parameters
+//!
+//! This function calculates k_prompt, beta_eff, and alpha eigenvalue
+//! over active generations. Results are stored in simulation namespace.
+void calculate_kinetics_parameters();
+
+//! Setup internal tallies for alpha eigenvalue calculations
+//!
+//! Creates a tally with IFP scores needed for alpha calculation
+void setup_kinetics_tallies();
 
 //! Calculates a minimum variance estimate of k-effective
 //!
