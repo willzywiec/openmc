@@ -958,6 +958,25 @@ class StatePoint:
         LookupError
             If no matching ``ifp-importance`` tally is found.
 
+        Notes
+        -----
+        The returned ``std_dev`` is per-bin: it is the standard deviation
+        of each ``(mesh_cell, energy_group)`` bin computed independently
+        from that bin's batch sum and sum-of-squares. Bins are not
+        statistically independent because every particle history
+        contributes to one mesh cell and one energy group at a time, so
+        any quadrature sum over bins (e.g. integrating
+        :math:`\\phi^{\\dagger}` over a region of interest as
+        ``np.sqrt(np.sum(std_dev[...]**2))``) ignores the cross-bin
+        covariance and will under-predict the true uncertainty of the
+        sum. This matches the assumption already made by
+        :meth:`openmc.Tally.summation` and the arithmetic operators on
+        :class:`openmc.Tally` (see their docstrings). To obtain a
+        properly variance-resolved aggregate, score the aggregate
+        quantity directly with a tally whose filters define the desired
+        region as a single bin -- the C++ pipeline then accumulates
+        ``sum`` / ``sum_sq`` for that bin natively.
+
         """
         # Locate the tally.
         candidates = [t for t in self.tallies.values()

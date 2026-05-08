@@ -64,13 +64,19 @@ def check_kinetics_parameters(sp: openmc.StatePoint) -> dict:
 
     if params.beta_effective is not None:
         b = params.beta_effective
-        # `beta_effective` may be a scalar ufloat or a numpy array of ufloats.
+        # The ifp-beta-numerator tally in build_godiva.py has no
+        # DelayedGroupFilter, so the C++ pipeline accumulates a single bin
+        # over all delayed groups and sigma is computed natively from the
+        # batch sum / sum_of_squares (no cross-bin covariance approximation).
         if hasattr(b, "shape") and b.shape:
-            beta_total = float(sum(x.nominal_value for x in b))
-            beta_total_unc = float(np.sqrt(sum(x.std_dev**2 for x in b)))
-        else:
-            beta_total = float(b.nominal_value)
-            beta_total_unc = float(b.std_dev)
+            raise RuntimeError(
+                "Expected scalar beta_effective. If the ifp-beta-numerator "
+                "tally is given a DelayedGroupFilter, the per-group betas "
+                "share particle histories and quadrature-summing them would "
+                "ignore that covariance. Re-score without the filter or "
+                "propagate sigma through the per-batch realization arrays.")
+        beta_total = float(b.nominal_value)
+        beta_total_unc = float(b.std_dev)
         ref, ref_unc = GODIVA_REFERENCE["beta_eff"]
         out["beta_eff"] = {
             "value":     (beta_total, beta_total_unc),
