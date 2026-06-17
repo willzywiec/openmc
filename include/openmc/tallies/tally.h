@@ -107,6 +107,8 @@ public:
 
   bool higher_moments() const { return higher_moments_; }
 
+  int64_t index() const { return index_; }
+
   //----------------------------------------------------------------------------
   // Other methods.
 
@@ -229,6 +231,9 @@ extern double global_tally_absorption;
 extern double global_tally_collision;
 extern double global_tally_tracklength;
 extern double global_tally_leakage;
+
+// Global tally for prompt k-effective (kinetics calculations)
+extern double global_tally_prompt_tracklength;
 
 //==============================================================================
 // Non-member functions

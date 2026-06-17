@@ -1102,6 +1102,10 @@ void sample_fission_neutron(
     site->delayed_group = 0;
   }
 
+  // Set delayed neutron flag for kinetics calculations
+  // Track whether this neutron itself is delayed (not genealogy)
+  site->is_delayed = (site->delayed_group > 0);
+
   // sample from prompt neutron energy distribution
   int n_sample = 0;
   double mu;
