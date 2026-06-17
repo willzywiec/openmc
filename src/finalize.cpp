@@ -90,7 +90,7 @@ int openmc_finalize()
   settings::time_cutoff = {INFTY, INFTY, INFTY, INFTY};
   settings::entropy_on = false;
   settings::event_based = false;
-  settings::calculate_prompt_k = false;
+  settings::calculate_k_prompt = false;
   settings::calculate_alpha = false;
   settings::free_gas_threshold = 400.0;
   settings::gen_per_batch = 1;

@@ -314,9 +314,8 @@ void Particle::event_advance()
     keff_tally_tracklength() += wgt() * distance * macro_xs().nu_fission;
 
     // Score track-length estimate of k_prompt (prompt neutrons only)
-    if (settings::calculate_prompt_k && !is_delayed()) {
-      keff_prompt_tally_tracklength() +=
-        wgt() * distance * macro_xs().nu_fission;
+    if (settings::calculate_k_prompt && !is_delayed()) {
+      k_prompt_tally_tracklength() += wgt() * distance * macro_xs().nu_fission;
     }
   }
 
@@ -573,14 +572,14 @@ void Particle::event_death()
 #pragma omp atomic
   global_tally_leakage += keff_tally_leakage();
 #pragma omp atomic
-  global_tally_prompt_tracklength += keff_prompt_tally_tracklength();
+  global_tally_prompt_tracklength += k_prompt_tally_tracklength();
 
   // Reset particle tallies once accumulated
   keff_tally_absorption() = 0.0;
   keff_tally_collision() = 0.0;
   keff_tally_tracklength() = 0.0;
   keff_tally_leakage() = 0.0;
-  keff_prompt_tally_tracklength() = 0.0;
+  k_prompt_tally_tracklength() = 0.0;
 
   if (!model::active_pulse_height_tallies.empty()) {
     score_pulse_height_tally(*this, model::active_pulse_height_tallies);

@@ -572,7 +572,7 @@ void print_results()
 
     // Print delayed neutron kinetics parameters if calculated
     if (settings::run_mode == RunMode::EIGENVALUE &&
-        settings::calculate_prompt_k) {
+        settings::calculate_k_prompt) {
       fmt::print(" k-prompt                    = {:.5f} +/- {:.5f}\n",
         simulation::keff_prompt, t_n1 * simulation::keff_prompt_std);
       fmt::print(" Beta-effective              = {:.5f} +/- {:.5f}\n",
@@ -612,7 +612,7 @@ void print_results()
 
     // Print delayed neutron kinetics parameters if calculated (n=1 case)
     if (settings::run_mode == RunMode::EIGENVALUE &&
-        settings::calculate_prompt_k) {
+        settings::calculate_k_prompt) {
       fmt::print(
         " k-prompt                   = {:.5f}\n", simulation::keff_prompt);
       fmt::print(

@@ -543,7 +543,7 @@ void initialize_generation()
       GlobalTally::K_TRACKLENGTH, TallyResult::VALUE);
 
     // Store current value of prompt tracklength k for kinetics calculations
-    if (settings::calculate_prompt_k) {
+    if (settings::calculate_k_prompt) {
       simulation::keff_prompt_generation = global_tally_prompt_tracklength;
     }
   }

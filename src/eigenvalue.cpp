@@ -113,7 +113,7 @@ void calculate_generation_keff()
 void calculate_generation_prompt_keff()
 {
   // Only calculate if enabled
-  if (!settings::calculate_prompt_k)
+  if (!settings::calculate_k_prompt)
     return;
 
   // Get k_prompt for this generation by subtracting off the starting value
@@ -490,7 +490,7 @@ void calculate_average_keff()
 void calculate_kinetics_parameters()
 {
   // Only calculate if enabled
-  if (!settings::calculate_prompt_k)
+  if (!settings::calculate_k_prompt)
     return;
 
   // Determine overall generation and number of active generations
@@ -972,7 +972,7 @@ void write_eigenvalue_hdf5(hid_t group)
   write_dataset(group, "k_combined", k_combined);
 
   // Write delayed neutron kinetics parameters if calculated
-  if (settings::calculate_prompt_k) {
+  if (settings::calculate_k_prompt) {
     write_dataset(group, "k_prompt_generation", simulation::k_prompt);
     array<double, 2> k_prompt_vals {
       simulation::keff_prompt, simulation::keff_prompt_std};
@@ -1016,7 +1016,7 @@ void read_eigenvalue_hdf5(hid_t group)
   read_dataset(group, "k_abs_tra", simulation::k_abs_tra);
 
   // Read delayed neutron kinetics parameters if they exist
-  if (settings::calculate_prompt_k && object_exists(group, "k_prompt")) {
+  if (settings::calculate_k_prompt && object_exists(group, "k_prompt")) {
     simulation::k_prompt.resize(n);
     read_dataset(group, "k_prompt_generation", simulation::k_prompt);
     array<double, 2> k_prompt_vals;

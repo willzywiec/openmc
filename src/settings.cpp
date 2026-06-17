@@ -56,7 +56,7 @@ bool delayed_photon_scaling {true};
 bool entropy_on {false};
 bool event_based {false};
 bool ifp_on {false};
-bool calculate_prompt_k {false};
+bool calculate_k_prompt {false};
 bool calculate_alpha {false};
 bool legendre_to_tabular {true};
 bool material_cell_offsets {true};
@@ -861,15 +861,15 @@ void read_settings_xml(pugi::xml_node root)
   // Delayed neutron kinetics calculations
   if (check_for_node(root, "kinetics")) {
     auto node_kinetics = root.child("kinetics");
-    if (check_for_node(node_kinetics, "calculate_prompt_k")) {
-      calculate_prompt_k =
-        get_node_value_bool(node_kinetics, "calculate_prompt_k");
+    if (check_for_node(node_kinetics, "calculate_k_prompt")) {
+      calculate_k_prompt =
+        get_node_value_bool(node_kinetics, "calculate_k_prompt");
     }
     if (check_for_node(node_kinetics, "calculate_alpha")) {
       calculate_alpha = get_node_value_bool(node_kinetics, "calculate_alpha");
       // Alpha calculation requires k_prompt and IFP
       if (calculate_alpha) {
-        calculate_prompt_k = true;
+        calculate_k_prompt = true;
         // Enable IFP with default generations if not already set
         if (ifp_n_generation <= 0) {
           // Use 10 generations or half of inactive batches, whichever is
