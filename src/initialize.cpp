@@ -15,6 +15,7 @@
 #include "openmc/chain.h"
 #include "openmc/constants.h"
 #include "openmc/cross_sections.h"
+#include "openmc/eigenvalue.h"
 #include "openmc/error.h"
 #include "openmc/file_utils.h"
 #include "openmc/geometry_aux.h"
@@ -161,27 +162,28 @@ void initialize_mpi(MPI_Comm intracomm)
 
   // Create bank datatype
   SourceSite b;
-  MPI_Aint disp[14];
+  MPI_Aint disp[15];
   MPI_Get_address(&b.r, &disp[0]);
   MPI_Get_address(&b.u, &disp[1]);
   MPI_Get_address(&b.E, &disp[2]);
   MPI_Get_address(&b.time, &disp[3]);
   MPI_Get_address(&b.wgt, &disp[4]);
   MPI_Get_address(&b.delayed_group, &disp[5]);
-  MPI_Get_address(&b.surf_id, &disp[6]);
-  MPI_Get_address(&b.particle, &disp[7]);
-  MPI_Get_address(&b.parent_nuclide, &disp[8]);
-  MPI_Get_address(&b.parent_id, &disp[9]);
-  MPI_Get_address(&b.progeny_id, &disp[10]);
-  MPI_Get_address(&b.wgt_born, &disp[11]);
-  MPI_Get_address(&b.wgt_ww_born, &disp[12]);
-  MPI_Get_address(&b.n_split, &disp[13]);
-  for (int i = 13; i >= 0; --i) {
+  MPI_Get_address(&b.is_delayed, &disp[6]);
+  MPI_Get_address(&b.surf_id, &disp[7]);
+  MPI_Get_address(&b.particle, &disp[8]);
+  MPI_Get_address(&b.parent_nuclide, &disp[9]);
+  MPI_Get_address(&b.parent_id, &disp[10]);
+  MPI_Get_address(&b.progeny_id, &disp[11]);
+  MPI_Get_address(&b.wgt_born, &disp[12]);
+  MPI_Get_address(&b.wgt_ww_born, &disp[13]);
+  MPI_Get_address(&b.n_split, &disp[14]);
+  for (int i = 14; i >= 0; --i) {
     disp[i] -= disp[0];
   }
 
   // Block counts for each field
-  int blocks[] = {3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+  int blocks[] = {3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
   // Types for each field
   MPI_Datatype types[] = {
@@ -191,6 +193,7 @@ void initialize_mpi(MPI_Comm intracomm)
     MPI_DOUBLE,  // time
     MPI_DOUBLE,  // wgt
     MPI_INT,     // delayed_group
+    MPI_C_BOOL,  // is_delayed
     MPI_INT,     // surf_id
     MPI_INT,     // particle (enum)
     MPI_INT,     // parent_nuclide
@@ -201,7 +204,7 @@ void initialize_mpi(MPI_Comm intracomm)
     MPI_INT64_T  // n_split
   };
 
-  MPI_Type_create_struct(14, blocks, disp, types, &mpi::source_site);
+  MPI_Type_create_struct(15, blocks, disp, types, &mpi::source_site);
   MPI_Type_commit(&mpi::source_site);
 
   CollisionTrackSite bc;
@@ -503,6 +506,9 @@ bool read_model_xml()
   if (check_for_node(root, "tallies"))
     read_tallies_xml(root.child("tallies"));
 
+  // Setup internal tallies for kinetics calculations
+  setup_kinetics_tallies();
+
   check_pulse_height_compatibility();
 
   // Initialize distribcell_filters
@@ -549,6 +555,9 @@ void read_separate_xml_files()
   finalize_cell_densities();
 
   read_tallies_xml();
+
+  // Setup internal tallies for kinetics calculations
+  setup_kinetics_tallies();
 
   check_pulse_height_compatibility();
 

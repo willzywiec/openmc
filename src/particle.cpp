@@ -182,6 +182,10 @@ void Particle::from_source(const SourceSite* src)
   parent_nuclide() = src->parent_nuclide;
   delayed_group() = src->delayed_group;
 
+  // Initialize delayed neutron flag for kinetics calculations
+  // Track whether this neutron itself is delayed (not genealogy)
+  is_delayed() = src->is_delayed;
+
   // Convert signed surface ID to signed index
   if (src->surf_id != SURFACE_NONE) {
     int index_plus_one = model::surface_map[std::abs(src->surf_id)] + 1;
@@ -308,6 +312,12 @@ void Particle::event_advance()
   // Score track-length estimate of k-eff
   if (settings::run_mode == RunMode::EIGENVALUE && type().is_neutron()) {
     keff_tally_tracklength() += wgt() * distance * macro_xs().nu_fission;
+
+    // Score track-length estimate of k_prompt (prompt neutrons only)
+    if (settings::calculate_prompt_k && !is_delayed()) {
+      keff_prompt_tally_tracklength() +=
+        wgt() * distance * macro_xs().nu_fission;
+    }
   }
 
   // Score flux derivative accumulators for differential tallies.
@@ -562,12 +572,15 @@ void Particle::event_death()
   global_tally_tracklength += keff_tally_tracklength();
 #pragma omp atomic
   global_tally_leakage += keff_tally_leakage();
+#pragma omp atomic
+  global_tally_prompt_tracklength += keff_prompt_tally_tracklength();
 
   // Reset particle tallies once accumulated
   keff_tally_absorption() = 0.0;
   keff_tally_collision() = 0.0;
   keff_tally_tracklength() = 0.0;
   keff_tally_leakage() = 0.0;
+  keff_prompt_tally_tracklength() = 0.0;
 
   if (!model::active_pulse_height_tallies.empty()) {
     score_pulse_height_tally(*this, model::active_pulse_height_tallies);

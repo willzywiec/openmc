@@ -76,6 +76,7 @@ double global_tally_absorption;
 double global_tally_collision;
 double global_tally_tracklength;
 double global_tally_leakage;
+double global_tally_prompt_tracklength;
 
 //==============================================================================
 // Tally object implementation
@@ -199,7 +200,8 @@ Tally::Tally(pugi::xml_node node)
     bool has_ifp_score = false;
     for (int score : scores_) {
       if (score == SCORE_IFP_TIME_NUM || score == SCORE_IFP_BETA_NUM ||
-          score == SCORE_IFP_DENOM) {
+          score == SCORE_IFP_DENOM || score == SCORE_IFP_PROMPT_TIME_NUM ||
+          score == SCORE_IFP_PROMPT_DENOM) {
         has_ifp_score = true;
         break;
       }
@@ -246,6 +248,11 @@ Tally::Tally(pugi::xml_node node)
         } else if (settings::ifp_parameter == IFPParameter::GenerationTime) {
           settings::ifp_parameter = IFPParameter::Both;
         }
+        break;
+      case SCORE_IFP_PROMPT_TIME_NUM:
+      case SCORE_IFP_PROMPT_DENOM:
+        // Prompt scores require both delayed_group and lifetime genealogies
+        settings::ifp_parameter = IFPParameter::Both;
         break;
       }
     }
@@ -686,6 +693,8 @@ void Tally::set_scores(const vector<std::string>& scores)
     case SCORE_IFP_TIME_NUM:
     case SCORE_IFP_BETA_NUM:
     case SCORE_IFP_DENOM:
+    case SCORE_IFP_PROMPT_TIME_NUM:
+    case SCORE_IFP_PROMPT_DENOM:
       estimator_ = TallyEstimator::COLLISION;
       break;
     }
