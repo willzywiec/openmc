@@ -544,7 +544,7 @@ void initialize_generation()
 
     // Store current value of prompt tracklength k for kinetics calculations
     if (settings::calculate_k_prompt) {
-      simulation::keff_prompt_generation = global_tally_prompt_tracklength;
+      simulation::k_prompt_generation_accum = global_tally_prompt_tracklength;
     }
   }
 }
@@ -866,7 +866,7 @@ void free_memory_simulation()
 {
   simulation::k_generation.clear();
   simulation::entropy.clear();
-  simulation::k_prompt.clear();
+  simulation::k_prompt_generation.clear();
 }
 
 void transport_history_based_single_particle(Particle& p)

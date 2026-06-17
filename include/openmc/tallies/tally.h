@@ -232,7 +232,7 @@ extern double global_tally_collision;
 extern double global_tally_tracklength;
 extern double global_tally_leakage;
 
-// Global tally for prompt k-effective (kinetics calculations)
+// Global tally for k-prompt (kinetics calculations)
 extern double global_tally_prompt_tracklength;
 
 //==============================================================================

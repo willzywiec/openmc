@@ -319,7 +319,7 @@ class StatePoint:
 
     @property
     def k_prompt(self):
-        """Combined prompt k-effective estimator with uncertainty."""
+        """Combined k-prompt estimator with uncertainty."""
         if self.run_mode == 'eigenvalue' and 'k_prompt' in self._f:
             return ufloat(*self._f['k_prompt'][()])
         else:

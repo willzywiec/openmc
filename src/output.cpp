@@ -574,7 +574,7 @@ void print_results()
     if (settings::run_mode == RunMode::EIGENVALUE &&
         settings::calculate_k_prompt) {
       fmt::print(" k-prompt                    = {:.5f} +/- {:.5f}\n",
-        simulation::keff_prompt, t_n1 * simulation::keff_prompt_std);
+        simulation::k_prompt, t_n1 * simulation::k_prompt_std);
       fmt::print(" Beta-effective              = {:.5f} +/- {:.5f}\n",
         simulation::beta_eff, t_n1 * simulation::beta_eff_std);
       // IFP-weighted alpha eigenvalue (requires IFP to be enabled)
@@ -614,7 +614,7 @@ void print_results()
     if (settings::run_mode == RunMode::EIGENVALUE &&
         settings::calculate_k_prompt) {
       fmt::print(
-        " k-prompt                   = {:.5f}\n", simulation::keff_prompt);
+        " k-prompt                   = {:.5f}\n", simulation::k_prompt);
       fmt::print(
         " Beta-effective             = {:.5f}\n", simulation::beta_eff);
       // IFP-weighted alpha eigenvalue (requires IFP to be enabled)

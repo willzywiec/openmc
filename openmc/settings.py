@@ -1049,7 +1049,7 @@ class Settings:
 
     @calculate_k_prompt.setter
     def calculate_k_prompt(self, calculate_k_prompt: bool):
-        cv.check_type('Whether to calculate prompt k-effective',
+        cv.check_type('Whether to calculate k-prompt',
                       calculate_k_prompt, bool)
         self._calculate_k_prompt = calculate_k_prompt
 

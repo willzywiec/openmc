@@ -29,12 +29,13 @@ extern vector<double> entropy; //!< Shannon entropy at each generation
 extern tensor::Tensor<double> source_frac; //!< Source fraction for UFS
 
 // Delayed neutron kinetics parameters
-extern double keff_prompt_generation; //!< Single-generation k_prompt
-extern vector<double> k_prompt;       //!< k_prompt for each generation
-extern double keff_prompt;            //!< Mean k_prompt over active generations
-extern double keff_prompt_std;        //!< Standard deviation of k_prompt
-extern double beta_eff;               //!< Effective delayed neutron fraction
-extern double beta_eff_std;           //!< Standard deviation of beta_eff
+extern double
+  k_prompt_generation_accum; //!< Single-generation prompt-k accumulator
+extern vector<double> k_prompt_generation; //!< Prompt k for each generation
+extern double k_prompt;     //!< Mean prompt k over active generations
+extern double k_prompt_std; //!< Standard deviation of mean prompt k
+extern double beta_eff;     //!< Effective delayed neutron fraction
+extern double beta_eff_std; //!< Standard deviation of beta_eff
 
 // IFP-weighted generation times and alpha eigenvalue
 // Λ_eff = ifp-time-numerator / (ifp-denominator × k_eff)

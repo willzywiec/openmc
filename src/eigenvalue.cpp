@@ -42,10 +42,10 @@ vector<double> entropy;
 tensor::Tensor<double> source_frac;
 
 // Delayed neutron kinetics parameters
-double keff_prompt_generation {0.0};
-vector<double> k_prompt;
-double keff_prompt {0.0};
-double keff_prompt_std {0.0};
+double k_prompt_generation_accum {0.0};
+vector<double> k_prompt_generation;
+double k_prompt {0.0};
+double k_prompt_std {0.0};
 double beta_eff {0.0};
 double beta_eff_std {0.0};
 
@@ -117,29 +117,29 @@ void calculate_generation_prompt_keff()
     return;
 
   // Get k_prompt for this generation by subtracting off the starting value
-  simulation::keff_prompt_generation =
-    global_tally_prompt_tracklength - simulation::keff_prompt_generation;
+  simulation::k_prompt_generation_accum =
+    global_tally_prompt_tracklength - simulation::k_prompt_generation_accum;
 
-  double keff_prompt_reduced;
+  double k_prompt_reduced;
 #ifdef OPENMC_MPI
   if (settings::solver_type != SolverType::RANDOM_RAY) {
     // Combine values across all processors
-    MPI_Allreduce(&simulation::keff_prompt_generation, &keff_prompt_reduced, 1,
+    MPI_Allreduce(&simulation::k_prompt_generation_accum, &k_prompt_reduced, 1,
       MPI_DOUBLE, MPI_SUM, mpi::intracomm);
   } else {
     // For random ray, all ranks have identical flux and compute the same k
-    keff_prompt_reduced = simulation::keff_prompt_generation;
+    k_prompt_reduced = simulation::k_prompt_generation_accum;
   }
 #else
-  keff_prompt_reduced = simulation::keff_prompt_generation;
+  k_prompt_reduced = simulation::k_prompt_generation_accum;
 #endif
 
   // Normalize single batch estimate of k_prompt
   if (settings::solver_type != SolverType::RANDOM_RAY) {
-    keff_prompt_reduced /= settings::n_particles;
+    k_prompt_reduced /= settings::n_particles;
   }
 
-  simulation::k_prompt.push_back(keff_prompt_reduced);
+  simulation::k_prompt_generation.push_back(k_prompt_reduced);
 }
 
 void synchronize_bank()
@@ -505,14 +505,15 @@ void calculate_kinetics_parameters()
 
   if (n <= 0) {
     // For inactive generations, use current generation values as estimates
-    simulation::keff_prompt = simulation::k_prompt[i];
+    simulation::k_prompt = simulation::k_prompt_generation[i];
   } else {
     // Accumulate sums for k_prompt (using namespace-level variables)
-    simulation::k_prompt_sum += simulation::k_prompt[i];
-    simulation::k_prompt_sum_sq += std::pow(simulation::k_prompt[i], 2);
+    simulation::k_prompt_sum += simulation::k_prompt_generation[i];
+    simulation::k_prompt_sum_sq +=
+      std::pow(simulation::k_prompt_generation[i], 2);
 
     // Calculate mean k_prompt
-    simulation::keff_prompt = simulation::k_prompt_sum / n;
+    simulation::k_prompt = simulation::k_prompt_sum / n;
 
     // Calculate standard deviation if we have enough samples
     if (n > 1) {
@@ -523,22 +524,22 @@ void calculate_kinetics_parameters()
       } else {
         t_value = 1.0;
       }
-      simulation::keff_prompt_std =
+      simulation::k_prompt_std =
         t_value * std::sqrt((simulation::k_prompt_sum_sq / n -
-                              std::pow(simulation::keff_prompt, 2)) /
+                              std::pow(simulation::k_prompt, 2)) /
                             (n - 1));
     }
 
     // Calculate beta_eff from k-prompt: beta_eff = (k - k_prompt) / k
     if (simulation::keff > 0.0) {
       simulation::beta_eff =
-        (simulation::keff - simulation::keff_prompt) / simulation::keff;
+        (simulation::keff - simulation::k_prompt) / simulation::keff;
 
       if (n > 1) {
         double term1 = std::pow(1.0 / simulation::keff, 2) *
-                       std::pow(simulation::keff_prompt_std, 2);
+                       std::pow(simulation::k_prompt_std, 2);
         double term2 =
-          std::pow(simulation::keff_prompt / std::pow(simulation::keff, 2), 2) *
+          std::pow(simulation::k_prompt / std::pow(simulation::keff, 2), 2) *
           std::pow(simulation::keff_std, 2);
         simulation::beta_eff_std = std::sqrt(term1 + term2);
       }
@@ -973,9 +974,10 @@ void write_eigenvalue_hdf5(hid_t group)
 
   // Write delayed neutron kinetics parameters if calculated
   if (settings::calculate_k_prompt) {
-    write_dataset(group, "k_prompt_generation", simulation::k_prompt);
+    write_dataset(
+      group, "k_prompt_generation", simulation::k_prompt_generation);
     array<double, 2> k_prompt_vals {
-      simulation::keff_prompt, simulation::keff_prompt_std};
+      simulation::k_prompt, simulation::k_prompt_std};
     write_dataset(group, "k_prompt", k_prompt_vals);
     array<double, 2> beta_eff_vals {
       simulation::beta_eff, simulation::beta_eff_std};
@@ -1017,12 +1019,12 @@ void read_eigenvalue_hdf5(hid_t group)
 
   // Read delayed neutron kinetics parameters if they exist
   if (settings::calculate_k_prompt && object_exists(group, "k_prompt")) {
-    simulation::k_prompt.resize(n);
-    read_dataset(group, "k_prompt_generation", simulation::k_prompt);
+    simulation::k_prompt_generation.resize(n);
+    read_dataset(group, "k_prompt_generation", simulation::k_prompt_generation);
     array<double, 2> k_prompt_vals;
     read_dataset(group, "k_prompt", k_prompt_vals);
-    simulation::keff_prompt = k_prompt_vals[0];
-    simulation::keff_prompt_std = k_prompt_vals[1];
+    simulation::k_prompt = k_prompt_vals[0];
+    simulation::k_prompt_std = k_prompt_vals[1];
     array<double, 2> beta_eff_vals;
     read_dataset(group, "beta_eff", beta_eff_vals);
     simulation::beta_eff = beta_eff_vals[0];
